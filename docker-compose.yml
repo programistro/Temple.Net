@@ -1,0 +1,6 @@
+﻿services:
+  temple.net:
+    image: temple.net
+    build:
+      context: .
+      dockerfile: Temple.Net/Dockerfile
