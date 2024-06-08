@@ -1,0 +1,31 @@
+﻿@{
+    ViewData["Title"] = "Регистрация";
+}
+@model AuthViewModel
+
+<div class="container">
+    <div class="row">
+        <div class="col-lg-10 col-xl-9 mx-auto">
+            <div class="card flex-row my-5 border-0 shadow rounded-3 overflow-hidden">
+                <div class="card-body p-4 p-sm-5">
+                    <h5 class="card-title text-center mb-5 fw-light fs-5">Войти</h5>
+                    <form asp-action="Login" asp-controller="Auth">
+                        <div class="form-floating mb-3">
+                            <input type="email" class="form-control" asp-for="Email">
+                            <label for="floatingInputEmail">Почта</label>
+                        </div>
+                        
+                        <div class="form-floating mb-3">
+                            <input type="password" class="form-control" asp-for="Password">
+                            <label for="floatingPassword">Пароль</label>
+                        </div>
+
+                        <div class="d-grid mb-2">
+                            <button class="btn btn-lg btn-primary btn-login fw-bold text-uppercase" type="submit">Войти</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

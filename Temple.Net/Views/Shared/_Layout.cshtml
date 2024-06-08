@@ -12,7 +12,7 @@
 <header>
     <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
         <div class="container-fluid">
-            <a class="navbar-brand" asp-area="" asp-controller="Auth" asp-action="Index">Temple.Net</a>
+            <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Temple.Net</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                     aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -25,11 +25,11 @@
                     <li class="nav-item ml-auto" style="margin-right: 5px;">
                         @if (User.Identity.IsAuthenticated)
                         {
-                            <a class="nav-link text-dark">@User.Identity.Name</a>
+                            <a class="nav-link text-dark" asp-action="AccountPage" asp-controller="Home">@User.Identity.Name</a>
                         }
                         else
                         {
-                        <a class="nav-link text-dark"asp-action="Register" asp-controller="Home">Регистрация</a>
+                        <a class="nav-link text-dark" asp-action="RegisterPage" asp-controller="Auth">Регистрация</a>
                         }
                     </li>
                 </ul>

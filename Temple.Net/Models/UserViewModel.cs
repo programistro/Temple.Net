@@ -1,8 +1,6 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿namespace Temple.Net.Models;
 
-namespace Temple.Net.Models;
-
-public class User : IdentityUser
+public class UserViewModel
 {
     public string Role { get; set; }
     
@@ -11,6 +9,8 @@ public class User : IdentityUser
     public string LastName { get; set; }
     
     public string Otch { get; set; }
+    
+    public string Email { get; set; }
     
     public string? Photo { get; set; }
 }

@@ -21,28 +21,65 @@ public class AuthController : Controller
         _userService = userService;
         _context = context;
     }
+    
+    [HttpGet]
+    public IActionResult RegisterPage()
+    {
+        return View("RegisterPage");
+    }
 
+    [HttpGet]
+    public IActionResult LoginPage()
+    {
+        return View("LoginPage");
+    }
+    
     [HttpPost]
     public async Task<IActionResult> Register(AuthViewModel model)
     {
-        User user = new()
+        if (_context.Users.FirstOrDefault(x => x.Email == model.Email) == null)
         {
-            Id = Guid.NewGuid().ToString("N"),
-            Email = model.Email,
-            Role = "read",
-            PasswordHash = await _userService.CreatePasswordHashAsync(model.Password),
-            Name = model.Name,
-            Otch = model.Otch,
-            LastName = model.LastName
-        };
+            User user = new()
+            {
+                Id = Guid.NewGuid().ToString("N"),
+                Email = model.Email,
+                Role = "read",
+                PasswordHash = await _userService.CreatePasswordHashAsync(model.Password),
+                Name = model.Name,
+                Otch = model.Otch,
+                LastName = model.LastName
+            };
 
-        _context.Users.Add(user);
-        await _context.SaveChangesAsync();
+            _context.Users.Add(user);
+            await _context.SaveChangesAsync();
         
-        var claims = new List<Claim> { new (ClaimTypes.Name, user.Name) };
-        var claimsIdentity = new ClaimsIdentity(claims, "Cookie");
-        var claimsPrincipal = new ClaimsPrincipal(claimsIdentity);
-        await HttpContext.SignInAsync(claimsPrincipal);
+            var claims = new List<Claim> { new (ClaimTypes.Name, user.Name), new (ClaimTypes.Email, 
+                user.Email) };
+            var claimsIdentity = new ClaimsIdentity(claims, "Cookie");
+            var claimsPrincipal = new ClaimsPrincipal(claimsIdentity);
+            await HttpContext.SignInAsync(claimsPrincipal);
+        }
+        
+        return RedirectToAction("Index", "Home");
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> Login(AuthViewModel model)
+    {
+        var user = _context.Users.FirstOrDefault(x => x.Email == model.Email);
+
+        if (user != null)
+        {
+            var password = await _userService.CreatePasswordHashAsync(model.Password);
+
+            if (user.PasswordHash == password)
+            {
+                var claims = new List<Claim> { new (ClaimTypes.Name, user.Name) };
+                var claimsIdentity = new ClaimsIdentity(claims, "Cookie");
+                var claimsPrincipal = new ClaimsPrincipal(claimsIdentity);
+                await HttpContext.SignInAsync(claimsPrincipal);                
+            }
+        }
         
         return RedirectToAction("Index", "Home");
     }
