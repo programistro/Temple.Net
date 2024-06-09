@@ -1,0 +1,67 @@
+﻿@{
+    ViewData["Title"] = "Регистрация";
+}
+@model UsersAllViewModel
+
+<form method="post" asp-action="">
+    <input type="hidden" asp-for="User.Name" />
+    <input type="hidden" asp-for="User.Email" />
+    <input type="hidden" asp-for="User.Otch" />
+    <input type="hidden" asp-for="User.Role" />
+    <input type="hidden" asp-for="User.Email" />
+    
+    <table class="table">
+        <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Имя</th>
+            <th scope="col">Фамилия</th>
+            <th scope="col">Отчество</th>
+            <th scope="col">Права доступа</th>
+            <th scope="col">Email</th>
+            <th scope="col">Изменить доступа</th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var user in Model.Users)
+        {
+            <tr>
+                <th scope="row">@((Model.Users.IndexOf(user) + 1))</th>
+                <td>@user.Name</td>
+                <td>@user.LastName</td>
+                <td>@user.Otch</td>
+                <td>@user.Role</td>
+                <td>@user.Email</td>
+                <td class="text-center">
+                    <button type="button" class="btn btn-primary btn-sm update-btn">Поменять</button>
+                </td>
+            </tr>
+        }
+        </tbody>
+    </table>
+</form>
+
+<script>
+$(document).ready(function() {
+    $('.update-btn').on('click', function() {
+        var row = $(this).closest('tr'); // Находим родительскую строку кнопки
+        var userIdInput = row.find('td:first-child').text(); // Предполагается, что первый столбец содержит ID пользователя
+        var name = row.find('td:eq(1)').text();
+        var lastName = row.find('td:eq(2)').text();
+        var otch = row.find('td:eq(3)').text();
+        var role = row.find('td:eq(4)').text();
+        var email = row.find('td:eq(5)').text();
+
+        // Заполняем поля формы данными
+        $('#editUserForm input[name="userId"]').val(userIdInput);
+        $('#editUserForm input[name="name"]').val(name);
+        $('#editUserForm input[name="lastName"]').val(lastName);
+        $('#editUserForm input[name="otch"]').val(otch);
+        $('#editUserForm input[name="role"]').val(role);
+        $('#editUserForm input[name="email"]').val(email);
+
+        // Отправляем форму
+        $('#editUserForm').submit();
+    });
+});
+</script>

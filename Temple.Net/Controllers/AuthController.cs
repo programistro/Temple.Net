@@ -43,7 +43,7 @@ public class AuthController : Controller
             {
                 Id = Guid.NewGuid().ToString("N"),
                 Email = model.Email,
-                Role = "read",
+                Role = "admin",
                 PasswordHash = await _userService.CreatePasswordHashAsync(model.Password),
                 Name = model.Name,
                 Otch = model.Otch,
@@ -54,7 +54,8 @@ public class AuthController : Controller
             await _context.SaveChangesAsync();
         
             var claims = new List<Claim> { new (ClaimTypes.Name, user.Name), new (ClaimTypes.Email, 
-                user.Email) };
+                user.Email), new (ClaimTypes.Role,  user.Role) };
+            
             var claimsIdentity = new ClaimsIdentity(claims, "Cookie");
             var claimsPrincipal = new ClaimsPrincipal(claimsIdentity);
             await HttpContext.SignInAsync(claimsPrincipal);
@@ -74,7 +75,8 @@ public class AuthController : Controller
 
             if (user.PasswordHash == password)
             {
-                var claims = new List<Claim> { new (ClaimTypes.Name, user.Name) };
+                var claims = new List<Claim> { new (ClaimTypes.Name, user.Name), new (ClaimTypes.Email, 
+                    user.Email), new (ClaimTypes.Role, "read") };
                 var claimsIdentity = new ClaimsIdentity(claims, "Cookie");
                 var claimsPrincipal = new ClaimsPrincipal(claimsIdentity);
                 await HttpContext.SignInAsync(claimsPrincipal);                

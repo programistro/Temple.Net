@@ -1,5 +1,6 @@
 using System.Diagnostics;
 using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Temple.Net.Data;
 using Temple.Net.Models;
@@ -27,37 +28,65 @@ public class HomeController : Controller
         return View();
     }
 
+    public IActionResult AdminPanel()
+    {
+        UsersAllViewModel model = new()
+        {
+            Users = _context.Users.ToList()
+        };
+        
+        return View(model);
+    }
+
+    [HttpPut]
+    [Authorize]
+    public IActionResult UpdateRoleUser(UsersAllViewModel model)
+    {
+        
+    }
+
+    [Authorize]
     public IActionResult AccountPage()
     {
-        var user = _context.Users.FirstOrDefault(x => x.Email == HttpContext.User.FindFirst(ClaimTypes.Email).Value);
-        if (user != null)
+        if (HttpContext.User.FindFirst(ClaimTypes.Email).Value != null)
         {
-            UserViewModel viewModel = new()
+            var user = _context.Users.FirstOrDefault(x => x.Email == HttpContext.User.FindFirst(ClaimTypes.Email).Value);
+            if (user != null)
             {
-                Email = user.Email,
-                Role = user.Role,
-                LastName = user.LastName,
-                Otch = user.Otch,
-                Name = user.Name,
-                Photo = user.Photo
-            };
+                UserViewModel viewModel = new()
+                {
+                    Email = user.Email,
+                    Role = user.Role,
+                    LastName = user.LastName,
+                    Otch = user.Otch,
+                    Name = user.Name,
+                    Photo = user.Photo
+                };
 
-            return View(viewModel);
+                return View(viewModel);
+            }
+            else
+                return View("AccountPage");
         }
         else
+        {
             return View("AccountPage");
+        }
     }
 
     [HttpPost]
     public IActionResult UpdateProfile(UserViewModel model)
     {
-        // var user = _context.Users.FirstOrDefault(x => x.Email == model.Email);
-        //
-        // user.Photo = model.Photo;
-        // user.LastName = model.LastName;
-        // user.Otch = model.Otch;
-        // user.Name = model.Name;
-        // user
+        var user = _context.Users.FirstOrDefault(x => x.Email == model.Email);
+        
+        user.Photo = model.Photo;
+        user.LastName = model.LastName;
+        user.Otch = model.Otch;
+        user.Name = model.Name;
+
+        _context.Users.Update(user);
+        _context.SaveChanges();
+        
         return RedirectToAction("Index");
     }
     
