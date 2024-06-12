@@ -1,0 +1,63 @@
+﻿@using BlazorBootstrap
+@using Temple.Net.Data
+@using Temple.Net.Models
+@using Microsoft.AspNetCore.Authorization
+@* @attribute [Authorize(Roles = "Admin")] *@
+@using Microsoft.AspNetCore.Components.QuickGrid
+@using BlazorBootstrap
+@using Microsoft.AspNetCore.Authorization
+@inject UserDbContext context
+
+<QuickGrid Items="@itemsQueryable">
+    <PropertyColumn Property="@(user => user.Name)" Sortable="true"/>
+    @* <PropertyColumn Property="@(user => user.Role)" Sortable="true"/> *@
+    @* <PropertyColumn Property="@(user => user.Name)" Sortable="true"/> *@
+    @* <PropertyColumn Property="@(user => user.LastName)" Sortable="true" /> *@
+    @* <PropertyColumn Property="@(user => user.LastName)" Sortable="true" /> *@
+    <TemplateColumn Title="Изменить баланс пользователя">
+        <button class="btn btn-primary" @onclick="@(() => ChangeRole(context))">Изменить</button>
+    </TemplateColumn>
+</QuickGrid>
+
+<Modal @ref="changeModal" title="Изменить права доступа" UseStaticBackdrop="true" CloseOnEscape="false">
+    <BodyTemplate>
+        <input @bind-value="NewRole" class="form-control dark-theme-textbox" autocomplete="off" placeholder="Новые права">
+    </BodyTemplate>
+    <FooterTemplate>
+        <Button Color="ButtonColor.Secondary" @onclick="OnHideModalClick">Изменить</Button>
+    </FooterTemplate>
+</Modal>
+
+@code {
+    IQueryable<User>? itemsQueryable;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var items = context.Users;
+
+        itemsQueryable = items.AsQueryable();
+    }
+    
+    private User selectUser;
+    
+    private Modal changeModal = default!;
+
+    private string NewRole;
+    
+    private async Task ChangeRole(User user)
+    {
+        selectUser = user;
+        changeModal.ShowAsync();
+    }
+    
+    private async Task OnHideModalClick()
+    {
+        Task.Run(() =>
+        {
+            selectUser.Role = NewRole;
+            context.Users.Update(selectUser);
+            context.SaveChanges();
+        });
+        await changeModal.HideAsync();
+    }
+}

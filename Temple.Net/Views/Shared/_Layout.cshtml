@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css"/>
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true"/>
     <link rel="stylesheet" href="~/Temple.Net.styles.css" asp-append-version="true"/>
+    <base href="/" />
 </head>
 <body>
 <header>
@@ -83,34 +84,7 @@
 <script src="~/lib/jquery/dist/jquery.min.js"></script>
 <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 <script src="~/js/site.js" asp-append-version="true"></script>
+<script src="~/_framework/blazor.web.js"></script>
 @await RenderSectionAsync("Scripts", required: false)
-
-<!-- Подключение Bootstrap CSS -->
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/5.0.0-beta1/css/bootstrap.min.css">
-
-<!-- Подключение jQuery -->
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
-<!-- Подключение Bootstrap JS (с Popper.js) -->
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/5.0.0-beta1/js/bootstrap.bundle.min.js"></script>
-
-<script>
-    $(document).ready(function(){
-        $('[data-bs-toggle="popover"]').popover()
-    })
-</script>
-
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
-<script>
-    $(document).ready(function(){
-        $('#myParagraph').mouseenter(function() {
-            $('#myPopover').show();
-        }).mouseleave(function() {
-            $('#myPopover').hide();
-        });
-    });
-</script>
-
 </body>
 </html>

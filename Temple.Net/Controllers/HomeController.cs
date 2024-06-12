@@ -30,19 +30,14 @@ public class HomeController : Controller
 
     public IActionResult AdminPanel()
     {
-        UsersAllViewModel model = new()
-        {
-            Users = _context.Users.ToList()
-        };
-        
-        return View(model);
+        return View();
     }
 
     [HttpPut]
     [Authorize]
     public IActionResult UpdateRoleUser(UsersAllViewModel model)
     {
-        
+        return RedirectToAction("AdminPanel");
     }
 
     [Authorize]
