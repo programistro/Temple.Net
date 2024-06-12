@@ -6,7 +6,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
-builder.Services.AddServerSideBlazor();
+builder.Services.AddServerSideBlazor().AddCircuitOptions(options => {  options.DetailedErrors = true; });
 builder.Services.AddRazorComponents();
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
@@ -14,11 +14,12 @@ builder.Services.AddDbContextFactory<UserDbContext>();
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
     .AddCookie();
 builder.Services.AddScoped<UserService>();
+builder.Services.AddQuickGridEntityFrameworkAdapter();
 
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
     
-//builder.Services.AddBlazorBootstrap();
+builder.Services.AddBlazorBootstrap();
 
 var app = builder.Build();
 

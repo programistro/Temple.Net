@@ -8,7 +8,9 @@
 @using Microsoft.AspNetCore.Authorization
 @inject UserDbContext context
 
-<QuickGrid Items="@itemsQueryable">
+<link rel="stylesheet" href="bootstrap/bootstrap.min.css" />
+
+<QuickGrid Items="@context.Users">
     <PropertyColumn Property="@(user => user.Name)" Sortable="true"/>
     @* <PropertyColumn Property="@(user => user.Role)" Sortable="true"/> *@
     @* <PropertyColumn Property="@(user => user.Name)" Sortable="true"/> *@
@@ -29,15 +31,6 @@
 </Modal>
 
 @code {
-    IQueryable<User>? itemsQueryable;
-
-    protected override async Task OnInitializedAsync()
-    {
-        var items = context.Users;
-
-        itemsQueryable = items.AsQueryable();
-    }
-    
     private User selectUser;
     
     private Modal changeModal = default!;
