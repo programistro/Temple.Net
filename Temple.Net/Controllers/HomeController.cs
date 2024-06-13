@@ -12,6 +12,7 @@ public class HomeController : Controller
     private readonly ILogger<HomeController> _logger;
 
     private readonly UserDbContext _context;
+
     public HomeController(ILogger<HomeController> logger, UserDbContext context)
     {
         _logger = logger;
@@ -40,7 +41,12 @@ public class HomeController : Controller
         return RedirectToAction("AdminPanel");
     }
 
-    [Authorize]
+    public IActionResult AddTemple()
+    {
+        return View("AddTemple");
+    }
+
+[Authorize]
     public IActionResult AccountPage()
     {
         if (HttpContext.User.FindFirst(ClaimTypes.Email).Value != null)

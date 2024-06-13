@@ -2,7 +2,7 @@
 @using Temple.Net.Data
 @using Temple.Net.Models
 @using Microsoft.AspNetCore.Authorization
-@* @attribute [Authorize(Roles = "Admin")] *@
+@attribute [Authorize(Roles = "Admin")]
 @using Microsoft.AspNetCore.Components.QuickGrid
 @using BlazorBootstrap
 @using Microsoft.AspNetCore.Authorization
@@ -12,10 +12,10 @@
 
 <QuickGrid Items="@context.Users">
     <PropertyColumn Property="@(user => user.Name)" Sortable="true"/>
-    @* <PropertyColumn Property="@(user => user.Role)" Sortable="true"/> *@
-    @* <PropertyColumn Property="@(user => user.Name)" Sortable="true"/> *@
-    @* <PropertyColumn Property="@(user => user.LastName)" Sortable="true" /> *@
-    @* <PropertyColumn Property="@(user => user.LastName)" Sortable="true" /> *@
+    <PropertyColumn Property="@(user => user.Role)" Sortable="true"/>
+    <PropertyColumn Property="@(user => user.Name)" Sortable="true"/>
+    <PropertyColumn Property="@(user => user.LastName)" Sortable="true" />
+    <PropertyColumn Property="@(user => user.LastName)" Sortable="true" />
     <TemplateColumn Title="Изменить баланс пользователя">
         <button class="btn btn-primary" @onclick="@(() => ChangeRole(context))">Изменить</button>
     </TemplateColumn>
