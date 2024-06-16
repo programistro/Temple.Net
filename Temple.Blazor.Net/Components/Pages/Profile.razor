@@ -1,0 +1,116 @@
+﻿@using System.Security.Claims
+@using Microsoft.AspNetCore.Components.Authorization
+@using Microsoft.AspNetCore.Mvc
+@using Temple.Net.Data
+@using Temple.Net.Models
+@inject UserDbContext _context
+@inject AuthenticationStateProvider AuthenticationStateProvider
+@inject NavigationManager NavigationManager 
+@page "/profile"
+
+<AuthorizeView>
+	<Authorized Context="Auth">
+		<div class="container">
+			<div class="row gutters">
+				<div class="col-xl-3 col-lg-3 col-md-12 col-sm-12 col-12">
+					<div class="card h-100">
+						<div class="card-body">
+							<div class="account-settings">
+								<div class="user-profile">
+									<div class="user-avatar">
+										<img src="https://bootdey.com/img/Content/avatar/avatar7.png" width="270px" alt="Maxwell Admin">
+									</div>
+									<h5 class="user-name" style="justify-self: center; text-align: center">@this.Auth.Name @this.Auth.LastName @this.Auth.Otch</h5>
+								</div>
+								@* <div class="about"> *@
+								@* 	<h5>About</h5> *@
+								@* 	<p>I'm Yuki. Full Stack Designer I enjoy creating user-centric, delightful and human experiences.</p> *@
+								@* </div> *@
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="col-xl-9 col-lg-9 col-md-12 col-sm-12 col-12">
+					<div class="card h-63">
+						<EditForm Model="this.Auth" OnSubmit="Submit">
+							<div class="card-body">
+								<div class="row gutters">
+									<div class="col-xl-11 col-lg-12 col-md-12 col-sm-12 col-12">
+										<h6 class="mb-2 text-primary">Данные о пользователе</h6>
+									</div>
+									<div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+										<div class="form-group">
+											<label>Имя</label>
+											<input class="form-control" disabled="disabled" placeholder="@this.Auth.Name">
+										</div>
+									</div>
+									<div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+										<div class="form-group">
+											<label>Фамилия</label>
+											<input class="form-control" disabled="disabled"placeholder="@this.Auth.LastName">
+										</div>
+									</div>
+									<div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+										<div class="form-group">
+											<label>Отчество</label>
+											<input class="form-control" disabled="disabled" placeholder="@this.Auth.Otch">
+										</div>
+									</div>
+									<div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+										<div class="form-group">
+											<label for="eMail">Email</label>
+											<input class="form-control" disabled="disabled" placeholder="@this.Auth.Email">
+										</div>
+									</div>
+								</div>
+								@* <div class="row gutters"> *@
+								@* 	<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 text-right" style="text-align: end;"> *@
+								@* 		<button type="submit" class="btn btn-primary" style="margin-top: 8px;">Обновить</button> *@
+								@* 	</div> *@
+								@* </div> *@
+							</div>
+						</EditForm>
+					</div>
+				</div>
+			</div>
+		</div>
+	</Authorized>
+	<NotAuthorized>
+		<p>Вы не авторизованы</p>
+	</NotAuthorized>
+</AuthorizeView>
+
+@code {
+	public UserViewModel Auth;
+
+	protected override void OnInitialized()
+	{
+		if (AuthenticationStateProvider.GetAuthenticationStateAsync().Result.User.Identity.IsAuthenticated)
+		{
+			var user = _context.Users.FirstOrDefault(x => 
+				x.Email == AuthenticationStateProvider.GetAuthenticationStateAsync().Result.User.FindFirst(ClaimTypes.Email).Value);
+
+			if (user != null)
+			{
+				Auth = new()
+				{
+					Email = user.Email,
+					Name = user.Name,
+					Otch = user.Otch,
+					LastName = user.LastName,
+					Photo = user.Photo,
+					Role = user.Role
+				};
+			}
+			else
+			{
+				NavigationManager.NavigateTo("/");
+			}
+		}
+	}
+
+	private void Submit()
+	{
+		
+	}
+}

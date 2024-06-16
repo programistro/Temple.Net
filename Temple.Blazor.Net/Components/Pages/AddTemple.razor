@@ -1,0 +1,40 @@
+﻿@page "/add/temple"
+@using OpenStreetMapForBlazor
+
+<div class="row" style="margin-left: 10px;">
+    <div class="col-md-4">
+        <div class="btn-group" role="group" aria-label="Basic example">
+            <button class="btn btn-secondary">Храм</button>
+            <button class="btn btn-secondary">Персоналии</button>
+            <button class="btn btn-secondary">Пригожане</button>
+        </div>
+    </div>
+</div>
+
+<div style="height: 500px;">
+    <OSMap Click="@MapClickEvent" CenterMap="@defPosition" />
+</div>
+
+@code {
+    public MapPosition position;
+    public bool btnActive;
+
+    MapPosition? defPosition;
+
+    protected override async Task OnInitializedAsync()
+    {
+        defPosition = new MapPosition() { Lat = 53.9006, Lng = 27.5590 };
+    }
+
+    public void MapClickEvent(MapClickEventArgs args)
+    {
+        //events.Add(DateTime.Now, $"Map clicked at Lat: {args.Position.Lat}, Lng: {args.Position.Lng}");
+
+        if (args != null) position = args.Position;
+
+        //btnActive = !(position.Lng == defPosition.Lng && position.Lat == defPosition.Lat);
+        //actualJson = JsonConvert.SerializeObject(args);
+
+        //StateHasChanged();
+    }
+}

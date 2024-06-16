@@ -1,0 +1,71 @@
+﻿@using System.Security.Claims
+@using Microsoft.AspNetCore.Authentication
+@using Microsoft.AspNetCore.Components.Authorization
+@using Temple.Net.Data
+@using Temple.Net.Models
+@using Temple.Net.Service
+@inject UserDbContext _context
+@inject UserService _userService
+@inject AuthenticationStateProvider AuthenticationStateProvider
+@inject NavigationManager NavigationManager
+@rendermode InteractiveServer
+@page "/login"
+
+<div class="container">
+    <div class="row">
+        <div class="col-lg-10 col-xl-9 mx-auto">
+            <div class="card flex-row my-5 border-0 shadow rounded-3 overflow-hidden">
+                <div class="card-body p-4 p-sm-5">
+                    <h5 class="card-title text-center mb-5 fw-light fs-5">Регистрация</h5>
+                    <EditForm Model="model" OnSubmit="Submit">
+                        <div class="form-floating mb-3">
+                            <input type="email" class="form-control" @bind-value="model.Email">
+                            <label>Почта</label>
+                        </div>
+
+                        <div class="form-floating mb-3">
+                            <input type="password" class="form-control" @bind-value="model.Password">
+                            <label>Пароль</label>
+                        </div>
+
+                        <div class="d-grid mb-2">
+                            <button class="btn btn-lg btn-primary btn-login fw-bold text-uppercase" type="submit">Войти</button>
+                        </div>
+                    </EditForm>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div>
+    <p>@Message</p>
+</div>
+
+@code {
+    private AuthViewModel model = new();
+
+    private string Message;
+
+    public async Task Submit()
+    {
+        var user = _context.Users.FirstOrDefault(x => x.Email == model.Email);
+            
+        if (user != null)
+        {
+            var passwordHash = await _userService.CreatePasswordHashAsync(model.Password);
+
+            if (user.PasswordHash == passwordHash)
+            {
+                NavigationManager.NavigateTo($"auth/singin?email={model.Email}&name={user.Name}", true);
+            }
+            else
+            {
+                Message = "Не верный пароль";
+            }
+        }
+        else
+        {
+            Message = "Нет пользователя с такой учетной записью";
+        }
+    }
+}

@@ -1,0 +1,113 @@
+﻿@inherits LayoutComponentBase
+@inject AuthenticationStateProvider AuthenticationStateProvider
+@inject IJSRuntime JSRuntime
+@using System.Security.Claims
+@inject UserDbContext _context
+@using Microsoft.AspNetCore.Components.Authorization
+@using Temple.Net.Data
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <base href="/" />
+    <link rel="stylesheet" href="bootstrap/bootstrap.min.css" />
+    <link rel="stylesheet" href="app.css" />
+    <link rel="stylesheet" href="Temple.Blazor.Net.styles.css" />
+    <link rel="icon" type="image/png" href="favicon.png" />
+</head>
+<body>
+<header>
+    <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="/">Temple.Net</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                    aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+                <ul class="navbar-nav flex-grow-1">
+                    <li class="nav-item">
+                        <a class="nav-link text-dark" href="/">Домашняя страница</a>
+                    </li>
+                    <li class="nav-item">
+                        @if (IsAuth == true && (AuthenticationStateProvider.GetAuthenticationStateAsync().Result.User.FindFirst(ClaimTypes.Role).Value) != null)
+                        {
+                            var user = _context.Users.FirstOrDefault(x => x.Email == AuthenticationStateProvider.GetAuthenticationStateAsync().Result.User.FindFirst(ClaimTypes.Email).Value);
+
+                            if (user.Role == "admin")
+                            {
+                                <a class="nav-link text-dark" href="/admin">Админ панель</a>
+                            }
+                        }
+                    </li>
+                    <li class="nav-item">
+                        @if (IsAuth)
+                        {
+                            <a class="nav-link text-dark" href="/add/temple">Добавить</a>
+                        }
+                    </li>
+                    <li class="nav-item ml-auto" style="margin-right: 5px;">
+                        @if (IsAuth)
+                        {
+                            <a class="nav-link text-dark" href="/profile">@AuthenticationStateProvider.GetAuthenticationStateAsync().Result.User.Identity.Name</a>
+                        }
+                        else
+                        {
+                            <a class="nav-link text-dark" href="/reg">Регистрация</a>                        
+                        }
+                    </li>
+                </ul>
+                <style>
+                    .navbar-collapse {
+                        display: flex;
+                        justify-content: space-between;
+                    }
+                    .ml-auto {
+                        margin-left: auto;
+                    }
+                </style>
+            </div>
+        </div>
+    </nav>
+</header>
+<div class="container">
+    <main role="main" class="pb-3">
+        @Body
+    </main>
+</div>
+
+<footer class="border-top footer text-muted">
+    <div class="container">
+        &copy; 2024 - Temple.Net - <a>Privacy</a>
+    </div>
+</footer>
+<script src="js/OSMap.js"></script>
+<script src="~/_framework/blazor.web.js"></script>
+
+<script>
+    Blazor.start().then(() => {
+        Blazor.defaultReconnectionHandler._reconnectCallback = function (d) {
+            document.location.reload();
+        }
+    });
+</script>
+</body>
+</html>
+
+@code {
+    private bool IsAuth;
+
+    protected override void OnInitialized()
+    {
+        if (AuthenticationStateProvider.GetAuthenticationStateAsync().Result.User.Identity.IsAuthenticated)
+        {
+            IsAuth = true;
+        }
+        else
+        {
+            IsAuth = false;
+        }
+    }
+}
