@@ -1,29 +1,163 @@
 ﻿@page "/add/temple"
 @using OpenStreetMapForBlazor
+@using Temple.Net.Models
+@using Blazorise
+@using Temple.Blazor.Net.Components.Layout
+@inject IConfiguration config
+@inject AuthenticationStateProvider AuthenticationStateProvider
+@inject IJSRuntime JSRuntime
+@using System.Security.Claims
+@inject UserDbContext _context
+@using Microsoft.AspNetCore.Components.Authorization
+@using Newtonsoft.Json
+@using Temple.Net.Data
+@rendermode InteractiveServer
 
-<div class="row" style="margin-left: 10px;">
+<div class="row" style="margin: 10px;">
     <div class="col-md-4">
         <div class="btn-group" role="group" aria-label="Basic example">
-            <button class="btn btn-secondary">Храм</button>
-            <button class="btn btn-secondary">Персоналии</button>
-            <button class="btn btn-secondary">Пригожане</button>
+            <button class="btn btn-primary">Храм</button>
+            <button class="btn btn-primary">Персоналии</button>
+            <button class="btn btn-primary">Пригожане</button>
         </div>
     </div>
 </div>
 
-<div style="height: 500px;">
-    <OSMap Click="@MapClickEvent" CenterMap="@defPosition" />
+<div class="row">
+    <div class="col-lg-10 col-xl-9 mx-auto">
+        <div class="card flex-row my-5 border-0 shadow rounded-3 overflow-hidden">
+            <div class="card-body p-4 p-sm-5">
+                <h5 class="card-title text-center mb-3 fw-light fs-5">Добавить храм</h5>
+                <EditForm Model="@_temple" OnSubmit="Sumbit">
+                    <div class="form-floating mb-2">
+                        <input type="text" class="form-control" @bind-value="_temple.Name">
+                        <label>Название</label>
+                    </div>
+
+                    <div class="form-floating mb-2">
+                        <input class="form-control" @bind-value="_temple.Type">
+                        <label>Тип храма</label>
+                    </div>
+
+                    <div style="margin-top: 10px; margin-bottom: 10px;">
+                        <DatePicker TValue="DateTime?" InputFormat="yyy" DisplayFormat="yyyy" InputMode="DateInputMode.Date" Placeholder="Год основания" @bind-Date="_temple.DateStart"/>
+                    </div>
+
+                    <div style="margin-top: 10px; margin-bottom: 10px;">
+                        <DatePicker TValue="DateTime?" InputFormat="yyy" DisplayFormat="yyyy" Placeholder="Год закрытия" @bind-Date="_temple.DateEnd"/>
+                    </div>
+
+                    <br/>
+
+                    <div>
+                        <h3 class="card-title text-center mb-3 fw-light fs-5">Назначение после закрытия</h3>
+
+                        <div>
+                            <div style="margin-top: 10px; margin-bottom: 10px;">
+                                <DatePicker TValue="DateTime?" InputFormat="yyy" DisplayFormat="yyyy" Placeholder="Год основания" @bind-Date="_temple.AppointmentsAfterEnd.YearAdaptations"/>
+                            </div>
+
+                            <div class="form-floating mb-2">
+                                <input class="form-control" @bind-value="_temple.AppointmentsAfterEnd.Appointmenrs">
+                                <label>Назначение после закрытия</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div style="margin-top: 10px; margin-bottom: 10px;">
+                        <DatePicker TValue="DateTime?" InputFormat="yyy" DisplayFormat="yyyy" Placeholder="Год уничтожения" @bind-Date="_temple.YearDestruction"/>
+                    </div>
+
+                    <div>
+                        <h3 class="card-title text-center mb-3 fw-light fs-5">Церковная ориентация</h3>
+
+                        <div>
+                            <div style="margin-top: 10px; margin-bottom: 10px;">
+                                <DatePicker TValue="DateTime?" InputFormat="yyy" DisplayFormat="yyyy" Placeholder="Год отпадеия" @bind-Date="_temple.Oriention.YearFall"/>
+                            </div>
+
+                            <div class="form-floating mb-2">
+                                <input class="form-control" @bind-value="_temple.Oriention.Oriention">
+                                <label>Церковная ориентация</label>
+                            </div>
+
+                            <div style="margin-top: 10px; margin-bottom: 10px;">
+                                <DatePicker TValue="DateTime?" InputFormat="yyy" DisplayFormat="yyyy" Placeholder="Год возрата" @bind-Date="_temple.Oriention.YearRefund"/>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <h3 class="card-title text-center mb-3 fw-light fs-5">Количество прихожан</h3>
+
+                        <div>
+                            <div style="margin-top: 10px; margin-bottom: 10px;">
+                                <DatePicker TValue="DateTime?" InputFormat="yyy" DisplayFormat="yyyy" Placeholder="Год возрата" @bind-Date="_temple.Parishioners.Year"/>
+                            </div>
+
+                            <div class="form-floating mb-2">
+                                <input type="number" class="form-control" @bind-value="_temple.Parishioners.Quantity">
+                                <label>Количество</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-floating mb-2">
+                        <input type="number" class="form-control" @bind-value="_temple.OrientationDiocesse">
+                        <label>Ориентация епархии</label>
+                    </div>
+
+                    <div class="form-floating mb-2">
+                        <input type="number" class="form-control" @bind-value="_temple.Diocesse">
+                        <label>Епархия</label>
+                    </div>
+
+                    <div class="form-floating mb-2">
+                        <input type="number" class="form-control" @bind-value="_temple.Province">
+                        <label>Губерния</label>
+                    </div>
+
+                    <div style="height: 200px;">
+                        <OSMap Click="@MapClickEvent" CenterMap="@defPosition" />
+                    </div>
+
+                    <div class="d-grid mb-2">
+                        <button class="btn btn-lg btn-primary btn-login fw-bold text-uppercase" style="margin-top: 20px;" type="submit">Добавить</button>
+                    </div>
+                </EditForm>
+            </div>
+        </div>
+    </div>
 </div>
 
 @code {
+    
+    private bool IsAuth;
+    
     public MapPosition position;
     public bool btnActive;
-
+    
     MapPosition? defPosition;
 
-    protected override async Task OnInitializedAsync()
+    private Temple? _temple = new()
     {
-        defPosition = new MapPosition() { Lat = 53.9006, Lng = 27.5590 };
+        Parishioners = new(),
+        AppointmentsAfterEnd = new(),
+        Oriention = new()
+    };
+
+    protected override void OnInitialized()
+    {
+        defPosition = new MapPosition() { Lat = config.GetValue<double>("Main:DefLat"), Lng = config.GetValue<double>("Main:DefLng") };
+        
+        if (AuthenticationStateProvider.GetAuthenticationStateAsync().Result.User.Identity.IsAuthenticated)
+        {
+            IsAuth = true;
+        }
+        else
+        {
+            IsAuth = false;
+        }
     }
 
     public void MapClickEvent(MapClickEventArgs args)
@@ -36,5 +170,38 @@
         //actualJson = JsonConvert.SerializeObject(args);
 
         //StateHasChanged();
+    }
+
+    private async Task Sumbit()
+    {
+        string url = $"https://catalog.api.2gis.com/3.0/items/geocode?lon={defPosition.Lng}&lat={defPosition.Lat}&fields=items.point&key=2c437b2b-790f-4f22-9ec5-3889ea3e0bc4";
+        
+        using HttpClient client = new HttpClient();
+        HttpResponseMessage response = await client.GetAsync(url.Replace(",", "."));
+        
+        if (response.IsSuccessStatusCode)
+        {
+            string content = await response.Content.ReadAsStringAsync();
+            Console.WriteLine(content);
+
+            var data = JsonConvert.DeserializeObject<dynamic>(content);
+
+            // Получение списка элементов
+            var items = data.result.items;
+
+            // Цикл по всем элементам
+            foreach (var item in items)
+            {
+                Console.WriteLine($"Full Name: {item.full_name}");
+                Console.WriteLine($"Name: {item.name}");
+                Console.WriteLine($"Subtype: {item.subtype}");
+                Console.WriteLine();
+                _temple.Province = item.full_name;
+                
+                break;
+            }
+            await _context.AddAsync(_temple);
+            await _context.SaveChangesAsync();
+        }
     }
 }

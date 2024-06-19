@@ -2,7 +2,7 @@
 
 public class Parishioners
 {
-    public string Year { get; set; }
+    public DateTime? Year { get; set; }
     
     public string Quantity { get; set; }
 }

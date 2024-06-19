@@ -2,9 +2,9 @@
 
 public class TempleOriention
 {
-    public string YearFall { get; set; }
+    public DateTime? YearFall { get; set; }
     
     public string Oriention { get; set; }
     
-    public string YearRefund { get; set; }
+    public DateTime? YearRefund { get; set; }
 }

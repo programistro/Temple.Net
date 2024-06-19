@@ -13,9 +13,9 @@ public class Parsonalion
     
     public string MonaxName { get; set; }
     
-    public DateTime Born { get; set; }
+    public DateTime? Born { get; set; }
     
-    public DateTime Death { get; set; }
+    public DateTime? Death { get; set; }
     
     public string Nation { get; set; }
     

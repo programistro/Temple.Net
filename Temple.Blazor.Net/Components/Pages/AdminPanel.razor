@@ -1,14 +1,16 @@
-﻿@using BlazorBootstrap
-@using Temple.Net.Data
+﻿@using Temple.Net.Data
 @using Temple.Net.Models
 @using Microsoft.AspNetCore.Authorization
 @using Microsoft.AspNetCore.Components.QuickGrid
-@using BlazorBootstrap
 @using Microsoft.AspNetCore.Authorization
 @using Microsoft.AspNetCore.Components.QuickGrid
 @rendermode InteractiveServer
 @inject UserDbContext context
 @page "/admin"
+
+<body>
+    <link href="css/site.css" rel="stylesheet" />
+</body>
 
 <QuickGrid Items="@context.Users">
     <PropertyColumn Property="@(user => user.Name)" Sortable="true"/>
@@ -17,18 +19,32 @@
     <PropertyColumn Property="@(user => user.LastName)" Sortable="true" />
     <PropertyColumn Property="@(user => user.LastName)" Sortable="true" />
     <TemplateColumn Title="Изменить баланс пользователя">
-        <button class="btn btn-primary" @onclick="@(() => ChangeRole(context))">Изменить</button>
+        <Button Color="Color.Primary" @onclick="@(() => ChangeRole(context))">Изменить</Button>
     </TemplateColumn>
 </QuickGrid>
 
 <Modal @ref="changeModal" title="Изменить права доступа" UseStaticBackdrop="true" CloseOnEscape="false">
-    <BodyTemplate>
-        <input @bind-value="NewRole" class="form-control dark-theme-textbox" autocomplete="off" placeholder="Новые права">
-    </BodyTemplate>
-    <FooterTemplate>
-        <Button Color="ButtonColor.Secondary" @onclick="OnHideModalClick">Изменить</Button>
-    </FooterTemplate>
+    <ModalContent>
+        <ModalHeader>
+            <ModalTitle>Изменить права доступа</ModalTitle>
+            <CloseButton />
+        </ModalHeader>
+        <ModalBody>
+            <input @bind-value="NewRole" class="form-control dark-theme-textbox" autocomplete="off" placeholder="Новые права">
+        </ModalBody>
+        <ModalFooter>
+            <Button Color="Color.Primary" @onclick="OnHideModalClick">Изменить</Button>
+        </ModalFooter>
+    </ModalContent>
 </Modal>
+
+<style>
+    .btn-danger {
+        color: #FFFFFF;
+        background-color: #E11D48;
+        border-color: #E11D48;
+    }
+</style>
 
 @code {
     private User selectUser;
@@ -40,17 +56,20 @@
     private async Task ChangeRole(User user)
     {
         selectUser = user;
-        changeModal.ShowAsync();
+        changeModal.Show();
     }
     
     private async Task OnHideModalClick()
     {
         Task.Run(() =>
         {
-            selectUser.Role = NewRole;
-            context.Users.Update(selectUser);
-            context.SaveChanges();
+            if (!string.IsNullOrEmpty(NewRole))
+            {
+                selectUser.Role = NewRole;
+                context.Users.Update(selectUser);
+                context.SaveChanges();
+            }
         });
-        await changeModal.HideAsync();
+        await changeModal.Hide();
     }
 }

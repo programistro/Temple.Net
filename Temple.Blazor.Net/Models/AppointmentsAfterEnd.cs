@@ -2,7 +2,7 @@
 
 public class AppointmentsAfterEnd
 {
-    public string YearAdaptations { get; set; }
+    public DateTime? YearAdaptations { get; set; }
     
     public string Appointmenrs { get; set; } 
 }

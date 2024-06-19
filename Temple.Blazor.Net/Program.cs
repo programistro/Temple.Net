@@ -1,3 +1,6 @@
+using Blazorise;
+using Blazorise.Bootstrap5;
+using Blazorise.Icons.FontAwesome;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Temple.Blazor.Net.Components;
 using Temple.Net.Data;
@@ -20,7 +23,13 @@ builder.Services.AddCascadingAuthenticationState();
 builder.Services.AddAuthorizationCore();
 builder.Services.AddServerSideBlazor().AddCircuitOptions(options => {  options.DetailedErrors = true; });
     
-builder.Services.AddBlazorBootstrap();
+builder.Services
+    .AddBlazorise( options =>
+    {
+        options.Immediate = true;
+    } )
+    .AddBootstrap5Providers()
+    .AddFontAwesomeIcons();
 
 var app = builder.Build();
 
