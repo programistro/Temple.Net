@@ -31,6 +31,8 @@ builder.Services
     .AddBootstrap5Providers()
     .AddFontAwesomeIcons();
 
+builder.Services.AddDbContextFactory<AppDbContext>();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

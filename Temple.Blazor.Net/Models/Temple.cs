@@ -1,9 +1,13 @@
-﻿using System.Runtime.InteropServices.JavaScript;
+﻿using System.ComponentModel.DataAnnotations;
+using System.Runtime.InteropServices.JavaScript;
 
 namespace Temple.Net.Models;
 
 public class Temple
 {
+    [Key]
+    public string Id { get; set; }
+    
     public string Name { get; set; }
     
     public string Type { get; set; }

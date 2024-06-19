@@ -7,7 +7,7 @@
 @inject AuthenticationStateProvider AuthenticationStateProvider
 @inject IJSRuntime JSRuntime
 @using System.Security.Claims
-@inject UserDbContext _context
+@inject AppDbContext _context
 @using Microsoft.AspNetCore.Components.Authorization
 @using Newtonsoft.Json
 @using Temple.Net.Data
@@ -141,9 +141,19 @@
 
     private Temple? _temple = new()
     {
-        Parishioners = new(),
-        AppointmentsAfterEnd = new(),
+        Parishioners = new()
+        {
+            Id = Guid.NewGuid().ToString("N")
+        },
+        AppointmentsAfterEnd = new()
+        {
+            Id = Guid.NewGuid().ToString("N")
+        },
         Oriention = new()
+        {
+            Id = Guid.NewGuid().ToString("N")
+        },
+        Id = Guid.NewGuid().ToString("N")
     };
 
     protected override void OnInitialized()
@@ -200,7 +210,8 @@
                 
                 break;
             }
-            await _context.AddAsync(_temple);
+            
+            await _context.Temples.AddAsync(_temple);
             await _context.SaveChangesAsync();
         }
     }
