@@ -1,1 +1,217 @@
-﻿
+﻿@page "/add/pashinioners"
+@using OpenStreetMapForBlazor
+@using Temple.Net.Models
+@using Blazorise
+@using Temple.Blazor.Net.Components.Layout
+@inject IConfiguration config
+@inject AuthenticationStateProvider AuthenticationStateProvider
+@inject IJSRuntime JSRuntime
+@using System.Security.Claims
+@inject AppDbContext _context
+@using Microsoft.AspNetCore.Components.Authorization
+@using Newtonsoft.Json
+@using Temple.Net.Data
+@rendermode InteractiveServer
+
+<div class="row" style="margin: 10px;">
+    <div class="col-md-4">
+        <div class="btn-group" role="group" aria-label="Basic example">
+            <button class="btn btn-primary">Храм</button>
+            <button class="btn btn-primary">Персоналии</button>
+            <button class="btn btn-primary">Пригожане</button>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-lg-10 col-xl-9 mx-auto">
+        <div class="card flex-row my-5 border-0 shadow rounded-3 overflow-hidden">
+            <div class="card-body p-4 p-sm-5">
+                <h5 class="card-title text-center mb-3 fw-light fs-5">Добавить персоналии</h5>
+                <EditForm Model="@_parsonalion" OnSubmit="Sumbit">
+                    <div class="form-floating mb-2">
+                        <input type="text" class="form-control" @bind-value="_parsonalion.LastName">
+                        <label>Фамилия</label>
+                    </div>
+
+                    <div class="form-floating mb-2">
+                        <input type="text" class="form-control" @bind-value="_parsonalion.Name">
+                        <label>Имя</label>
+                    </div>
+
+                    <div class="form-floating mb-2">
+                        <input type="text" class="form-control" @bind-value="_parsonalion.Otch">
+                        <label>Отчество</label>
+                    </div>
+
+                    <div class="form-floating mb-2">
+                        <input class="form-control" @bind-value="_parsonalion.MonaxName">
+                        <label>Монашеское имя</label>
+                    </div>
+
+                    <div style="margin-top: 10px; margin-bottom: 10px;">
+                        <DatePicker TValue="DateTime?" InputFormat="yyy" DisplayFormat="yyyy" InputMode="DateInputMode.Date" Placeholder="Год рождения" @bind-Date="_parsonalion.Born"/>
+                    </div>
+
+                    <div style="margin-top: 10px; margin-bottom: 10px;">
+                        <DatePicker TValue="DateTime?" InputFormat="yyy" DisplayFormat="yyyy" Placeholder="Год смерти" @bind-Date="_parsonalion.Death"/>
+                    </div>
+
+                    <div class="form-floating mb-2">
+                        <input class="form-control" @bind-value="_parsonalion.PlaceOfDeath">
+                        <label>Место смерти</label>
+                    </div>
+
+                    <div class="form-floating mb-2">
+                        <input class="form-control" @bind-value="_parsonalion.Nation">
+                        <label>Монашеское имя</label>
+                    </div>
+
+                    <div class="form-floating mb-2">
+                        <input class="form-control" @bind-value="_parsonalion.SocialOrigin">
+                        <label>Монашеское имя</label>
+                    </div>
+
+                    <div class="form-floating mb-2">
+                        <input class="form-control" @bind-value="_parsonalion.Dean">
+                        <label>Монашеское имя</label>
+                    </div>
+                    
+                    <br/>
+
+                    <div>
+                        <h3 class="card-title text-center mb-3 fw-light fs-5">Образование</h3>
+
+                        <div>
+                            <div style="margin-top: 10px; margin-bottom: 10px;">
+                                <DatePicker TValue="DateTime?" InputFormat="yyy" DisplayFormat="yyyy" Placeholder="Год поступление" @bind-Date="_parsonalion.Education.YearAdmission"/>
+                            </div>
+
+                            <div class="form-floating mb-2">
+                                <input class="form-control" @bind-value="_parsonalion.Education.Institution">
+                                <label>Учреждение образования</label>
+                            </div>
+
+                            <div style="margin-top: 10px; margin-bottom: 10px;">
+                                <DatePicker TValue="DateTime?" InputFormat="yyy" DisplayFormat="yyyy" Placeholder="Год выпуска" @bind-Date="_parsonalion.Education.YearOfRease"/>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <h3 class="card-title text-center mb-3 fw-light fs-5">Церковная ориентация</h3>
+
+                        <div>
+                            <div style="margin-top: 10px; margin-bottom: 10px;">
+                                <DatePicker TValue="DateTime?" InputFormat="yyy" DisplayFormat="yyyy" Placeholder="Год отпадения" @bind-Date="_parsonalion.Oriention.YearFall"/>
+                            </div>
+
+                            <div class="form-floating mb-2">
+                                <input class="form-control" @bind-value="_parsonalion.Oriention.Oriention">
+                                <label>Церковная ориентация</label>
+                            </div>
+                            
+                            <div style="margin-top: 10px; margin-bottom: 10px;">
+                                <DatePicker TValue="DateTime?" InputFormat="yyy" DisplayFormat="yyyy" Placeholder="Год возрата" @bind-Date="_parsonalion.Oriention.YearRefund"/>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <h3 class="card-title text-center mb-3 fw-light fs-5">Сан</h3>
+
+                        <div>
+                            <div style="margin-top: 10px; margin-bottom: 10px;">
+                                <DatePicker TValue="DateTime?" InputFormat="yyy" DisplayFormat="yyyy" Placeholder="Год снятия сана" @bind-Date="_parsonalion.Sun.YearDefrock"/>
+                            </div>
+
+                            <div class="form-floating mb-2">
+                                <input class="form-control" @bind-value="_parsonalion.Sun.SunName">
+                                <label>Имя сана</label>
+                            </div>
+
+                            <div style="margin-top: 10px; margin-bottom: 10px;">
+                                <DatePicker TValue="DateTime?" InputFormat="yyy" DisplayFormat="yyyy" Placeholder="Год рукоположения" @bind-Date="_parsonalion.Sun.YearOrdinations"/>
+                            </div>
+                        </div>
+                    </div>
+                    @* *@
+                    @* <div style="height: 200px;"> *@
+                    @*     <OSMap Click="@MapClickEvent" CenterMap="@defPosition" /> *@
+                    @* </div> *@
+
+                    <div class="d-grid mb-2">
+                        <button class="btn btn-lg btn-primary btn-login fw-bold text-uppercase" style="margin-top: 20px;" type="submit">Добавить</button>
+                    </div>
+                </EditForm>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    
+    private bool IsAuth;
+    
+    public MapPosition position;
+    public bool btnActive;
+    
+    MapPosition? defPosition;
+
+    private Parsonalion? _parsonalion = new()
+    {
+        Id = Guid.NewGuid().ToString("N"),
+        Sun = new()
+        {
+            Id = Guid.NewGuid().ToString("N")
+        },
+        Award = new()
+        {
+            Id = Guid.NewGuid().ToString("N")
+        },
+        Education = new()
+        {
+            Id = Guid.NewGuid().ToString("N")
+        },
+        State = new()
+        {
+            Id = Guid.NewGuid().ToString("N")
+        },
+        Oriention = new()
+        {
+            Id = Guid.NewGuid().ToString("N")
+        }
+    };
+
+    protected override void OnInitialized()
+    {
+        defPosition = new MapPosition() { Lat = config.GetValue<double>("Main:DefLat"), Lng = config.GetValue<double>("Main:DefLng") };
+        
+        if (AuthenticationStateProvider.GetAuthenticationStateAsync().Result.User.Identity.IsAuthenticated)
+        {
+            IsAuth = true;
+        }
+        else
+        {
+            IsAuth = false;
+        }
+    }
+
+    public void MapClickEvent(MapClickEventArgs args)
+    {
+        //events.Add(DateTime.Now, $"Map clicked at Lat: {args.Position.Lat}, Lng: {args.Position.Lng}");
+
+        if (args != null) position = args.Position;
+
+        //btnActive = !(position.Lng == defPosition.Lng && position.Lat == defPosition.Lat);
+        //actualJson = JsonConvert.SerializeObject(args);
+
+        //StateHasChanged();
+    }
+
+    private async Task Sumbit()
+    {
+        await _context.Parsonalions.AddAsync(_parsonalion);
+        await _context.SaveChangesAsync();
+    }
+}

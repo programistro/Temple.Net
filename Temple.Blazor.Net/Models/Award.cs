@@ -7,7 +7,7 @@ public class Award
     [Key]
     public string Id { get; set; }
     
-    public string YearAward { get; set; }
+    public DateTime? YearAward { get; set; }
     
     public string Name { get; set; }
 }

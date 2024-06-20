@@ -39,7 +39,7 @@ public class Parsonalion
     
     public MeasuresState State { get; set; }
     
-    public string YearMention { get; set; }
+    public DateTime? YearMention { get; set; }
     
     public string Note { get; set; }
     
