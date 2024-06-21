@@ -1,0 +1,32 @@
+﻿@page "/add"
+@rendermode InteractiveServer
+
+<Tabs SelectedTab="@selectedTab" SelectedTabChanged="@OnSelectedTabChanged">
+    <Items>
+        <Tab Name="temple">Храм</Tab>
+        <Tab Name="personali">Персоналии</Tab>
+        <Tab Name="parshili">Пригожании</Tab>
+    </Items>
+    <Content>
+        <TabPanel Name="temple">
+            <AddTemple/>
+        </TabPanel>
+        <TabPanel Name="personali">
+            <AddPersonali/>
+        </TabPanel>
+        <TabPanel Name="parshili">
+            <AddParishioners/>
+        </TabPanel>
+    </Content>
+</Tabs>
+
+@code {
+    string selectedTab = "temple";
+
+    private Task OnSelectedTabChanged(string name)
+    {
+        selectedTab = name;
+
+        return Task.CompletedTask;
+    }
+}

@@ -13,16 +13,6 @@
 @using Temple.Net.Data
 @rendermode InteractiveServer
 
-<div class="row" style="margin: 10px;">
-    <div class="col-md-4">
-        <div class="btn-group" role="group" aria-label="Basic example">
-            <button class="btn btn-primary">Храм</button>
-            <button class="btn btn-primary">Персоналии</button>
-            <button class="btn btn-primary">Пригожане</button>
-        </div>
-    </div>
-</div>
-
 <div class="row">
     <div class="col-lg-10 col-xl-9 mx-auto">
         <div class="card flex-row my-5 border-0 shadow rounded-3 overflow-hidden">
@@ -125,10 +115,31 @@
                                 <DatePicker TValue="DateTime?" InputFormat="yyy" DisplayFormat="yyyy" Placeholder="Год снятия сана" @bind-Date="_parsonalion.Sun.YearDefrock"/>
                             </div>
 
-                            <div class="form-floating mb-2">
-                                <input class="form-control" @bind-value="_parsonalion.Sun.SunName">
-                                <label>Имя сана</label>
-                            </div>
+                            @* <div class="form-floating mb-2"> *@
+                            @*     <input class="form-control" @bind-value="_parsonalion.Sun.SunName"> *@
+                            @*     <label>Имя сана</label> *@
+                            @* </div> *@
+
+                            <Select TValue="int" @bind-SelectedValue="@selectedItem">
+                                <SelectItem Value="1">Архидиакон</SelectItem>
+                                <SelectItem Value="2">Архиепископ</SelectItem>
+                                <SelectItem Value="3">Диаког</SelectItem>
+                                <SelectItem Value="4">Епископ</SelectItem>
+                                <SelectItem Value="5">Игумен</SelectItem>
+                                <SelectItem Value="6">Иеродиакон</SelectItem>
+                                <SelectItem Value="7">Иеродиакон</SelectItem>
+                                <SelectItem Value="8">Иеромонах</SelectItem>
+                                <SelectItem Value="9">Митрополит</SelectItem>
+                                <SelectItem Value="10">Монах</SelectItem>
+                                <SelectItem Value="11">Пономарь</SelectItem>
+                                <SelectItem Value="12">Послушник</SelectItem>
+                                <SelectItem Value="13">Причетник</SelectItem>
+                                <SelectItem Value="14">Протодиакон</SelectItem>
+                                <SelectItem Value="15">Протоиерей</SelectItem>
+                                <SelectItem Value="16">Протопресвитер</SelectItem>
+                                <SelectItem Value="17">Псаломщик</SelectItem>
+                                <SelectItem Value="18">Священник</SelectItem>
+                            </Select>
 
                             <div style="margin-top: 10px; margin-bottom: 10px;">
                                 <DatePicker TValue="DateTime?" InputFormat="yyy" DisplayFormat="yyyy" Placeholder="Год рукоположения" @bind-Date="_parsonalion.Sun.YearOrdinations"/>
@@ -155,6 +166,8 @@
     
     public MapPosition position;
     public bool btnActive;
+
+    private int selectedItem;
     
     MapPosition? defPosition;
 

@@ -8,6 +8,10 @@
 @inject NavigationManager NavigationManager 
 @page "/profile"
 
+<Body>
+	<link href="css/site.css" rel="stylesheet" />
+</Body>
+
 <AuthorizeView>
 	<Authorized Context="Auth">
 		<div class="container">
@@ -62,12 +66,24 @@
 											<input class="form-control" disabled="disabled" placeholder="@this.Auth.Email">
 										</div>
 									</div>
+
+									<div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+										<div class="form-group">
+											<label>Права</label>
+											<input class="form-control" disabled="disabled" placeholder="@this.Auth.Role">
+										</div>
+									</div>
 								</div>
 								@* <div class="row gutters"> *@
 								@* 	<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 text-right" style="text-align: end;"> *@
 								@* 		<button type="submit" class="btn btn-primary" style="margin-top: 8px;">Обновить</button> *@
 								@* 	</div> *@
 								@* </div> *@
+								<div class="row gutters">
+									<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 text-right" style="text-align: end;">
+										<Button Color="Color.Primary" style="margin-top: 8px;" Clicked="@Submit">Выйти</Button>
+									</div>
+								</div>
 							</div>
 						</EditForm>
 					</div>
@@ -112,5 +128,12 @@
 	private void Submit()
 	{
 		
+	}
+	
+	private Task Logout()
+	{	
+		NavigationManager.NavigateTo("/Auth/signout");
+		
+		return Task.CompletedTask;
 	}
 }

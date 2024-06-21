@@ -14,16 +14,6 @@
 @using Temple.Net.Data
 @rendermode InteractiveServer
 
-<div class="row" style="margin: 10px;">
-    <div class="col-md-4">
-        <div class="btn-group" role="group" aria-label="Basic example">
-            <button class="btn btn-primary">Храм</button>
-            <button class="btn btn-primary">Персоналии</button>
-            <button class="btn btn-primary">Пригожане</button>
-        </div>
-    </div>
-</div>
-
 <head>
     <link rel="stylesheet" href="css/styleinput.css" />
 </head>
@@ -65,21 +55,6 @@
                     <div class="form-floating mb-2">
                         <input class="form-control" @bind-value="_parsonalion.PlaceOfDeath">
                         <label>Место смерти</label>
-                    </div>
-
-                    <div class="form-floating mb-2">
-                        <input class="form-control" @bind-value="_parsonalion.Nation">
-                        <label>Монашеское имя</label>
-                    </div>
-
-                    <div class="form-floating mb-2">
-                        <input class="form-control" @bind-value="_parsonalion.SocialOrigin">
-                        <label>Монашеское имя</label>
-                    </div>
-
-                    <div class="form-floating mb-2">
-                        <input class="form-control" @bind-value="_parsonalion.Dean">
-                        <label>Монашеское имя</label>
                     </div>
                     
                     <br/>
@@ -158,10 +133,25 @@
                                 <DatePicker TValue="DateTime?" InputFormat="yyy" DisplayFormat="yyyy" Placeholder="Год снятия сана" @bind-Date="_parsonalion.Sun.YearDefrock"/>
                             </div>
 
-                            <div class="form-floating mb-2">
-                                <input class="form-control" @bind-value="_parsonalion.Sun.SunName">
-                                <label>Имя сана</label>
-                            </div>
+                            <Select TValue="int" @bind-SelectedValue="@selectedSunName">
+                                <SelectItem Value="1">Архидиакон</SelectItem>
+                                <SelectItem Value="2">Архиепископ</SelectItem>
+                                <SelectItem Value="3">Диаког</SelectItem>
+                                <SelectItem Value="4">Епископ</SelectItem>
+                                <SelectItem Value="5">Игумен</SelectItem>
+                                <SelectItem Value="6">Иеродиакон</SelectItem>
+                                <SelectItem Value="7">Иеромонах</SelectItem>
+                                <SelectItem Value="8">Митрополит</SelectItem>
+                                <SelectItem Value="9">Монах</SelectItem>
+                                <SelectItem Value="10">Пономарь</SelectItem>
+                                <SelectItem Value="11">Послушник</SelectItem>
+                                <SelectItem Value="12">Причетник</SelectItem>
+                                <SelectItem Value="13">Протодиакон</SelectItem>
+                                <SelectItem Value="14">Протоиерей</SelectItem>
+                                <SelectItem Value="15">Протопресвитер</SelectItem>
+                                <SelectItem Value="16">Псаломщик</SelectItem>
+                                <SelectItem Value="17">Священник</SelectItem>
+                            </Select>
 
                             <div style="margin-top: 10px; margin-bottom: 10px;">
                                 <DatePicker TValue="DateTime?" InputFormat="yyy" DisplayFormat="yyyy" Placeholder="Год рукоположения" @bind-Date="_parsonalion.Sun.YearOrdinations"/>
@@ -177,10 +167,19 @@
                                 <DatePicker TValue="DateTime?" InputFormat="yyy" DisplayFormat="yyyy" Placeholder="Год награждения" @bind-Date="_parsonalion.Award.YearAward"/>
                             </div>
 
-                            <div class="form-floating mb-2">
-                                <input class="form-control" @bind-value="_parsonalion.Award.Name">
-                                <label>Название награды</label>
-                            </div>
+                            <Select TValue="int" @bind-SelectedValue="@selectedAward">
+                                <SelectItem Value="1">Набедренник</SelectItem>
+                                <SelectItem Value="2">Камилавка фиолетового цвета</SelectItem>
+                                <SelectItem Value="3">Наперсный крест</SelectItem>
+                                <SelectItem Value="4">Палица</SelectItem>
+                                <SelectItem Value="5">Крест с украшениями</SelectItem>
+                                <SelectItem Value="6">Служение Божественной литургии с отверстыми Царскими вратами до Херувимской песни</SelectItem>
+                                <SelectItem Value="7">Служение Божественной литургии с отверстыми Царскими Вратами до "Отче наш"</SelectItem>
+                                <SelectItem Value="8">Митра</SelectItem>
+                                <SelectItem Value="9">Право ношения второго наперсного креста с украшениями</SelectItem>
+                                <SelectItem Value="10">Патриарший наперстый крест</SelectItem>
+                                <SelectItem Value="11">Двойной орарь</SelectItem>
+                            </Select>
                         </div>
                     </div>
 
@@ -198,31 +197,22 @@
                         <label>Источник информации (в виде библиографической записи)</label>
                     </div>
 
-                    <div class="form-floating mb-2">
-                        <input class="form-control" @bind-value="_parsonalion.Source">
-                        <label>Источник информации (в виде библиографической записи)</label>
-                    </div>
-
-                    <div class="form-floating mb-2">
-                        <input class="form-control" @bind-value="_parsonalion.Source">
-                        <label>Источник информации (в виде библиографической записи)</label>
-                    </div>
-
-                    @* <InputFile OnChange="LoadFile" /> *@
-
                     <div class="input-file-row">
                         <label class="input-file">
-                            <InputFile OnChange="LoadFile" accept="image/*"/>
+                            <InputFile OnChange="LoadPhoto" accept="image/*"/>
                             <span>Выберите фотографию</span>
                         </label>
                         <div class="input-file-list"></div>
                     </div>
-                    
-                    @* *@
-                    @* <div style="height: 200px;"> *@
-                    @*     <OSMap Click="@MapClickEvent" CenterMap="@defPosition" /> *@
-                    @* </div> *@
 
+                    <div class="input-file-row">
+                        <label class="input-file">
+                            <InputFile OnChange="LoadFile"/>
+                            <span>Выберите файл</span>
+                        </label>
+                        <div class="input-file-list"></div>
+                    </div>
+                    
                     <div class="d-grid mb-2">
                         <button class="btn btn-lg btn-primary btn-login fw-bold text-uppercase" style="margin-top: 20px;" type="submit">Добавить</button>
                     </div>
@@ -238,7 +228,11 @@
     
     public MapPosition position;
     public bool btnActive;
-    
+
+    private int selectedSunName;
+
+    private int selectedAward;
+        
     MapPosition? defPosition;
 
     private Parsonalion? _parsonalion = new()
@@ -268,7 +262,7 @@
 
     private long maxFileSize = 1024 * 500;
 
-    private async Task LoadFile(InputFileChangeEventArgs e)
+    private async Task LoadPhoto(InputFileChangeEventArgs e)
     {
         var trustedFileName = $"{Guid.NewGuid().ToString("N").Remove(6)}.png";
 
@@ -276,6 +270,20 @@
 
         await using FileStream fs = new(path, FileMode.Create);
         await e.File.OpenReadStream(maxFileSize).CopyToAsync(fs);
+
+        _parsonalion.Photo = path;
+    }
+    
+    private async Task LoadFile(InputFileChangeEventArgs e)
+    {
+        var trustedFileName = $"{Guid.NewGuid().ToString("N").Remove(6)}{e.File.ContentType}";
+
+        var path = $@"wwwroot/photos/{trustedFileName}";
+
+        await using FileStream fs = new(path, FileMode.Create);
+        await e.File.OpenReadStream(maxFileSize).CopyToAsync(fs);
+
+        _parsonalion.File = path;
     }
 
     protected override void OnInitialized()
@@ -306,6 +314,98 @@
 
     private async Task Sumbit()
     {
+        switch (selectedSunName)
+        {
+            case 1:
+                _parsonalion.Sun.SunName = "Архидиакон";
+                break;
+            case 2:
+                _parsonalion.Sun.SunName = "Архиепископ";
+                break;
+            case 3:
+                _parsonalion.Sun.SunName = "Диаког";
+                break;
+            case 4:
+                _parsonalion.Sun.SunName = "Епископ";
+                break;
+            case 5:
+                _parsonalion.Sun.SunName = "Игумен";
+                break;
+            case 6:
+                _parsonalion.Sun.SunName = "Иеродиакон";
+                break;
+            case 7:
+                _parsonalion.Sun.SunName = "Иеромонах";
+                break;
+            case 8:
+                _parsonalion.Sun.SunName = "Митрополит";
+                break;
+            case 9:
+                _parsonalion.Sun.SunName = "Монах";
+                break;
+            case 10:
+                _parsonalion.Sun.SunName = "Пономарь";
+                break;
+            case 11:
+                _parsonalion.Sun.SunName = "Послушник";
+                break;
+            case 12:
+                _parsonalion.Sun.SunName = "Причетник";
+                break;
+            case 13:
+                _parsonalion.Sun.SunName = "Протодиакон";
+                break;
+            case 14:
+                _parsonalion.Sun.SunName = "Протоиерей";
+                break;
+            case 15:
+                _parsonalion.Sun.SunName = "Протопресвитер";
+                break;
+            case 16:
+                _parsonalion.Sun.SunName = "Псаломщик";
+                break;
+            case 17:
+                _parsonalion.Sun.SunName = "Священик";
+                break;
+        }
+
+        switch (selectedAward)
+        {
+            case 1:
+                _parsonalion.Award.Name = "Набедренник";
+                break;
+            case 2:
+                _parsonalion.Award.Name = "Камилавка фиолетового цвета";
+                break;
+            case 3:
+                _parsonalion.Award.Name = "Наперсный крест";
+                break;
+            case 4:
+                _parsonalion.Award.Name = "Палица";
+                break;
+            case 5:
+                _parsonalion.Award.Name = "Крест с украшениями";
+                break;
+            case 6:
+                _parsonalion.Award.Name = "Служение Божественной литургии с отверстыми Царскими вратами до Херувимской песни";
+                break;
+            case 7:
+                _parsonalion.Award.Name = "Служение Божественной литургии с отверстыми Царскими Вратами до \"Отче наш";
+                break;
+            case 8:
+                _parsonalion.Award.Name = "Митра";
+                break;
+            case 9:
+                _parsonalion.Award.Name = "Право ношения второго наперсного креста с украшениями";
+                break;
+            case 10:
+                _parsonalion.Award.Name = "Патриарший наперстый крест";
+                break;
+            case 11:
+                _parsonalion.Award.Name = "Двойной орарь";
+                break;
+        }
+        
         await _context.Parsonalions.AddAsync(_parsonalion);
         await _context.SaveChangesAsync();
     }

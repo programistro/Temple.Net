@@ -1,5 +1,7 @@
 ﻿using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Temple.Net.Models;
 
@@ -18,6 +20,20 @@ public class AuthController : ControllerBase
         var claimsIdentity = new ClaimsIdentity(claims, "Cookie");
         var claimsPrincipal = new ClaimsPrincipal(claimsIdentity);
         await HttpContext.SignInAsync(claimsPrincipal);
+
+        return Redirect("/");
+    }
+    
+    [AllowAnonymous]
+    [HttpGet("signout")]
+    public async Task<ActionResult> signout()
+    {
+        await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+
+        var prop = new AuthenticationProperties
+        {
+            RedirectUri = "/logout-complete"
+        };
 
         return Redirect("/");
     }

@@ -47,5 +47,5 @@ public class Parsonalion
     
     public string Photo { get; set; }
     
-    public string File { get; set; } // todo
+    public string File { get; set; } 
 }
