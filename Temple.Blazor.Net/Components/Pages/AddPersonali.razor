@@ -105,6 +105,28 @@
                             </div>
                         </div>
                     </div>
+
+                    <div>
+                        <h3 class="card-title text-center mb-3 fw-light fs-5">Национальность</h3>
+
+                        <Select TValue="int" @bind-SelectedValue="@selectedNation">
+                            <SelectItem Value="1">Белорус</SelectItem>
+                            <SelectItem Value="2">Русский</SelectItem>
+                            <SelectItem Value="3">Украинец</SelectItem>
+                        </Select>
+                    </div>
+
+                    <div>
+                        <h3 class="card-title text-center mb-3 fw-light fs-5">Социальное положение</h3>
+
+                        <Select TValue="int" @bind-SelectedValue="@selectedSocial">
+                            <SelectItem Value="1">Из крестьян</SelectItem>
+                            <SelectItem Value="2">Из мещан</SelectItem>
+                            <SelectItem Value="3">Из духовенства</SelectItem>
+                            <SelectItem Value="4">Из служащих</SelectItem>
+                            <SelectItem Value="5">Из дворян</SelectItem>
+                        </Select>
+                    </div>
                     
                     <div>
                         <h3 class="card-title text-center mb-3 fw-light fs-5">Церковная ориентация</h3>
@@ -232,6 +254,10 @@
     private int selectedSunName;
 
     private int selectedAward;
+
+    private int selectedNation;
+
+    private int selectedSocial;
         
     MapPosition? defPosition;
 
@@ -276,9 +302,7 @@
     
     private async Task LoadFile(InputFileChangeEventArgs e)
     {
-        var trustedFileName = $"{Guid.NewGuid().ToString("N").Remove(6)}{e.File.ContentType}";
-
-        var path = $@"wwwroot/photos/{trustedFileName}";
+        var path = $@"wwwroot/files/{e.File.Name}";
 
         await using FileStream fs = new(path, FileMode.Create);
         await e.File.OpenReadStream(maxFileSize).CopyToAsync(fs);
@@ -405,7 +429,39 @@
                 _parsonalion.Award.Name = "Двойной орарь";
                 break;
         }
-        
+
+        switch (selectedNation)
+        {
+            case 1:
+                _parsonalion.Nation = "Белорус";
+                break;
+            case 2:
+                _parsonalion.Nation = "Русский";
+                break;
+            case 3:
+                _parsonalion.Nation = "Украинец";
+                break;
+        }
+
+        switch (selectedSocial)
+        {
+            case 1:
+                _parsonalion.SocialOrigin = "Из крестьян";
+                break;
+            case 2:
+                _parsonalion.SocialOrigin = "Из мещан";
+                break;
+            case 3:
+                _parsonalion.SocialOrigin = "Из духовенства";
+                break;
+            case 4:
+                _parsonalion.SocialOrigin = "Из служащих";
+                break;
+            case 5:
+                _parsonalion.SocialOrigin = "Из дворян";
+                break;
+        }
+
         await _context.Parsonalions.AddAsync(_parsonalion);
         await _context.SaveChangesAsync();
     }

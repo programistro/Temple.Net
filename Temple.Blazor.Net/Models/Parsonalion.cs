@@ -27,8 +27,6 @@ public class Parsonalion
     
     public string SocialOrigin { get; set; }
     
-    public string Dean { get; set; }
-    
     public Education Education { get; set; }
     
     public Sun Sun { get; set; }
