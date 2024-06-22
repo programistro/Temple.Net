@@ -24,6 +24,19 @@ public class AuthController : ControllerBase
         return Redirect("/");
     }
     
+    [HttpGet("singinAdmin")]
+    public async Task<ActionResult> SinginAdmin(string email, string name)
+    {
+        // создаем один claim
+        var claims = new List<Claim> { new (ClaimTypes.Name, name), new (ClaimTypes.Email, 
+            email), new (ClaimTypes.Role,  "admin") };
+        var claimsIdentity = new ClaimsIdentity(claims, "Cookie");
+        var claimsPrincipal = new ClaimsPrincipal(claimsIdentity);
+        await HttpContext.SignInAsync(claimsPrincipal);
+
+        return Redirect("/");
+    }
+    
     [AllowAnonymous]
     [HttpGet("signout")]
     public async Task<ActionResult> signout()

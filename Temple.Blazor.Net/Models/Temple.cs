@@ -22,7 +22,9 @@ public class Temple
     
     public TempleOriention Oriention { get; set; }
     
-    public Parishioners Parishioners { get; set; }
+    public DateTime? ParshYear { get; set; }
+    
+    public int Quantity { get; set; }
     
     public string OrientationDiocesse { get; set; }
     

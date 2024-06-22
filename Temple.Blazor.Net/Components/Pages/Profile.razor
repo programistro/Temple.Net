@@ -6,6 +6,7 @@
 @inject UserDbContext _context
 @inject AuthenticationStateProvider AuthenticationStateProvider
 @inject NavigationManager NavigationManager 
+@rendermode InteractiveServer
 @page "/profile"
 
 <Body>
@@ -127,13 +128,6 @@
 
 	private void Submit()
 	{
-		
-	}
-	
-	private Task Logout()
-	{	
 		NavigationManager.NavigateTo("/Auth/signout");
-		
-		return Task.CompletedTask;
 	}
 }

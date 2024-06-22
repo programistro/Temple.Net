@@ -11,146 +11,116 @@
 @using Microsoft.AspNetCore.Components.Authorization
 @using Newtonsoft.Json
 @using Temple.Net.Data
+@inject NavigationManager NavigationManager 
 @rendermode InteractiveServer
 
 <div class="row">
     <div class="col-lg-10 col-xl-9 mx-auto">
         <div class="card flex-row my-5 border-0 shadow rounded-3 overflow-hidden">
             <div class="card-body p-4 p-sm-5">
-                <h5 class="card-title text-center mb-3 fw-light fs-5">Добавить персоналии</h5>
-                <EditForm Model="@_parsonalion" OnSubmit="Sumbit">
+                <h5 class="card-title text-center mb-3 fw-light fs-5">Добавить пригожании</h5>
+                <EditForm Model="@_parishioners" OnSubmit="Sumbit">
                     <div class="form-floating mb-2">
-                        <input type="text" class="form-control" @bind-value="_parsonalion.LastName">
+                        <input type="text" class="form-control" @bind-value="_parishioners.LastName">
                         <label>Фамилия</label>
                     </div>
 
                     <div class="form-floating mb-2">
-                        <input type="text" class="form-control" @bind-value="_parsonalion.Name">
+                        <input type="text" class="form-control" @bind-value="_parishioners.Name">
                         <label>Имя</label>
                     </div>
 
                     <div class="form-floating mb-2">
-                        <input type="text" class="form-control" @bind-value="_parsonalion.Otch">
+                        <input type="text" class="form-control" @bind-value="_parishioners.Otch">
                         <label>Отчество</label>
                     </div>
 
                     <div class="form-floating mb-2">
-                        <input class="form-control" @bind-value="_parsonalion.MonaxName">
-                        <label>Монашеское имя</label>
+                        <input class="form-control" @bind-value="_parishioners.TempleName">
+                        <label>Название храма</label>
+                    </div>
+
+                    <div class="form-floating mb-2">
+                        <input class="form-control" @bind-value="_parishioners.Age" type="number">
+                        <label>Возраст</label>
+                    </div>
+
+                    <div class="form-floating mb-2">
+                        <input class="form-control" @bind-value="_parishioners.Gender">
+                        <label>Пол</label>
+                    </div>
+
+                    <div class="form-floating mb-2">
+                        <input class="form-control" @bind-value="_parishioners.Adress">
+                        <label>Адрес</label>
+                    </div>
+
+                    <div class="form-floating mb-2">
+                        <input class="form-control" @bind-value="_parishioners.Social">
+                        <label>Социальное происхождение</label>
+                    </div>
+
+                    <div class="form-floating mb-2">
+                        <input class="form-control" @bind-value="_parishioners.SocialStatus">
+                        <label>/Общественное и служебное положение c 1914</label>
+                    </div>
+
+                    <div class="form-floating mb-2">
+                        <input class="form-control" @bind-value="_parishioners.EstateBeforeRevolution">
+                        <label>Принадлежность к сословию до революции</label>
+                    </div>
+
+                    <div>
+                        <h3 class="card-title text-center mb-3 fw-light fs-5">Имущественное положение</h3>
+
+                        <Select TValue="int" @bind-SelectedValue="@selectedSocial">
+                            <SelectItem Value="1">Бедняк</SelectItem>
+                            <SelectItem Value="2">Средняк</SelectItem>
+                            <SelectItem Value="3">Домовладелец</SelectItem>
+                            <SelectItem Value="4">Без имущества</SelectItem>
+                        </Select>
                     </div>
 
                     <div style="margin-top: 10px; margin-bottom: 10px;">
-                        <DatePicker TValue="DateTime?" InputFormat="yyy" DisplayFormat="yyyy" InputMode="DateInputMode.Date" Placeholder="Год рождения" @bind-Date="_parsonalion.Born"/>
+                        <DatePicker TValue="DateTime?" InputFormat="yyy" DisplayFormat="yyyy" Placeholder="Время присоединения к религиозному культу" @bind-Date="_parishioners.DateJoinRelligios"/>
                     </div>
 
                     <div style="margin-top: 10px; margin-bottom: 10px;">
-                        <DatePicker TValue="DateTime?" InputFormat="yyy" DisplayFormat="yyyy" Placeholder="Год смерти" @bind-Date="_parsonalion.Death"/>
+                        <DatePicker TValue="DateTime?" InputFormat="yyy" DisplayFormat="yyyy" Placeholder="Год упоменания" @bind-Date="_parishioners.YearMention"/>
+                    </div>
+
+                    <div style="margin-top: 10px; margin-bottom: 10px;">
+                        <DatePicker TValue="DateTime?" InputFormat="yyy" DisplayFormat="yyyy" Placeholder="Год возрата" @bind-Date="_parishioners.YearRestart"/>
                     </div>
 
                     <div class="form-floating mb-2">
-                        <input class="form-control" @bind-value="_parsonalion.PlaceOfDeath">
-                        <label>Место смерти</label>
+                        <input class="form-control" @bind-value="_parishioners.Note">
+                        <label>Премичания</label>
                     </div>
 
                     <div class="form-floating mb-2">
-                        <input class="form-control" @bind-value="_parsonalion.Nation">
-                        <label>Монашеское имя</label>
+                        <input class="form-control" @bind-value="_parishioners.Source">
+                        <label>Источники</label>
                     </div>
 
-                    <div class="form-floating mb-2">
-                        <input class="form-control" @bind-value="_parsonalion.SocialOrigin">
-                        <label>Монашеское имя</label>
-                    </div>
+                    <div style="margin-top: 10px;">
+                        <div class="input-file-row">
+                            <label class="input-file">
+                                <InputFile OnChange="LoadPhoto" accept="image/*"/>
+                                <span>Выберите фотографию</span>
+                            </label>
+                            <div class="input-file-list"></div>
+                        </div>
 
-                    <div class="form-floating mb-2">
-                        <input class="form-control" @bind-value="_parsonalion.MonaxName">
-                        <label>Монашеское имя</label>
-                    </div>
-                    
-                    <br/>
-
-                    <div>
-                        <h3 class="card-title text-center mb-3 fw-light fs-5">Образование</h3>
-
-                        <div>
-                            <div style="margin-top: 10px; margin-bottom: 10px;">
-                                <DatePicker TValue="DateTime?" InputFormat="yyy" DisplayFormat="yyyy" Placeholder="Год поступление" @bind-Date="_parsonalion.Education.YearAdmission"/>
-                            </div>
-
-                            <div class="form-floating mb-2">
-                                <input class="form-control" @bind-value="_parsonalion.Education.Institution">
-                                <label>Учреждение образования</label>
-                            </div>
-
-                            <div style="margin-top: 10px; margin-bottom: 10px;">
-                                <DatePicker TValue="DateTime?" InputFormat="yyy" DisplayFormat="yyyy" Placeholder="Год выпуска" @bind-Date="_parsonalion.Education.YearOfRease"/>
-                            </div>
+                        <div class="input-file-row">
+                            <label class="input-file">
+                                <InputFile OnChange="LoadFile"/>
+                                <span>Выберите файл</span>
+                            </label>
+                            <div class="input-file-list"></div>
                         </div>
                     </div>
                     
-                    <div>
-                        <h3 class="card-title text-center mb-3 fw-light fs-5">Церковная ориентация</h3>
-
-                        <div>
-                            <div style="margin-top: 10px; margin-bottom: 10px;">
-                                <DatePicker TValue="DateTime?" InputFormat="yyy" DisplayFormat="yyyy" Placeholder="Год отпадения" @bind-Date="_parsonalion.Oriention.YearFall"/>
-                            </div>
-
-                            <div class="form-floating mb-2">
-                                <input class="form-control" @bind-value="_parsonalion.Oriention.Oriention">
-                                <label>Церковная ориентация</label>
-                            </div>
-                            
-                            <div style="margin-top: 10px; margin-bottom: 10px;">
-                                <DatePicker TValue="DateTime?" InputFormat="yyy" DisplayFormat="yyyy" Placeholder="Год возрата" @bind-Date="_parsonalion.Oriention.YearRefund"/>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div>
-                        <h3 class="card-title text-center mb-3 fw-light fs-5">Сан</h3>
-
-                        <div>
-                            <div style="margin-top: 10px; margin-bottom: 10px;">
-                                <DatePicker TValue="DateTime?" InputFormat="yyy" DisplayFormat="yyyy" Placeholder="Год снятия сана" @bind-Date="_parsonalion.Sun.YearDefrock"/>
-                            </div>
-
-                            @* <div class="form-floating mb-2"> *@
-                            @*     <input class="form-control" @bind-value="_parsonalion.Sun.SunName"> *@
-                            @*     <label>Имя сана</label> *@
-                            @* </div> *@
-
-                            <Select TValue="int" @bind-SelectedValue="@selectedItem">
-                                <SelectItem Value="1">Архидиакон</SelectItem>
-                                <SelectItem Value="2">Архиепископ</SelectItem>
-                                <SelectItem Value="3">Диаког</SelectItem>
-                                <SelectItem Value="4">Епископ</SelectItem>
-                                <SelectItem Value="5">Игумен</SelectItem>
-                                <SelectItem Value="6">Иеродиакон</SelectItem>
-                                <SelectItem Value="7">Иеродиакон</SelectItem>
-                                <SelectItem Value="8">Иеромонах</SelectItem>
-                                <SelectItem Value="9">Митрополит</SelectItem>
-                                <SelectItem Value="10">Монах</SelectItem>
-                                <SelectItem Value="11">Пономарь</SelectItem>
-                                <SelectItem Value="12">Послушник</SelectItem>
-                                <SelectItem Value="13">Причетник</SelectItem>
-                                <SelectItem Value="14">Протодиакон</SelectItem>
-                                <SelectItem Value="15">Протоиерей</SelectItem>
-                                <SelectItem Value="16">Протопресвитер</SelectItem>
-                                <SelectItem Value="17">Псаломщик</SelectItem>
-                                <SelectItem Value="18">Священник</SelectItem>
-                            </Select>
-
-                            <div style="margin-top: 10px; margin-bottom: 10px;">
-                                <DatePicker TValue="DateTime?" InputFormat="yyy" DisplayFormat="yyyy" Placeholder="Год рукоположения" @bind-Date="_parsonalion.Sun.YearOrdinations"/>
-                            </div>
-                        </div>
-                    </div>
-                    @* *@
-                    @* <div style="height: 200px;"> *@
-                    @*     <OSMap Click="@MapClickEvent" CenterMap="@defPosition" /> *@
-                    @* </div> *@
-
                     <div class="d-grid mb-2">
                         <button class="btn btn-lg btn-primary btn-login fw-bold text-uppercase" style="margin-top: 20px;" type="submit">Добавить</button>
                     </div>
@@ -171,29 +141,9 @@
     
     MapPosition? defPosition;
 
-    private Parsonalion? _parsonalion = new()
+    private Parishioners? _parishioners = new()
     {
-        Id = Guid.NewGuid().ToString("N"),
-        Sun = new()
-        {
-            Id = Guid.NewGuid().ToString("N")
-        },
-        Award = new()
-        {
-            Id = Guid.NewGuid().ToString("N")
-        },
-        Education = new()
-        {
-            Id = Guid.NewGuid().ToString("N")
-        },
-        State = new()
-        {
-            Id = Guid.NewGuid().ToString("N")
-        },
-        Oriention = new()
-        {
-            Id = Guid.NewGuid().ToString("N")
-        }
+        Id = Guid.NewGuid().ToString("N")
     };
 
     protected override void OnInitialized()
@@ -209,7 +159,31 @@
             IsAuth = false;
         }
     }
+    
+    private long maxFileSize = 1024 * 500;
 
+    private int selectedSocial;
+
+    private async Task LoadFile(InputFileChangeEventArgs e)
+    {
+        var path = $@"wwwroot/files/{e.File.Name}";
+
+        await using FileStream fs = new(path, FileMode.Create);
+        await e.File.OpenReadStream(maxFileSize).CopyToAsync(fs);
+
+        _parishioners.File = path;
+    }
+    
+    private async Task LoadPhoto(InputFileChangeEventArgs e)
+    {
+        var path = $@"wwwroot/photos/{e.File.Name}";
+
+        await using FileStream fs = new(path, FileMode.Create);
+        await e.File.OpenReadStream(maxFileSize).CopyToAsync(fs);
+
+        _parishioners.Photo = path;
+    }
+    
     public void MapClickEvent(MapClickEventArgs args)
     {
         //events.Add(DateTime.Now, $"Map clicked at Lat: {args.Position.Lat}, Lng: {args.Position.Lng}");
@@ -224,7 +198,24 @@
 
     private async Task Sumbit()
     {
-        await _context.Parsonalions.AddAsync(_parsonalion);
+        switch (selectedSocial)
+        {
+            case 1:
+                _parishioners.PropertyStatus = "Бедняк";
+                break;
+            case 2:
+                _parishioners.PropertyStatus = "средняк";
+                break;
+            case 3:
+                _parishioners.PropertyStatus = "домовладелец";
+                break;
+            case 4:
+                _parishioners.PropertyStatus = "без имущества";
+                break;
+        }
+        
+        await _context.Parishioners.AddAsync(_parishioners);
         await _context.SaveChangesAsync();
+        NavigationManager.NavigateTo("/");
     }
 }

@@ -10,6 +10,7 @@
 @using Microsoft.AspNetCore.Components.Authorization
 @using Newtonsoft.Json
 @using Temple.Net.Data
+@inject NavigationManager NavigationManager
 @rendermode InteractiveServer
 
  <div class="row">
@@ -81,11 +82,11 @@
 
                          <div>
                              <div style="margin-top: 10px; margin-bottom: 10px;">
-                                 <DatePicker TValue="DateTime?" InputFormat="yyy" DisplayFormat="yyyy" Placeholder="Год возрата" @bind-Date="_temple.Parishioners.Year"/>
+                                 <DatePicker TValue="DateTime?" InputFormat="yyy" DisplayFormat="yyyy" Placeholder="Год" @bind-Date="_temple.ParshYear"/>
                              </div>
 
                              <div class="form-floating mb-2">
-                                 <input type="number" class="form-control" @bind-value="_temple.Parishioners.Quantity">
+                                 <input type="number" class="form-control" @bind-value="_temple.Quantity">
                                  <label>Количество</label>
                              </div>
                          </div>
@@ -129,10 +130,6 @@
 
     private Temple? _temple = new()
     {
-        Parishioners = new()
-        {
-            Id = Guid.NewGuid().ToString("N")
-        },
         AppointmentsAfterEnd = new()
         {
             Id = Guid.NewGuid().ToString("N")
@@ -201,6 +198,8 @@
 
             await _context.Temples.AddAsync(_temple);
             await _context.SaveChangesAsync();
+            
+            NavigationManager.NavigateTo("/");
         }
     }
 }
