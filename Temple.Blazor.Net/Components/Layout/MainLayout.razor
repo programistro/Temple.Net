@@ -12,6 +12,10 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="icon" type="image/png" href="favicon.png" />
+    <base href="/" />
+    <link rel="stylesheet" href="bootstrap/bootstrap.min.css" />
+    <link rel="stylesheet" href="app.css" />
+    <link rel="stylesheet" href="Temple.Blazor.Net.styles.css" />
 </head>
 <body>
 <header>
@@ -75,7 +79,7 @@
 </div>
 
 <script src="js/OSMap.js"></script>
-
+<script src="~/_framework/blazor.web.js"></script>
 <script>
     Blazor.start().then(() => {
         Blazor.defaultReconnectionHandler._reconnectCallback = function (d) {
