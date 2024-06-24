@@ -30,5 +30,7 @@ public class Temple
     
     public string Diocesse { get; set; }
     
-    public string Province { get; set; }
+    public string Province { get; set; } // Губернии и уезды
+    
+    private string District { get; set; } // Округа и районы округов (1924-1930) 
 }

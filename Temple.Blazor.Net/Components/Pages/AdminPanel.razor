@@ -15,11 +15,8 @@
 </body>
 
 <QuickGrid Items="@context.Users">
-    <PropertyColumn Property="@(user => user.Name)" Sortable="true"/>
+    <PropertyColumn Property="@(user => user.Email)" Sortable="true"/>
     <PropertyColumn Property="@(user => user.Role)" Sortable="true"/>
-    <PropertyColumn Property="@(user => user.Name)" Sortable="true"/>
-    <PropertyColumn Property="@(user => user.LastName)" Sortable="true" />
-    <PropertyColumn Property="@(user => user.LastName)" Sortable="true" />
     <TemplateColumn Title="Изменить баланс пользователя">
         <Button Color="Color.Primary" @onclick="@(() => ChangeRole(context))">Изменить</Button>
     </TemplateColumn>

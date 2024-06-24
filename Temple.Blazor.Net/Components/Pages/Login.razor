@@ -60,7 +60,7 @@
 
             if (user.PasswordHash == passwordHash)
             {
-                NavigationManager.NavigateTo($"auth/singin?email={model.Email}&name={user.Name}", true);
+                NavigationManager.NavigateTo($"auth/singin?email={model.Email}", true);
             }
             else
             {

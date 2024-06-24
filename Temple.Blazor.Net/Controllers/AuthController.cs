@@ -12,10 +12,10 @@ namespace Temple.Blazor.Net.Controllers;
 public class AuthController : ControllerBase
 {
     [HttpGet("singin")]
-    public async Task<ActionResult> Singin(string email, string name)
+    public async Task<ActionResult> Singin(string email)
     {
         // создаем один claim
-        var claims = new List<Claim> { new (ClaimTypes.Name, name), new (ClaimTypes.Email, 
+        var claims = new List<Claim> { new (ClaimTypes.Name, email), new (ClaimTypes.Email, 
             email), new (ClaimTypes.Role,  "read") };
         var claimsIdentity = new ClaimsIdentity(claims, "Cookie");
         var claimsPrincipal = new ClaimsPrincipal(claimsIdentity);
@@ -25,10 +25,10 @@ public class AuthController : ControllerBase
     }
     
     [HttpGet("singinAdmin")]
-    public async Task<ActionResult> SinginAdmin(string email, string name)
+    public async Task<ActionResult> SinginAdmin(string email)
     {
         // создаем один claim
-        var claims = new List<Claim> { new (ClaimTypes.Name, name), new (ClaimTypes.Email, 
+        var claims = new List<Claim> { new (ClaimTypes.Name, email), new (ClaimTypes.Email, 
             email), new (ClaimTypes.Role,  "admin") };
         var claimsIdentity = new ClaimsIdentity(claims, "Cookie");
         var claimsPrincipal = new ClaimsPrincipal(claimsIdentity);

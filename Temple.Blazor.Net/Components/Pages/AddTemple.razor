@@ -1,15 +1,9 @@
 ﻿@using OpenStreetMapForBlazor
 @using Temple.Net.Models
-@using Blazorise
-@using Temple.Blazor.Net.Components.Layout
 @inject IConfiguration config
-@inject AuthenticationStateProvider AuthenticationStateProvider
 @inject IJSRuntime JSRuntime
-@using System.Security.Claims
 @inject AppDbContext _context
-@using Microsoft.AspNetCore.Components.Authorization
 @using Newtonsoft.Json
-@using Temple.Net.Data
 @inject NavigationManager NavigationManager
 @rendermode InteractiveServer
 
@@ -24,9 +18,14 @@
                          <label>Название</label>
                      </div>
 
-                     <div class="form-floating mb-2">
-                         <input class="form-control" @bind-value="_temple.Type">
-                         <label>Тип храма</label>
+                     <div>
+                         <h3 class="card-title text-center mb-3 fw-light fs-5">Тип храма</h3>
+                         
+                         <Select TValue="int" @bind-SelectedValue="@selectedType">
+                             <SelectItem Value="1">Кафедральный</SelectItem>
+                             <SelectItem Value="2">Кладбищенский</SelectItem>
+                             <SelectItem Value="3">Приходской</SelectItem>
+                         </Select>
                      </div>
 
                      <div style="margin-top: 10px; margin-bottom: 10px;">
@@ -92,22 +91,274 @@
                          </div>
                      </div>
 
-                     <div class="form-floating mb-2">
-                         <input type="number" class="form-control" @bind-value="_temple.OrientationDiocesse">
-                         <label>Ориентация епархии</label>
+                     <div>
+                         <h3 class="card-title text-center mb-3 fw-light fs-5">Ориентация епархии</h3>
+
+                         <Select TValue="int" @bind-SelectedValue="@selectedOriention">
+                             <SelectItem Value="1">Автокефальная</SelectItem>
+                             <SelectItem Value="2">Обновленческая</SelectItem>
+                             <SelectItem Value="3">Тихоновская</SelectItem>
+                         </Select>
                      </div>
 
-                     <div class="form-floating mb-2">
-                         <input type="number" class="form-control" @bind-value="_temple.Diocesse">
-                         <label>Епархия</label>
+                     <div>
+                         <h3 class="card-title text-center mb-3 fw-light fs-5">Епархии</h3>
+                         
+                         <Select TValue="int" @bind-SelectedValue="@selectedDiocese">
+                             @if (selectedOriention == 1)
+                             {
+                                 <SelectItem Value="1">Минская</SelectItem>
+                             }
+                             else if (selectedOriention == 2)
+                             {
+                                 <SelectItem Value="2">Бобруйская</SelectItem>
+                                 <SelectItem Value="3">Велижско-Высочанская</SelectItem>
+                                 <SelectItem Value="4">Витебская</SelectItem>
+                                 <SelectItem Value="5">Гомельская</SelectItem>
+                                 <SelectItem Value="6">Минская</SelectItem>
+                                 <SelectItem Value="7">Могилевская</SelectItem>
+                                 <SelectItem Value="8">Мозырская</SelectItem>
+                                 <SelectItem Value="9">Мстиславская</SelectItem>
+                                 <SelectItem Value="10">Оршанская</SelectItem>
+                                 <SelectItem Value="11">Полоцкая</SelectItem>
+                                 <SelectItem Value="12">Слуцкая</SelectItem>
+                                 <SelectItem Value="13">Чаусская</SelectItem>
+                             }
+                             else if (selectedOriention == 3)
+                             {
+                                 <SelectItem Value="14">Гомельская</SelectItem>
+                                 <SelectItem Value="15">Могилевская и Мстиславская</SelectItem>
+                                 <SelectItem Value="16">Минская и Туровская</SelectItem>
+                                 <SelectItem Value="17">Минская</SelectItem>
+                                 <SelectItem Value=18>Минская и Белорусская</SelectItem>
+                                 <SelectItem Value="19">Полоцкая и Витебская</SelectItem>
+                             }
+                         </Select>
                      </div>
 
-                     <div class="form-floating mb-2">
-                         <input type="number" class="form-control" @bind-value="_temple.Province">
-                         <label>Губерния</label>
+                     <div>
+                         <h3 class="card-title text-center mb-3 fw-light fs-5">Губернии и уезды</h3>
+
+                         <Select TValue="int" @bind-SelectedValue="@selectedProvince">
+                             <SelectGroup Label="Витебская">
+                                 <SelectItem Value="1">Велижский </SelectItem>
+                                 <SelectItem Value="2">Витебский </SelectItem>
+                                 <SelectItem Value="3">Городокский </SelectItem>
+                                 <SelectItem Value="4">Дриссенский </SelectItem>
+                                 <SelectItem Value="5">Лепельский </SelectItem>
+                                 <SelectItem Value="6">Невельский </SelectItem>
+                                 <SelectItem Value="7">Полоцкий </SelectItem>
+                                 <SelectItem Value="8">Себежский  </SelectItem>
+                             </SelectGroup>
+                             <SelectGroup Label="Гомельская">
+                                 <SelectItem Value="9">Быховский</SelectItem>
+                                 <SelectItem Value="10">Гомельский</SelectItem>
+                                 <SelectItem Value="11">Могилевский</SelectItem>
+                                 <SelectItem Value="12">Рогачевский</SelectItem>
+                                 <SelectItem Value="13">Чаусский</SelectItem>
+                                 <SelectItem Value="14">Чериковский</SelectItem>
+                                 <SelectItem Value="15">Горецкий</SelectItem>
+                                 <SelectItem Value="16">Климовический</SelectItem>
+                                 <SelectItem Value="17">Оршанский</SelectItem>
+                             </SelectGroup>
+                             <SelectGroup Label="Минская">
+                                 <SelectItem Value="18">Бобруйский</SelectItem>
+                                 <SelectItem Value="19">Борисовский</SelectItem>
+                                 <SelectItem Value="20">Игуменский</SelectItem>
+                                 <SelectItem Value="21">Минский</SelectItem>
+                                 <SelectItem Value="22">Мозырский</SelectItem>
+                                 <SelectItem Value="23">Речицкий</SelectItem>
+                                 <SelectItem Value="24">Слуцкий </SelectItem>
+                             </SelectGroup>
+                             <SelectGroup Label="Могилевская">
+                                 <SelectItem Value="25">Быховский</SelectItem>
+                                 <SelectItem Value="26">Гомельский</SelectItem>
+                                 <SelectItem Value="27">Горецкий</SelectItem>
+                                 <SelectItem Value="28">Климовичский</SelectItem>
+                                 <SelectItem Value="29">Могилевский</SelectItem>
+                                 <SelectItem Value="30">Мстиславский</SelectItem>
+                                 <SelectItem Value="31">Оршанский</SelectItem>
+                                 <SelectItem Value="32">Рогачёвский</SelectItem>
+                                 <SelectItem Value="33">Сенненский</SelectItem>
+                                 <SelectItem Value="34">Чаусский</SelectItem>
+                                 <SelectItem Value="35">Чериковский</SelectItem>
+                             </SelectGroup>
+                         </Select>
                      </div>
 
-                     <div style="height: 200px;">
+                     <div>
+                         <h3 class="card-title text-center mb-3 fw-light fs-5">Округа и районы округов (1924-1930)</h3>
+
+                         <Select TValue="int" @bind-SelectedValue="@selectedDistrict">
+                             <SelectGroup Label="Бобруйский (1924-1930)">
+                                 <SelectItem Value="1">Бобруйский</SelectItem>
+                                 <SelectItem Value="2">Бобруйский 1-й</SelectItem>
+                                 <SelectItem Value="3">Бобруйский 2-й</SelectItem>
+                                 <SelectItem Value="4">Буда-Кошелевский</SelectItem>
+                                 <SelectItem Value="5">Городецкий</SelectItem>
+                                 <SelectItem Value="6">Глусский</SelectItem>
+                                 <SelectItem Value="7">Жлобинский</SelectItem>
+                                 <SelectItem Value="8">Кличевский</SelectItem>
+                                 <SelectItem Value="9">Краснослободский</SelectItem>
+                                 <SelectItem Value="10">Любанский</SelectItem>
+                                 <SelectItem Value="11">Осиповичский</SelectItem>
+                                 <SelectItem Value="12">Паричский</SelectItem>
+                                 <SelectItem Value="13">Рогачевский</SelectItem>
+                                 <SelectItem Value="14">Свислочский</SelectItem>
+                                 <SelectItem Value="15">Слуцкий</SelectItem>
+                                 <SelectItem Value="16">Старобинский</SelectItem>
+                                 <SelectItem Value="17">Стародорожский</SelectItem>
+                                 <SelectItem Value="18">Стрешинский</SelectItem>
+                             </SelectGroup>
+                             <SelectGroup Label="Борисовский (1924-1927)">
+                                 <SelectItem Value="18">Бегомльский </SelectItem>
+                                 <SelectItem Value="18">Березинский </SelectItem>
+                                 <SelectItem Value="18">Борисовский </SelectItem>
+                                 <SelectItem Value="18">Зембинский </SelectItem>
+                                 <SelectItem Value="18">Крупский </SelectItem>
+                                 <SelectItem Value="18">Лепельский </SelectItem>
+                                 <SelectItem Value="18">Плещеницкий </SelectItem>
+                                 <SelectItem Value="18">Холопеничский </SelectItem>
+                                 <SelectItem Value="18">Черейский </SelectItem>
+                             </SelectGroup>
+                             <SelectGroup Label="Витебский (1924-1930)">
+                                 <SelectItem Value="18">Бешенковичский  </SelectItem>
+                                 <SelectItem Value="18">Витебский  </SelectItem>
+                                 <SelectItem Value="18">Высочанский  </SelectItem>
+                                 <SelectItem Value="18">Городокский  </SelectItem>
+                                 <SelectItem Value="18">Езерищенский  </SelectItem>
+                                 <SelectItem Value="18">Лиозненский  </SelectItem>
+                                 <SelectItem Value="18">Кузнецовский  </SelectItem>
+                                 <SelectItem Value="18">Межанский  </SelectItem>
+                                 <SelectItem Value="18">Сенненский  </SelectItem>
+                                 <SelectItem Value="18">Сиротинский   </SelectItem>
+                                 <SelectItem Value="18">Суражский   </SelectItem>
+                                 <SelectItem Value="18">Чашникский   </SelectItem>
+                             </SelectGroup>
+                             <SelectGroup Label="Калининский (1924-1927) ">
+                                 <SelectItem Value="18">Белынковичский  </SelectItem>
+                                 <SelectItem Value="18">Климовичский  </SelectItem>
+                                 <SelectItem Value="18">Кастюковичский  </SelectItem>
+                                 <SelectItem Value="18">Краснопольский  </SelectItem>
+                                 <SelectItem Value="18">Кричевский  </SelectItem>
+                                 <SelectItem Value="18">Милославичский  </SelectItem>
+                                 <SelectItem Value="18">Мстиславский  </SelectItem>
+                                 <SelectItem Value="18">Расненский  </SelectItem>
+                                 <SelectItem Value="18">Хотимский  </SelectItem>
+                                 <SelectItem Value="18">Чериковский   </SelectItem>
+                             </SelectGroup>
+                             <SelectGroup Label="Могилевский (1924-1930)">
+                                 <SelectItem Value="18">Белыничский  </SelectItem>
+                                 <SelectItem Value="18">Березинский </SelectItem>
+                                 <SelectItem Value="18">Борисовский </SelectItem>
+                                 <SelectItem Value="18">Журовичский  </SelectItem>
+                                 <SelectItem Value="18">Кастюковичский  </SelectItem>
+                                 <SelectItem Value="18">Климовичский  </SelectItem>
+                                 <SelectItem Value="18">Кормянский  </SelectItem>
+                                 <SelectItem Value="18">Краснопольский  </SelectItem>
+                                 <SelectItem Value="18">Кричевский  </SelectItem>
+                                 <SelectItem Value="18">Луполовский   </SelectItem>
+                                 <SelectItem Value="18">Милославичский   </SelectItem>
+                                 <SelectItem Value="18">Могилевский   </SelectItem>
+                                 <SelectItem Value="18">Пропойский   </SelectItem>
+                                 <SelectItem Value="18">Хотимский   </SelectItem>
+                                 <SelectItem Value="18">Чаусский   </SelectItem>
+                                 <SelectItem Value="18">Чериковский    </SelectItem>
+                                 <SelectItem Value="18">Чечевичский    </SelectItem>
+                                 <SelectItem Value="18">Шкловский    </SelectItem>
+                             </SelectGroup>
+                             <SelectGroup Label="Минский (1924-1930)">
+                                 <SelectItem Value="18">Бегомльский</SelectItem>
+                                 <SelectItem Value="18">Березинский</SelectItem>
+                                 <SelectItem Value="18">Борисовский</SelectItem>
+                                 <SelectItem Value="18">Гресский</SelectItem>
+                                 <SelectItem Value="18">Койдановский</SelectItem>
+                                 <SelectItem Value="18">Зембинский</SelectItem>
+                                 <SelectItem Value="18">Койдановский</SelectItem>
+                                 <SelectItem Value="18">Копыльский</SelectItem>
+                                 <SelectItem Value="18">Острошицко-Городокский</SelectItem>
+                                 <SelectItem Value="18">Плещеницкий</SelectItem>
+                                 <SelectItem Value="18">Пуховичский</SelectItem>
+                                 <SelectItem Value="18">Самохваловичский</SelectItem>
+                                 <SelectItem Value="18">Смиловичский</SelectItem>
+                                 <SelectItem Value="18">Смолевичский</SelectItem>
+                                 <SelectItem Value="18">Узденский</SelectItem>
+                                 <SelectItem Value="18">Червенский</SelectItem>
+                                 <SelectItem Value="18">Холопеничский</SelectItem>
+                                 <SelectItem Value="18">Шацкий</SelectItem>
+                             </SelectGroup>
+                             <SelectGroup Label="Оршанский (1924-1930)">
+                                 <SelectItem Value="18">Богушевский</SelectItem>
+                                 <SelectItem Value="18">Горецкий</SelectItem>
+                                 <SelectItem Value="18">Дрибинский</SelectItem>
+                                 <SelectItem Value="18">Дубровенский</SelectItem>
+                                 <SelectItem Value="18">Копысский</SelectItem>
+                                 <SelectItem Value="18">Кохановский</SelectItem>
+                                 <SelectItem Value="18">Круглянский</SelectItem>
+                                 <SelectItem Value="18">Лядненский</SelectItem>
+                                 <SelectItem Value="18">Мстиславский</SelectItem>
+                                 <SelectItem Value="18">Оршанский</SelectItem>
+                                 <SelectItem Value="18">Расненский</SelectItem>
+                                 <SelectItem Value="18">Толочинский</SelectItem>
+                             </SelectGroup>
+                             <SelectGroup Label="Полоцкий (1924-1930)">
+                                 <SelectItem Value="18">Ветринский</SelectItem>
+                                 <SelectItem Value="18">Волынецкий</SelectItem>
+                                 <SelectItem Value="18">Борковичский</SelectItem>
+                                 <SelectItem Value="18">Дретунский</SelectItem>
+                                 <SelectItem Value="18">Краснопольский</SelectItem>
+                                 <SelectItem Value="18">Дриссенский</SelectItem>
+                                 <SelectItem Value="18">Освейский</SelectItem>
+                                 <SelectItem Value="18">Полоцкий</SelectItem>
+                                 <SelectItem Value="18">Россонский</SelectItem>
+                                 <SelectItem Value="18">Улльский</SelectItem>
+                                 <SelectItem Value="18">Ушачский</SelectItem>
+                             </SelectGroup>
+                             <SelectGroup Label="Слуцкий (1924-1927)">
+                                 <SelectItem Value="18">Гресский</SelectItem>
+                                 <SelectItem Value="18">Копыльский</SelectItem>
+                                 <SelectItem Value="18">Краснослободский</SelectItem>
+                                 <SelectItem Value="18">Любанский</SelectItem>
+                                 <SelectItem Value="18">Слуцкий</SelectItem>
+                                 <SelectItem Value="18">Стародорожский</SelectItem>
+                                 <SelectItem Value="18">Плещеницкий</SelectItem>
+                                 <SelectItem Value="18">Старобинский</SelectItem>
+                             </SelectGroup>
+                             <SelectGroup Label="Гомельский (1926-1930) ">
+                                 <SelectItem Value="18">Брагинский</SelectItem>
+                                 <SelectItem Value="18">Буда-Кошелевский</SelectItem>
+                                 <SelectItem Value="18">Ветковский</SelectItem>
+                                 <SelectItem Value="18">Гомельский</SelectItem>
+                                 <SelectItem Value="18">Дятловичский</SelectItem>
+                                 <SelectItem Value="18">Добрушский</SelectItem>
+                                 <SelectItem Value="18">Краснобудский</SelectItem>
+                                 <SelectItem Value="18">Носовичский</SelectItem>
+                                 <SelectItem Value="18">Светиловичский</SelectItem>
+                                 <SelectItem Value="18">Уваровичский</SelectItem>
+                                 <SelectItem Value="18">Чечерский</SelectItem>
+                                 <SelectItem Value="18">Брагинский</SelectItem>
+                                 <SelectItem Value="18">Комаринский</SelectItem>
+                                 <SelectItem Value="18">Лоевский</SelectItem>
+                                 <SelectItem Value="18">Речицкий</SelectItem>
+                                 <SelectItem Value="18">Хойникский</SelectItem>
+                                 <SelectItem Value="18">Тереховский</SelectItem>
+                                 <SelectItem Value="18">Буда-Кошелевский</SelectItem>
+                             </SelectGroup>
+                             <SelectGroup Label="Речицкий (1926-1927)">
+                                 <SelectItem Value="18">Брагинский</SelectItem>
+                                 <SelectItem Value="18">Василевичский</SelectItem>
+                                 <SelectItem Value="18">Горвальский</SelectItem>
+                                 <SelectItem Value="18">Комаринский</SelectItem>
+                                 <SelectItem Value="18">Лоевский</SelectItem>
+                                 <SelectItem Value="18">Речицкий</SelectItem>
+                                 <SelectItem Value="18">Хойникский</SelectItem>
+                                 <SelectItem Value="18">Холмечский</SelectItem>
+                                 <SelectItem Value="18">Юровичский</SelectItem>
+                             </SelectGroup>
+                         </Select>
+                     </div>
+
+                         <div style="height: 200px;">
                          <OSMap Click="@MapClickEvent" CenterMap="@defPosition" />
                      </div>
 
@@ -121,12 +372,20 @@
  </div>
  
 @code {
-    private bool IsAuth;
-
     public MapPosition position;
     public bool btnActive;
 
     MapPosition? defPosition;
+
+    private int selectedType = 1;
+
+    private int selectedOriention = 1;
+
+    private int selectedDiocese = 1;
+
+    private int selectedDistrict = 1;
+
+    private int selectedProvince = 1;
 
     private Temple? _temple = new()
     {
@@ -144,15 +403,6 @@
     protected override void OnInitialized()
     {
         defPosition = new MapPosition() { Lat = config.GetValue<double>("Main:DefLat"), Lng = config.GetValue<double>("Main:DefLng") };
-
-        if (AuthenticationStateProvider.GetAuthenticationStateAsync().Result.User.Identity.IsAuthenticated)
-        {
-            IsAuth = true;
-        }
-        else
-        {
-            IsAuth = false;
-        }
     }
 
     public void MapClickEvent(MapClickEventArgs args)
@@ -194,6 +444,99 @@
                 _temple.Province = item.full_name;
 
                 break;
+            }
+
+            switch (selectedType)
+            {
+                case 1:
+                    _temple.Type = "Кафедральный";
+                    break;
+                case 2:
+                    _temple.Type = "Кладбищенский";
+                    break;
+                case 3:
+                    _temple.Type = "Монастырский";
+                    break;
+                case 4:
+                    _temple.Type = "Приходской";
+                    break;
+            }
+
+            switch (selectedOriention)
+            {
+                case 1:
+                    _temple.OrientationDiocesse = "Автокефальная";
+                    break;
+                case 2:
+                    _temple.OrientationDiocesse = "Обновлеченская";
+                    break;
+                case 3:
+                    _temple.OrientationDiocesse = "Тихоновская";
+                    break;
+                case 4:
+                    _temple.OrientationDiocesse = "Сергиевская";
+                    break;
+            }
+
+            switch (selectedDiocese)
+            {
+                case 1:
+                    _temple.OrientationDiocesse = "Минская";
+                    break;
+                case 2:
+                    _temple.OrientationDiocesse = "Бобруйская";
+                    break;
+                case 3:
+                    _temple.OrientationDiocesse = "Велижско-Высочанская";
+                    break;
+                case 4:
+                    _temple.OrientationDiocesse = "Витебская";
+                    break;
+                case 5:
+                    _temple.OrientationDiocesse = "Гомельская";
+                    break;
+                case 6:
+                    _temple.OrientationDiocesse = "Минская";
+                    break;
+                case 7:
+                    _temple.OrientationDiocesse = "Могилевская";
+                    break;
+                case 8:
+                    _temple.OrientationDiocesse = "Мозырская";
+                    break;
+                case 9:
+                    _temple.OrientationDiocesse = "Мстиславская";
+                    break;
+                case 10:
+                    _temple.OrientationDiocesse = "Оршанская";
+                    break;
+                case 11:
+                    _temple.OrientationDiocesse = "Полоцкая";
+                    break;
+                case 12:
+                    _temple.OrientationDiocesse = "Слуцкая";
+                    break;
+                case 13:
+                    _temple.OrientationDiocesse = "Чаусская";
+                    break;
+                case 14:
+                    _temple.OrientationDiocesse = "Гомельская";
+                    break;
+                case 15:
+                    _temple.OrientationDiocesse = "Могилевская и Мстиславская";
+                    break;
+                case 16:
+                    _temple.OrientationDiocesse = "Минская и Туровская";
+                    break;
+                case 17:
+                    _temple.OrientationDiocesse = "Минская";
+                    break;
+                case 18:
+                    _temple.OrientationDiocesse = "Минская и Белорусская";
+                    break;
+                case 19:
+                    _temple.OrientationDiocesse = "Полоцкая и Витебская";
+                    break;
             }
 
             await _context.Temples.AddAsync(_temple);

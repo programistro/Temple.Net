@@ -6,7 +6,6 @@
 @using Temple.Net.Service
 @inject UserDbContext _context
 @inject UserService _userService
-@inject AuthenticationStateProvider AuthenticationStateProvider
 @inject NavigationManager NavigationManager
 @rendermode InteractiveServer
 @page "/reg"
@@ -23,23 +22,6 @@
                     <h5 class="card-title text-center mb-5 fw-light fs-5">Регистрация</h5>
                     <EditForm Model="model" OnSubmit="Submit">
                         <div class="form-floating mb-3">
-                            <input class="form-control" @bind-value="model.LastName">
-                            <label>Фамилия</label>
-                        </div>
-
-                        <div class="form-floating mb-3">
-                            <input class="form-control" @bind-value="model.Name">
-                            <label>Имя</label>
-                        </div>
-
-                        <div class="form-floating mb-3">
-                            <input class="form-control" @bind-value="model.Otch">
-                            <label>Отчество</label>
-                        </div>
-
-                        <hr>
-
-                        <div class="form-floating mb-3">
                             <input type="email" class="form-control" @bind-value="model.Email">
                             <label>Почта</label>
                         </div>
@@ -47,6 +29,11 @@
                         <div class="form-floating mb-3">
                             <input type="password" class="form-control" @bind-value="model.Password">
                             <label>Пароль</label>
+                        </div>
+
+                        <div class="form-floating mb-3">
+                            <input type="password" class="form-control" @bind-value="validPassword">
+                            <label>Подвердите пароль</label>
                         </div>
 
                         <div class="d-grid mb-2">
@@ -67,46 +54,47 @@
 @code {
     private AuthViewModel model = new();
 
+    private string validPassword;
+
     private string Message;
 
     public async Task Submit()
     {
         if (model.Email == "admin@123" && model.Password == "admin")
         {
-            User user = new()
+            User adminUser = new()
             {
                 Id = Guid.NewGuid().ToString("N"),
                 Email = model.Email,
                 Role = "admin",
                 PasswordHash = await _userService.CreatePasswordHashAsync(model.Password),
-                Name = model.Name,
-                Otch = model.Otch,
-                LastName = model.LastName
             };
 
-            await _context.Users.AddAsync(user);
+            await _context.Users.AddAsync(adminUser);
             await _context.SaveChangesAsync();
             
-            NavigationManager.NavigateTo($"Auth/singinAdmin?email={model.Email}&name={model.Name}", true);
+            NavigationManager.NavigateTo($"Auth/singinAdmin?email={model.Email}", true);
         }
+
+        var user = _context.Users.FirstOrDefault(x => x.Email == model.Email);
+
+        string password = await _userService.CreatePasswordHashAsync(model.Password);
+        string validPassword = await _userService.CreatePasswordHashAsync(model.Password);
         
-        if (_context.Users.FirstOrDefault(x => x.Email == model.Email) == null)
+        if (user == null && password == validPassword)
         {
-            User user = new()
+            User newUser = new()
             {
                 Id = Guid.NewGuid().ToString("N"),
                 Email = model.Email,
                 Role = "read",
                 PasswordHash = await _userService.CreatePasswordHashAsync(model.Password),
-                Name = model.Name,
-                Otch = model.Otch,
-                LastName = model.LastName
             };
 
-            await _context.Users.AddAsync(user);
+            await _context.Users.AddAsync(newUser);
             await _context.SaveChangesAsync();
 
-            NavigationManager.NavigateTo($"auth/singin?email={model.Email}&name={model.Name}", true);
+            NavigationManager.NavigateTo($"auth/singin?email={model.Email}", true);
         }
         else
         {

@@ -45,24 +45,6 @@
 									</div>
 									<div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
 										<div class="form-group">
-											<label>Имя</label>
-											<input class="form-control" disabled="disabled" placeholder="@this.Auth.Name">
-										</div>
-									</div>
-									<div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
-										<div class="form-group">
-											<label>Фамилия</label>
-											<input class="form-control" disabled="disabled"placeholder="@this.Auth.LastName">
-										</div>
-									</div>
-									<div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
-										<div class="form-group">
-											<label>Отчество</label>
-											<input class="form-control" disabled="disabled" placeholder="@this.Auth.Otch">
-										</div>
-									</div>
-									<div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
-										<div class="form-group">
 											<label for="eMail">Email</label>
 											<input class="form-control" disabled="disabled" placeholder="@this.Auth.Email">
 										</div>
@@ -112,10 +94,6 @@
 				Auth = new()
 				{
 					Email = user.Email,
-					Name = user.Name,
-					Otch = user.Otch,
-					LastName = user.LastName,
-					Photo = user.Photo,
 					Role = user.Role
 				};
 			}
