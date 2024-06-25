@@ -32,24 +32,27 @@
                          <DatePicker TValue="DateTime?" InputFormat="yyy" DisplayFormat="yyyy" InputMode="DateInputMode.Date" Placeholder="Год основания" @bind-Date="_temple.DateStart"/>
                      </div>
 
-                     <div style="margin-top: 10px; margin-bottom: 10px;">
-                         <DatePicker TValue="DateTime?" InputFormat="yyy" DisplayFormat="yyyy" Placeholder="Год закрытия" @bind-Date="_temple.DateEnd"/>
-                     </div>
-
                      <br/>
 
                      <div>
                          <h3 class="card-title text-center mb-3 fw-light fs-5">Назначение после закрытия</h3>
 
                          <div>
+
                              <div style="margin-top: 10px; margin-bottom: 10px;">
-                                 <DatePicker TValue="DateTime?" InputFormat="yyy" DisplayFormat="yyyy" Placeholder="Год основания" @bind-Date="_temple.AppointmentsAfterEnd.YearAdaptations"/>
+                                 <DatePicker TValue="DateTime?" InputFormat="yyy" DisplayFormat="yyyy" Placeholder="Год закрытия" @bind-Date="_temple.DateEnd"/>
                              </div>
 
-                             <div class="form-floating mb-2">
-                                 <input class="form-control" @bind-value="_temple.AppointmentsAfterEnd.Appointmenrs">
-                                 <label>Назначение после закрытия</label>
+                             <div style="margin-top: 10px; margin-bottom: 10px;">
+                                 <DatePicker TValue="DateTime?" InputFormat="yyy" DisplayFormat="yyyy" Placeholder="Год приспособления" @bind-Date="_temple.YearAdaptation"/>
                              </div>
+
+                             <Select TValue="int" @bind-SelectedValue="@selectedAfterClosing">
+                                 <SelectItem Value="1">Зернохранилище</SelectItem>
+                                 <SelectItem Value="2">Клуб</SelectItem>
+                                 <SelectItem Value="3">Склад</SelectItem>
+                             </Select>
+                             
                          </div>
                      </div>
 
@@ -62,13 +65,20 @@
 
                          <div>
                              <div style="margin-top: 10px; margin-bottom: 10px;">
-                                 <DatePicker TValue="DateTime?" InputFormat="yyy" DisplayFormat="yyyy" Placeholder="Год отпадеия" @bind-Date="_temple.Oriention.YearFall"/>
+                                 <DatePicker TValue="DateTime?" InputFormat="yyy" DisplayFormat="yyyy" Placeholder="Год отпадения" @bind-Date="_temple.Oriention.YearFall"/>
                              </div>
 
-                             <div class="form-floating mb-2">
-                                 <input class="form-control" @bind-value="_temple.Oriention.Oriention">
-                                 <label>Церковная ориентация</label>
-                             </div>
+                             @* <div class="form-floating mb-2"> *@
+                             @*     <input class="form-control" @bind-value="_temple.Oriention.Oriention"> *@
+                             @*     <label>Церковная ориентация</label> *@
+                             @* </div> *@
+
+                             <Select TValue="int" @bind-SelectedValue="@selectedOriention">
+                                 <SelectItem Value="1">Автокефальная</SelectItem>
+                                 <SelectItem Value="2">Обновленческая</SelectItem>
+                                 <SelectItem Value="3">Тихоновская</SelectItem>
+                                 <SelectItem Value="4">Сергиевская</SelectItem>
+                             </Select>
 
                              <div style="margin-top: 10px; margin-bottom: 10px;">
                                  <DatePicker TValue="DateTime?" InputFormat="yyy" DisplayFormat="yyyy" Placeholder="Год возрата" @bind-Date="_temple.Oriention.YearRefund"/>
@@ -387,6 +397,10 @@
 
     private int selectedProvince = 1;
 
+    private int selectedAfterClosing = 1;
+
+    private int selectedTempleOriention = 1;
+
     private Temple? _temple = new()
     {
         AppointmentsAfterEnd = new()
@@ -536,6 +550,35 @@
                     break;
                 case 19:
                     _temple.OrientationDiocesse = "Полоцкая и Витебская";
+                    break;
+            }
+
+            switch (selectedAfterClosing)
+            {
+                case 1:
+                    _temple.AppointmentsAfterEnd.Appointmenrs = "Зернохранилище";
+                    break;
+                case 2:
+                    _temple.AppointmentsAfterEnd.Appointmenrs = "Клуб";
+                    break;
+                case 3:
+                    _temple.AppointmentsAfterEnd.Appointmenrs = "Склад";
+                    break;
+            }
+
+            switch (selectedTempleOriention)
+            {
+                case 1:
+                    _temple.Oriention.Oriention = "Автокефальная"; 
+                    break;
+                case 2:
+                    _temple.Oriention.Oriention = "Обновленческая"; 
+                    break;
+                case 3:
+                    _temple.Oriention.Oriention = "Тихоновская"; 
+                    break;
+                case 4:
+                    _temple.Oriention.Oriention = "Сергиевская"; 
                     break;
             }
 

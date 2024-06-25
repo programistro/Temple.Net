@@ -18,6 +18,8 @@ public class Temple
     
     public AppointmentsAfterEnd AppointmentsAfterEnd { get; set; }
     
+    public DateTime? YearAdaptation { get; set; }
+    
     public DateTime? YearDestruction { get; set; }
     
     public TempleOriention Oriention { get; set; }
