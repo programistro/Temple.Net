@@ -21,7 +21,7 @@
                      <div>
                          <h3 class="card-title text-center mb-3 fw-light fs-5">Тип храма</h3>
                          
-                         <Select TValue="int" @bind-SelectedValue="@selectedType">
+                         <Select TValue="int" @bind-SelectedValue="@selectedType" class="form-control js-example-basic-single">
                              <SelectItem Value="1">Кафедральный</SelectItem>
                              <SelectItem Value="2">Кладбищенский</SelectItem>
                              <SelectItem Value="3">Приходской</SelectItem>
@@ -29,7 +29,7 @@
                      </div>
 
                      <div style="margin-top: 10px; margin-bottom: 10px;">
-                         <DatePicker TValue="DateTime?" InputFormat="yyy" DisplayFormat="yyyy" InputMode="DateInputMode.Date" Placeholder="Год основания" @bind-Date="_temple.DateStart"/>
+                         <DatePicker TValue="DateTime?" InputFormat="dd.MM.yyyy" DisplayFormat="dd.MM.yyyy" InputMode="DateInputMode.Date" Placeholder="Год основания" @bind-Date="_temple.DateStart"/>
                      </div>
 
                      <br/>
@@ -40,14 +40,14 @@
                          <div>
 
                              <div style="margin-top: 10px; margin-bottom: 10px;">
-                                 <DatePicker TValue="DateTime?" InputFormat="yyy" DisplayFormat="yyyy" Placeholder="Год закрытия" @bind-Date="_temple.DateEnd"/>
+                                 <DatePicker TValue="DateTime?" InputFormat="dd.MM.yyyy" DisplayFormat="dd.MM.yyyy" Placeholder="Год закрытия" @bind-Date="_temple.DateEnd"/>
                              </div>
 
                              <div style="margin-top: 10px; margin-bottom: 10px;">
-                                 <DatePicker TValue="DateTime?" InputFormat="yyy" DisplayFormat="yyyy" Placeholder="Год приспособления" @bind-Date="_temple.YearAdaptation"/>
+                                 <DatePicker TValue="DateTime?" InputFormat="dd.MM.yyyy" DisplayFormat="dd.MM.yyyy" Placeholder="Год приспособления" @bind-Date="_temple.YearAdaptation"/>
                              </div>
 
-                             <Select TValue="int" @bind-SelectedValue="@selectedAfterClosing">
+                             <Select TValue="int" @bind-SelectedValue="@selectedAfterClosing" class="form-control js-example-basic-single">
                                  <SelectItem Value="1">Зернохранилище</SelectItem>
                                  <SelectItem Value="2">Клуб</SelectItem>
                                  <SelectItem Value="3">Склад</SelectItem>
@@ -57,7 +57,7 @@
                      </div>
 
                      <div style="margin-top: 10px; margin-bottom: 10px;">
-                         <DatePicker TValue="DateTime?" InputFormat="yyy" DisplayFormat="yyyy" Placeholder="Год уничтожения" @bind-Date="_temple.YearDestruction"/>
+                         <DatePicker TValue="DateTime?" InputFormat="dd.MM.yyyy" DisplayFormat="dd.MM.yyyy" Placeholder="Год уничтожения" @bind-Date="_temple.YearDestruction"/>
                      </div>
 
                      <div>
@@ -65,7 +65,7 @@
 
                          <div>
                              <div style="margin-top: 10px; margin-bottom: 10px;">
-                                 <DatePicker TValue="DateTime?" InputFormat="yyy" DisplayFormat="yyyy" Placeholder="Год отпадения" @bind-Date="_temple.Oriention.YearFall"/>
+                                 <DatePicker TValue="DateTime?" InputFormat="dd.MM.yyyy" DisplayFormat="dd.MM.yyyy" Placeholder="Год отпадения" @bind-Date="_temple.Oriention.YearFall"/>
                              </div>
 
                              @* <div class="form-floating mb-2"> *@
@@ -73,7 +73,7 @@
                              @*     <label>Церковная ориентация</label> *@
                              @* </div> *@
 
-                             <Select TValue="int" @bind-SelectedValue="@selectedOriention">
+                             <Select TValue="int" @bind-SelectedValue="@selectedOriention" class="form-control js-example-basic-single">
                                  <SelectItem Value="1">Автокефальная</SelectItem>
                                  <SelectItem Value="2">Обновленческая</SelectItem>
                                  <SelectItem Value="3">Тихоновская</SelectItem>
@@ -81,7 +81,7 @@
                              </Select>
 
                              <div style="margin-top: 10px; margin-bottom: 10px;">
-                                 <DatePicker TValue="DateTime?" InputFormat="yyy" DisplayFormat="yyyy" Placeholder="Год возрата" @bind-Date="_temple.Oriention.YearRefund"/>
+                                 <DatePicker TValue="DateTime?" InputFormat="dd.MM.yyyy" DisplayFormat="dd.MM.yyyy" Placeholder="Год возрата" @bind-Date="_temple.Oriention.YearRefund"/>
                              </div>
                          </div>
                      </div>
@@ -91,7 +91,7 @@
 
                          <div>
                              <div style="margin-top: 10px; margin-bottom: 10px;">
-                                 <DatePicker TValue="DateTime?" InputFormat="yyy" DisplayFormat="yyyy" Placeholder="Год" @bind-Date="_temple.ParshYear"/>
+                                 <DatePicker TValue="DateTime?" InputFormat="dd.MM.yyyy" DisplayFormat="dd.MM.yyyy" Placeholder="Год" @bind-Date="_temple.ParshYear"/>
                              </div>
 
                              <div class="form-floating mb-2">
@@ -104,7 +104,7 @@
                      <div>
                          <h3 class="card-title text-center mb-3 fw-light fs-5">Ориентация епархии</h3>
 
-                         <Select TValue="int" @bind-SelectedValue="@selectedOriention">
+                         <Select TValue="int" @bind-SelectedValue="@selectedOriention" class="form-control js-example-basic-single">
                              <SelectItem Value="1">Автокефальная</SelectItem>
                              <SelectItem Value="2">Обновленческая</SelectItem>
                              <SelectItem Value="3">Тихоновская</SelectItem>
@@ -114,7 +114,7 @@
                      <div>
                          <h3 class="card-title text-center mb-3 fw-light fs-5">Епархии</h3>
                          
-                         <Select TValue="int" @bind-SelectedValue="@selectedDiocese">
+                         <Select TValue="int" @bind-SelectedValue="@selectedDiocese" class="form-control js-example-basic-single">
                              @if (selectedOriention == 1)
                              {
                                  <SelectItem Value="1">Минская</SelectItem>
@@ -149,7 +149,7 @@
                      <div>
                          <h3 class="card-title text-center mb-3 fw-light fs-5">Губернии и уезды</h3>
 
-                         <Select TValue="int" @bind-SelectedValue="@selectedProvince">
+                         <Select TValue="int" @bind-SelectedValue="@selectedProvince" class="form-control js-example-basic-single">
                              <SelectGroup Label="Витебская">
                                  <SelectItem Value="1">Велижский </SelectItem>
                                  <SelectItem Value="2">Витебский </SelectItem>
@@ -199,7 +199,7 @@
                      <div>
                          <h3 class="card-title text-center mb-3 fw-light fs-5">Округа и районы округов (1924-1930)</h3>
 
-                         <Select TValue="int" @bind-SelectedValue="@selectedDistrict">
+                         <Select TValue="int" @bind-SelectedValue="@selectedDistrict" class="form-control js-example-basic-single">
                              <SelectGroup Label="Бобруйский (1924-1930)">
                                  <SelectItem Value="1">Бобруйский</SelectItem>
                                  <SelectItem Value="2">Бобруйский 1-й</SelectItem>
@@ -221,154 +221,154 @@
                                  <SelectItem Value="18">Стрешинский</SelectItem>
                              </SelectGroup>
                              <SelectGroup Label="Борисовский (1924-1927)">
-                                 <SelectItem Value="18">Бегомльский </SelectItem>
-                                 <SelectItem Value="18">Березинский </SelectItem>
-                                 <SelectItem Value="18">Борисовский </SelectItem>
-                                 <SelectItem Value="18">Зембинский </SelectItem>
-                                 <SelectItem Value="18">Крупский </SelectItem>
-                                 <SelectItem Value="18">Лепельский </SelectItem>
-                                 <SelectItem Value="18">Плещеницкий </SelectItem>
-                                 <SelectItem Value="18">Холопеничский </SelectItem>
-                                 <SelectItem Value="18">Черейский </SelectItem>
+                                 <SelectItem Value="19">Бегомльский</SelectItem>
+                                 <SelectItem Value="20">Березинский</SelectItem>
+                                 <SelectItem Value="21">Борисовский</SelectItem>
+                                 <SelectItem Value="22">Зембинский</SelectItem>
+                                 <SelectItem Value="23">Крупский</SelectItem>
+                                 <SelectItem Value="24">Лепельский</SelectItem>
+                                 <SelectItem Value="25">Плещеницкий</SelectItem>
+                                 <SelectItem Value="26">Холопеничский</SelectItem>
+                                 <SelectItem Value="27">Черейский</SelectItem>
                              </SelectGroup>
                              <SelectGroup Label="Витебский (1924-1930)">
-                                 <SelectItem Value="18">Бешенковичский  </SelectItem>
-                                 <SelectItem Value="18">Витебский  </SelectItem>
-                                 <SelectItem Value="18">Высочанский  </SelectItem>
-                                 <SelectItem Value="18">Городокский  </SelectItem>
-                                 <SelectItem Value="18">Езерищенский  </SelectItem>
-                                 <SelectItem Value="18">Лиозненский  </SelectItem>
-                                 <SelectItem Value="18">Кузнецовский  </SelectItem>
-                                 <SelectItem Value="18">Межанский  </SelectItem>
-                                 <SelectItem Value="18">Сенненский  </SelectItem>
-                                 <SelectItem Value="18">Сиротинский   </SelectItem>
-                                 <SelectItem Value="18">Суражский   </SelectItem>
-                                 <SelectItem Value="18">Чашникский   </SelectItem>
+                                 <SelectItem Value="28">Бешенковичский</SelectItem>
+                                 <SelectItem Value="29">Витебский</SelectItem>
+                                 <SelectItem Value="30">Высочанский</SelectItem>
+                                 <SelectItem Value="31">Городокский</SelectItem>
+                                 <SelectItem Value="32">Езерищенский</SelectItem>
+                                 <SelectItem Value="33">Лиозненский</SelectItem>
+                                 <SelectItem Value="34">Кузнецовский</SelectItem>
+                                 <SelectItem Value="35">Межанский</SelectItem>
+                                 <SelectItem Value="36">Сенненский</SelectItem>
+                                 <SelectItem Value="37">Сиротинский</SelectItem>
+                                 <SelectItem Value="38">Суражский</SelectItem>
+                                 <SelectItem Value="39">Чашникский</SelectItem>
                              </SelectGroup>
                              <SelectGroup Label="Калининский (1924-1927) ">
-                                 <SelectItem Value="18">Белынковичский  </SelectItem>
-                                 <SelectItem Value="18">Климовичский  </SelectItem>
-                                 <SelectItem Value="18">Кастюковичский  </SelectItem>
-                                 <SelectItem Value="18">Краснопольский  </SelectItem>
-                                 <SelectItem Value="18">Кричевский  </SelectItem>
-                                 <SelectItem Value="18">Милославичский  </SelectItem>
-                                 <SelectItem Value="18">Мстиславский  </SelectItem>
-                                 <SelectItem Value="18">Расненский  </SelectItem>
-                                 <SelectItem Value="18">Хотимский  </SelectItem>
-                                 <SelectItem Value="18">Чериковский   </SelectItem>
+                                 <SelectItem Value="40">Белынковичский</SelectItem>
+                                 <SelectItem Value="41">Климовичский</SelectItem>
+                                 <SelectItem Value="42">Кастюковичский</SelectItem>
+                                 <SelectItem Value="43">Краснопольский</SelectItem>
+                                 <SelectItem Value="44">Кричевский</SelectItem>
+                                 <SelectItem Value="45">Милославичский</SelectItem>
+                                 <SelectItem Value="46">Мстиславский</SelectItem>
+                                 <SelectItem Value="47">Расненский</SelectItem>
+                                 <SelectItem Value="48">Хотимский</SelectItem>
+                                 <SelectItem Value="49">Чериковский</SelectItem>
                              </SelectGroup>
                              <SelectGroup Label="Могилевский (1924-1930)">
-                                 <SelectItem Value="18">Белыничский  </SelectItem>
-                                 <SelectItem Value="18">Березинский </SelectItem>
-                                 <SelectItem Value="18">Борисовский </SelectItem>
-                                 <SelectItem Value="18">Журовичский  </SelectItem>
-                                 <SelectItem Value="18">Кастюковичский  </SelectItem>
-                                 <SelectItem Value="18">Климовичский  </SelectItem>
-                                 <SelectItem Value="18">Кормянский  </SelectItem>
-                                 <SelectItem Value="18">Краснопольский  </SelectItem>
-                                 <SelectItem Value="18">Кричевский  </SelectItem>
-                                 <SelectItem Value="18">Луполовский   </SelectItem>
-                                 <SelectItem Value="18">Милославичский   </SelectItem>
-                                 <SelectItem Value="18">Могилевский   </SelectItem>
-                                 <SelectItem Value="18">Пропойский   </SelectItem>
-                                 <SelectItem Value="18">Хотимский   </SelectItem>
-                                 <SelectItem Value="18">Чаусский   </SelectItem>
-                                 <SelectItem Value="18">Чериковский    </SelectItem>
-                                 <SelectItem Value="18">Чечевичский    </SelectItem>
-                                 <SelectItem Value="18">Шкловский    </SelectItem>
+                                 <SelectItem Value="50">Белыничский</SelectItem>
+                                 <SelectItem Value="51">Березинский</SelectItem>
+                                 <SelectItem Value="52">Борисовский</SelectItem>
+                                 <SelectItem Value="53">Журовичский</SelectItem>
+                                 <SelectItem Value="54">Кастюковичский</SelectItem>
+                                 <SelectItem Value="55">Климовичский</SelectItem>
+                                 <SelectItem Value="56">Кормянский</SelectItem>
+                                 <SelectItem Value="57">Краснопольский</SelectItem>
+                                 <SelectItem Value="58">Кричевский</SelectItem>
+                                 <SelectItem Value="59">Луполовский</SelectItem>
+                                 <SelectItem Value="60">Милославичский</SelectItem>
+                                 <SelectItem Value="61">Могилевский</SelectItem>
+                                 <SelectItem Value="62">Пропойский</SelectItem>
+                                 <SelectItem Value="63">Хотимский</SelectItem>
+                                 <SelectItem Value="64">Чаусский</SelectItem>
+                                 <SelectItem Value="65">Чериковский</SelectItem>
+                                 <SelectItem Value="66">Чечевичский</SelectItem>
+                                 <SelectItem Value="67">Шкловский</SelectItem>
                              </SelectGroup>
                              <SelectGroup Label="Минский (1924-1930)">
-                                 <SelectItem Value="18">Бегомльский</SelectItem>
-                                 <SelectItem Value="18">Березинский</SelectItem>
-                                 <SelectItem Value="18">Борисовский</SelectItem>
-                                 <SelectItem Value="18">Гресский</SelectItem>
-                                 <SelectItem Value="18">Койдановский</SelectItem>
-                                 <SelectItem Value="18">Зембинский</SelectItem>
-                                 <SelectItem Value="18">Койдановский</SelectItem>
-                                 <SelectItem Value="18">Копыльский</SelectItem>
-                                 <SelectItem Value="18">Острошицко-Городокский</SelectItem>
-                                 <SelectItem Value="18">Плещеницкий</SelectItem>
-                                 <SelectItem Value="18">Пуховичский</SelectItem>
-                                 <SelectItem Value="18">Самохваловичский</SelectItem>
-                                 <SelectItem Value="18">Смиловичский</SelectItem>
-                                 <SelectItem Value="18">Смолевичский</SelectItem>
-                                 <SelectItem Value="18">Узденский</SelectItem>
-                                 <SelectItem Value="18">Червенский</SelectItem>
-                                 <SelectItem Value="18">Холопеничский</SelectItem>
-                                 <SelectItem Value="18">Шацкий</SelectItem>
+                                 <SelectItem Value="68">Бегомльский</SelectItem>
+                                 <SelectItem Value="69">Березинский</SelectItem>
+                                 <SelectItem Value="70">Борисовский</SelectItem>
+                                 <SelectItem Value="71">Гресский</SelectItem>
+                                 <SelectItem Value="72">Койдановский</SelectItem>
+                                 <SelectItem Value="73">Зембинский</SelectItem>
+                                 <SelectItem Value="74">Койдановский</SelectItem>
+                                 <SelectItem Value="74">Копыльский</SelectItem>
+                                 <SelectItem Value="76">Острошицко-Городокский</SelectItem>
+                                 <SelectItem Value="77">Плещеницкий</SelectItem>
+                                 <SelectItem Value="78">Пуховичский</SelectItem>
+                                 <SelectItem Value="79">Самохваловичский</SelectItem>
+                                 <SelectItem Value="80">Смиловичский</SelectItem>
+                                 <SelectItem Value="81">Смолевичский</SelectItem>
+                                 <SelectItem Value="82">Узденский</SelectItem>
+                                 <SelectItem Value="83">Червенский</SelectItem>
+                                 <SelectItem Value="84">Холопеничский</SelectItem>
+                                 <SelectItem Value="85">Шацкий</SelectItem>
                              </SelectGroup>
                              <SelectGroup Label="Оршанский (1924-1930)">
-                                 <SelectItem Value="18">Богушевский</SelectItem>
-                                 <SelectItem Value="18">Горецкий</SelectItem>
-                                 <SelectItem Value="18">Дрибинский</SelectItem>
-                                 <SelectItem Value="18">Дубровенский</SelectItem>
-                                 <SelectItem Value="18">Копысский</SelectItem>
-                                 <SelectItem Value="18">Кохановский</SelectItem>
-                                 <SelectItem Value="18">Круглянский</SelectItem>
-                                 <SelectItem Value="18">Лядненский</SelectItem>
-                                 <SelectItem Value="18">Мстиславский</SelectItem>
-                                 <SelectItem Value="18">Оршанский</SelectItem>
-                                 <SelectItem Value="18">Расненский</SelectItem>
-                                 <SelectItem Value="18">Толочинский</SelectItem>
+                                 <SelectItem Value="86">Богушевский</SelectItem>
+                                 <SelectItem Value="87">Горецкий</SelectItem>
+                                 <SelectItem Value="88">Дрибинский</SelectItem>
+                                 <SelectItem Value="89">Дубровенский</SelectItem>
+                                 <SelectItem Value="90">Копысский</SelectItem>
+                                 <SelectItem Value="91">Кохановский</SelectItem>
+                                 <SelectItem Value="92">Круглянский</SelectItem>
+                                 <SelectItem Value="93">Лядненский</SelectItem>
+                                 <SelectItem Value="94">Мстиславский</SelectItem>
+                                 <SelectItem Value="95">Оршанский</SelectItem>
+                                 <SelectItem Value="96">Расненский</SelectItem>
+                                 <SelectItem Value="97">Толочинский</SelectItem>
                              </SelectGroup>
                              <SelectGroup Label="Полоцкий (1924-1930)">
-                                 <SelectItem Value="18">Ветринский</SelectItem>
-                                 <SelectItem Value="18">Волынецкий</SelectItem>
-                                 <SelectItem Value="18">Борковичский</SelectItem>
+                                 <SelectItem Value="98">Ветринский</SelectItem>
+                                 <SelectItem Value="99">Волынецкий</SelectItem>
+                                 <SelectItem Value="100">Борковичский</SelectItem>
                                  <SelectItem Value="18">Дретунский</SelectItem>
-                                 <SelectItem Value="18">Краснопольский</SelectItem>
-                                 <SelectItem Value="18">Дриссенский</SelectItem>
-                                 <SelectItem Value="18">Освейский</SelectItem>
-                                 <SelectItem Value="18">Полоцкий</SelectItem>
-                                 <SelectItem Value="18">Россонский</SelectItem>
-                                 <SelectItem Value="18">Улльский</SelectItem>
-                                 <SelectItem Value="18">Ушачский</SelectItem>
+                                 <SelectItem Value="101">Краснопольский</SelectItem>
+                                 <SelectItem Value="102">Дриссенский</SelectItem>
+                                 <SelectItem Value="103">Освейский</SelectItem>
+                                 <SelectItem Value="104">Полоцкий</SelectItem>
+                                 <SelectItem Value="105">Россонский</SelectItem>
+                                 <SelectItem Value="106">Улльский</SelectItem>
+                                 <SelectItem Value="107">Ушачский</SelectItem>
                              </SelectGroup>
                              <SelectGroup Label="Слуцкий (1924-1927)">
-                                 <SelectItem Value="18">Гресский</SelectItem>
-                                 <SelectItem Value="18">Копыльский</SelectItem>
-                                 <SelectItem Value="18">Краснослободский</SelectItem>
-                                 <SelectItem Value="18">Любанский</SelectItem>
-                                 <SelectItem Value="18">Слуцкий</SelectItem>
-                                 <SelectItem Value="18">Стародорожский</SelectItem>
-                                 <SelectItem Value="18">Плещеницкий</SelectItem>
-                                 <SelectItem Value="18">Старобинский</SelectItem>
+                                 <SelectItem Value="108">Гресский</SelectItem>
+                                 <SelectItem Value="109">Копыльский</SelectItem>
+                                 <SelectItem Value="110">Краснослободский</SelectItem>
+                                 <SelectItem Value="111">Любанский</SelectItem>
+                                 <SelectItem Value="112">Слуцкий</SelectItem>
+                                 <SelectItem Value="113">Стародорожский</SelectItem>
+                                 <SelectItem Value="114">Плещеницкий</SelectItem>
+                                 <SelectItem Value="115">Старобинский</SelectItem>
                              </SelectGroup>
                              <SelectGroup Label="Гомельский (1926-1930) ">
-                                 <SelectItem Value="18">Брагинский</SelectItem>
-                                 <SelectItem Value="18">Буда-Кошелевский</SelectItem>
-                                 <SelectItem Value="18">Ветковский</SelectItem>
-                                 <SelectItem Value="18">Гомельский</SelectItem>
-                                 <SelectItem Value="18">Дятловичский</SelectItem>
-                                 <SelectItem Value="18">Добрушский</SelectItem>
-                                 <SelectItem Value="18">Краснобудский</SelectItem>
-                                 <SelectItem Value="18">Носовичский</SelectItem>
-                                 <SelectItem Value="18">Светиловичский</SelectItem>
-                                 <SelectItem Value="18">Уваровичский</SelectItem>
-                                 <SelectItem Value="18">Чечерский</SelectItem>
-                                 <SelectItem Value="18">Брагинский</SelectItem>
-                                 <SelectItem Value="18">Комаринский</SelectItem>
-                                 <SelectItem Value="18">Лоевский</SelectItem>
-                                 <SelectItem Value="18">Речицкий</SelectItem>
-                                 <SelectItem Value="18">Хойникский</SelectItem>
-                                 <SelectItem Value="18">Тереховский</SelectItem>
-                                 <SelectItem Value="18">Буда-Кошелевский</SelectItem>
+                                 <SelectItem Value="116">Брагинский</SelectItem>
+                                 <SelectItem Value="117">Буда-Кошелевский</SelectItem>
+                                 <SelectItem Value="118">Ветковский</SelectItem>
+                                 <SelectItem Value="119">Гомельский</SelectItem>
+                                 <SelectItem Value="120">Дятловичский</SelectItem>
+                                 <SelectItem Value="121">Добрушский</SelectItem>
+                                 <SelectItem Value="122">Краснобудский</SelectItem>
+                                 <SelectItem Value="123">Носовичский</SelectItem>
+                                 <SelectItem Value="124">Светиловичский</SelectItem>
+                                 <SelectItem Value="124">Уваровичский</SelectItem>
+                                 <SelectItem Value="125">Чечерский</SelectItem>
+                                 <SelectItem Value="126">Брагинский</SelectItem>
+                                 <SelectItem Value="127">Комаринский</SelectItem>
+                                 <SelectItem Value="128">Лоевский</SelectItem>
+                                 <SelectItem Value="129">Речицкий</SelectItem>
+                                 <SelectItem Value="130">Хойникский</SelectItem>
+                                 <SelectItem Value="131">Тереховский</SelectItem>
+                                 <SelectItem Value="132">Буда-Кошелевский</SelectItem>
                              </SelectGroup>
                              <SelectGroup Label="Речицкий (1926-1927)">
-                                 <SelectItem Value="18">Брагинский</SelectItem>
-                                 <SelectItem Value="18">Василевичский</SelectItem>
-                                 <SelectItem Value="18">Горвальский</SelectItem>
-                                 <SelectItem Value="18">Комаринский</SelectItem>
-                                 <SelectItem Value="18">Лоевский</SelectItem>
-                                 <SelectItem Value="18">Речицкий</SelectItem>
-                                 <SelectItem Value="18">Хойникский</SelectItem>
-                                 <SelectItem Value="18">Холмечский</SelectItem>
-                                 <SelectItem Value="18">Юровичский</SelectItem>
+                                 <SelectItem Value="133">Брагинский</SelectItem>
+                                 <SelectItem Value="134">Василевичский</SelectItem>
+                                 <SelectItem Value="35">Горвальский</SelectItem>
+                                 <SelectItem Value="36">Комаринский</SelectItem>
+                                 <SelectItem Value="37">Лоевский</SelectItem>
+                                 <SelectItem Value="138">Речицкий</SelectItem>
+                                 <SelectItem Value="139">Хойникский</SelectItem>
+                                 <SelectItem Value="140">Холмечский</SelectItem>
+                                 <SelectItem Value="141">Юровичский</SelectItem>
                              </SelectGroup>
                          </Select>
                      </div>
 
-                         <div style="height: 200px;">
+                         <div style="height: 200px; margin-top: 20px;">
                          <OSMap Click="@MapClickEvent" CenterMap="@defPosition" />
                      </div>
 
@@ -380,6 +380,20 @@
          </div>
      </div>
  </div>
+
+<link rel="stylesheet" href="css/select.css"/>
+
+<script>
+    $(".default_option").click(function(){
+        $(this).parent().toggleClass("active");
+    })
+
+    $(".select_ul li").click(function(){
+        var currentele = $(this).html();
+        $(".default_option li").html(currentele);
+        $(this).parents(".select_wrap").removeClass("active");
+    })
+</script>
  
 @code {
     public MapPosition position;
@@ -579,6 +593,430 @@
                     break;
                 case 4:
                     _temple.Oriention.Oriention = "Сергиевская"; 
+                    break;
+            }
+
+            switch (selectedDistrict)
+            {
+                case 1:
+                    _temple.District = "Бобруйский";
+                    break;
+                case 2:
+                    _temple.District = "Бобруйский 1-й";
+                    break;
+                case 3:
+                    _temple.District = "Бобруйский 2-й";
+                    break;
+                case 4:
+                    _temple.District = "Буда-Кошелевский";
+                    break;
+                case 5:
+                    _temple.District = "Городецкий";
+                    break;
+                case 6:
+                    _temple.District = "Глусский";
+                    break;
+                case 7:
+                    _temple.District = "Жлобинский";
+                    break;
+                case 8:
+                    _temple.District = "Кличевский";
+                    break;
+                case 9:
+                    _temple.District = "Краснослободский";
+                    break;
+                case 10:
+                _temple.District = "Любанский";
+                    break;
+                case 11:
+                    _temple.District = "Осиповичский";
+                    break;
+                case 12:
+                    _temple.District = "Паричский";
+                    break;
+                case 13:
+                _temple.District = "Рогачевский";
+                    break;
+                case 14:
+                    _temple.District = "Свислочский";
+                    break;
+                case 15:
+                    _temple.District = "Слуцкий";
+                    break;
+                case 16:
+                _temple.District = "Старобинский";
+                    break;
+                case 17:
+                _temple.District = "Стародорожский";
+                    break;
+                case 18:
+                _temple.District = "Стрешинский";
+                    break;
+                case 19:
+                _temple.District = "Бегомльский";
+                    break;
+                case 20:
+                _temple.District = "Березинский";
+                    break;
+                case 21:
+                _temple.District = "Борисовский";
+                    break;
+                case 22:
+                    _temple.District = "Зембинский";
+                    break;
+                case 23:
+                _temple.District = "Крупский";
+                    break;
+                case 24:
+                    _temple.District = "Лепельский";
+                    break;
+                case 25:
+                    _temple.District = "Плещеницкий";
+                    break;
+                case 26:
+                _temple.District = "Холопеничский";
+                    break;
+                case 27:
+                    _temple.District = "Черейский";
+                    break;
+                case 28:
+                _temple.District = "Бешенковичский";
+                    break;
+                case 29:
+                    _temple.District = "Витебский";
+                    break;
+                case 30:
+                    _temple.District = "Высочанский";
+                    break;
+                case 31:
+                    _temple.District = "Городокский";
+                    break;
+                case 32:
+                    _temple.District = "Езерищенский";
+                    break;
+                case 33:
+                    _temple.District = "Лиозненский";
+                    break;
+                case 34:
+                    _temple.District = "Кузнецовский";
+                    break;
+                case 35:
+                    _temple.District = "Межанский";
+                    break;
+                case 36:
+                    _temple.District = "Сенненский";
+                    break;
+                case 37:
+                    _temple.District = "Сиротинский";
+                    break;
+                case 38:
+                    _temple.District = "Суражский";
+                    break;
+                case 39:
+                _temple.District = "Чашникский";
+                    break;
+                case 40:
+                    _temple.District = "Белынковичский";
+                    break;
+                case 41:
+                    _temple.District = "Климовичский";
+                    break;
+                case 42:
+                _temple.District = "Кастюковичский";
+                    break;
+                case 43:
+                    _temple.District = "Краснопольский";
+                    break;
+                case 44:
+                    _temple.District = "Кричевский";
+                    break;
+                case 45:
+                _temple.District = "Милославичский";
+                    break;
+                case 46:
+                _temple.District = "Мстиславский";
+                    break;
+                case 47:
+                _temple.District = "Расненский";
+                    break;
+                case 48:
+                _temple.District = "Хотимский";
+                    break;
+                case 49:
+                _temple.District = "Чериковский";
+                    break;
+                case 50:
+                _temple.District = "Белыничский";
+                    break;
+                case 51:
+                    _temple.District = "Березинский";
+                    break;
+                case 52:
+                _temple.District = "Борисовский";
+                    break;
+                case 53:
+                    _temple.District = "Журовичский";
+                    break;
+                case 54:
+                    _temple.District = "Кастюковичский";
+                    break;
+                case 55:
+                _temple.District = "Климовичский";
+                    break;
+                case 56:
+                    _temple.District = "Кормянский";
+                    break;
+                case 57:
+                _temple.District = "Краснопольский";
+                    break;
+                case 58:
+                    _temple.District = "Кричевский";
+                    break;
+                case 59:
+                    _temple.District = "Луполовский";
+                    break;
+                case 60:
+                    _temple.District = "Милославичский";
+                    break;
+                case 61:
+                    _temple.District = "Могилевский";
+                    break;
+                case 62:
+                    _temple.District = "Пропойский";
+                    break;
+                case 63:
+                    _temple.District = "Хотимский";
+                    break;
+                case 64:
+                    _temple.District = "Чаусский";
+                    break;
+                case 65:
+                    _temple.District = "Чериковский";
+                    break;
+                case 66:
+                    _temple.District = "Чечевичский";
+                    break;
+                case 67:
+                    _temple.District = "Шкловский";
+                    break;
+                case 68:
+                    _temple.District = "Бегомльский";
+                    break;
+                case 69:
+                _temple.District = "Березинский";
+                    break;
+                case 70:
+                    _temple.District = "Борисовский";
+                    break;
+                case 71:
+                    _temple.District = "Гресский";
+                    break;
+                case 72:
+                _temple.District = "Койдановский";
+                    break;
+                case 73:
+                    _temple.District = "Зембинский";
+                    break;
+                case 74:
+                    _temple.District = "Койдановский";
+                    break;
+                case 75:
+                _temple.District = "Копыльский";
+                    break;
+                case 76:
+                _temple.District = "Острошицко-Городокский";
+                    break;
+                case 77:
+                _temple.District = "Плещеницкий";
+                    break;
+                case 78:
+                _temple.District = "Пуховичский";
+                    break;
+                case 79:
+                _temple.District = "Самохваловичский";
+                    break;
+                case 80:
+                _temple.District = "Смиловичский";
+                    break;
+                case 81:
+                    _temple.District = "Смолевичский";
+                    break;
+                case 82:
+                _temple.District = "Узденский";
+                    break;
+                case 83:
+                    _temple.District = "Червенский";
+                    break;
+                case 84:
+                    _temple.District = "Холопеничский";
+                    break;
+                case 85:
+                _temple.District = "Шацкий";
+                    break;
+                case 86:
+                    _temple.District = "Богушевский";
+                    break;
+                case 87:
+                _temple.District = "Горецкий";
+                    break;
+                case 88:
+                    _temple.District = "Дрибинский";
+                    break;
+                case 89:
+                    _temple.District = "Дубровенский";
+                    break;
+                case 90:
+                    _temple.District = "Копысский";
+                    break;
+                case 91:
+                    _temple.District = "Кохановский";
+                    break;
+                case 92:
+                    _temple.District = "Круглянский";
+                    break;
+                case 93:
+                    _temple.District = "Лядненский";
+                    break;
+                case 94:
+                    _temple.District = "Мстиславский";
+                    break;
+                case 95:
+                    _temple.District = "Оршанский";
+                    break;
+                case 96:
+                    _temple.District = "Расненский";
+                    break;
+                case 97:
+                    _temple.District = "Толочинский";
+                    break;
+                case 98:
+                    _temple.District = "Ветринский";
+                    break;
+                case 99:
+                _temple.District = "Волынецкий";
+                    break;
+                case 100:
+                    _temple.District = "Борковичский";
+                    break;
+                case 101:
+                    _temple.District = "Дретунский";
+                    break;
+                case 102:
+                _temple.District = "Краснопольский";
+                    break;
+                case 103:
+                    _temple.District = "Дриссенский";
+                    break;
+                case 104:
+                    _temple.District = "Освейский";
+                    break;
+                case 105:
+                _temple.District = "Полоцкий";
+                    break;
+                case 106:
+                _temple.District = "Россонский";
+                    break;
+                case 107:
+                _temple.District = "Улльский";
+                    break;
+                case 108:
+                _temple.District = "Ушачский"; //todo я тут накосячил и ненмного сместилось(я заебался)
+                    break;
+                case 109:
+                _temple.District = "";
+                    break;
+                case 110:
+                _temple.District = "";
+                    break;
+                case 111:
+                    _temple.District = "";
+                    break;
+                case 112:
+                _temple.District = "";
+                    break;
+                case 113:
+                    _temple.District = "";
+                    break;
+                case 114:
+                    _temple.District = "";
+                    break;
+                case 115:
+                _temple.District = "";
+                    break;
+                case 116:
+                    _temple.District = "";
+                    break;
+                case 117:
+                _temple.District = "";
+                    break;
+                case 118:
+                    _temple.District = "";
+                    break;
+                case 119:
+                    _temple.District = "";
+                    break;
+                case 120:
+                    _temple.District = "";
+                    break;
+                case 121:
+                    _temple.District = "";
+                    break;
+                case 122:
+                    _temple.District = "";
+                    break;
+                case 123:
+                    _temple.District = "";
+                    break;
+                case 124:
+                    _temple.District = "";
+                    break;
+                case 125:
+                    _temple.District = "";
+                    break;
+                case 126:
+                    _temple.District = "";
+                    break;
+                case 127:
+                    _temple.District = "";
+                    break;
+                case 128:
+                    _temple.District = "";
+                    break;
+                case 129:
+                    _temple.District = "";
+                    break;
+                case 130:
+                    _temple.District = "";
+                    break;
+                case 131:
+                    _temple.District = "";
+                    break;
+                case 132:
+                    _temple.District = "";
+                    break;
+                case 133:
+                    _temple.District = "";
+                    break;
+                case 134:
+                    _temple.District = "";
+                    break;
+                case 135:
+                    _temple.District = "";
+                    break;
+                case 136:
+                    _temple.District = "";
+                    break;
+                case 137:
+                    _temple.District = "";
+                    break;
+                case 138:
+                    _temple.District = "";
+                    break;
+                case 139:
+                    _temple.District = "";
+                    break;
+                case 141:
+                    _temple.District = "";
                     break;
             }
 
