@@ -30,7 +30,7 @@ public class Temple
     
     public string OrientationDiocesse { get; set; }
     
-    public string Diocesse { get; set; }
+    //public string Diocesse { get; set; }
     
     public string Province { get; set; } // Губернии и уезды
     

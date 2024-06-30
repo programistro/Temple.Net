@@ -43,6 +43,13 @@ public class Parsonalion
     
     public string Source { get; set; }
     
+    /// <summary>
+    ///  место рождения
+    /// </summary>
+    public string Place1Births { get; set; }
+    
+    public string LVLEducation { get; set; }
+    
     public string Photo { get; set; }
     
     public string File { get; set; } 

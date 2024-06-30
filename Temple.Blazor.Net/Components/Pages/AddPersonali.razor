@@ -14,242 +14,309 @@
 </head>
 
 <div class="row">
-    <div class="col-lg-10 col-xl-9 mx-auto">
-        <div class="card flex-row my-5 border-0 shadow rounded-3 overflow-hidden">
-            <div class="card-body p-4 p-sm-5">
-                <h5 class="card-title text-center mb-3 fw-light fs-5">Добавить персоналии</h5>
-                <EditForm Model="@_parsonalion" OnSubmit="Sumbit">
-                    <div class="form-floating mb-2">
-                        <input type="text" class="form-control" @bind-value="_parsonalion.LastName">
-                        <label>Фамилия</label>
-                    </div>
+<div class="col-lg-10 col-xl-9 mx-auto">
+<div class="card flex-row my-5 border-0 shadow rounded-3 overflow-hidden">
+<div class="card-body p-4 p-sm-5">
+<h5 class="card-title text-center mb-3 fw-light fs-5">Добавить персоналии</h5>
+<EditForm Model="@_parsonalion" OnSubmit="Sumbit">
+<div class="form-floating mb-2">
+    <input type="text" class="form-control" @bind-value="_parsonalion.LastName">
+    <label>Фамилия</label>
+</div>
 
-                    <div class="form-floating mb-2">
-                        <input type="text" class="form-control" @bind-value="_parsonalion.Name">
-                        <label>Имя</label>
-                    </div>
+<div class="form-floating mb-2">
+    <input type="text" class="form-control" @bind-value="_parsonalion.Name">
+    <label>Имя</label>
+</div>
 
-                    <div class="form-floating mb-2">
-                        <input type="text" class="form-control" @bind-value="_parsonalion.Otch">
-                        <label>Отчество</label>
-                    </div>
+<div class="form-floating mb-2">
+    <input type="text" class="form-control" @bind-value="_parsonalion.Otch">
+    <label>Отчество</label>
+</div>
 
-                    <div class="form-floating mb-2">
-                        <input class="form-control" @bind-value="_parsonalion.MonaxName">
-                        <label>Монашеское имя</label>
-                    </div>
+<div class="form-floating mb-2">
+    <input class="form-control" @bind-value="_parsonalion.MonaxName">
+    <label>Монашеское имя</label>
+</div>
 
-                    <div style="margin-top: 10px; margin-bottom: 10px;">
-                        <DatePicker TValue="DateTime?" InputFormat="yyy" DisplayFormat="yyyy" InputMode="DateInputMode.Date" Placeholder="Год рождения" @bind-Date="_parsonalion.Born"/>
-                    </div>
+<div style="margin-top: 10px; margin-bottom: 10px;">
+    <DatePicker TValue="DateTime?" InputFormat="dd.MM.yyyy" DisplayFormat="dd.MM.yyyy" InputMode="DateInputMode.Date" Placeholder="Год рождения" @bind-Date="_parsonalion.Born"/>
+</div>
 
-                    <div style="margin-top: 10px; margin-bottom: 10px;">
-                        <DatePicker TValue="DateTime?" InputFormat="yyy" DisplayFormat="yyyy" Placeholder="Год смерти" @bind-Date="_parsonalion.Death"/>
-                    </div>
-
-                    <div class="form-floating mb-2">
-                        <input class="form-control" @bind-value="_parsonalion.PlaceOfDeath">
-                        <label>Место смерти</label>
-                    </div>
+<div style="margin-top: 10px; margin-bottom: 10px;">
+    <DatePicker TValue="DateTime?" InputFormat="dd.MM.yyyy" DisplayFormat="dd.MM.yyyy" Placeholder="Год смерти" @bind-Date="_parsonalion.Death"/>
+</div>
                     
-                    <br/>
+                
 
-                    <div>
-                        <h3 class="card-title text-center mb-3 fw-light fs-5">Образование</h3>
+<div class="form-floating mb-2">
+    <input class="form-control" @bind-value="_parsonalion.PlaceOfDeath">
+    <label>Место смерти</label>
+</div>
 
-                        <div>
-                            <div style="margin-top: 10px; margin-bottom: 10px;">
-                                <DatePicker TValue="DateTime?" InputFormat="yyy" DisplayFormat="yyyy" Placeholder="Год поступление" @bind-Date="_parsonalion.Education.YearAdmission"/>
-                            </div>
+<div class="form-floating mb-2">
+    <input class="form-control" @bind-value="_parsonalion.Place1Births">
+    <label>Место рождения</label>
+</div>
 
-                            <div class="form-floating mb-2">
-                                <input class="form-control" @bind-value="_parsonalion.Education.Institution">
-                                <label>Учреждение образования</label>
-                            </div>
+<Select TValue="int" @bind-SelectedValue="@selectedNation" class="form-control js-example-basic-single">
+    <SelectItem Value="1">Белорус</SelectItem>
+    <SelectItem Value="2">Русский</SelectItem>
+    <SelectItem Value="3">Украинец</SelectItem>
+</Select>
 
-                            <div style="margin-top: 10px; margin-bottom: 10px;">
-                                <DatePicker TValue="DateTime?" InputFormat="yyy" DisplayFormat="yyyy" Placeholder="Год выпуска" @bind-Date="_parsonalion.Education.YearOfRease"/>
-                            </div>
-                        </div>
-                    </div>
+<Select TValue="int" @bind-SelectedValue="@selectedSocial" class="form-control js-example-basic-single">
+    <SelectItem Value="1">Из крестьян</SelectItem>
+    <SelectItem Value="2">Из мещан</SelectItem>
+    <SelectItem Value="3">Из духовенства</SelectItem>
+    <SelectItem Value="4">Из служащих</SelectItem>
+    <SelectItem Value="5">Из дворян</SelectItem>
+</Select>
+                    
+<br/>
 
-                    <div>
-                        <h3 class="card-title text-center mb-3 fw-light fs-5">Меры государственного воздействия</h3>
+<div>
+    <h3 class="card-title text-center mb-3 fw-light fs-5">Образование</h3>
 
-                        <div>
-                            <div style="margin-top: 10px; margin-bottom: 10px;">
-                                <DatePicker TValue="DateTime?" InputFormat="yyy" DisplayFormat="yyyy" Placeholder="Год ареста" @bind-Date="_parsonalion.State.YearArrest"/>
-                            </div>
+    <div>
+        <div style="margin-top: 10px; margin-bottom: 10px;">
+            <DatePicker TValue="DateTime?" InputFormat="dd.MM.yyyy" DisplayFormat="dd.MM.yyyy" Placeholder="Год поступление" @bind-Date="_parsonalion.Education.YearAdmission"/>
+        </div>
 
-                            <div class="form-floating mb-2">
-                                <input class="form-control" @bind-value="_parsonalion.State.Verdict">
-                                <label>Приговор</label>
-                            </div>
+        <div class="form-floating mb-2">
+            <input class="form-control" @bind-value="_parsonalion.Education.Institution">
+            <label>Учреждение образования</label>
+        </div>
 
-                            <div style="margin-top: 10px; margin-bottom: 10px;">
-                                <DatePicker TValue="DateTime?" InputFormat="yyy" DisplayFormat="yyyy" Placeholder="Год приговора" @bind-Date="_parsonalion.State.YearSentence"/>
-                            </div>
+        <h4 class="card-title text-center mb-3 fw-light fs-5">Уровень образования</h4>
                             
-                            <div style="margin-top: 10px; margin-bottom: 10px;">
-                                <DatePicker TValue="DateTime?" InputFormat="yyy" DisplayFormat="yyyy" Placeholder="Год реабелитации" @bind-Date="_parsonalion.State.YearRehabilitation"/>
-                            </div>
+        <div>
+            <Select TValue="int" @bind-SelectedValue="@selectedLVLEductaion" class="form-control js-example-basic-single">
+                <SelectItem Value="1">Высшее</SelectItem>
+                <SelectItem Value="2">Среднее</SelectItem>
+                <SelectItem Value="3">Неполное-среднее</SelectItem>
+                <SelectItem Value="4">Начальное</SelectItem>
+            </Select>
+        </div>
 
-                            <div class="form-floating mb-2">
-                                <input class="form-control" @bind-value="_parsonalion.State.Rehabilitaion">
-                                <label>Реабилитирующий орган</label>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div>
-                        <h3 class="card-title text-center mb-3 fw-light fs-5">Национальность</h3>
-
-                        <Select TValue="int" @bind-SelectedValue="@selectedNation">
-                            <SelectItem Value="1">Белорус</SelectItem>
-                            <SelectItem Value="2">Русский</SelectItem>
-                            <SelectItem Value="3">Украинец</SelectItem>
-                        </Select>
-                    </div>
-
-                    <div>
-                        <h3 class="card-title text-center mb-3 fw-light fs-5">Социальное положение</h3>
-
-                        <Select TValue="int" @bind-SelectedValue="@selectedSocial">
-                            <SelectItem Value="1">Из крестьян</SelectItem>
-                            <SelectItem Value="2">Из мещан</SelectItem>
-                            <SelectItem Value="3">Из духовенства</SelectItem>
-                            <SelectItem Value="4">Из служащих</SelectItem>
-                            <SelectItem Value="5">Из дворян</SelectItem>
-                        </Select>
-                    </div>
-                    
-                    <div>
-                        <h3 class="card-title text-center mb-3 fw-light fs-5">Церковная ориентация</h3>
-
-                        <div>
-                            <div style="margin-top: 10px; margin-bottom: 10px;">
-                                <DatePicker TValue="DateTime?" InputFormat="yyy" DisplayFormat="yyyy" Placeholder="Год отпадения" @bind-Date="_parsonalion.Oriention.YearFall"/>
-                            </div>
-
-                            <div class="form-floating mb-2">
-                                <input class="form-control" @bind-value="_parsonalion.Oriention.Oriention">
-                                <label>Церковная ориентация</label>
-                            </div>
-                            
-                            <div style="margin-top: 10px; margin-bottom: 10px;">
-                                <DatePicker TValue="DateTime?" InputFormat="yyy" DisplayFormat="yyyy" Placeholder="Год возрата" @bind-Date="_parsonalion.Oriention.YearRefund"/>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div>
-                        <h3 class="card-title text-center mb-3 fw-light fs-5">Сан</h3>
-
-                        <div>
-                            <div style="margin-top: 10px; margin-bottom: 10px;">
-                                <DatePicker TValue="DateTime?" InputFormat="yyy" DisplayFormat="yyyy" Placeholder="Год снятия сана" @bind-Date="_parsonalion.Sun.YearDefrock"/>
-                            </div>
-
-                            <Select TValue="int" @bind-SelectedValue="@selectedSunName">
-                                <SelectItem Value="1">Архидиакон</SelectItem>
-                                <SelectItem Value="2">Архиепископ</SelectItem>
-                                <SelectItem Value="3">Диаког</SelectItem>
-                                <SelectItem Value="4">Епископ</SelectItem>
-                                <SelectItem Value="5">Игумен</SelectItem>
-                                <SelectItem Value="6">Иеродиакон</SelectItem>
-                                <SelectItem Value="7">Иеромонах</SelectItem>
-                                <SelectItem Value="8">Митрополит</SelectItem>
-                                <SelectItem Value="9">Монах</SelectItem>
-                                <SelectItem Value="10">Пономарь</SelectItem>
-                                <SelectItem Value="11">Послушник</SelectItem>
-                                <SelectItem Value="12">Причетник</SelectItem>
-                                <SelectItem Value="13">Протодиакон</SelectItem>
-                                <SelectItem Value="14">Протоиерей</SelectItem>
-                                <SelectItem Value="15">Протопресвитер</SelectItem>
-                                <SelectItem Value="16">Псаломщик</SelectItem>
-                                <SelectItem Value="17">Священник</SelectItem>
-                            </Select>
-
-                            <div style="margin-top: 10px; margin-bottom: 10px;">
-                                <DatePicker TValue="DateTime?" InputFormat="yyy" DisplayFormat="yyyy" Placeholder="Год рукоположения" @bind-Date="_parsonalion.Sun.YearOrdinations"/>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div>
-                        <h3 class="card-title text-center mb-3 fw-light fs-5">Награды</h3>
-
-                        <div>
-                            <div style="margin-top: 10px; margin-bottom: 10px;">
-                                <DatePicker TValue="DateTime?" InputFormat="yyy" DisplayFormat="yyyy" Placeholder="Год награждения" @bind-Date="_parsonalion.Award.YearAward"/>
-                            </div>
-
-                            <Select TValue="int" @bind-SelectedValue="@selectedAward">
-                                <SelectItem Value="1">Набедренник</SelectItem>
-                                <SelectItem Value="2">Камилавка фиолетового цвета</SelectItem>
-                                <SelectItem Value="3">Наперсный крест</SelectItem>
-                                <SelectItem Value="4">Палица</SelectItem>
-                                <SelectItem Value="5">Крест с украшениями</SelectItem>
-                                <SelectItem Value="6">Служение Божественной литургии с отверстыми Царскими вратами до Херувимской песни</SelectItem>
-                                <SelectItem Value="7">Служение Божественной литургии с отверстыми Царскими Вратами до "Отче наш"</SelectItem>
-                                <SelectItem Value="8">Митра</SelectItem>
-                                <SelectItem Value="9">Право ношения второго наперсного креста с украшениями</SelectItem>
-                                <SelectItem Value="10">Патриарший наперстый крест</SelectItem>
-                                <SelectItem Value="11">Двойной орарь</SelectItem>
-                            </Select>
-                        </div>
-                    </div>
-
-                    <div style="margin-top: 10px; margin-bottom: 10px;">
-                        <DatePicker TValue="DateTime?" InputFormat="yyy" DisplayFormat="yyyy" Placeholder="Год упоминания" @bind-Date="_parsonalion.YearMention"/>
-                    </div>
-                    
-                    <div class="form-floating mb-2">
-                        <input class="form-control" @bind-value="_parsonalion.Note">
-                        <label>Примечание</label>
-                    </div>
-
-                    <div class="form-floating mb-2">
-                        <input class="form-control" @bind-value="_parsonalion.Source">
-                        <label>Источник информации (в виде библиографической записи)</label>
-                    </div>
-
-                    <div class="input-file-row">
-                        <label class="input-file">
-                            <InputFile OnChange="LoadPhoto" accept="image/*"/>
-                            <span>Выберите фотографию</span>
-                        </label>
-                        <div class="input-file-list"></div>
-                    </div>
-
-                    <div class="input-file-row">
-                        <label class="input-file">
-                            <InputFile OnChange="LoadFile"/>
-                            <span>Выберите файл</span>
-                        </label>
-                        <div class="input-file-list"></div>
-                    </div>
-                    
-                    <div class="d-grid mb-2">
-                        <button class="btn btn-lg btn-primary btn-login fw-bold text-uppercase" style="margin-top: 20px;" type="submit">Добавить</button>
-                    </div>
-                </EditForm>
-            </div>
+        <div style="margin-top: 10px; margin-bottom: 10px;">
+            <DatePicker TValue="DateTime?" InputFormat="dd.MM.yyyy" DisplayFormat="dd.MM.yyyy" Placeholder="Год выпуска" @bind-Date="_parsonalion.Education.YearOfRease"/>
         </div>
     </div>
+</div>
+
+<div>
+    <h3 class="card-title text-center mb-3 fw-light fs-5">Меры государственного воздействия</h3>
+
+    <div>
+        <div style="margin-top: 10px; margin-bottom: 10px;">
+            <DatePicker TValue="DateTime?" InputFormat="dd.MM.yyyy" DisplayFormat="dd.MM.yyyy" Placeholder="Год ареста" @bind-Date="_parsonalion.State.YearArrest"/>
+        </div>
+
+        @* <div class="form-floating mb-2"> *@
+        @*     <input class="form-control" @bind-value="_parsonalion.State.Verdict"> *@
+        @*     <label>Приговор</label> *@
+        @* </div> *@
+                            
+        <h4 class="card-title text-center mb-3 fw-light fs-5">Приговор</h4>
+                            
+        <div>
+            <Select TValue="int" @bind-SelectedValue="@selectedVerdict" class="form-control js-example-basic-single">
+                <SelectItem Value="1">10 лет тюремного заключения условно</SelectItem>
+                <SelectItem Value="2">15 лет тюремного заключения с применением общественных работ</SelectItem>
+                <SelectItem Value="3">1 год исправительных трудовых работ</SelectItem>
+                <SelectItem Value="4">1 год принудительных работ</SelectItem>
+                <SelectItem Value="5">2 год принудительных работ</SelectItem>
+                <SelectItem Value="6">2 года строгой изоляции</SelectItem>
+                <SelectItem Value="7">2 года тюрьмы с последующей ссылкой</SelectItem>
+                <SelectItem Value="8">3 года строгой изоляции</SelectItem>
+                <SelectItem Value="9">3 месяца принудительных работ</SelectItem>
+                <SelectItem Value="10">5 лет ИТЛ с высылкой семьи на Север</SelectItem>
+                <SelectItem Value="11">5 лет строгой изоляции</SelectItem>
+                <SelectItem Value="12">5 лет строгой изоляции с конфискацией имущества и 3 года поражения в гражданских правах</SelectItem>
+                <SelectItem Value="13">6 месяцев исправительных работ</SelectItem>
+                <SelectItem Value="14">6 месяцев принудительных работ</SelectItem>
+                <SelectItem Value="15">3 месяца принудительных работ</SelectItem>
+                <SelectItem Value="16">8 лет принудительных работ со строгой изоляцией и конфискацией имущества</SelectItem>
+                <SelectItem Value="17">Бессрочная административная высылка</SelectItem>
+                <SelectItem Value="18">Бессрочная ссылка</SelectItem>
+                <SelectItem Value="19">Бессрочное заключение в концлагерь с применением принудительных работ</SelectItem>
+                <SelectItem Value="20">Бессрочное тюремное заключение с тягчайшими принудительными работами без права свидания с родными</SelectItem>
+                <SelectItem Value="21">Высшая мера наказания (расстрел)</SelectItem>
+                <SelectItem Value="22">Высшая мера наказания (расстрел) с заменой на 10 лет заключения в ИТЛ</SelectItem>
+                <SelectItem Value="23">Высшая мера наказания (расстрел) с конфискацией имущества</SelectItem>
+                <SelectItem Value="24">Высылка</SelectItem>
+            </Select>
+        </div>
+
+        <div style="margin-top: 10px; margin-bottom: 10px;">
+            <DatePicker TValue="DateTime?" InputFormat="dd.MM.yyyy" DisplayFormat="dd.MM.yyyy" Placeholder="Год приговора" @bind-Date="_parsonalion.State.YearSentence"/>
+        </div>
+                            
+        <div style="margin-top: 10px; margin-bottom: 10px;">
+            <DatePicker TValue="DateTime?" InputFormat="dd.MM.yyyy" DisplayFormat="dd.MM.yyyy" Placeholder="Год реабелитации" @bind-Date="_parsonalion.State.YearRehabilitation"/>
+        </div>
+
+        <div class="form-floating mb-2">
+            <input class="form-control" @bind-value="_parsonalion.State.Rehabilitaion">
+            <label>Реабилитирующий орган</label>
+        </div>
+    </div>
+</div>
+
+@* <div> *@
+@*     <h3 class="card-title text-center mb-3 fw-light fs-5">Национальность</h3> *@
+@* *@
+@*     <Select TValue="int" @bind-SelectedValue="@selectedNation" class="form-control js-example-basic-single"> *@
+@*         <SelectItem Value="1">Белорус</SelectItem> *@
+@*         <SelectItem Value="2">Русский</SelectItem> *@
+@*         <SelectItem Value="3">Украинец</SelectItem> *@
+@*     </Select> *@
+@* </div> *@
+
+@* <div> *@
+@*     <h3 class="card-title text-center mb-3 fw-light fs-5">Социальное положение</h3> *@
+@* *@
+@*     <Select TValue="int" @bind-SelectedValue="@selectedSocial" class="form-control js-example-basic-single"> *@
+@*         <SelectItem Value="1">Из крестьян</SelectItem> *@
+@*         <SelectItem Value="2">Из мещан</SelectItem> *@
+@*         <SelectItem Value="3">Из духовенства</SelectItem> *@
+@*         <SelectItem Value="4">Из служащих</SelectItem> *@
+@*         <SelectItem Value="5">Из дворян</SelectItem> *@
+@*     </Select> *@
+@* </div> *@
+                    
+<div>
+    <h3 class="card-title text-center mb-3 fw-light fs-5">Церковная ориентация</h3>
+
+    <div>
+        <div style="margin-top: 10px; margin-bottom: 10px;">
+            <DatePicker TValue="DateTime?" InputFormat="dd.MM.yyyy" DisplayFormat="dd.MM.yyyy" Placeholder="Год отпадения" @bind-Date="_parsonalion.Oriention.YearFall"/>
+        </div>
+
+        <div class="form-floating mb-2">
+            <input class="form-control" @bind-value="_parsonalion.Oriention.Oriention">
+            <label>Церковная ориентация</label>
+        </div>
+                            
+        <div style="margin-top: 10px; margin-bottom: 10px;">
+            <DatePicker TValue="DateTime?" InputFormat="dd.MM.yyyy" DisplayFormat="dd.MM.yyyy" Placeholder="Год возрата" @bind-Date="_parsonalion.Oriention.YearRefund"/>
+        </div>
+    </div>
+</div>
+
+<div>
+    <h3 class="card-title text-center mb-3 fw-light fs-5">Сан</h3>
+
+    <div>
+        <div style="margin-top: 10px; margin-bottom: 10px;">
+            <DatePicker TValue="DateTime?" InputFormat="dd.MM.yyyy" DisplayFormat="dd.MM.yyyy" Placeholder="Год снятия сана" @bind-Date="_parsonalion.Sun.YearDefrock"/>
+        </div>
+
+        <Select TValue="int" @bind-SelectedValue="@selectedSunName" class="form-control js-example-basic-single">
+            <SelectItem Value="1">Архидиакон</SelectItem>
+            <SelectItem Value="2">Архиепископ</SelectItem>
+            <SelectItem Value="3">Диаког</SelectItem>
+            <SelectItem Value="4">Епископ</SelectItem>
+            <SelectItem Value="5">Игумен</SelectItem>
+            <SelectItem Value="6">Иеродиакон</SelectItem>
+            <SelectItem Value="7">Иеромонах</SelectItem>
+            <SelectItem Value="8">Митрополит</SelectItem>
+            <SelectItem Value="9">Монах</SelectItem>
+            <SelectItem Value="10">Пономарь</SelectItem>
+            <SelectItem Value="11">Послушник</SelectItem>
+            <SelectItem Value="12">Причетник</SelectItem>
+            <SelectItem Value="13">Протодиакон</SelectItem>
+            <SelectItem Value="14">Протоиерей</SelectItem>
+            <SelectItem Value="15">Протопресвитер</SelectItem>
+            <SelectItem Value="16">Псаломщик</SelectItem>
+            <SelectItem Value="17">Священник</SelectItem>
+        </Select>
+
+        <div style="margin-top: 10px; margin-bottom: 10px;">
+            <DatePicker TValue="DateTime?" InputFormat="dd.MM.yyyy" DisplayFormat="dd.MM.yyyy" Placeholder="Год рукоположения" @bind-Date="_parsonalion.Sun.YearOrdinations"/>
+        </div>
+    </div>
+</div>
+
+<div>
+    <h3 class="card-title text-center mb-3 fw-light fs-5">Награды</h3>
+
+    <div>
+        <div style="margin-top: 10px; margin-bottom: 10px;">
+            <DatePicker TValue="DateTime?" InputFormat="dd.MM.yyyy" DisplayFormat="dd.MM.yyyy" Placeholder="Год награждения" @bind-Date="_parsonalion.Award.YearAward"/>
+        </div>
+
+        <Select TValue="int" @bind-SelectedValue="@selectedAward" class="form-control js-example-basic-single">
+            <SelectItem Value="1">Набедренник</SelectItem>
+            <SelectItem Value="2">Камилавка фиолетового цвета</SelectItem>
+            <SelectItem Value="3">Наперсный крест</SelectItem>
+            <SelectItem Value="4">Палица</SelectItem>
+            <SelectItem Value="5">Крест с украшениями</SelectItem>
+            <SelectItem Value="6">Служение Божественной литургии с отверстыми Царскими вратами до Херувимской песни</SelectItem>
+            <SelectItem Value="7">Служение Божественной литургии с отверстыми Царскими Вратами до "Отче наш"</SelectItem>
+            <SelectItem Value="8">Митра</SelectItem>
+            <SelectItem Value="9">Право ношения второго наперсного креста с украшениями</SelectItem>
+            <SelectItem Value="10">Патриарший наперстый крест</SelectItem>
+            <SelectItem Value="11">Двойной орарь</SelectItem>
+        </Select>
+    </div>
+</div>
+
+<div style="margin-top: 10px; margin-bottom: 10px;">
+    <DatePicker TValue="DateTime?" InputFormat="dd.MM.yyyy" DisplayFormat="dd.MM.yyyy" Placeholder="Год упоминания" @bind-Date="_parsonalion.YearMention"/>
+</div>
+                    
+<div class="form-floating mb-2">
+    <input class="form-control" @bind-value="_parsonalion.Note">
+    <label>Примечание</label>
+</div>
+
+<div class="form-floating mb-2">
+    <input class="form-control" @bind-value="_parsonalion.Source">
+    <label>Источник информации (в виде библиографической записи)</label>
+</div>
+
+<div class="input-file-row">
+    <label class="input-file">
+        <InputFile OnChange="LoadPhoto" accept="image/*"/>
+        <span>Выберите фотографию</span>
+    </label>
+    <div class="input-file-list"></div>
+</div>
+
+<div class="input-file-row">
+    <label class="input-file">
+        <InputFile OnChange="LoadFile"/>
+        <span>Выберите файл</span>
+    </label>
+    <div class="input-file-list"></div>
+</div>
+                    
+<div class="d-grid mb-2">
+    <button class="btn btn-lg btn-primary btn-login fw-bold text-uppercase" style="margin-top: 20px;" type="submit">Добавить</button>
+</div>
+</EditForm>
+</div>
+</div>
+</div>
 </div>
 
 @code {
     public MapPosition position;
     public bool btnActive;
 
-    private int selectedSunName;
+    private int selectedSunName = 1;
 
-    private int selectedAward;
+    private int selectedAward = 1;
 
-    private int selectedNation;
+    private int selectedNation = 1;
 
-    private int selectedSocial;
+    private int selectedSocial = 1;
+
+    private int selectedLVLEductaion = 1;
+
+    private int selectedVerdict = 1;
         
     MapPosition? defPosition;
 
@@ -445,8 +512,100 @@
                 break;
         }
 
+        switch (selectedLVLEductaion)
+        {
+            case 1:
+                _parsonalion.LVLEducation = "Высшее";
+                break;
+            case 2:
+                _parsonalion.LVLEducation = "Среднее";
+                break;
+            case 3:
+                _parsonalion.LVLEducation = "Неполное-среднеее";
+                break;
+            case 4:
+                _parsonalion.LVLEducation = "Начальное";
+                break;
+        }
+
+        switch (selectedVerdict)
+        {
+            case 1:
+                _parsonalion.State.Verdict = "10 лет тюремного заключения условно";
+                break;
+            case 2:
+                _parsonalion.State.Verdict = "15 лет тюремного заключения с применением общественных работ";              
+                break;
+            case 3:
+                _parsonalion.State.Verdict = "1 год исправительных трудовых работ";
+                break;
+            case 4:
+                _parsonalion.State.Verdict = "1 год принудительных работ";
+                break;
+            case 5:
+                _parsonalion.State.Verdict = "2 год принудительных работ";
+                break;
+            case 6:
+            _parsonalion.State.Verdict = "2 года строгой изоляции";
+                break;
+            case 7:
+                _parsonalion.State.Verdict = "2 года тюрьмы с последующей ссылкой";
+                break;
+            case 8:
+                _parsonalion.State.Verdict = "2 года тюрьмы с последующей ссылкой";
+                break;
+            case 9:
+                _parsonalion.State.Verdict = "3 месяца принудительных работ";
+                break;
+            case 10:
+                _parsonalion.State.Verdict = "5 лет ИТЛ с высылкой семьи на Север";
+                break;
+            case 11:
+                _parsonalion.State.Verdict = "5 лет строгой изоляции";
+                break;
+            case 12:
+                _parsonalion.State.Verdict = "5 лет строгой изоляции с конфискацией имущества и 3 года поражения в гражданских правах";
+                break;
+            case 13:
+                _parsonalion.State.Verdict = "6 месяцев исправительных работ";
+                break;
+            case 14:
+                _parsonalion.State.Verdict = "6 месяцев принудительных работ";
+                break;
+            case 15:
+                _parsonalion.State.Verdict = "3 месяца принудительных работ";
+                break;
+            case 16:
+                _parsonalion.State.Verdict = "8 лет принудительных работ со строгой изоляцией и конфискацией имущества";
+                break;
+            case 17:
+                _parsonalion.State.Verdict = "Бессрочная административная высылка";
+                break;
+            case 18:
+                _parsonalion.State.Verdict = "Бессрочная ссылка";
+                break;
+            case 19:
+                _parsonalion.State.Verdict = "Бессрочное заключение в концлагерь с применением принудительных работ";
+                break;
+            case 20:
+                _parsonalion.State.Verdict = "Бессрочное тюремное заключение с тягчайшими принудительными работами без права свидания с родными";
+                break;
+            case 21:
+                _parsonalion.State.Verdict = "Высшая мера наказания (расстрел)";
+                break;
+            case 22:
+                _parsonalion.State.Verdict = "Высшая мера наказания (расстрел) с заменой на 10 лет заключения в ИТЛ";
+                break;
+            case 23:
+                _parsonalion.State.Verdict = "Высшая мера наказания (расстрел) с конфискацией имущества";
+                break;
+            case 24:
+                _parsonalion.State.Verdict = "Высылка";
+                break;
+        }
+        
         await _context.Parsonalions.AddAsync(_parsonalion);
         await _context.SaveChangesAsync();
-        NavigationManager.NavigateTo("/");
+        NavigationManager.NavigateTo("/", true);
     }
 }

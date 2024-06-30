@@ -18,7 +18,7 @@
     <div class="col-lg-10 col-xl-9 mx-auto">
         <div class="card flex-row my-5 border-0 shadow rounded-3 overflow-hidden">
             <div class="card-body p-4 p-sm-5">
-                <h5 class="card-title text-center mb-3 fw-light fs-5">Добавить пригожании</h5>
+                <h5 class="card-title text-center mb-3 fw-light fs-5">Добавить пригожанина</h5>
                 <EditForm Model="@_parishioners" OnSubmit="Sumbit">
                     <div class="form-floating mb-2">
                         <input type="text" class="form-control" @bind-value="_parishioners.LastName">
@@ -45,29 +45,51 @@
                         <label>Возраст</label>
                     </div>
 
-                    <div class="form-floating mb-2">
-                        <input class="form-control" @bind-value="_parishioners.Gender">
-                        <label>Пол</label>
-                    </div>
+                    @* <div class="form-floating mb-2"> *@
+                    @*     <input class="form-control" @bind-value="_parishioners.Gender"> *@
+                    @*     <label>Пол</label> *@
+                    @* </div> *@
+                    
+                    <Select Tvalue="int" @bind-SelectedValue="@selectedGender">
+                        <SelectItem Value="1">Мужской</SelectItem>
+                        <SelectItem Value="2">Женский</SelectItem>
+                    </Select>
 
                     <div class="form-floating mb-2">
                         <input class="form-control" @bind-value="_parishioners.Adress">
                         <label>Адрес</label>
                     </div>
 
-                    <div class="form-floating mb-2">
-                        <input class="form-control" @bind-value="_parishioners.Social">
-                        <label>Социальное происхождение</label>
+                    @* <div class="form-floating mb-2"> *@
+                    @*     <input class="form-control" @bind-value="_parishioners.SocialStatus"> *@
+                    @*     <label>Общественное и служебное положение c 1914</label> *@
+                    @* </div> *@
+                    
+                    <div>
+                        <h3 class="card-title text-center mb-3 fw-light fs-5">Общественное и служебное положение c 1914</h3>
+
+                        <Select TValue="int" @bind-SelectedValue="@selectedSocialStatus">
+                            <SelectItem Value="1">Землепашец</SelectItem>
+                            <SelectItem Value="2">Домохозяйство</SelectItem>
+                            <SelectItem Value="3">Священник</SelectItem>
+                            <SelectItem Value="4">Слесарь</SelectItem>
+                            <SelectItem Value="5">Плотник</SelectItem>
+                        </Select>
                     </div>
 
-                    <div class="form-floating mb-2">
-                        <input class="form-control" @bind-value="_parishioners.SocialStatus">
-                        <label>/Общественное и служебное положение c 1914</label>
-                    </div>
+                    @* <div class="form-floating mb-2"> *@
+                    @*     <input class="form-control" @bind-value="_parishioners.EstateBeforeRevolution"> *@
+                    @*     <label>Принадлежность к сословию до революции</label> *@
+                    @* </div> *@
 
-                    <div class="form-floating mb-2">
-                        <input class="form-control" @bind-value="_parishioners.EstateBeforeRevolution">
-                        <label>Принадлежность к сословию до революции</label>
+                    <div>
+                        <h3 class="card-title text-center mb-3 fw-light fs-5">Принадлежность к сословию до революции</h3>
+
+                        <Select TValue="int" @bind-SelectedValue="@selectedEstate">
+                            <SelectItem Value="1">Крестьянство</SelectItem>
+                            <SelectItem Value="2">Дворянство</SelectItem>
+                            <SelectItem Value="3">Духовное</SelectItem>
+                        </Select>
                     </div>
 
                     <div>
@@ -137,7 +159,14 @@
     public MapPosition position;
     public bool btnActive;
 
-    private int selectedItem;
+    private int selectedItem = 1;
+
+    private int selectedSocialStatus = 1;
+    
+    private int selectedGender = 1;
+
+    private int selectedEstate = 1;
+    
     
     MapPosition? defPosition;
 
@@ -213,9 +242,51 @@
                 _parishioners.PropertyStatus = "без имущества";
                 break;
         }
-        
+
+        switch (selectedGender)
+        {
+            case 1:
+                _parishioners.Gender = "Мужской";
+                break;
+            case 2:
+                _parishioners.Gender = "Женский";
+                break;
+        }
+
+        switch (selectedSocialStatus)
+        {
+            case 1:
+                _parishioners.SocialStatus = "Землепашец";
+                break;
+            case 2:
+                _parishioners.SocialStatus = "Домохозяйство";
+                break;
+            case 3:
+                _parishioners.SocialStatus = "Священник";
+                break;
+            case 4:
+                _parishioners.SocialStatus = "Слесарь";
+                break;
+            case 5:
+                _parishioners.SocialStatus = "Плотник";
+                break;
+        }
+
+        switch (selectedEstate)
+        {
+            case 1:
+                _parishioners.EstateBeforeRevolution = "Крестьянство";
+                break;
+            case 2:
+                _parishioners.EstateBeforeRevolution = "Дворянство";
+                break;
+            case 3:
+                _parishioners.EstateBeforeRevolution = "Духовное";
+                break;
+        }
+
         await _context.Parishioners.AddAsync(_parishioners);
         await _context.SaveChangesAsync();
-        NavigationManager.NavigateTo("/");
+        NavigationManager.NavigateTo("/", true);
     }
 }

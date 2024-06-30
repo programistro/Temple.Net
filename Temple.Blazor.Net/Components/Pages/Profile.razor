@@ -99,13 +99,13 @@
 			}
 			else
 			{
-				NavigationManager.NavigateTo("/");
+				NavigationManager.NavigateTo("/", true);
 			}
 		}
 	}
 
 	private void Submit()
 	{
-		NavigationManager.NavigateTo("/Auth/signout");
+		NavigationManager.NavigateTo("/Auth/signout", true);
 	}
 }

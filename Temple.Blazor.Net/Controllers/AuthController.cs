@@ -43,11 +43,6 @@ public class AuthController : ControllerBase
     {
         await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
 
-        var prop = new AuthenticationProperties
-        {
-            RedirectUri = "/logout-complete"
-        };
-
         return Redirect("/");
     }
 }

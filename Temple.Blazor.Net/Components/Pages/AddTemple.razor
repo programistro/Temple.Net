@@ -77,7 +77,6 @@
                                  <SelectItem Value="1">Автокефальная</SelectItem>
                                  <SelectItem Value="2">Обновленческая</SelectItem>
                                  <SelectItem Value="3">Тихоновская</SelectItem>
-                                 <SelectItem Value="4">Сергиевская</SelectItem>
                              </Select>
 
                              <div style="margin-top: 10px; margin-bottom: 10px;">
@@ -99,16 +98,6 @@
                                  <label>Количество</label>
                              </div>
                          </div>
-                     </div>
-
-                     <div>
-                         <h3 class="card-title text-center mb-3 fw-light fs-5">Ориентация епархии</h3>
-
-                         <Select TValue="int" @bind-SelectedValue="@selectedOriention" class="form-control js-example-basic-single">
-                             <SelectItem Value="1">Автокефальная</SelectItem>
-                             <SelectItem Value="2">Обновленческая</SelectItem>
-                             <SelectItem Value="3">Тихоновская</SelectItem>
-                         </Select>
                      </div>
 
                      <div>
@@ -315,7 +304,7 @@
                                  <SelectItem Value="98">Ветринский</SelectItem>
                                  <SelectItem Value="99">Волынецкий</SelectItem>
                                  <SelectItem Value="100">Борковичский</SelectItem>
-                                 <SelectItem Value="18">Дретунский</SelectItem>
+                                 <SelectItem Value="144">Дретунский</SelectItem>
                                  <SelectItem Value="101">Краснопольский</SelectItem>
                                  <SelectItem Value="102">Дриссенский</SelectItem>
                                  <SelectItem Value="103">Освейский</SelectItem>
@@ -344,7 +333,7 @@
                                  <SelectItem Value="122">Краснобудский</SelectItem>
                                  <SelectItem Value="123">Носовичский</SelectItem>
                                  <SelectItem Value="124">Светиловичский</SelectItem>
-                                 <SelectItem Value="124">Уваровичский</SelectItem>
+                                 <SelectItem Value="143">Уваровичский</SelectItem>
                                  <SelectItem Value="125">Чечерский</SelectItem>
                                  <SelectItem Value="126">Брагинский</SelectItem>
                                  <SelectItem Value="127">Комаринский</SelectItem>
@@ -357,9 +346,9 @@
                              <SelectGroup Label="Речицкий (1926-1927)">
                                  <SelectItem Value="133">Брагинский</SelectItem>
                                  <SelectItem Value="134">Василевичский</SelectItem>
-                                 <SelectItem Value="35">Горвальский</SelectItem>
-                                 <SelectItem Value="36">Комаринский</SelectItem>
-                                 <SelectItem Value="37">Лоевский</SelectItem>
+                                 <SelectItem Value="135">Горвальский</SelectItem>
+                                 <SelectItem Value="136">Комаринский</SelectItem>
+                                 <SelectItem Value="137">Лоевский</SelectItem>
                                  <SelectItem Value="138">Речицкий</SelectItem>
                                  <SelectItem Value="139">Хойникский</SelectItem>
                                  <SelectItem Value="140">Холмечский</SelectItem>
@@ -489,7 +478,7 @@
                     _temple.Type = "Приходской";
                     break;
             }
-
+            
             switch (selectedOriention)
             {
                 case 1:
@@ -899,131 +888,143 @@
                     _temple.District = "Борковичский";
                     break;
                 case 101:
-                    _temple.District = "Дретунский";
+                    _temple.District = "Краснопольский";
                     break;
                 case 102:
-                _temple.District = "Краснопольский";
+                _temple.District = "Дриссенский";
                     break;
                 case 103:
-                    _temple.District = "Дриссенский";
-                    break;
-                case 104:
                     _temple.District = "Освейский";
                     break;
-                case 105:
-                _temple.District = "Полоцкий";
+                case 104:
+                    _temple.District = "Полоцкий";
                     break;
-                case 106:
+                case 105:
                 _temple.District = "Россонский";
                     break;
-                case 107:
+                case 106:
                 _temple.District = "Улльский";
                     break;
+                case 107:
+                _temple.District = "Ушачский";
+                    break;
                 case 108:
-                _temple.District = "Ушачский"; //todo я тут накосячил и ненмного сместилось(я заебался)
+                _temple.District = "Гресский";
                     break;
                 case 109:
-                _temple.District = "";
+                _temple.District = "Копыльский";
                     break;
                 case 110:
-                _temple.District = "";
+                _temple.District = "Краснослободский";
                     break;
                 case 111:
-                    _temple.District = "";
+                    _temple.District = "Любанский";
                     break;
                 case 112:
-                _temple.District = "";
+                _temple.District = "Слуцкий";
                     break;
                 case 113:
-                    _temple.District = "";
+                    _temple.District = "Стародорожский";
                     break;
                 case 114:
-                    _temple.District = "";
+                    _temple.District = "Плещеницкий";
                     break;
                 case 115:
-                _temple.District = "";
+                _temple.District = "Старобинский";
                     break;
                 case 116:
-                    _temple.District = "";
+                    _temple.District = "Брагинский";
                     break;
                 case 117:
-                _temple.District = "";
+                _temple.District = "Буда-Кошелевский";
                     break;
                 case 118:
-                    _temple.District = "";
+                    _temple.District = "Ветковский";
                     break;
                 case 119:
-                    _temple.District = "";
+                    _temple.District = "Гомельский";
                     break;
                 case 120:
-                    _temple.District = "";
+                    _temple.District = "Дятловичский";
                     break;
                 case 121:
-                    _temple.District = "";
+                    _temple.District = "Добрушский";
                     break;
                 case 122:
-                    _temple.District = "";
+                    _temple.District = "Краснобудский";
                     break;
                 case 123:
-                    _temple.District = "";
+                    _temple.District = "Носовичский";
                     break;
                 case 124:
-                    _temple.District = "";
+                    _temple.District = "Светиловичский";
                     break;
                 case 125:
-                    _temple.District = "";
+                    _temple.District = "Чечерский";
                     break;
                 case 126:
-                    _temple.District = "";
+                    _temple.District = "Брагинский";
                     break;
                 case 127:
-                    _temple.District = "";
+                    _temple.District = "Комаринский";
                     break;
                 case 128:
-                    _temple.District = "";
+                    _temple.District = "Лоевский";
                     break;
                 case 129:
-                    _temple.District = "";
+                    _temple.District = "Речицкий";
                     break;
                 case 130:
-                    _temple.District = "";
+                    _temple.District = "Хойникский";
                     break;
                 case 131:
-                    _temple.District = "";
+                    _temple.District = "Тереховский";
                     break;
                 case 132:
-                    _temple.District = "";
+                    _temple.District = "Буда-Кошелевский";
                     break;
                 case 133:
-                    _temple.District = "";
+                    _temple.District = "Брагинский";
                     break;
                 case 134:
-                    _temple.District = "";
+                    _temple.District = "Василевичский";
                     break;
                 case 135:
-                    _temple.District = "";
+                    _temple.District = "Горвальский";
                     break;
                 case 136:
-                    _temple.District = "";
+                    _temple.District = "Комаринский";
                     break;
                 case 137:
-                    _temple.District = "";
+                    _temple.District = "Лоевский";
                     break;
                 case 138:
-                    _temple.District = "";
+                    _temple.District = "Речицкий";
                     break;
                 case 139:
-                    _temple.District = "";
+                    _temple.District = "Хойникский";
+                    break;
+                case 140:
+                    _temple.District = "Хойникский";
                     break;
                 case 141:
-                    _temple.District = "";
+                    _temple.District = "Юровичский";
+                    break;
+                case 142:
+                    _temple.District = "Хойникский";
+                    break;
+                case 143:
+                    _temple.District = "Уваровичский";
+                    break;
+                    case 144:
+                    _temple.District = "Дретунский";
                     break;
             }
 
             await _context.Temples.AddAsync(_temple);
             await _context.SaveChangesAsync();
             
-            NavigationManager.NavigateTo("/");
+            NavigationManager.NavigateTo("/", true);
         }
     }
 }
