@@ -24,12 +24,12 @@
 
 <Modal @ref="changeModal" title="Изменить права доступа" UseStaticBackdrop="true" CloseOnEscape="false">
     <ModalContent>
-        <ModalHeader>
-            <ModalTitle>Изменить права доступа</ModalTitle>
-            <CloseButton />
-        </ModalHeader>
+        @* <ModalHeader> *@
+        @*     <ModalTitle>Изменить права доступа</ModalTitle> *@
+        @*     <CloseButton /> *@
+        @* </ModalHeader> *@
         <ModalBody>
-            <input @bind-value="NewRole" class="form-control dark-theme-textbox" autocomplete="off" placeholder="Новые права">
+            <input @bind-value="NewRole" class="form-control" style="margin-right: 24px; width: 508px;" autocomplete="off" placeholder="Новые права">
         </ModalBody>
         <ModalFooter>
             <Button Color="Color.Primary" @onclick="OnHideModalClick">Изменить</Button>
