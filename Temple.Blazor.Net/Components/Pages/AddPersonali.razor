@@ -210,7 +210,7 @@
 
     <div>
         <div style="margin-top: 10px; margin-bottom: 10px;">
-            <DatePicker TValue="DateTime?" InputFormat="dd.MM.yyyy" DisplayFormat="dd.MM.yyyy" Placeholder="Год снятия сана" @bind-Date="_parsonalion.Sun.YearDefrock"/>
+            <DatePicker TValue="DateTime?" InputFormat="dd.MM.yyyy" DisplayFormat="dd.MM.yyyy" Placeholder="Год рукоположения" @bind-Date="_parsonalion.Sun.YearOrdinations"/>
         </div>
 
         <Select TValue="int" @bind-SelectedValue="@selectedSunName" class="form-control js-example-basic-single">
@@ -234,7 +234,7 @@
         </Select>
 
         <div style="margin-top: 10px; margin-bottom: 10px;">
-            <DatePicker TValue="DateTime?" InputFormat="dd.MM.yyyy" DisplayFormat="dd.MM.yyyy" Placeholder="Год рукоположения" @bind-Date="_parsonalion.Sun.YearOrdinations"/>
+            <DatePicker TValue="DateTime?" InputFormat="dd.MM.yyyy" DisplayFormat="dd.MM.yyyy" Placeholder="Год снятия сана" @bind-Date="_parsonalion.Sun.YearDefrock"/>
         </div>
     </div>
 </div>

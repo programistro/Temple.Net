@@ -50,7 +50,7 @@
                     @*     <label>Пол</label> *@
                     @* </div> *@
                     
-                    <Select Tvalue="int" @bind-SelectedValue="@selectedGender">
+                    <Select Tvalue="int" @bind-SelectedValue="@selectedGender" class="form-control js-example-basic-single">
                         <SelectItem Value="1">Мужской</SelectItem>
                         <SelectItem Value="2">Женский</SelectItem>
                     </Select>
@@ -68,7 +68,7 @@
                     <div>
                         <h3 class="card-title text-center mb-3 fw-light fs-5">Общественное и служебное положение c 1914</h3>
 
-                        <Select TValue="int" @bind-SelectedValue="@selectedSocialStatus">
+                        <Select TValue="int" @bind-SelectedValue="@selectedSocialStatus" class="form-control js-example-basic-single">
                             <SelectItem Value="1">Землепашец</SelectItem>
                             <SelectItem Value="2">Домохозяйство</SelectItem>
                             <SelectItem Value="3">Священник</SelectItem>
@@ -85,7 +85,7 @@
                     <div>
                         <h3 class="card-title text-center mb-3 fw-light fs-5">Принадлежность к сословию до революции</h3>
 
-                        <Select TValue="int" @bind-SelectedValue="@selectedEstate">
+                        <Select TValue="int" @bind-SelectedValue="@selectedEstate" class="form-control js-example-basic-single">
                             <SelectItem Value="1">Крестьянство</SelectItem>
                             <SelectItem Value="2">Дворянство</SelectItem>
                             <SelectItem Value="3">Духовное</SelectItem>
@@ -95,7 +95,7 @@
                     <div>
                         <h3 class="card-title text-center mb-3 fw-light fs-5">Имущественное положение</h3>
 
-                        <Select TValue="int" @bind-SelectedValue="@selectedSocial">
+                        <Select TValue="int" @bind-SelectedValue="@selectedSocial" class="form-control js-example-basic-single">
                             <SelectItem Value="1">Бедняк</SelectItem>
                             <SelectItem Value="2">Средняк</SelectItem>
                             <SelectItem Value="3">Домовладелец</SelectItem>
@@ -191,7 +191,7 @@
     
     private long maxFileSize = 1024 * 500;
 
-    private int selectedSocial;
+    private int selectedSocial = 1;
 
     private async Task LoadFile(InputFileChangeEventArgs e)
     {
@@ -231,15 +231,19 @@
         {
             case 1:
                 _parishioners.PropertyStatus = "Бедняк";
+                _parishioners.Social = "Бедняк";
                 break;
             case 2:
-                _parishioners.PropertyStatus = "средняк";
+                _parishioners.PropertyStatus = "Средняк";
+                _parishioners.Social = "Средняк";
                 break;
             case 3:
-                _parishioners.PropertyStatus = "домовладелец";
+                _parishioners.PropertyStatus = "Домовладелец";
+                _parishioners.Social = "Домовладелец";
                 break;
             case 4:
-                _parishioners.PropertyStatus = "без имущества";
+                _parishioners.PropertyStatus = "Без имущества";
+                _parishioners.Social = "Без имущества";
                 break;
         }
 
