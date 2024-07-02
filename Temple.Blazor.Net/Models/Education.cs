@@ -9,7 +9,7 @@ public class Education
     
     public DateTime? YearAdmission { get; set; }
     
-    public string Institution { get; set; }
+    public string? Institution { get; set; }
     
     public DateTime? YearOfRease { get; set; }
 }

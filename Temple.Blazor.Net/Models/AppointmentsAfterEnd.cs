@@ -7,5 +7,5 @@ public class AppointmentsAfterEnd
     [Key]
     public string Id { get; set; }
     
-    public string Appointmenrs { get; set; } 
+    public string? Appointmenrs { get; set; } 
 }

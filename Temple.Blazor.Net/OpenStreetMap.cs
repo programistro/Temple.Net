@@ -83,16 +83,16 @@ public class OpenStreetMap : ComponentBase, IDisposable
 
     public void AddMarker(MapMarker marker)
     {
-        //if (this.markers.IndexOf(marker) != -1)
-        //    return;
-        //this.markers.Add(marker);
+        if (this.markers.IndexOf(marker) != -1)
+            return;
+        this.markers.Add(marker);
     }
 
     public void RemoveMarker(MapMarker marker)
     {
-        //if (this.markers.IndexOf(marker) == -1)
-        //    return;
-        //this.markers.Remove(marker);
+        if (this.markers.IndexOf(marker) == -1)
+            return;
+        this.markers.Remove(marker);
     }
 
     protected string GetComponentCssClass()

@@ -1,15 +1,21 @@
 ﻿@inject IConfiguration config
-@rendermode InteractiveServer
+@inject IJSRuntime JSRuntime
 @page "/map"
 @using OpenStreetMapForBlazor
+@rendermode InteractiveServer
 
 <div style="height: 500px;">
-    <OSMap Click="@MapClickEvent" CenterMap="@defPosition" />
+    <OpenStreetMap ApiKey=@(config.GetValue<string>("Main:OSMapKey")) Zoom="@zoom" Center="@(defPosition)" MapClick="@MapClick" MarkerClick="@MarkerClick">
+        <Markers>
+            @* <MapMarker Title="123" Label="123" Position="@(CenterMap)" /> *@
+            @* <MapMarker Title="123" Label="122222223" Position="@(CenterMap)" /> *@
+        </Markers>
+    </OpenStreetMap>
 </div>
 
-<Body>
-    <link href="css/site.css" rel="stylesheet" />
-</Body>
+@* <Body> *@
+@*     <link href="css/site.css" rel="stylesheet" /> *@
+@* </Body> *@
 
 @code {
     public MapPosition position;
@@ -19,6 +25,12 @@
     protected override void OnInitialized()
     {
         defPosition = new MapPosition() { Lat = config.GetValue<double>("Main:DefLat"), Lng = config.GetValue<double>("Main:DefLng") };
+
+        MapMarker marker = new();
+        
+        marker.Position = defPosition;
+        marker.Label = "Заметка";
+        marker.Title = "Какая то заметка";
     }
 
     public void MapClickEvent(MapClickEventArgs args)
@@ -31,5 +43,24 @@
         //actualJson = JsonConvert.SerializeObject(args);
 
         //StateHasChanged();
+    }
+    
+    int zoom = 11;
+
+    [Parameter]
+    public MapPosition CenterMap { get; set; }
+
+    [Parameter]
+    public EventCallback<MapClickEventArgs> Click { get; set; }
+
+    void MapClick(MapClickEventArgs args)
+    {
+        StateHasChanged();
+        Click.InvokeAsync(args);
+    }
+
+    void MarkerClick(MapMarker marker)
+    {
+        StateHasChanged();
     }
 }

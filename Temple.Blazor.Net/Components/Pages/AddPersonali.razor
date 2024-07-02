@@ -40,11 +40,13 @@
 </div>
 
 <div style="margin-top: 10px; margin-bottom: 10px;">
-    <DatePicker TValue="DateTime?" InputFormat="dd.MM.yyyy" DisplayFormat="dd.MM.yyyy" InputMode="DateInputMode.Date" Placeholder="Год рождения" @bind-Date="_parsonalion.Born"/>
+    <DatePicker TValue="DateTime?" InputFormat="dd.MM.yyyy" DisplayFormat="dd.MM.yyyy" InputMode="DateInputMode.Date" @bind-Date="_parsonalion.Born"/>
+    <label>Год рождения</label>
 </div>
 
 <div style="margin-top: 10px; margin-bottom: 10px;">
-    <DatePicker TValue="DateTime?" InputFormat="dd.MM.yyyy" DisplayFormat="dd.MM.yyyy" Placeholder="Год смерти" @bind-Date="_parsonalion.Death"/>
+    <DatePicker TValue="DateTime?" InputFormat="dd.MM.yyyy" DisplayFormat="dd.MM.yyyy" @bind-Date="_parsonalion.Death"/>
+    <label>Год смерти</label>
 </div>
                     
                 
@@ -59,11 +61,15 @@
     <label>Место рождения</label>
 </div>
 
-<Select TValue="int" @bind-SelectedValue="@selectedNation" class="form-control js-example-basic-single">
-    <SelectItem Value="1">Белорус</SelectItem>
-    <SelectItem Value="2">Русский</SelectItem>
-    <SelectItem Value="3">Украинец</SelectItem>
-</Select>
+<div>
+    <Select TValue="int" @bind-SelectedValue="@selectedNation" class="form-control js-example-basic-single">
+        <SelectItem Value="1">Белорус</SelectItem>
+        <SelectItem Value="2">Русский</SelectItem>
+        <SelectItem Value="3">Украинец</SelectItem>
+        <SelectItem Value="4"></SelectItem>
+    </Select>
+    <label>Национальность</label>
+</div>
 
 <Select TValue="int" @bind-SelectedValue="@selectedSocial" class="form-control js-example-basic-single">
     <SelectItem Value="1">Из крестьян</SelectItem>
@@ -71,8 +77,9 @@
     <SelectItem Value="3">Из духовенства</SelectItem>
     <SelectItem Value="4">Из служащих</SelectItem>
     <SelectItem Value="5">Из дворян</SelectItem>
+    <SelectItem Value="6"></SelectItem>
 </Select>
-                    
+
 <br/>
 
 <div>
@@ -96,11 +103,12 @@
                 <SelectItem Value="2">Среднее</SelectItem>
                 <SelectItem Value="3">Неполное-среднее</SelectItem>
                 <SelectItem Value="4">Начальное</SelectItem>
+                <SelectItem Value="5"></SelectItem>
             </Select>
         </div>
 
         <div style="margin-top: 10px; margin-bottom: 10px;">
-            <DatePicker TValue="DateTime?" InputFormat="dd.MM.yyyy" DisplayFormat="dd.MM.yyyy" Placeholder="Год выпуска" @bind-Date="_parsonalion.Education.YearOfRease"/>
+            <DatePicker TValue="DateTime?" InputFormat="yyyy" DisplayFormat="yyyy" Placeholder="Год выпуска" @bind-Date="_parsonalion.Education.YearOfRease"/>
         </div>
     </div>
 </div>
@@ -146,6 +154,7 @@
                 <SelectItem Value="22">Высшая мера наказания (расстрел) с заменой на 10 лет заключения в ИТЛ</SelectItem>
                 <SelectItem Value="23">Высшая мера наказания (расстрел) с конфискацией имущества</SelectItem>
                 <SelectItem Value="24">Высылка</SelectItem>
+                <SelectItem Value="25"></SelectItem>
             </Select>
         </div>
 
@@ -163,28 +172,6 @@
         </div>
     </div>
 </div>
-
-@* <div> *@
-@*     <h3 class="card-title text-center mb-3 fw-light fs-5">Национальность</h3> *@
-@* *@
-@*     <Select TValue="int" @bind-SelectedValue="@selectedNation" class="form-control js-example-basic-single"> *@
-@*         <SelectItem Value="1">Белорус</SelectItem> *@
-@*         <SelectItem Value="2">Русский</SelectItem> *@
-@*         <SelectItem Value="3">Украинец</SelectItem> *@
-@*     </Select> *@
-@* </div> *@
-
-@* <div> *@
-@*     <h3 class="card-title text-center mb-3 fw-light fs-5">Социальное положение</h3> *@
-@* *@
-@*     <Select TValue="int" @bind-SelectedValue="@selectedSocial" class="form-control js-example-basic-single"> *@
-@*         <SelectItem Value="1">Из крестьян</SelectItem> *@
-@*         <SelectItem Value="2">Из мещан</SelectItem> *@
-@*         <SelectItem Value="3">Из духовенства</SelectItem> *@
-@*         <SelectItem Value="4">Из служащих</SelectItem> *@
-@*         <SelectItem Value="5">Из дворян</SelectItem> *@
-@*     </Select> *@
-@* </div> *@
                     
 <div>
     <h3 class="card-title text-center mb-3 fw-light fs-5">Церковная ориентация</h3>
@@ -491,6 +478,9 @@
             case 3:
                 _parsonalion.Nation = "Украинец";
                 break;
+            case 4:
+                _parsonalion.Nation = "";
+                break;
         }
 
         switch (selectedSocial)
@@ -510,6 +500,9 @@
             case 5:
                 _parsonalion.SocialOrigin = "Из дворян";
                 break;
+            case 6:
+                _parsonalion.SocialOrigin = "";
+                break;
         }
 
         switch (selectedLVLEductaion)
@@ -526,6 +519,9 @@
             case 4:
                 _parsonalion.LVLEducation = "Начальное";
                 break;
+            case 5:
+                _parsonalion.LVLEducation = "";
+                break;
         }
 
         switch (selectedVerdict)
@@ -534,7 +530,7 @@
                 _parsonalion.State.Verdict = "10 лет тюремного заключения условно";
                 break;
             case 2:
-                _parsonalion.State.Verdict = "15 лет тюремного заключения с применением общественных работ";              
+                _parsonalion.State.Verdict = "15 лет тюремного заключения с применением общественных работ";
                 break;
             case 3:
                 _parsonalion.State.Verdict = "1 год исправительных трудовых работ";
@@ -546,7 +542,7 @@
                 _parsonalion.State.Verdict = "2 год принудительных работ";
                 break;
             case 6:
-            _parsonalion.State.Verdict = "2 года строгой изоляции";
+                _parsonalion.State.Verdict = "2 года строгой изоляции";
                 break;
             case 7:
                 _parsonalion.State.Verdict = "2 года тюрьмы с последующей ссылкой";
@@ -602,8 +598,11 @@
             case 24:
                 _parsonalion.State.Verdict = "Высылка";
                 break;
+            case 25:
+                _parsonalion.State.Verdict = "";
+                break;
         }
-        
+
         await _context.Parsonalions.AddAsync(_parsonalion);
         await _context.SaveChangesAsync();
         NavigationManager.NavigateTo("/", true);

@@ -9,7 +9,7 @@ public class Sun
     
     public DateTime? YearOrdinations { get; set; }
     
-    public string SunName { get; set; }
+    public string? SunName { get; set; }
     
     public DateTime? YearDefrock { get; set; }
 }

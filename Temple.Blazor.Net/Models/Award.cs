@@ -9,5 +9,5 @@ public class Award
     
     public DateTime? YearAward { get; set; }
     
-    public string Name { get; set; }
+    public string? Name { get; set; }
 }
