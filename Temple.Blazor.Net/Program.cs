@@ -1,7 +1,5 @@
-using Blazorise;
-using Blazorise.Bootstrap5;
-using Blazorise.Icons.FontAwesome;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using MudBlazor.Services;
 using Temple.Blazor.Net.Components;
 using Temple.Net.Data;
 using Temple.Net.Service;
@@ -22,15 +20,8 @@ builder.Services.AddControllers();
 builder.Services.AddCascadingAuthenticationState();
 builder.Services.AddAuthorizationCore();
 builder.Services.AddServerSideBlazor().AddCircuitOptions(options => {  options.DetailedErrors = true; });
-    
-builder.Services
-    .AddBlazorise( options =>
-    {
-        options.Immediate = true;
-    } )
-    .AddBootstrap5Providers()
-    .AddFontAwesomeIcons();
-
+builder.Services.AddMudServices();
+builder.Services.AddMudBlazorDialog();
 builder.Services.AddDbContextFactory<AppDbContext>();
 
 var app = builder.Build();

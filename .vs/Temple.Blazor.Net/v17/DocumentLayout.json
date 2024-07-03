@@ -3,20 +3,32 @@
   "WorkspaceRootPath": "C:\\Users\\katana\\source\\repos\\Temple.Blazor.Net\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{295CAC45-AB11-4854-8BC2-0F76D32A02C3}|Temple.Blazor.Net\\Temple.Blazor.Net.csproj|c:\\users\\katana\\source\\repos\\temple.blazor.net\\temple.blazor.net\\components\\layout\\mainlayout.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{295CAC45-AB11-4854-8BC2-0F76D32A02C3}|Temple.Blazor.Net\\Temple.Blazor.Net.csproj|solutionrelative:temple.blazor.net\\components\\layout\\mainlayout.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+      "AbsoluteMoniker": "D:0:0:{295CAC45-AB11-4854-8BC2-0F76D32A02C3}|Temple.Blazor.Net\\Temple.Blazor.Net.csproj|c:\\users\\katana\\source\\repos\\temple.blazor.net\\temple.blazor.net\\components\\pages\\adminpanel.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{295CAC45-AB11-4854-8BC2-0F76D32A02C3}|Temple.Blazor.Net\\Temple.Blazor.Net.csproj|solutionrelative:temple.blazor.net\\components\\pages\\adminpanel.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{295CAC45-AB11-4854-8BC2-0F76D32A02C3}|Temple.Blazor.Net\\Temple.Blazor.Net.csproj|c:\\users\\katana\\source\\repos\\temple.blazor.net\\temple.blazor.net\\components\\pages\\addtemple.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{295CAC45-AB11-4854-8BC2-0F76D32A02C3}|Temple.Blazor.Net\\Temple.Blazor.Net.csproj|solutionrelative:temple.blazor.net\\components\\pages\\addtemple.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{295CAC45-AB11-4854-8BC2-0F76D32A02C3}|Temple.Blazor.Net\\Temple.Blazor.Net.csproj|c:\\users\\katana\\source\\repos\\temple.blazor.net\\temple.blazor.net\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{295CAC45-AB11-4854-8BC2-0F76D32A02C3}|Temple.Blazor.Net\\Temple.Blazor.Net.csproj|solutionrelative:temple.blazor.net\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{295CAC45-AB11-4854-8BC2-0F76D32A02C3}|Temple.Blazor.Net\\Temple.Blazor.Net.csproj|c:\\users\\katana\\source\\repos\\temple.blazor.net\\temple.blazor.net\\components\\pages\\addparishioners.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{295CAC45-AB11-4854-8BC2-0F76D32A02C3}|Temple.Blazor.Net\\Temple.Blazor.Net.csproj|solutionrelative:temple.blazor.net\\components\\pages\\addparishioners.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{295CAC45-AB11-4854-8BC2-0F76D32A02C3}|Temple.Blazor.Net\\Temple.Blazor.Net.csproj|c:\\users\\katana\\source\\repos\\temple.blazor.net\\temple.blazor.net\\components\\pages\\addpersonali.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{295CAC45-AB11-4854-8BC2-0F76D32A02C3}|Temple.Blazor.Net\\Temple.Blazor.Net.csproj|solutionrelative:temple.blazor.net\\components\\pages\\addpersonali.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{295CAC45-AB11-4854-8BC2-0F76D32A02C3}|Temple.Blazor.Net\\Temple.Blazor.Net.csproj|c:\\users\\katana\\source\\repos\\temple.blazor.net\\temple.blazor.net\\components\\pages\\home.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
       "RelativeMoniker": "D:0:0:{295CAC45-AB11-4854-8BC2-0F76D32A02C3}|Temple.Blazor.Net\\Temple.Blazor.Net.csproj|solutionrelative:temple.blazor.net\\components\\pages\\home.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{295CAC45-AB11-4854-8BC2-0F76D32A02C3}|Temple.Blazor.Net\\Temple.Blazor.Net.csproj|c:\\users\\katana\\source\\repos\\temple.blazor.net\\temple.blazor.net\\components\\layout\\mainlayout.razor.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}",
-      "RelativeMoniker": "D:0:0:{295CAC45-AB11-4854-8BC2-0F76D32A02C3}|Temple.Blazor.Net\\Temple.Blazor.Net.csproj|solutionrelative:temple.blazor.net\\components\\layout\\mainlayout.razor.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{295CAC45-AB11-4854-8BC2-0F76D32A02C3}|Temple.Blazor.Net\\Temple.Blazor.Net.csproj|c:\\users\\katana\\source\\repos\\temple.blazor.net\\temple.blazor.net\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{295CAC45-AB11-4854-8BC2-0F76D32A02C3}|Temple.Blazor.Net\\Temple.Blazor.Net.csproj|solutionrelative:temple.blazor.net\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{295CAC45-AB11-4854-8BC2-0F76D32A02C3}|Temple.Blazor.Net\\Temple.Blazor.Net.csproj|c:\\users\\katana\\source\\repos\\temple.blazor.net\\temple.blazor.net\\components\\app.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{295CAC45-AB11-4854-8BC2-0F76D32A02C3}|Temple.Blazor.Net\\Temple.Blazor.Net.csproj|solutionrelative:temple.blazor.net\\components\\app.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     }
   ],
   "DocumentGroupContainers": [
@@ -25,61 +37,77 @@
       "VerticalTabListWidth": 256,
       "DocumentGroups": [
         {
-          "DockedHeight": 4068,
-          "SelectedChildIndex": 3,
+          "DockedHeight": 3177,
+          "SelectedChildIndex": 0,
           "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "AdminPanel.razor",
+              "DocumentMoniker": "C:\\Users\\katana\\source\\repos\\Temple.Blazor.Net\\Temple.Blazor.Net\\Components\\Pages\\AdminPanel.razor",
+              "RelativeDocumentMoniker": "Temple.Blazor.Net\\Components\\Pages\\AdminPanel.razor",
+              "ToolTip": "C:\\Users\\katana\\source\\repos\\Temple.Blazor.Net\\Temple.Blazor.Net\\Components\\Pages\\AdminPanel.razor",
+              "RelativeToolTip": "Temple.Blazor.Net\\Components\\Pages\\AdminPanel.razor",
+              "ViewState": "AQIAAA8AAAAAAAAAAAAAACEAAAAVAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2024-07-03T19:38:48.49Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "AddParishioners.razor",
+              "DocumentMoniker": "C:\\Users\\katana\\source\\repos\\Temple.Blazor.Net\\Temple.Blazor.Net\\Components\\Pages\\AddParishioners.razor",
+              "RelativeDocumentMoniker": "Temple.Blazor.Net\\Components\\Pages\\AddParishioners.razor",
+              "ToolTip": "C:\\Users\\katana\\source\\repos\\Temple.Blazor.Net\\Temple.Blazor.Net\\Components\\Pages\\AddParishioners.razor",
+              "RelativeToolTip": "Temple.Blazor.Net\\Components\\Pages\\AddParishioners.razor",
+              "ViewState": "AQIAADAAAAAAAAAAAAAAACwAAAAaAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2024-07-03T13:55:45.226Z",
+              "EditorCaption": ""
+            },
             {
               "$type": "Bookmark",
               "Name": "ST:0:0:{aa2115a1-9712-457b-9047-dbb71ca2cdd2}"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "Home.razor",
-              "DocumentMoniker": "C:\\Users\\katana\\source\\repos\\Temple.Blazor.Net\\Temple.Blazor.Net\\Components\\Pages\\Home.razor",
-              "RelativeDocumentMoniker": "Temple.Blazor.Net\\Components\\Pages\\Home.razor",
-              "ToolTip": "C:\\Users\\katana\\source\\repos\\Temple.Blazor.Net\\Temple.Blazor.Net\\Components\\Pages\\Home.razor",
-              "RelativeToolTip": "Temple.Blazor.Net\\Components\\Pages\\Home.razor",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "DocumentIndex": 4,
+              "Title": "AddPersonali.razor",
+              "DocumentMoniker": "C:\\Users\\katana\\source\\repos\\Temple.Blazor.Net\\Temple.Blazor.Net\\Components\\Pages\\AddPersonali.razor",
+              "RelativeDocumentMoniker": "Temple.Blazor.Net\\Components\\Pages\\AddPersonali.razor",
+              "ToolTip": "C:\\Users\\katana\\source\\repos\\Temple.Blazor.Net\\Temple.Blazor.Net\\Components\\Pages\\AddPersonali.razor",
+              "RelativeToolTip": "Temple.Blazor.Net\\Components\\Pages\\AddPersonali.razor",
+              "ViewState": "AQIAABIAAAAAAAAAAAAAACEAAAAbAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2024-06-14T17:38:17.668Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "MainLayout.razor.css",
-              "DocumentMoniker": "C:\\Users\\katana\\source\\repos\\Temple.Blazor.Net\\Temple.Blazor.Net\\Components\\Layout\\MainLayout.razor.css",
-              "RelativeDocumentMoniker": "Temple.Blazor.Net\\Components\\Layout\\MainLayout.razor.css",
-              "ToolTip": "C:\\Users\\katana\\source\\repos\\Temple.Blazor.Net\\Temple.Blazor.Net\\Components\\Layout\\MainLayout.razor.css",
-              "RelativeToolTip": "Temple.Blazor.Net\\Components\\Layout\\MainLayout.razor.css",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAACUAAAAWAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003000|",
-              "WhenOpened": "2024-06-14T17:29:57.978Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "MainLayout.razor",
-              "DocumentMoniker": "C:\\Users\\katana\\source\\repos\\Temple.Blazor.Net\\Temple.Blazor.Net\\Components\\Layout\\MainLayout.razor",
-              "RelativeDocumentMoniker": "Temple.Blazor.Net\\Components\\Layout\\MainLayout.razor",
-              "ToolTip": "C:\\Users\\katana\\source\\repos\\Temple.Blazor.Net\\Temple.Blazor.Net\\Components\\Layout\\MainLayout.razor",
-              "RelativeToolTip": "Temple.Blazor.Net\\Components\\Layout\\MainLayout.razor",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAABQAAAAIAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2024-06-14T16:55:23.438Z",
+              "WhenOpened": "2024-07-03T19:20:23.659Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "Program.cs",
-              "DocumentMoniker": "C:\\Users\\katana\\source\\repos\\Temple.Blazor.Net\\Temple.Blazor.Net\\Program.cs",
-              "RelativeDocumentMoniker": "Temple.Blazor.Net\\Program.cs",
-              "ToolTip": "C:\\Users\\katana\\source\\repos\\Temple.Blazor.Net\\Temple.Blazor.Net\\Program.cs",
-              "RelativeToolTip": "Temple.Blazor.Net\\Program.cs",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-06-14T16:55:19.012Z"
+              "DocumentIndex": 1,
+              "Title": "AddTemple.razor",
+              "DocumentMoniker": "C:\\Users\\katana\\source\\repos\\Temple.Blazor.Net\\Temple.Blazor.Net\\Components\\Pages\\AddTemple.razor",
+              "RelativeDocumentMoniker": "Temple.Blazor.Net\\Components\\Pages\\AddTemple.razor",
+              "ToolTip": "C:\\Users\\katana\\source\\repos\\Temple.Blazor.Net\\Temple.Blazor.Net\\Components\\Pages\\AddTemple.razor",
+              "RelativeToolTip": "Temple.Blazor.Net\\Components\\Pages\\AddTemple.razor",
+              "ViewState": "AQIAAHQBAAAAAAAAAAApwHoBAAABAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2024-07-03T13:55:45.978Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "App.razor",
+              "DocumentMoniker": "C:\\Users\\katana\\source\\repos\\Temple.Blazor.Net\\Temple.Blazor.Net\\Components\\App.razor",
+              "RelativeDocumentMoniker": "Temple.Blazor.Net\\Components\\App.razor",
+              "ToolTip": "C:\\Users\\katana\\source\\repos\\Temple.Blazor.Net\\Temple.Blazor.Net\\Components\\App.razor",
+              "RelativeToolTip": "Temple.Blazor.Net\\Components\\App.razor",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAABgAAAANAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2024-07-03T13:31:06.89Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Bookmark",
@@ -88,6 +116,42 @@
             {
               "$type": "Bookmark",
               "Name": "ST:0:0:{34e76e81-ee4a-11d0-ae2e-00a0c90fffc3}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "Home.razor",
+              "DocumentMoniker": "C:\\Users\\katana\\source\\repos\\Temple.Blazor.Net\\Temple.Blazor.Net\\Components\\Pages\\Home.razor",
+              "RelativeDocumentMoniker": "Temple.Blazor.Net\\Components\\Pages\\Home.razor",
+              "ToolTip": "C:\\Users\\katana\\source\\repos\\Temple.Blazor.Net\\Temple.Blazor.Net\\Components\\Pages\\Home.razor",
+              "RelativeToolTip": "Temple.Blazor.Net\\Components\\Pages\\Home.razor",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAwAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2024-06-14T17:38:17.668Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "Program.cs",
+              "DocumentMoniker": "C:\\Users\\katana\\source\\repos\\Temple.Blazor.Net\\Temple.Blazor.Net\\Program.cs",
+              "RelativeDocumentMoniker": "Temple.Blazor.Net\\Program.cs",
+              "ToolTip": "C:\\Users\\katana\\source\\repos\\Temple.Blazor.Net\\Temple.Blazor.Net\\Program.cs",
+              "RelativeToolTip": "Temple.Blazor.Net\\Program.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAABYAAAAiAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-06-14T16:55:19.012Z",
+              "EditorCaption": ""
+            }
+          ]
+        },
+        {
+          "DockedHeight": 1026,
+          "SelectedChildIndex": -1,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{d78612c7-9962-4b83-95d9-268046dad23a}"
             }
           ]
         }

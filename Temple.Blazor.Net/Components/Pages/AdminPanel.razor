@@ -6,6 +6,7 @@
 @using Microsoft.AspNetCore.Components.QuickGrid
 @rendermode InteractiveServer
 @inject UserDbContext context
+@inject IDialogService DialogService
 @page "/admin"
 
 <PageTitle>Панель администратора</PageTitle>
@@ -14,28 +15,36 @@
     <link href="css/site.css" rel="stylesheet" />
 </body>
 
+<MudDialogProvider FullWidth="true"
+                   MaxWidth="MaxWidth.ExtraSmall"
+                   CloseButton="false"
+                   BackdropClick="false"
+                   NoHeader="true"
+                   Position="DialogPosition.TopCenter"
+                   CloseOnEscapeKey="false"/>
+
 <QuickGrid Items="@context.Users">
-    <PropertyColumn Property="@(user => user.Email)" Sortable="true"/>
-    <PropertyColumn Property="@(user => user.Role)" Sortable="true"/>
-    <TemplateColumn Title="Изменить баланс пользователя">
-        <Button Color="Color.Primary" @onclick="@(() => ChangeRole(context))">Изменить</Button>
-    </TemplateColumn>
+    <Microsoft.AspNetCore.Components.QuickGrid.PropertyColumn Property="@(user => user.Email)" Sortable="true"/>
+    <Microsoft.AspNetCore.Components.QuickGrid.PropertyColumn Property="@(user => user.Role)" Sortable="true"/>
+    <Microsoft.AspNetCore.Components.QuickGrid.TemplateColumn Title="Изменить баланс пользователя">
+        <MudButton Variant="Variant.Filled" Color="Color.Primary" @onclick="@(() => ChangeRole(context))">Изменить</MudButton>
+    </Microsoft.AspNetCore.Components.QuickGrid.TemplateColumn>
 </QuickGrid>
 
-<Modal @ref="changeModal" title="Изменить права доступа" UseStaticBackdrop="true" CloseOnEscape="false">
-    <ModalContent>
-        @* <ModalHeader> *@
-        @*     <ModalTitle>Изменить права доступа</ModalTitle> *@
-        @*     <CloseButton /> *@
-        @* </ModalHeader> *@
-        <ModalBody>
-            <input @bind-value="NewRole" class="form-control" style="margin-right: 24px; width: 508px;" autocomplete="off" placeholder="Новые права">
-        </ModalBody>
-        <ModalFooter>
-            <Button Color="Color.Primary" @onclick="OnHideModalClick">Изменить</Button>
-        </ModalFooter>
-    </ModalContent>
-</Modal>
+<MudGrid Justify="Justify.Center">
+    <MudDialog @bind-Visible="visible">
+        <TitleContent>
+            Изменить права доступа
+        </TitleContent>
+        <DialogContent>
+            <MudTextField T="string" Label="Права" @bind-value="NewRole"></MudTextField>
+        </DialogContent>
+        <DialogActions>
+            <MudButton Color="Color.Primary" OnClick="OnHideModalClick">Отмена</MudButton>
+            <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="OnChangeClick">Изменить</MudButton>
+        </DialogActions>
+    </MudDialog>
+</MudGrid>
 
 <style>
     .btn-danger {
@@ -47,28 +56,31 @@
 
 @code {
     private User selectUser;
-    
-    private Modal changeModal = default!;
+
+    private bool visible = false;
+    // private Modal changeModal = default!;
 
     private string NewRole;
     
     private async Task ChangeRole(User user)
     {
+        var options = new DialogOptions { CloseOnEscapeKey = true };
+
         selectUser = user;
-        changeModal.Show();
+        // changeModal.Show();
+        visible = true;
     }
     
-    private async Task OnHideModalClick()
+    private async Task OnChangeClick()
     {
-        Task.Run(() =>
-        {
-            if (!string.IsNullOrEmpty(NewRole))
-            {
-                selectUser.Role = NewRole;
-                context.Users.Update(selectUser);
-                context.SaveChanges();
-            }
-        });
-        await changeModal.Hide();
+        selectUser.Role = NewRole;
+        context.Users.Update(selectUser);
+        context.SaveChanges();
+        visible = false;
+    }
+
+    private void OnHideModalClick(MouseEventArgs obj)
+    {
+        visible = false;
     }
 }

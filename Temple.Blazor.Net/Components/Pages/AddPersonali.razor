@@ -40,12 +40,12 @@
 </div>
 
 <div style="margin-top: 10px; margin-bottom: 10px;">
-    <DatePicker TValue="DateTime?" InputFormat="dd.MM.yyyy" DisplayFormat="dd.MM.yyyy" InputMode="DateInputMode.Date" @bind-Date="_parsonalion.Born"/>
+    <MudDatePicker T="DateTime?" DateFormat="dd.MM.yyyy"  InputMode="DateInputMode.Date" @bind-Date="_parsonalion.Born"/>
     <label>Год рождения</label>
 </div>
 
 <div style="margin-top: 10px; margin-bottom: 10px;">
-    <DatePicker TValue="DateTime?" InputFormat="dd.MM.yyyy" DisplayFormat="dd.MM.yyyy" @bind-Date="_parsonalion.Death"/>
+    <MudDatePicker T="DateTime?" DateFormat="dd.MM.yyyy"  @bind-Date="_parsonalion.Death"/>
     <label>Год смерти</label>
 </div>
                     
@@ -62,23 +62,23 @@
 </div>
 
 <div>
-    <Select TValue="int" @bind-SelectedValue="@selectedNation" class="form-control js-example-basic-single">
-        <SelectItem Value="1">Белорус</SelectItem>
-        <SelectItem Value="2">Русский</SelectItem>
-        <SelectItem Value="3">Украинец</SelectItem>
-        <SelectItem Value="4"></SelectItem>
-    </Select>
+    <MudSelect T="int" @bind-Value="@selectedNation">
+        <MudSelectItem Value="1">Белорус</MudSelectItem>
+        <MudSelectItem Value="2">Русский</MudSelectItem>
+        <MudSelectItem Value="3">Украинец</MudSelectItem>
+        <MudSelectItem Value="4"></MudSelectItem>
+    </MudSelect>
     <label>Национальность</label>
 </div>
 
-<Select TValue="int" @bind-SelectedValue="@selectedSocial" class="form-control js-example-basic-single">
-    <SelectItem Value="1">Из крестьян</SelectItem>
-    <SelectItem Value="2">Из мещан</SelectItem>
-    <SelectItem Value="3">Из духовенства</SelectItem>
-    <SelectItem Value="4">Из служащих</SelectItem>
-    <SelectItem Value="5">Из дворян</SelectItem>
-    <SelectItem Value="6"></SelectItem>
-</Select>
+<MudSelect T="int" @bind-Value="@selectedSocial">
+    <MudSelectItem Value="1">Из крестьян</MudSelectItem>
+    <MudSelectItem Value="2">Из мещан</MudSelectItem>
+    <MudSelectItem Value="3">Из духовенства</MudSelectItem>
+    <MudSelectItem Value="4">Из служащих</MudSelectItem>
+    <MudSelectItem Value="5">Из дворян</MudSelectItem>
+    <MudSelectItem Value="6"></MudSelectItem>
+</MudSelect>
 
 <br/>
 
@@ -87,7 +87,7 @@
 
     <div>
         <div style="margin-top: 10px; margin-bottom: 10px;">
-            <DatePicker TValue="DateTime?" InputFormat="dd.MM.yyyy" DisplayFormat="dd.MM.yyyy" Placeholder="Год поступление" @bind-Date="_parsonalion.Education.YearAdmission"/>
+            <MudDatePicker T="DateTime?" DateFormat="dd.MM.yyyy" Label="Год поступление" @bind-Date="_parsonalion.Education.YearAdmission"/>
         </div>
 
         <div class="form-floating mb-2">
@@ -98,17 +98,17 @@
         <h4 class="card-title text-center mb-3 fw-light fs-5">Уровень образования</h4>
                             
         <div>
-            <Select TValue="int" @bind-SelectedValue="@selectedLVLEductaion" class="form-control js-example-basic-single">
-                <SelectItem Value="1">Высшее</SelectItem>
-                <SelectItem Value="2">Среднее</SelectItem>
-                <SelectItem Value="3">Неполное-среднее</SelectItem>
-                <SelectItem Value="4">Начальное</SelectItem>
-                <SelectItem Value="5"></SelectItem>
-            </Select>
+            <MudSelect T="int" @bind-Value="@selectedLVLEductaion">
+                <MudSelectItem Value="1">Высшее</MudSelectItem>
+                <MudSelectItem Value="2">Среднее</MudSelectItem>
+                <MudSelectItem Value="3">Неполное-среднее</MudSelectItem>
+                <MudSelectItem Value="4">Начальное</MudSelectItem>
+                <MudSelectItem Value="5"></MudSelectItem>
+            </MudSelect>
         </div>
 
         <div style="margin-top: 10px; margin-bottom: 10px;">
-            <DatePicker TValue="DateTime?" InputFormat="yyyy" DisplayFormat="yyyy" Placeholder="Год выпуска" @bind-Date="_parsonalion.Education.YearOfRease"/>
+            <MudDatePicker T="DateTime?" DateFormat="yyyy" DisplayFormat="yyyy" Label="Год выпуска" @bind-Date="_parsonalion.Education.YearOfRease"/>
         </div>
     </div>
 </div>
@@ -118,7 +118,7 @@
 
     <div>
         <div style="margin-top: 10px; margin-bottom: 10px;">
-            <DatePicker TValue="DateTime?" InputFormat="dd.MM.yyyy" DisplayFormat="dd.MM.yyyy" Placeholder="Год ареста" @bind-Date="_parsonalion.State.YearArrest"/>
+            <MudDatePicker T="DateTime?" DateFormat="dd.MM.yyyy"  Label="Год ареста" @bind-Date="_parsonalion.State.YearArrest"/>
         </div>
 
         @* <div class="form-floating mb-2"> *@
@@ -129,41 +129,41 @@
         <h4 class="card-title text-center mb-3 fw-light fs-5">Приговор</h4>
                             
         <div>
-            <Select TValue="int" @bind-SelectedValue="@selectedVerdict" class="form-control js-example-basic-single">
-                <SelectItem Value="1">10 лет тюремного заключения условно</SelectItem>
-                <SelectItem Value="2">15 лет тюремного заключения с применением общественных работ</SelectItem>
-                <SelectItem Value="3">1 год исправительных трудовых работ</SelectItem>
-                <SelectItem Value="4">1 год принудительных работ</SelectItem>
-                <SelectItem Value="5">2 год принудительных работ</SelectItem>
-                <SelectItem Value="6">2 года строгой изоляции</SelectItem>
-                <SelectItem Value="7">2 года тюрьмы с последующей ссылкой</SelectItem>
-                <SelectItem Value="8">3 года строгой изоляции</SelectItem>
-                <SelectItem Value="9">3 месяца принудительных работ</SelectItem>
-                <SelectItem Value="10">5 лет ИТЛ с высылкой семьи на Север</SelectItem>
-                <SelectItem Value="11">5 лет строгой изоляции</SelectItem>
-                <SelectItem Value="12">5 лет строгой изоляции с конфискацией имущества и 3 года поражения в гражданских правах</SelectItem>
-                <SelectItem Value="13">6 месяцев исправительных работ</SelectItem>
-                <SelectItem Value="14">6 месяцев принудительных работ</SelectItem>
-                <SelectItem Value="15">3 месяца принудительных работ</SelectItem>
-                <SelectItem Value="16">8 лет принудительных работ со строгой изоляцией и конфискацией имущества</SelectItem>
-                <SelectItem Value="17">Бессрочная административная высылка</SelectItem>
-                <SelectItem Value="18">Бессрочная ссылка</SelectItem>
-                <SelectItem Value="19">Бессрочное заключение в концлагерь с применением принудительных работ</SelectItem>
-                <SelectItem Value="20">Бессрочное тюремное заключение с тягчайшими принудительными работами без права свидания с родными</SelectItem>
-                <SelectItem Value="21">Высшая мера наказания (расстрел)</SelectItem>
-                <SelectItem Value="22">Высшая мера наказания (расстрел) с заменой на 10 лет заключения в ИТЛ</SelectItem>
-                <SelectItem Value="23">Высшая мера наказания (расстрел) с конфискацией имущества</SelectItem>
-                <SelectItem Value="24">Высылка</SelectItem>
-                <SelectItem Value="25"></SelectItem>
-            </Select>
+            <MudSelect T="int" @bind-Value="@selectedVerdict">
+                <MudSelectItem Value="1">10 лет тюремного заключения условно</MudSelectItem>
+                <MudSelectItem Value="2">15 лет тюремного заключения с применением общественных работ</MudSelectItem>
+                <MudSelectItem Value="3">1 год исправительных трудовых работ</MudSelectItem>
+                <MudSelectItem Value="4">1 год принудительных работ</MudSelectItem>
+                <MudSelectItem Value="5">2 год принудительных работ</MudSelectItem>
+                <MudSelectItem Value="6">2 года строгой изоляции</MudSelectItem>
+                <MudSelectItem Value="7">2 года тюрьмы с последующей ссылкой</MudSelectItem>
+                <MudSelectItem Value="8">3 года строгой изоляции</MudSelectItem>
+                <MudSelectItem Value="9">3 месяца принудительных работ</MudSelectItem>
+                <MudSelectItem Value="10">5 лет ИТЛ с высылкой семьи на Север</MudSelectItem>
+                <MudSelectItem Value="11">5 лет строгой изоляции</MudSelectItem>
+                <MudSelectItem Value="12">5 лет строгой изоляции с конфискацией имущества и 3 года поражения в гражданских правах</MudSelectItem>
+                <MudSelectItem Value="13">6 месяцев исправительных работ</MudSelectItem>
+                <MudSelectItem Value="14">6 месяцев принудительных работ</MudSelectItem>
+                <MudSelectItem Value="15">3 месяца принудительных работ</MudSelectItem>
+                <MudSelectItem Value="16">8 лет принудительных работ со строгой изоляцией и конфискацией имущества</MudSelectItem>
+                <MudSelectItem Value="17">Бессрочная административная высылка</MudSelectItem>
+                <MudSelectItem Value="18">Бессрочная ссылка</MudSelectItem>
+                <MudSelectItem Value="19">Бессрочное заключение в концлагерь с применением принудительных работ</MudSelectItem>
+                <MudSelectItem Value="20">Бессрочное тюремное заключение с тягчайшими принудительными работами без права свидания с родными</MudSelectItem>
+                <MudSelectItem Value="21">Высшая мера наказания (расстрел)</MudSelectItem>
+                <MudSelectItem Value="22">Высшая мера наказания (расстрел) с заменой на 10 лет заключения в ИТЛ</MudSelectItem>
+                <MudSelectItem Value="23">Высшая мера наказания (расстрел) с конфискацией имущества</MudSelectItem>
+                <MudSelectItem Value="24">Высылка</MudSelectItem>
+                <MudSelectItem Value="25"></MudSelectItem>
+            </MudSelect>
         </div>
 
         <div style="margin-top: 10px; margin-bottom: 10px;">
-            <DatePicker TValue="DateTime?" InputFormat="dd.MM.yyyy" DisplayFormat="dd.MM.yyyy" Placeholder="Год приговора" @bind-Date="_parsonalion.State.YearSentence"/>
+            <MudDatePicker T="DateTime?" DateFormat="dd.MM.yyyy" Label="Год приговора" @bind-Date="_parsonalion.State.YearSentence"/>
         </div>
                             
         <div style="margin-top: 10px; margin-bottom: 10px;">
-            <DatePicker TValue="DateTime?" InputFormat="dd.MM.yyyy" DisplayFormat="dd.MM.yyyy" Placeholder="Год реабелитации" @bind-Date="_parsonalion.State.YearRehabilitation"/>
+            <MudDatePicker T="DateTime?" DateFormat="dd.MM.yyyy" Label="Год реабелитации" @bind-Date="_parsonalion.State.YearRehabilitation"/>
         </div>
 
         <div class="form-floating mb-2">
@@ -178,7 +178,7 @@
 
     <div>
         <div style="margin-top: 10px; margin-bottom: 10px;">
-            <DatePicker TValue="DateTime?" InputFormat="dd.MM.yyyy" DisplayFormat="dd.MM.yyyy" Placeholder="Год отпадения" @bind-Date="_parsonalion.Oriention.YearFall"/>
+            <MudDatePicker T="DateTime?" DateFormat="dd.MM.yyyy" Label="Год отпадения" @bind-Date="_parsonalion.Oriention.YearFall"/>
         </div>
 
         <div class="form-floating mb-2">
@@ -187,7 +187,7 @@
         </div>
                             
         <div style="margin-top: 10px; margin-bottom: 10px;">
-            <DatePicker TValue="DateTime?" InputFormat="dd.MM.yyyy" DisplayFormat="dd.MM.yyyy" Placeholder="Год возрата" @bind-Date="_parsonalion.Oriention.YearRefund"/>
+            <MudDatePicker T="DateTime?" DateFormat="dd.MM.yyyy" Label="Год возрата" @bind-Date="_parsonalion.Oriention.YearRefund"/>
         </div>
     </div>
 </div>
@@ -197,31 +197,31 @@
 
     <div>
         <div style="margin-top: 10px; margin-bottom: 10px;">
-            <DatePicker TValue="DateTime?" InputFormat="dd.MM.yyyy" DisplayFormat="dd.MM.yyyy" Placeholder="Год рукоположения" @bind-Date="_parsonalion.Sun.YearOrdinations"/>
+            <MudDatePicker T="DateTime?" DateFormat="dd.MM.yyyy"  Label="Год рукоположения" @bind-Date="_parsonalion.Sun.YearOrdinations"/>
         </div>
 
-        <Select TValue="int" @bind-SelectedValue="@selectedSunName" class="form-control js-example-basic-single">
-            <SelectItem Value="1">Архидиакон</SelectItem>
-            <SelectItem Value="2">Архиепископ</SelectItem>
-            <SelectItem Value="3">Диаког</SelectItem>
-            <SelectItem Value="4">Епископ</SelectItem>
-            <SelectItem Value="5">Игумен</SelectItem>
-            <SelectItem Value="6">Иеродиакон</SelectItem>
-            <SelectItem Value="7">Иеромонах</SelectItem>
-            <SelectItem Value="8">Митрополит</SelectItem>
-            <SelectItem Value="9">Монах</SelectItem>
-            <SelectItem Value="10">Пономарь</SelectItem>
-            <SelectItem Value="11">Послушник</SelectItem>
-            <SelectItem Value="12">Причетник</SelectItem>
-            <SelectItem Value="13">Протодиакон</SelectItem>
-            <SelectItem Value="14">Протоиерей</SelectItem>
-            <SelectItem Value="15">Протопресвитер</SelectItem>
-            <SelectItem Value="16">Псаломщик</SelectItem>
-            <SelectItem Value="17">Священник</SelectItem>
-        </Select>
+        <MudSelect T="int" @bind-SelectedValue="@selectedSunName" class="form-control js-example-basic-single">
+            <MudSelectItem Value="1">Архидиакон</MudSelectItem>
+            <MudSelectItem Value="2">Архиепископ</MudSelectItem>
+            <MudSelectItem Value="3">Диаког</MudSelectItem>
+            <MudSelectItem Value="4">Епископ</MudSelectItem>
+            <MudSelectItem Value="5">Игумен</MudSelectItem>
+            <MudSelectItem Value="6">Иеродиакон</MudSelectItem>
+            <MudSelectItem Value="7">Иеромонах</MudSelectItem>
+            <MudSelectItem Value="8">Митрополит</MudSelectItem>
+            <MudSelectItem Value="9">Монах</MudSelectItem>
+            <MudSelectItem Value="10">Пономарь</MudSelectItem>
+            <MudSelectItem Value="11">Послушник</MudSelectItem>
+            <MudSelectItem Value="12">Причетник</MudSelectItem>
+            <MudSelectItem Value="13">Протодиакон</MudSelectItem>
+            <MudSelectItem Value="14">Протоиерей</MudSelectItem>
+            <MudSelectItem Value="15">Протопресвитер</MudSelectItem>
+            <MudSelectItem Value="16">Псаломщик</MudSelectItem>
+            <MudSelectItem Value="17">Священник</MudSelectItem>
+        </MudSelect>
 
         <div style="margin-top: 10px; margin-bottom: 10px;">
-            <DatePicker TValue="DateTime?" InputFormat="dd.MM.yyyy" DisplayFormat="dd.MM.yyyy" Placeholder="Год снятия сана" @bind-Date="_parsonalion.Sun.YearDefrock"/>
+            <MudDatePicker T="DateTime?" DateFormat="dd.MM.yyyy"  Label="Год снятия сана" @bind-Date="_parsonalion.Sun.YearDefrock"/>
         </div>
     </div>
 </div>
@@ -231,27 +231,27 @@
 
     <div>
         <div style="margin-top: 10px; margin-bottom: 10px;">
-            <DatePicker TValue="DateTime?" InputFormat="dd.MM.yyyy" DisplayFormat="dd.MM.yyyy" Placeholder="Год награждения" @bind-Date="_parsonalion.Award.YearAward"/>
+            <MudDatePicker T="DateTime?" DateFormat="dd.MM.yyyy"  Label="Год награждения" @bind-Date="_parsonalion.Award.YearAward"/>
         </div>
 
-        <Select TValue="int" @bind-SelectedValue="@selectedAward" class="form-control js-example-basic-single">
-            <SelectItem Value="1">Набедренник</SelectItem>
-            <SelectItem Value="2">Камилавка фиолетового цвета</SelectItem>
-            <SelectItem Value="3">Наперсный крест</SelectItem>
-            <SelectItem Value="4">Палица</SelectItem>
-            <SelectItem Value="5">Крест с украшениями</SelectItem>
-            <SelectItem Value="6">Служение Божественной литургии с отверстыми Царскими вратами до Херувимской песни</SelectItem>
-            <SelectItem Value="7">Служение Божественной литургии с отверстыми Царскими Вратами до "Отче наш"</SelectItem>
-            <SelectItem Value="8">Митра</SelectItem>
-            <SelectItem Value="9">Право ношения второго наперсного креста с украшениями</SelectItem>
-            <SelectItem Value="10">Патриарший наперстый крест</SelectItem>
-            <SelectItem Value="11">Двойной орарь</SelectItem>
-        </Select>
+        <MudSelect T="int" @bind-SelectedValue="@selectedAward" class="form-control js-example-basic-single">
+            <MudSelectItem Value="1">Набедренник</MudSelectItem>
+            <MudSelectItem Value="2">Камилавка фиолетового цвета</MudSelectItem>
+            <MudSelectItem Value="3">Наперсный крест</MudSelectItem>
+            <MudSelectItem Value="4">Палица</MudSelectItem>
+            <MudSelectItem Value="5">Крест с украшениями</MudSelectItem>
+            <MudSelectItem Value="6">Служение Божественной литургии с отверстыми Царскими вратами до Херувимской песни</MudSelectItem>
+            <MudSelectItem Value="7">Служение Божественной литургии с отверстыми Царскими Вратами до "Отче наш"</MudSelectItem>
+            <MudSelectItem Value="8">Митра</MudSelectItem>
+            <MudSelectItem Value="9">Право ношения второго наперсного креста с украшениями</MudSelectItem>
+            <MudSelectItem Value="10">Патриарший наперстый крест</MudSelectItem>
+            <MudSelectItem Value="11">Двойной орарь</MudSelectItem>
+        </MudSelect>
     </div>
 </div>
 
 <div style="margin-top: 10px; margin-bottom: 10px;">
-    <DatePicker TValue="DateTime?" InputFormat="dd.MM.yyyy" DisplayFormat="dd.MM.yyyy" Placeholder="Год упоминания" @bind-Date="_parsonalion.YearMention"/>
+    <MudDatePicker T="DateTime?" DateFormat="dd.MM.yyyy"  Label="Год упоминания" @bind-Date="_parsonalion.YearMention"/>
 </div>
                     
 <div class="form-floating mb-2">

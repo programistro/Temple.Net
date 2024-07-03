@@ -20,28 +20,31 @@
             <div class="card flex-row my-5 border-0 shadow rounded-3 overflow-hidden">
                 <div class="card-body p-4 p-sm-5">
                     <h5 class="card-title text-center mb-5 fw-light fs-5">Регистрация</h5>
-                    <EditForm Model="model" OnSubmit="Submit">
-                        <div class="form-floating mb-3">
-                            <input type="email" class="form-control" @bind-value="model.Email">
-                            <label>Почта</label>
-                        </div>
+                    @* <EditForm Model="model" OnSubmit="Submit"> *@
+                        @* <div class="form-floating mb-3"> *@
+                        @*     <input type="email" class="form-control" @bind-value="model.Email"> *@
+                        @*     <label>Почта</label> *@
+                        @* </div> *@
+                        <MudTextField @bind-Value="model.Email" Label="Почта"/>
+                        @* *@
+                        @* <div class="form-floating mb-3"> *@
+                        @*     <input type="password" class="form-control" @bind-value="model.Password"> *@
+                        @*     <label>Пароль</label> *@
+                        @* </div> *@
+                        <MudTextField @bind-Value="model.Password" Label="Пароль" InputType="InputType.Password"/>
+                        @* *@
+                        @* <div class="form-floating mb-3"> *@
+                        @*     <input type="password" class="form-control" @bind-value="validPassword"> *@
+                        @*     <label>Подвердите пароль</label> *@
+                        @* </div> *@
+                        <MudTextField @bind-Value="validPassword" Label="Подверждение пароля" InputType="InputType.Password"/>
 
-                        <div class="form-floating mb-3">
-                            <input type="password" class="form-control" @bind-value="model.Password">
-                            <label>Пароль</label>
-                        </div>
-
-                        <div class="form-floating mb-3">
-                            <input type="password" class="form-control" @bind-value="validPassword">
-                            <label>Подвердите пароль</label>
-                        </div>
-
-                        <div class="d-grid mb-2" style="text-align: center">
-                            <Button Color="Color.Primary" onclick="@Submit()">Зарегистрироваться</Button>
+                        <div class="d-grid mb-2" style="text-align: center; margin-top: 10px;">
+                            <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="@Submit">Зарегистрироваться</MudButton>
                         </div>
 
                         <a class="d-block text-center mt-2 small" href="/login">Имеете уже у нас аккаунт?Нажмите что бы войти</a>
-                    </EditForm>
+                    @* </EditForm> *@
                 </div>
             </div>
         </div>
@@ -54,9 +57,9 @@
 @code {
     private AuthViewModel model = new();
 
-    private string validPassword;
+    private string validPassword { get; set; }
 
-    private string Message;
+    private string Message { get; set; }
 
     public async Task Submit()
     {
