@@ -12,11 +12,11 @@ namespace Temple.Blazor.Net.Controllers;
 public class AuthController : ControllerBase
 {
     [HttpGet("singin")]
-    public async Task<ActionResult> Singin(string email)
+    public async Task<ActionResult> Singin(string email, string role)
     {
         // создаем один claim
         var claims = new List<Claim> { new (ClaimTypes.Name, email), new (ClaimTypes.Email, 
-            email), new (ClaimTypes.Role,  "read") };
+            email), new (ClaimTypes.Role,  role) };
         var claimsIdentity = new ClaimsIdentity(claims, "Cookie");
         var claimsPrincipal = new ClaimsPrincipal(claimsIdentity);
         await HttpContext.SignInAsync(claimsPrincipal);

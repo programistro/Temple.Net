@@ -21,21 +21,23 @@
             <div class="card flex-row my-5 border-0 shadow rounded-3 overflow-hidden">
                 <div class="card-body p-4 p-sm-5">
                     <h5 class="card-title text-center mb-5 fw-light fs-5">Регистрация</h5>
-                    <EditForm Model="model" OnSubmit="Submit">
-                        <div class="form-floating mb-3">
-                            <input type="email" class="form-control" @bind-value="model.Email">
-                            <label>Почта</label>
-                        </div>
-
-                        <div class="form-floating mb-3">
-                            <input type="password" class="form-control" @bind-value="model.Password">
-                            <label>Пароль</label>
-                        </div>
+                    @* <EditForm Model="model" OnSubmit="Submit"> *@
+                        @* <div class="form-floating mb-3"> *@
+                        @*     <input type="email" class="form-control" @bind-value="model.Email"> *@
+                    @*     <label>Почта</label> *@
+                        <MudTextField @bind-Value="model.Email" Label="Почта"/>
+                        @* </div> *@
+                        @* *@
+                        @* <div class="form-floating mb-3"> *@
+                        @*     <input type="password" class="form-control" @bind-value="model.Password"> *@
+                        @*     <label>Пароль</label> *@
+                    @* </div> *@
+                    <MudTextField @bind-Value="model.Password" Label="Пароль" InputType="InputType.Password"/>
 
                         <div class="d-grid mb-2">
-                            <button class="btn btn-lg btn-primary btn-login fw-bold text-uppercase" type="submit">Войти</button>
+                            <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="Submit">Войти</MudButton>
                         </div>
-                    </EditForm>
+                    @* </EditForm> *@
                 </div>
             </div>
         </div>
@@ -60,7 +62,7 @@
 
             if (user.PasswordHash == passwordHash)
             {
-                NavigationManager.NavigateTo($"auth/singin?email={model.Email}", true);
+                NavigationManager.NavigateTo($"auth/singin?email={model.Email}&role={user.Role}", true);
             }
             else
             {

@@ -13,7 +13,7 @@ public class UserDbContext : IdentityDbContext<User>
     {
     }
 
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) 
     {
         optionsBuilder.UseSqlite("Data Source=users.db");
     }

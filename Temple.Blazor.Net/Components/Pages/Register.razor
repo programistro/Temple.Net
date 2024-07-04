@@ -90,14 +90,14 @@
             {
                 Id = Guid.NewGuid().ToString("N"),
                 Email = model.Email,
-                Role = "read",
+                Role = "edit",
                 PasswordHash = await _userService.CreatePasswordHashAsync(model.Password),
             };
 
             await _context.Users.AddAsync(newUser);
             await _context.SaveChangesAsync();
 
-            NavigationManager.NavigateTo($"auth/singin?email={model.Email}", true);
+            NavigationManager.NavigateTo($"auth/singin?email={model.Email}&role={newUser.Role}", true);
         }
         else
         {

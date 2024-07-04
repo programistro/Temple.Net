@@ -5,6 +5,7 @@
 @using Microsoft.AspNetCore.Authorization
 @using Microsoft.AspNetCore.Components.QuickGrid
 @rendermode InteractiveServer
+@* @attribute [Authorize("admin")] *@
 @inject UserDbContext context
 @inject IDialogService DialogService
 @page "/admin"
@@ -20,13 +21,13 @@
                    CloseButton="false"
                    BackdropClick="false"
                    NoHeader="true"
-                   Position="DialogPosition.TopCenter"
+                   Position="DialogPosition.CenterLeft"
                    CloseOnEscapeKey="false"/>
 
 <QuickGrid Items="@context.Users">
     <Microsoft.AspNetCore.Components.QuickGrid.PropertyColumn Property="@(user => user.Email)" Sortable="true"/>
     <Microsoft.AspNetCore.Components.QuickGrid.PropertyColumn Property="@(user => user.Role)" Sortable="true"/>
-    <Microsoft.AspNetCore.Components.QuickGrid.TemplateColumn Title="Изменить баланс пользователя">
+    <Microsoft.AspNetCore.Components.QuickGrid.TemplateColumn Title="Изменить права пользователя">
         <MudButton Variant="Variant.Filled" Color="Color.Primary" @onclick="@(() => ChangeRole(context))">Изменить</MudButton>
     </Microsoft.AspNetCore.Components.QuickGrid.TemplateColumn>
 </QuickGrid>
@@ -83,4 +84,5 @@
     {
         visible = false;
     }
+    
 }
