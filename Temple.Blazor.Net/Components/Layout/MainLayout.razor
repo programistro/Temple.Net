@@ -34,7 +34,7 @@
                     <li class="nav-item">
                         @if (IsAuth == true && (AuthenticationStateProvider.GetAuthenticationStateAsync().Result.User.FindFirst(ClaimTypes.Role).Value) != null)
                         {
-                            var user = _context.Users.FirstOrDefault(x => x.Email == AuthenticationStateProvider.GetAuthenticationStateAsync().Result.User.FindFirst(ClaimTypes.Email).Value);
+                            var user = _context.Users.FirstOrDefault(x => x.Email == AuthenticationStateProvider.GetAuthenticationStateAsync().Result.User.FindFirst(ClaimsIdentity.DefaultNameClaimType).Value);
 
                             if (user.Role == "admin")
                             {
@@ -73,7 +73,7 @@
 </div>
 
 <script src="js/OSMap.js"></script>
-<script src="~/_framework/blazor.web.js"></script>
+@* <script src="~/_framework/blazor.web.js"></script> *@
 <script>
     Blazor.start().then(() => {
         Blazor.defaultReconnectionHandler._reconnectCallback = function (d) {

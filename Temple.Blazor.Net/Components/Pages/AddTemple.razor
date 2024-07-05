@@ -5,17 +5,16 @@
 @inject AppDbContext _context
 @using Newtonsoft.Json
 @inject NavigationManager NavigationManager
-@rendermode InteractiveServer
 
  <div class="row">
      <div class="col-lg-10 col-xl-9 mx-auto">
          <div class="card flex-row my-5 border-0 shadow rounded-3 overflow-hidden">
              <div class="card-body p-4 p-sm-5">
                  <h5 class="card-title text-center mb-3 fw-light fs-5">Добавить храм</h5>
-                 <EditForm Model="@_temple" OnSubmit="Sumbit">
+                 @* <EditForm Model="@_temple" OnSubmit="Sumbit"> *@
                          @* <div class="form-floating mb-2"> *@
                          <div>
-                            @* <MudTextField @bind-Value="_temple.Name" Label="Название"/> *@
+                            <MudTextField @bind-Value="_temple.Name" Label="Название"/>
                         </div>
                          @* <label>Название</label> *@
                      @* </div> *@
@@ -31,7 +30,7 @@
                      </div>
 
                      <div style="margin-top: 10px; margin-bottom: 10px;">
-                        <MudDatePicker TValue="DateTime?" DateFormat="dd.MM.yyyy" InputMode="DateInputMode.Date"
+                        <MudDatePicker TValue="DateTime?" DateFormat="dd.MM.yyyy"
                         Placeholder="Год основания" @bind-Date="_temple.DateStart" Label="Год основания"/>
                          @* <label>Год основания</label> *@
                      </div>
@@ -63,7 +62,7 @@
                      </div>
 
                      <div style="margin-top: 10px; margin-bottom: 10px;">
-                        <MudDatePicker TValue="DateTime?" InputFormat="dd.MM.yyyy" DateFormat="dd.MM.yyyy" Label="Год уничтожения" @bind-Date="_temple.YearDestruction" />
+                        <MudDatePicker TValue="DateTime?" DateFormat="dd.MM.yyyy" Label="Год уничтожения" @bind-Date="_temple.YearDestruction" />
                      </div>
 
                      <div>
@@ -100,7 +99,7 @@
                              </div>
 
                              @* <div class="form-floating mb-2"> *@
-                                 @* <MudTextField T="int" @bind-value="_temple.Quantity" Label="Количество"/> *@
+                                 <MudTextField T="int?" @bind-value="_temple.Quantity" Label="Количество"/>
                                  @* <label>Количество</label> *@
                              @* </div> *@
                          </div>
@@ -375,25 +374,11 @@
                      <div class="d-grid mb-2">
                          <button class="btn btn-lg btn-primary btn-login fw-bold text-uppercase" style="margin-top: 20px;" type="submit">Добавить</button>
                      </div>
-                 </EditForm>
+                 @* </EditForm> *@
              </div>
          </div>
      </div>
  </div>
-
-<link rel="stylesheet" href="css/select.css"/>
-
-<script>
-    $(".default_option").click(function(){
-        $(this).parent().toggleClass("active");
-    })
-
-    $(".select_ul li").click(function(){
-        var currentele = $(this).html();
-        $(".default_option li").html(currentele);
-        $(this).parents(".select_wrap").removeClass("active");
-    })
-</script>
  
 @code {
     public MapPosition position;
@@ -1145,7 +1130,6 @@
                 case 36:
                     _temple.Province = "Не выбрано";
                     break;
-                case 37:
             }
 
             await _context.Temples.AddAsync(_temple);

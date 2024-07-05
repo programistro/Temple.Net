@@ -24,18 +24,13 @@ builder.Services.AddCascadingAuthenticationState();
 builder.Services.AddAuthorizationCore();
 builder.Services.AddServerSideBlazor().AddCircuitOptions(options => {  options.DetailedErrors = true; });
 builder.Services.AddMudServices();
-//builder.Services.AddIdentity<User, IdentityRole>(options => options.SignIn.RequireConfirmedAccount = false)
-//    .
-//    .AddEntityFrameworkStores<UserDbContext>()
-//    .AddSignInManager()
-//    .AddDefaultTokenProviders();
-
+builder.Services.AddAuthorizationCore();
 builder.Services.AddMudBlazorDialog();
 builder.Services.AddDbContextFactory<AppDbContext>();
-builder.Services.AddIdentity<User, IdentityRole>(options => options.SignIn.RequireConfirmedAccount = false)
-    .AddEntityFrameworkStores<UserDbContext>()
-    .AddSignInManager()
-    .AddDefaultTokenProviders();
+// builder.Services.AddIdentity<User, IdentityRole>(options => options.SignIn.RequireConfirmedAccount = false)
+//     .AddEntityFrameworkStores<UserDbContext>()
+//     .AddSignInManager()
+//     .AddDefaultTokenProviders();
 //builder.Services.AddCascadingAuthenticationState();
 
 var app = builder.Build();

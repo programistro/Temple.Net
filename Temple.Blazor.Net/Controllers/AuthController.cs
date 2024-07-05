@@ -14,9 +14,13 @@ public class AuthController : ControllerBase
     [HttpGet("singin")]
     public async Task<ActionResult> Singin(string email, string role)
     {
-        // создаем один claim
-        var claims = new List<Claim> { new (ClaimTypes.Name, email), new (ClaimTypes.Email, 
-            email), new (ClaimTypes.Role,  role) };
+        var claims = new List<Claim>
+        {
+            new Claim(ClaimsIdentity.DefaultNameClaimType, email),
+            new Claim(ClaimsIdentity.DefaultRoleClaimType, role),
+            new (ClaimTypes.Role, role),
+            new (ClaimTypes.Name, email)
+        };
         var claimsIdentity = new ClaimsIdentity(claims, "Cookie");
         var claimsPrincipal = new ClaimsPrincipal(claimsIdentity);
         await HttpContext.SignInAsync(claimsPrincipal);
@@ -27,9 +31,13 @@ public class AuthController : ControllerBase
     [HttpGet("singinAdmin")]
     public async Task<ActionResult> SinginAdmin(string email)
     {
-        // создаем один claim
-        var claims = new List<Claim> { new (ClaimTypes.Name, email), new (ClaimTypes.Email, 
-            email), new (ClaimTypes.Role,  "admin") };
+        var claims = new List<Claim>
+        {
+            new Claim(ClaimsIdentity.DefaultNameClaimType, email),
+            new Claim(ClaimsIdentity.DefaultRoleClaimType, "admin"),
+            new (ClaimTypes.Role, "admin"),
+            new (ClaimTypes.Name, email)
+        };
         var claimsIdentity = new ClaimsIdentity(claims, "Cookie");
         var claimsPrincipal = new ClaimsPrincipal(claimsIdentity);
         await HttpContext.SignInAsync(claimsPrincipal);

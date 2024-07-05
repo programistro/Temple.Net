@@ -5,7 +5,7 @@
 @using Microsoft.AspNetCore.Authorization
 @using Microsoft.AspNetCore.Components.QuickGrid
 @rendermode InteractiveServer
-@* @attribute [Authorize("admin")] *@
+@attribute [Authorize(Roles = "admin")]
 @inject UserDbContext context
 @inject IDialogService DialogService
 @page "/admin"
