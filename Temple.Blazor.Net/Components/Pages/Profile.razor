@@ -9,9 +9,11 @@
 @rendermode InteractiveServer
 @page "/profile"
 
-<Body>
-	<link href="css/site.css" rel="stylesheet" />
-</Body>
+<style>
+	footer {
+		position: absolute;
+	}
+</style>
 
 <AuthorizeView>
 	<Authorized Context="Auth">

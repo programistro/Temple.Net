@@ -1,384 +1,393 @@
-﻿@using OpenStreetMapForBlazor
+﻿@using System.Security.Claims
+@using Microsoft.AspNetCore.Components.Authorization
+@using OpenStreetMapForBlazor
 @using Temple.Net.Models
 @inject IConfiguration config
 @inject IJSRuntime JSRuntime
 @inject AppDbContext _context
 @using Newtonsoft.Json
+@using Temple.Blazor.Net.Components.Layout
 @inject NavigationManager NavigationManager
 
- <div class="row">
-     <div class="col-lg-10 col-xl-9 mx-auto">
-         <div class="card flex-row my-5 border-0 shadow rounded-3 overflow-hidden">
-             <div class="card-body p-4 p-sm-5">
-                 <h5 class="card-title text-center mb-3 fw-light fs-5">Добавить храм</h5>
-                 @* <EditForm Model="@_temple" OnSubmit="Sumbit"> *@
-                         @* <div class="form-floating mb-2"> *@
-                         <div>
-                            <MudTextField @bind-Value="_temple.Name" Label="Название"/>
-                        </div>
-                         @* <label>Название</label> *@
-                     @* </div> *@
+<MudThemeProvider @rendermode="InteractiveServer"/>
+<MudPopoverProvider @rendermode="InteractiveServer"/>
+<MudSnackbarProvider @rendermode="InteractiveServer"/>
 
-                     <div>
-                         @* <h3 class="card-title text-center mb-3 fw-light fs-5">Тип храма</h3> *@
-                         
-                         <MudSelect Variant="Variant.Outlined" Label="Тип храма" @bind-Value="selectedType">
-                             <MudSelectItem Value="1">Кафедральный</MudSelectItem>
-                             <MudSelectItem Value="2">Кладбищенский</MudSelectItem>
-                             <MudSelectItem Value="3">Приходской</MudSelectItem>
-                         </MudSelect>
-                     </div>
+<div>
+    <div class="row">
+        <div class="col-lg-10 col-xl-9 mx-auto">
+            <div class="card flex-row my-5 border-0 shadow rounded-3 overflow-hidden">
+                <div class="card-body p-4 p-sm-5">
+                    <h5 class="card-title text-center mb-3 fw-light fs-5">Добавить храм</h5>
+                    @* <EditForm Model="@_temple" OnSubmit="Sumbit"> *@
+                    @* <div class="form-floating mb-2"> *@
+                    <div>
+                        <MudTextField @bind-Value="_temple.Name" Label="Название"/>
+                    </div>
+                    @* <label>Название</label> *@
+                    @* </div> *@
 
-                     <div style="margin-top: 10px; margin-bottom: 10px;">
+                    <div>
+                        @* <h3 class="card-title text-center mb-3 fw-light fs-5">Тип храма</h3> *@
+
+                        <MudSelect Variant="Variant.Outlined" Label="Тип храма" @bind-Value="selectedType">
+                            <MudSelectItem Value="1">Кафедральный</MudSelectItem>
+                            <MudSelectItem Value="2">Кладбищенский</MudSelectItem>
+                            <MudSelectItem Value="3">Приходской</MudSelectItem>
+                        </MudSelect>
+                    </div>
+
+                    <div style="margin-top: 10px; margin-bottom: 10px;">
                         <MudDatePicker TValue="DateTime?" DateFormat="dd.MM.yyyy"
-                        Placeholder="Год основания" @bind-Date="_temple.DateStart" Label="Год основания"/>
-                         @* <label>Год основания</label> *@
-                     </div>
+                                       Placeholder="Год основания" @bind-Date="_temple.DateStart" Label="Год основания"/>
+                        @* <label>Год основания</label> *@
+                    </div>
 
-                     @* <br/> *@
+                    @* <br/> *@
 
-                     <div>
-                         @* <h3 class="card-title text-center mb-3 fw-light fs-5">Назначение после закрытия</h3> *@
+                    <div>
+                        @* <h3 class="card-title text-center mb-3 fw-light fs-5">Назначение после закрытия</h3> *@
 
-                         <div>
+                        <div>
 
-                             <div style="margin-top: 10px; margin-bottom: 10px;">
+                            <div style="margin-top: 10px; margin-bottom: 10px;">
                                 <MudDatePicker TValue="DateTime?" DateFormat="dd.MM.yyyy"
-                                 Label="Год закрытия" @bind-Date="_temple.DateEnd"/>
-                             </div>
+                                               Label="Год закрытия" @bind-Date="_temple.DateEnd"/>
+                            </div>
 
-                             <div style="margin-top: 10px; margin-bottom: 10px;">
+                            <div style="margin-top: 10px; margin-bottom: 10px;">
                                 <MudDatePicker TValue="DateTime?" DateFormat="dd.MM.yyyy" Label="Год приспособления"
                                                @bind-Date="_temple.YearAdaptation"/>
-                             </div>
+                            </div>
 
                             <MudSelect @bind-Value="@selectedAfterClosing" Label="Назначение после закрытия">
-                                 <MudSelectItem Value="1">Зернохранилище</MudSelectItem>
-                                 <MudSelectItem Value="2">Клуб</MudSelectItem>
-                                 <MudSelectItem Value="3">Склад</MudSelectItem>
-                             </MudSelect>
-                             
-                         </div>
-                     </div>
+                                <MudSelectItem Value="1">Зернохранилище</MudSelectItem>
+                                <MudSelectItem Value="2">Клуб</MudSelectItem>
+                                <MudSelectItem Value="3">Склад</MudSelectItem>
+                            </MudSelect>
 
-                     <div style="margin-top: 10px; margin-bottom: 10px;">
+                        </div>
+                    </div>
+
+                    <div style="margin-top: 10px; margin-bottom: 10px;">
                         <MudDatePicker TValue="DateTime?" DateFormat="dd.MM.yyyy" Label="Год уничтожения" @bind-Date="_temple.YearDestruction" />
-                     </div>
+                    </div>
 
-                     <div>
-                         <h3 class="card-title text-center mb-3 fw-light fs-5">Церковная ориентация</h3>
+                    <div>
+                        <h3 class="card-title text-center mb-3 fw-light fs-5">Церковная ориентация</h3>
 
-                         <div>
-                             <div style="margin-top: 10px; margin-bottom: 10px;">
+                        <div>
+                            <div style="margin-top: 10px; margin-bottom: 10px;">
                                 <MudDatePicker TValue="DateTime?" DateFormat="dd.MM.yyyy" Label="Год отпадения" @bind-Date="_temple.Oriention.YearFall" />
-                             </div>
+                            </div>
 
-                             @* <div class="form-floating mb-2"> *@
-                             @*     <input class="form-control" @bind-value="_temple.Oriention.Oriention"> *@
-                             @*     <label>Церковная ориентация</label> *@
-                             @* </div> *@
+                            @* <div class="form-floating mb-2"> *@
+                            @*     <input class="form-control" @bind-value="_temple.Oriention.Oriention"> *@
+                            @*     <label>Церковная ориентация</label> *@
+                            @* </div> *@
 
-                             <MudSelect @bind-Value="@selectedOriention">
-                                 <MudSelectItem Value="1">Автокефальная</MudSelectItem>
-                                 <MudSelectItem Value="2">Обновленческая</MudSelectItem>
-                                 <MudSelectItem Value="3">Тихоновская</MudSelectItem>
-                             </MudSelect>
+                            <MudSelect @bind-Value="@selectedOriention">
+                                <MudSelectItem Value="1">Автокефальная</MudSelectItem>
+                                <MudSelectItem Value="2">Обновленческая</MudSelectItem>
+                                <MudSelectItem Value="3">Тихоновская</MudSelectItem>
+                            </MudSelect>
 
-                             <div style="margin-top: 10px; margin-bottom: 10px;">
-                                 <MudDatePicker DateFormat="dd.MM.yyyy" Label="Год возрата" @bind-Date="_temple.Oriention.YearRefund"/>
-                             </div>
-                         </div>
-                     </div>
+                            <div style="margin-top: 10px; margin-bottom: 10px;">
+                                <MudDatePicker DateFormat="dd.MM.yyyy" Label="Год возрата" @bind-Date="_temple.Oriention.YearRefund"/>
+                            </div>
+                        </div>
+                    </div>
 
-                     <div>
-                         <h3 class="card-title text-center mb-3 fw-light fs-5">Количество прихожан</h3>
+                    <div>
+                        <h3 class="card-title text-center mb-3 fw-light fs-5">Количество прихожан</h3>
 
-                         <div>
-                             <div style="margin-top: 10px; margin-bottom: 10px;">
-                                 <MudDatePicker DateFormat="dd.MM.yyyy" Label="Год" @bind-Date="_temple.ParshYear"/>
-                             </div>
+                        <div>
+                            <div style="margin-top: 10px; margin-bottom: 10px;">
+                                <MudDatePicker DateFormat="dd.MM.yyyy" Label="Год" @bind-Date="_temple.ParshYear"/>
+                            </div>
 
-                             @* <div class="form-floating mb-2"> *@
-                                 <MudTextField T="int?" @bind-value="_temple.Quantity" Label="Количество"/>
-                                 @* <label>Количество</label> *@
-                             @* </div> *@
-                         </div>
-                     </div>
+                            @* <div class="form-floating mb-2"> *@
+                            <MudTextField T="int?" @bind-value="_temple.Quantity" Label="Количество"/>
+                            @* <label>Количество</label> *@
+                            @* </div> *@
+                        </div>
+                    </div>
 
-                     <div>
-                         <h3 class="card-title text-center mb-3 fw-light fs-5">Епархии</h3>
-                         
-                         <MudSelect @bind-Value="@selectedDiocese">
-                             @if (selectedOriention == 1)
-                             {
-                                 <MudSelectItem Value="1">Минская</MudSelectItem>
-                             }
-                             else if (selectedOriention == 2)
-                             {
-                                 <MudSelectItem Value="2">Бобруйская</MudSelectItem>
-                                 <MudSelectItem Value="3">Велижско-Высочанская</MudSelectItem>
-                                 <MudSelectItem Value="4">Витебская</MudSelectItem>
-                                 <MudSelectItem Value="5">Гомельская</MudSelectItem>
-                                 <MudSelectItem Value="6">Минская</MudSelectItem>
-                                 <MudSelectItem Value="7">Могилевская</MudSelectItem>
-                                 <MudSelectItem Value="8">Мозырская</MudSelectItem>
-                                 <MudSelectItem Value="9">Мстиславская</MudSelectItem>
-                                 <MudSelectItem Value="10">Оршанская</MudSelectItem>
-                                 <MudSelectItem Value="11">Полоцкая</MudSelectItem>
-                                 <MudSelectItem Value="12">Слуцкая</MudSelectItem>
-                                 <MudSelectItem Value="13">Чаусская</MudSelectItem>
-                             }
-                             else if (selectedOriention == 3)
-                             {
-                                 <MudSelectItem Value="14">Гомельская</MudSelectItem>
-                                 <MudSelectItem Value="15">Могилевская и Мстиславская</MudSelectItem>
-                                 <MudSelectItem Value="16">Минская и Туровская</MudSelectItem>
-                                 <MudSelectItem Value="17">Минская</MudSelectItem>
-                                 <MudSelectItem Value=18>Минская и Белорусская</MudSelectItem>
-                                 <MudSelectItem Value="19">Полоцкая и Витебская</MudSelectItem>
-                             }
-                         </MudSelect>
-                     </div>
+                    <div>
+                        <h3 class="card-title text-center mb-3 fw-light fs-5">Епархии</h3>
 
-                     <div>
-                         <h3 class="card-title text-center mb-3 fw-light fs-5">Губернии и уезды</h3>
-                         
-                         <MudSelect @bind-Value="@selectedProvince">
-                             @* <MudSelectGroup Label="Витебская"> *@
-                                 <MudSelectItem Value="1">Велижский</MudSelectItem>
-                                 <MudSelectItem Value="2">Витебский</MudSelectItem>
-                                 <MudSelectItem Value="3">Городокский</MudSelectItem>
-                                 <MudSelectItem Value="4">Дриссенский</MudSelectItem>
-                                 <MudSelectItem Value="5">Лепельский</MudSelectItem>
-                                 <MudSelectItem Value="6">Невельский</MudSelectItem>
-                                 <MudSelectItem Value="7">Полоцкий</MudSelectItem>
-                                 <MudSelectItem Value="8">Себежский</MudSelectItem>
+                        <MudSelect @bind-Value="@selectedDiocese">
+                            @if (selectedOriention == 1)
+                            {
+                            <MudSelectItem Value="1">Минская</MudSelectItem>
+                            }
+                            else if (selectedOriention == 2)
+                            {
+                                <MudSelectItem Value="2">Бобруйская</MudSelectItem>
+                                <MudSelectItem Value="3">Велижско-Высочанская</MudSelectItem>
+                                <MudSelectItem Value="4">Витебская</MudSelectItem>
+                                <MudSelectItem Value="5">Гомельская</MudSelectItem>
+                                <MudSelectItem Value="6">Минская</MudSelectItem>
+                                <MudSelectItem Value="7">Могилевская</MudSelectItem>
+                                <MudSelectItem Value="8">Мозырская</MudSelectItem>
+                                <MudSelectItem Value="9">Мстиславская</MudSelectItem>
+                                <MudSelectItem Value="10">Оршанская</MudSelectItem>
+                                <MudSelectItem Value="11">Полоцкая</MudSelectItem>
+                                <MudSelectItem Value="12">Слуцкая</MudSelectItem>
+                                <MudSelectItem Value="13">Чаусская</MudSelectItem>
+                            }
+                            else if (selectedOriention == 3)
+                            {
+                                <MudSelectItem Value="14">Гомельская</MudSelectItem>
+                                <MudSelectItem Value="15">Могилевская и Мстиславская</MudSelectItem>
+                                <MudSelectItem Value="16">Минская и Туровская</MudSelectItem>
+                                <MudSelectItem Value="17">Минская</MudSelectItem>
+                                <MudSelectItem Value=18>Минская и Белорусская</MudSelectItem>
+                                <MudSelectItem Value="19">Полоцкая и Витебская</MudSelectItem>
+                            }
+                        </MudSelect>
+                    </div>
 
-                             @* </MudSelectGroup> *@
-                             @* <SelectGroup Label="Гомельская"> *@
-                                 <MudSelectItem Value="9">Быховский</MudSelectItem>
-                                 <MudSelectItem Value="10">Гомельский</MudSelectItem>
-                                 <MudSelectItem Value="11">Могилевский</MudSelectItem>
-                                 <MudSelectItem Value="12">Рогачевский</MudSelectItem>
-                                 <MudSelectItem Value="13">Чаусский</MudSelectItem>
-                                 <MudSelectItem Value="14">Чериковский</MudSelectItem>
-                                 <MudSelectItem Value="15">Горецкий</MudSelectItem>
-                                 <MudSelectItem Value="16">Климовический</MudSelectItem>
-                                 <MudSelectItem Value="17">Оршанский</MudSelectItem>
-                             @* </SelectGroup> *@
-                             @* <SelectGroup Label="Минская"> *@
-                                 <MudSelectItem Value="18">Бобруйский</MudSelectItem>
-                                 <MudSelectItem Value="19">Борисовский</MudSelectItem>
-                                 <MudSelectItem Value="20">Игуменский</MudSelectItem>
-                                 <MudSelectItem Value="21">Минский</MudSelectItem>
-                                 <MudSelectItem Value="22">Мозырский</MudSelectItem>
-                                 <MudSelectItem Value="23">Речицкий</MudSelectItem>
-                                 <MudSelectItem Value="24">Слуцкий </MudSelectItem>
-                             @* </SelectGroup>
+                    <div>
+                        <h3 class="card-title text-center mb-3 fw-light fs-5">Губернии и уезды</h3>
+
+                        <MudSelect @bind-Value="@selectedProvince">
+                            @* <MudSelectGroup Label="Витебская"> *@
+                            <MudSelectItem Value="1">Велижский</MudSelectItem>
+                            <MudSelectItem Value="2">Витебский</MudSelectItem>
+                            <MudSelectItem Value="3">Городокский</MudSelectItem>
+                            <MudSelectItem Value="4">Дриссенский</MudSelectItem>
+                            <MudSelectItem Value="5">Лепельский</MudSelectItem>
+                            <MudSelectItem Value="6">Невельский</MudSelectItem>
+                            <MudSelectItem Value="7">Полоцкий</MudSelectItem>
+                            <MudSelectItem Value="8">Себежский</MudSelectItem>
+
+                            @* </MudSelectGroup> *@
+                            @* <SelectGroup Label="Гомельская"> *@
+                            <MudSelectItem Value="9">Быховский</MudSelectItem>
+                            <MudSelectItem Value="10">Гомельский</MudSelectItem>
+                            <MudSelectItem Value="11">Могилевский</MudSelectItem>
+                            <MudSelectItem Value="12">Рогачевский</MudSelectItem>
+                            <MudSelectItem Value="13">Чаусский</MudSelectItem>
+                            <MudSelectItem Value="14">Чериковский</MudSelectItem>
+                            <MudSelectItem Value="15">Горецкий</MudSelectItem>
+                            <MudSelectItem Value="16">Климовический</MudSelectItem>
+                            <MudSelectItem Value="17">Оршанский</MudSelectItem>
+                            @* </SelectGroup> *@
+                            @* <SelectGroup Label="Минская"> *@
+                            <MudSelectItem Value="18">Бобруйский</MudSelectItem>
+                            <MudSelectItem Value="19">Борисовский</MudSelectItem>
+                            <MudSelectItem Value="20">Игуменский</MudSelectItem>
+                            <MudSelectItem Value="21">Минский</MudSelectItem>
+                            <MudSelectItem Value="22">Мозырский</MudSelectItem>
+                            <MudSelectItem Value="23">Речицкий</MudSelectItem>
+                            <MudSelectItem Value="24">Слуцкий </MudSelectItem>
+                            @* </SelectGroup>
                              <SelectGroup Label="Могилевская"> *@
-                                 <MudSelectItem Value="25">Быховский</MudSelectItem>
-                                 <MudSelectItem Value="26">Гомельский</MudSelectItem>
-                                 <MudSelectItem Value="27">Горецкий</MudSelectItem>
-                                 <MudSelectItem Value="28">Климовичский</MudSelectItem>
-                                 <MudSelectItem Value="29">Могилевский</MudSelectItem>
-                                 <MudSelectItem Value="30">Мстиславский</MudSelectItem>
-                                 <MudSelectItem Value="31">Оршанский</MudSelectItem>
-                                 <MudSelectItem Value="32">Рогачёвский</MudSelectItem>
-                                 <MudSelectItem Value="33">Сенненский</MudSelectItem>
-                                 <MudSelectItem Value="34">Чаусский</MudSelectItem>
-                                 <MudSelectItem Value="35">Чериковский</MudSelectItem>
-                                 <MudSelectItem Value="36">Не выбрано</MudSelectItem>
-                             @* </SelectGroup> *@
-                         </MudSelect>
-                     </div>
+                            <MudSelectItem Value="25">Быховский</MudSelectItem>
+                            <MudSelectItem Value="26">Гомельский</MudSelectItem>
+                            <MudSelectItem Value="27">Горецкий</MudSelectItem>
+                            <MudSelectItem Value="28">Климовичский</MudSelectItem>
+                            <MudSelectItem Value="29">Могилевский</MudSelectItem>
+                            <MudSelectItem Value="30">Мстиславский</MudSelectItem>
+                            <MudSelectItem Value="31">Оршанский</MudSelectItem>
+                            <MudSelectItem Value="32">Рогачёвский</MudSelectItem>
+                            <MudSelectItem Value="33">Сенненский</MudSelectItem>
+                            <MudSelectItem Value="34">Чаусский</MudSelectItem>
+                            <MudSelectItem Value="35">Чериковский</MudSelectItem>
+                            <MudSelectItem Value="36">Не выбрано</MudSelectItem>
+                            @* </SelectGroup> *@
+                        </MudSelect>
+                    </div>
 
-                     <div>
-                         <h3 class="card-title text-center mb-3 fw-light fs-5">Округа и районы округов (1924-1930)</h3>
+                    <div>
+                        <h3 class="card-title text-center mb-3 fw-light fs-5">Округа и районы округов (1924-1930)</h3>
 
-                         <MudSelect @bind-Value="@selectedDistrict">
+                        <MudSelect @bind-Value="@selectedDistrict">
                             @*  <SelectGroup Label="Бобруйский (1924-1930)"> *@
-                                 <MudSelectItem Value="1">Бобруйский</MudSelectItem>
-                                 <MudSelectItem Value="2">Бобруйский 1-й</MudSelectItem>
-                                 <MudSelectItem Value="3">Бобруйский 2-й</MudSelectItem>
-                                 <MudSelectItem Value="4">Буда-Кошелевский</MudSelectItem>
-                                 <MudSelectItem Value="5">Городецкий</MudSelectItem>
-                                 <MudSelectItem Value="6">Глусский</MudSelectItem>
-                                 <MudSelectItem Value="7">Жлобинский</MudSelectItem>
-                                 <MudSelectItem Value="8">Кличевский</MudSelectItem>
-                                 <MudSelectItem Value="9">Краснослободский</MudSelectItem>
-                                 <MudSelectItem Value="10">Любанский</MudSelectItem>
-                                 <MudSelectItem Value="11">Осиповичский</MudSelectItem>
-                                 <MudSelectItem Value="12">Паричский</MudSelectItem>
-                                 <MudSelectItem Value="13">Рогачевский</MudSelectItem>
-                                 <MudSelectItem Value="14">Свислочский</MudSelectItem>
-                                 <MudSelectItem Value="15">Слуцкий</MudSelectItem>
-                                 <MudSelectItem Value="16">Старобинский</MudSelectItem>
-                                 <MudSelectItem Value="17">Стародорожский</MudSelectItem>
-                                 <MudSelectItem Value="18">Стрешинский</MudSelectItem>
-                           @*   </SelectGroup>
+                            <MudSelectItem Value="1">Бобруйский</MudSelectItem>
+                            <MudSelectItem Value="2">Бобруйский 1-й</MudSelectItem>
+                            <MudSelectItem Value="3">Бобруйский 2-й</MudSelectItem>
+                            <MudSelectItem Value="4">Буда-Кошелевский</MudSelectItem>
+                            <MudSelectItem Value="5">Городецкий</MudSelectItem>
+                            <MudSelectItem Value="6">Глусский</MudSelectItem>
+                            <MudSelectItem Value="7">Жлобинский</MudSelectItem>
+                            <MudSelectItem Value="8">Кличевский</MudSelectItem>
+                            <MudSelectItem Value="9">Краснослободский</MudSelectItem>
+                            <MudSelectItem Value="10">Любанский</MudSelectItem>
+                            <MudSelectItem Value="11">Осиповичский</MudSelectItem>
+                            <MudSelectItem Value="12">Паричский</MudSelectItem>
+                            <MudSelectItem Value="13">Рогачевский</MudSelectItem>
+                            <MudSelectItem Value="14">Свислочский</MudSelectItem>
+                            <MudSelectItem Value="15">Слуцкий</MudSelectItem>
+                            <MudSelectItem Value="16">Старобинский</MudSelectItem>
+                            <MudSelectItem Value="17">Стародорожский</MudSelectItem>
+                            <MudSelectItem Value="18">Стрешинский</MudSelectItem>
+                            @*   </SelectGroup>
                              <SelectGroup Label="Борисовский (1924-1927)"> *@
-                                 <MudSelectItem Value="19">Бегомльский</MudSelectItem>
-                                 <MudSelectItem Value="20">Березинский</MudSelectItem>
-                                 <MudSelectItem Value="21">Борисовский</MudSelectItem>
-                                 <MudSelectItem Value="22">Зембинский</MudSelectItem>
-                                 <MudSelectItem Value="23">Крупский</MudSelectItem>
-                                 <MudSelectItem Value="24">Лепельский</MudSelectItem>
-                                 <MudSelectItem Value="25">Плещеницкий</MudSelectItem>
-                                 <MudSelectItem Value="26">Холопеничский</MudSelectItem>
-                                 <MudSelectItem Value="27">Черейский</MudSelectItem>
-                             @* </SelectGroup>
+                            <MudSelectItem Value="19">Бегомльский</MudSelectItem>
+                            <MudSelectItem Value="20">Березинский</MudSelectItem>
+                            <MudSelectItem Value="21">Борисовский</MudSelectItem>
+                            <MudSelectItem Value="22">Зембинский</MudSelectItem>
+                            <MudSelectItem Value="23">Крупский</MudSelectItem>
+                            <MudSelectItem Value="24">Лепельский</MudSelectItem>
+                            <MudSelectItem Value="25">Плещеницкий</MudSelectItem>
+                            <MudSelectItem Value="26">Холопеничский</MudSelectItem>
+                            <MudSelectItem Value="27">Черейский</MudSelectItem>
+                            @* </SelectGroup>
                              <SelectGroup Label="Витебский (1924-1930)"> *@
-                                 <MudSelectItem Value="28">Бешенковичский</MudSelectItem>
-                                 <MudSelectItem Value="29">Витебский</MudSelectItem>
-                                 <MudSelectItem Value="30">Высочанский</MudSelectItem>
-                                 <MudSelectItem Value="31">Городокский</MudSelectItem>
-                                 <MudSelectItem Value="32">Езерищенский</MudSelectItem>
-                                 <MudSelectItem Value="33">Лиозненский</MudSelectItem>
-                                 <MudSelectItem Value="34">Кузнецовский</MudSelectItem>
-                                 <MudSelectItem Value="35">Межанский</MudSelectItem>
-                                 <MudSelectItem Value="36">Сенненский</MudSelectItem>
-                                 <MudSelectItem Value="37">Сиротинский</MudSelectItem>
-                                 <MudSelectItem Value="38">Суражский</MudSelectItem>
-                                 <MudSelectItem Value="39">Чашникский</MudSelectItem>
-                             @* </SelectGroup>
+                            <MudSelectItem Value="28">Бешенковичский</MudSelectItem>
+                            <MudSelectItem Value="29">Витебский</MudSelectItem>
+                            <MudSelectItem Value="30">Высочанский</MudSelectItem>
+                            <MudSelectItem Value="31">Городокский</MudSelectItem>
+                            <MudSelectItem Value="32">Езерищенский</MudSelectItem>
+                            <MudSelectItem Value="33">Лиозненский</MudSelectItem>
+                            <MudSelectItem Value="34">Кузнецовский</MudSelectItem>
+                            <MudSelectItem Value="35">Межанский</MudSelectItem>
+                            <MudSelectItem Value="36">Сенненский</MudSelectItem>
+                            <MudSelectItem Value="37">Сиротинский</MudSelectItem>
+                            <MudSelectItem Value="38">Суражский</MudSelectItem>
+                            <MudSelectItem Value="39">Чашникский</MudSelectItem>
+                            @* </SelectGroup>
                              <SelectGroup Label="Калининский (1924-1927) "> *@
-                                 <MudSelectItem Value="40">Белынковичский</MudSelectItem>
-                                 <MudSelectItem Value="41">Климовичский</MudSelectItem>
-                                 <MudSelectItem Value="42">Кастюковичский</MudSelectItem>
-                                 <MudSelectItem Value="43">Краснопольский</MudSelectItem>
-                                 <MudSelectItem Value="44">Кричевский</MudSelectItem>
-                                 <MudSelectItem Value="45">Милославичский</MudSelectItem>
-                                 <MudSelectItem Value="46">Мстиславский</MudSelectItem>
-                                 <MudSelectItem Value="47">Расненский</MudSelectItem>
-                                 <MudSelectItem Value="48">Хотимский</MudSelectItem>
-                                 <MudSelectItem Value="49">Чериковский</MudSelectItem>
-                             @* </SelectGroup>
+                            <MudSelectItem Value="40">Белынковичский</MudSelectItem>
+                            <MudSelectItem Value="41">Климовичский</MudSelectItem>
+                            <MudSelectItem Value="42">Кастюковичский</MudSelectItem>
+                            <MudSelectItem Value="43">Краснопольский</MudSelectItem>
+                            <MudSelectItem Value="44">Кричевский</MudSelectItem>
+                            <MudSelectItem Value="45">Милославичский</MudSelectItem>
+                            <MudSelectItem Value="46">Мстиславский</MudSelectItem>
+                            <MudSelectItem Value="47">Расненский</MudSelectItem>
+                            <MudSelectItem Value="48">Хотимский</MudSelectItem>
+                            <MudSelectItem Value="49">Чериковский</MudSelectItem>
+                            @* </SelectGroup>
                              <SelectGroup Label="Могилевский (1924-1930)"> *@
-                                 <MudSelectItem Value="50">Белыничский</MudSelectItem>
-                                 <MudSelectItem Value="51">Березинский</MudSelectItem>
-                                 <MudSelectItem Value="52">Борисовский</MudSelectItem>
-                                 <MudSelectItem Value="53">Журовичский</MudSelectItem>
-                                 <MudSelectItem Value="54">Кастюковичский</MudSelectItem>
-                                 <MudSelectItem Value="55">Климовичский</MudSelectItem>
-                                 <MudSelectItem Value="56">Кормянский</MudSelectItem>
-                                 <MudSelectItem Value="57">Краснопольский</MudSelectItem>
-                                 <MudSelectItem Value="58">Кричевский</MudSelectItem>
-                                 <MudSelectItem Value="59">Луполовский</MudSelectItem>
-                                 <MudSelectItem Value="60">Милославичский</MudSelectItem>
-                                 <MudSelectItem Value="61">Могилевский</MudSelectItem>
-                                 <MudSelectItem Value="62">Пропойский</MudSelectItem>
-                                 <MudSelectItem Value="63">Хотимский</MudSelectItem>
-                                 <MudSelectItem Value="64">Чаусский</MudSelectItem>
-                                 <MudSelectItem Value="65">Чериковский</MudSelectItem>
-                                 <MudSelectItem Value="66">Чечевичский</MudSelectItem>
-                                 <MudSelectItem Value="67">Шкловский</MudSelectItem>
-                             @* </SelectGroup>
+                            <MudSelectItem Value="50">Белыничский</MudSelectItem>
+                            <MudSelectItem Value="51">Березинский</MudSelectItem>
+                            <MudSelectItem Value="52">Борисовский</MudSelectItem>
+                            <MudSelectItem Value="53">Журовичский</MudSelectItem>
+                            <MudSelectItem Value="54">Кастюковичский</MudSelectItem>
+                            <MudSelectItem Value="55">Климовичский</MudSelectItem>
+                            <MudSelectItem Value="56">Кормянский</MudSelectItem>
+                            <MudSelectItem Value="57">Краснопольский</MudSelectItem>
+                            <MudSelectItem Value="58">Кричевский</MudSelectItem>
+                            <MudSelectItem Value="59">Луполовский</MudSelectItem>
+                            <MudSelectItem Value="60">Милославичский</MudSelectItem>
+                            <MudSelectItem Value="61">Могилевский</MudSelectItem>
+                            <MudSelectItem Value="62">Пропойский</MudSelectItem>
+                            <MudSelectItem Value="63">Хотимский</MudSelectItem>
+                            <MudSelectItem Value="64">Чаусский</MudSelectItem>
+                            <MudSelectItem Value="65">Чериковский</MudSelectItem>
+                            <MudSelectItem Value="66">Чечевичский</MudSelectItem>
+                            <MudSelectItem Value="67">Шкловский</MudSelectItem>
+                            @* </SelectGroup>
                              <SelectGroup Label="Минский (1924-1930)"> *@
-                                 <MudSelectItem Value="68">Бегомльский</MudSelectItem>
-                                 <MudSelectItem Value="69">Березинский</MudSelectItem>
-                                 <MudSelectItem Value="70">Борисовский</MudSelectItem>
-                                 <MudSelectItem Value="71">Гресский</MudSelectItem>
-                                 <MudSelectItem Value="72">Койдановский</MudSelectItem>
-                                 <MudSelectItem Value="73">Зембинский</MudSelectItem>
-                                 <MudSelectItem Value="74">Койдановский</MudSelectItem>
-                                 <MudSelectItem Value="74">Копыльский</MudSelectItem>
-                                 <MudSelectItem Value="76">Острошицко-Городокский</MudSelectItem>
-                                 <MudSelectItem Value="77">Плещеницкий</MudSelectItem>
-                                 <MudSelectItem Value="78">Пуховичский</MudSelectItem>
-                                 <MudSelectItem Value="79">Самохваловичский</MudSelectItem>
-                                 <MudSelectItem Value="80">Смиловичский</MudSelectItem>
-                                 <MudSelectItem Value="81">Смолевичский</MudSelectItem>
-                                 <MudSelectItem Value="82">Узденский</MudSelectItem>
-                                 <MudSelectItem Value="83">Червенский</MudSelectItem>
-                                 <MudSelectItem Value="84">Холопеничский</MudSelectItem>
-                                 <MudSelectItem Value="85">Шацкий</MudSelectItem>
-                             @* </SelectGroup>
+                            <MudSelectItem Value="68">Бегомльский</MudSelectItem>
+                            <MudSelectItem Value="69">Березинский</MudSelectItem>
+                            <MudSelectItem Value="70">Борисовский</MudSelectItem>
+                            <MudSelectItem Value="71">Гресский</MudSelectItem>
+                            <MudSelectItem Value="72">Койдановский</MudSelectItem>
+                            <MudSelectItem Value="73">Зембинский</MudSelectItem>
+                            <MudSelectItem Value="74">Койдановский</MudSelectItem>
+                            <MudSelectItem Value="74">Копыльский</MudSelectItem>
+                            <MudSelectItem Value="76">Острошицко-Городокский</MudSelectItem>
+                            <MudSelectItem Value="77">Плещеницкий</MudSelectItem>
+                            <MudSelectItem Value="78">Пуховичский</MudSelectItem>
+                            <MudSelectItem Value="79">Самохваловичский</MudSelectItem>
+                            <MudSelectItem Value="80">Смиловичский</MudSelectItem>
+                            <MudSelectItem Value="81">Смолевичский</MudSelectItem>
+                            <MudSelectItem Value="82">Узденский</MudSelectItem>
+                            <MudSelectItem Value="83">Червенский</MudSelectItem>
+                            <MudSelectItem Value="84">Холопеничский</MudSelectItem>
+                            <MudSelectItem Value="85">Шацкий</MudSelectItem>
+                            @* </SelectGroup>
                              <SelectGroup Label="Оршанский (1924-1930)"> *@
-                                 <MudSelectItem Value="86">Богушевский</MudSelectItem>
-                                 <MudSelectItem Value="87">Горецкий</MudSelectItem>
-                                 <MudSelectItem Value="88">Дрибинский</MudSelectItem>
-                                 <MudSelectItem Value="89">Дубровенский</MudSelectItem>
-                                 <MudSelectItem Value="90">Копысский</MudSelectItem>
-                                 <MudSelectItem Value="91">Кохановский</MudSelectItem>
-                                 <MudSelectItem Value="92">Круглянский</MudSelectItem>
-                                 <MudSelectItem Value="93">Лядненский</MudSelectItem>
-                                 <MudSelectItem Value="94">Мстиславский</MudSelectItem>
-                                 <MudSelectItem Value="95">Оршанский</MudSelectItem>
-                                 <MudSelectItem Value="96">Расненский</MudSelectItem>
-                                 <MudSelectItem Value="97">Толочинский</MudSelectItem>
-                             @* </SelectGroup>
+                            <MudSelectItem Value="86">Богушевский</MudSelectItem>
+                            <MudSelectItem Value="87">Горецкий</MudSelectItem>
+                            <MudSelectItem Value="88">Дрибинский</MudSelectItem>
+                            <MudSelectItem Value="89">Дубровенский</MudSelectItem>
+                            <MudSelectItem Value="90">Копысский</MudSelectItem>
+                            <MudSelectItem Value="91">Кохановский</MudSelectItem>
+                            <MudSelectItem Value="92">Круглянский</MudSelectItem>
+                            <MudSelectItem Value="93">Лядненский</MudSelectItem>
+                            <MudSelectItem Value="94">Мстиславский</MudSelectItem>
+                            <MudSelectItem Value="95">Оршанский</MudSelectItem>
+                            <MudSelectItem Value="96">Расненский</MudSelectItem>
+                            <MudSelectItem Value="97">Толочинский</MudSelectItem>
+                            @* </SelectGroup>
                              <SelectGroup Label="Полоцкий (1924-1930)"> *@
-                                 <MudSelectItem Value="98">Ветринский</MudSelectItem>
-                                 <MudSelectItem Value="99">Волынецкий</MudSelectItem>
-                                 <MudSelectItem Value="100">Борковичский</MudSelectItem>
-                                 <MudSelectItem Value="144">Дретунский</MudSelectItem>
-                                 <MudSelectItem Value="101">Краснопольский</MudSelectItem>
-                                 <MudSelectItem Value="102">Дриссенский</MudSelectItem>
-                                 <MudSelectItem Value="103">Освейский</MudSelectItem>
-                                 <MudSelectItem Value="104">Полоцкий</MudSelectItem>
-                                 <MudSelectItem Value="105">Россонский</MudSelectItem>
-                                 <MudSelectItem Value="106">Улльский</MudSelectItem>
-                                 <MudSelectItem Value="107">Ушачский</MudSelectItem>
-                             @* </SelectGroup>
+                            <MudSelectItem Value="98">Ветринский</MudSelectItem>
+                            <MudSelectItem Value="99">Волынецкий</MudSelectItem>
+                            <MudSelectItem Value="100">Борковичский</MudSelectItem>
+                            <MudSelectItem Value="144">Дретунский</MudSelectItem>
+                            <MudSelectItem Value="101">Краснопольский</MudSelectItem>
+                            <MudSelectItem Value="102">Дриссенский</MudSelectItem>
+                            <MudSelectItem Value="103">Освейский</MudSelectItem>
+                            <MudSelectItem Value="104">Полоцкий</MudSelectItem>
+                            <MudSelectItem Value="105">Россонский</MudSelectItem>
+                            <MudSelectItem Value="106">Улльский</MudSelectItem>
+                            <MudSelectItem Value="107">Ушачский</MudSelectItem>
+                            @* </SelectGroup>
                              <SelectGroup Label="Слуцкий (1924-1927)"> *@
-                                 <MudSelectItem Value="108">Гресский</MudSelectItem>
-                                 <MudSelectItem Value="109">Копыльский</MudSelectItem>
-                                 <MudSelectItem Value="110">Краснослободский</MudSelectItem>
-                                 <MudSelectItem Value="111">Любанский</MudSelectItem>
-                                 <MudSelectItem Value="112">Слуцкий</MudSelectItem>
-                                 <MudSelectItem Value="113">Стародорожский</MudSelectItem>
-                                 <MudSelectItem Value="114">Плещеницкий</MudSelectItem>
-                                 <MudSelectItem Value="115">Старобинский</MudSelectItem>
-                             @* </SelectGroup>
+                            <MudSelectItem Value="108">Гресский</MudSelectItem>
+                            <MudSelectItem Value="109">Копыльский</MudSelectItem>
+                            <MudSelectItem Value="110">Краснослободский</MudSelectItem>
+                            <MudSelectItem Value="111">Любанский</MudSelectItem>
+                            <MudSelectItem Value="112">Слуцкий</MudSelectItem>
+                            <MudSelectItem Value="113">Стародорожский</MudSelectItem>
+                            <MudSelectItem Value="114">Плещеницкий</MudSelectItem>
+                            <MudSelectItem Value="115">Старобинский</MudSelectItem>
+                            @* </SelectGroup>
                              <SelectGroup Label="Гомельский (1926-1930) "> *@
-                                 <MudSelectItem Value="116">Брагинский</MudSelectItem>
-                                 <MudSelectItem Value="117">Буда-Кошелевский</MudSelectItem>
-                                 <MudSelectItem Value="118">Ветковский</MudSelectItem>
-                                 <MudSelectItem Value="119">Гомельский</MudSelectItem>
-                                 <MudSelectItem Value="120">Дятловичский</MudSelectItem>
-                                 <MudSelectItem Value="121">Добрушский</MudSelectItem>
-                                 <MudSelectItem Value="122">Краснобудский</MudSelectItem>
-                                 <MudSelectItem Value="123">Носовичский</MudSelectItem>
-                                 <MudSelectItem Value="124">Светиловичский</MudSelectItem>
-                                 <MudSelectItem Value="143">Уваровичский</MudSelectItem>
-                                 <MudSelectItem Value="125">Чечерский</MudSelectItem>
-                                 <MudSelectItem Value="126">Брагинский</MudSelectItem>
-                                 <MudSelectItem Value="127">Комаринский</MudSelectItem>
-                                 <MudSelectItem Value="128">Лоевский</MudSelectItem>
-                                 <MudSelectItem Value="129">Речицкий</MudSelectItem>
-                                 <MudSelectItem Value="130">Хойникский</MudSelectItem>
-                                 <MudSelectItem Value="131">Тереховский</MudSelectItem>
-                                 <MudSelectItem Value="132">Буда-Кошелевский</MudSelectItem>
-                             @* </SelectGroup> *@
-                             @* <SelectGroup Label="Речицкий (1926-1927)"> *@
-                                 <MudSelectItem Value="133">Брагинский</MudSelectItem>
-                                 <MudSelectItem Value="134">Василевичский</MudSelectItem>
-                                 <MudSelectItem Value="135">Горвальский</MudSelectItem>
-                                 <MudSelectItem Value="136">Комаринский</MudSelectItem>
-                                 <MudSelectItem Value="137">Лоевский</MudSelectItem>
-                                 <MudSelectItem Value="138">Речицкий</MudSelectItem>
-                                 <MudSelectItem Value="139">Хойникский</MudSelectItem>
-                                 <MudSelectItem Value="140">Холмечский</MudSelectItem>
-                                 <MudSelectItem Value="141">Юровичский</MudSelectItem>
-                                 <MudSelectItem Value="147">Не выбрано</MudSelectItem>
-                             @* </SelectGroup> *@
-                         </MudSelect>
-                     </div>
+                            <MudSelectItem Value="116">Брагинский</MudSelectItem>
+                            <MudSelectItem Value="117">Буда-Кошелевский</MudSelectItem>
+                            <MudSelectItem Value="118">Ветковский</MudSelectItem>
+                            <MudSelectItem Value="119">Гомельский</MudSelectItem>
+                            <MudSelectItem Value="120">Дятловичский</MudSelectItem>
+                            <MudSelectItem Value="121">Добрушский</MudSelectItem>
+                            <MudSelectItem Value="122">Краснобудский</MudSelectItem>
+                            <MudSelectItem Value="123">Носовичский</MudSelectItem>
+                            <MudSelectItem Value="124">Светиловичский</MudSelectItem>
+                            <MudSelectItem Value="143">Уваровичский</MudSelectItem>
+                            <MudSelectItem Value="125">Чечерский</MudSelectItem>
+                            <MudSelectItem Value="126">Брагинский</MudSelectItem>
+                            <MudSelectItem Value="127">Комаринский</MudSelectItem>
+                            <MudSelectItem Value="128">Лоевский</MudSelectItem>
+                            <MudSelectItem Value="129">Речицкий</MudSelectItem>
+                            <MudSelectItem Value="130">Хойникский</MudSelectItem>
+                            <MudSelectItem Value="131">Тереховский</MudSelectItem>
+                            <MudSelectItem Value="132">Буда-Кошелевский</MudSelectItem>
+                            @* </SelectGroup> *@
+                            @* <SelectGroup Label="Речицкий (1926-1927)"> *@
+                            <MudSelectItem Value="133">Брагинский</MudSelectItem>
+                            <MudSelectItem Value="134">Василевичский</MudSelectItem>
+                            <MudSelectItem Value="135">Горвальский</MudSelectItem>
+                            <MudSelectItem Value="136">Комаринский</MudSelectItem>
+                            <MudSelectItem Value="137">Лоевский</MudSelectItem>
+                            <MudSelectItem Value="138">Речицкий</MudSelectItem>
+                            <MudSelectItem Value="139">Хойникский</MudSelectItem>
+                            <MudSelectItem Value="140">Холмечский</MudSelectItem>
+                            <MudSelectItem Value="141">Юровичский</MudSelectItem>
+                            <MudSelectItem Value="147">Не выбрано</MudSelectItem>
+                            @* </SelectGroup> *@
+                        </MudSelect>
+                    </div>
 
-                     <div>
-                         <div style="height: 500px; margin-top: 20px;">
-                             <OSMap Click="@MapClickEvent" CenterMap="@defPosition" />
-                         </div>
-                     </div>
+                    <div>
+                        <div style="height: 500px; margin-top: 20px;">
+                            <OSMap Click="@MapClickEvent" CenterMap="@defPosition" />
+                        </div>
+                    </div>
 
-                     <div class="d-grid mb-2">
-                         <button class="btn btn-lg btn-primary btn-login fw-bold text-uppercase" style="margin-top: 20px;" type="submit">Добавить</button>
-                     </div>
-                 @* </EditForm> *@
-             </div>
-         </div>
-     </div>
- </div>
+                    <div class="d-grid mb-2">
+                        <button class="btn btn-lg btn-primary btn-login fw-bold text-uppercase" style="margin-top: 20px;" type="submit">Добавить</button>
+                    </div>
+                    @* </EditForm> *@
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
  
 @code {
     public MapPosition position;
