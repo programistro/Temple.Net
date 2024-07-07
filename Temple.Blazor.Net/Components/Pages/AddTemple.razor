@@ -147,7 +147,7 @@
                                 <MudSelectItem Value="17">Минская</MudSelectItem>
                                 <MudSelectItem Value=18>Минская и Белорусская</MudSelectItem>
                                 <MudSelectItem Value="19">Полоцкая и Витебская</MudSelectItem>
-                                <MudSelectItem Value="20">Не выбрано</MudSelectItem>
+                                <MudSelectItem Value="20">Не указано</MudSelectItem>
                             }
                         </MudSelect>
                     </div>
@@ -199,8 +199,7 @@
                             <MudSelectItem Value="33">Сенненский</MudSelectItem>
                             <MudSelectItem Value="34">Чаусский</MudSelectItem>
                             <MudSelectItem Value="35">Чериковский</MudSelectItem>
-                            <MudSelectItem Value="36">Не выбрано</MudSelectItem>
-                            <MudSelectItem Value="37">Не выбрано</MudSelectItem>
+                            <MudSelectItem Value="36">Не указано</MudSelectItem>
                             @* </SelectGroup> *@
                         </MudSelect>
                     </div>
@@ -373,8 +372,7 @@
                             <MudSelectItem Value="139">Хойникский</MudSelectItem>
                             <MudSelectItem Value="140">Холмечский</MudSelectItem>
                             <MudSelectItem Value="141">Юровичский</MudSelectItem>
-                            <MudSelectItem Value="147">Не выбрано</MudSelectItem>
-                            <MudSelectItem Value="148">Не выбрано</MudSelectItem>
+                            <MudSelectItem Value="147">Не указано</MudSelectItem>
                             @* </SelectGroup> *@
                         </MudSelect>
                     </div>
@@ -488,6 +486,8 @@
                 case 4:
                     _temple.Type = "Приходской";
                     break;
+                case 5:
+                    _temple.Type = "Не указано";
             }
 
             switch (selectedOriention)
@@ -503,6 +503,9 @@
                     break;
                 case 4:
                     _temple.OrientationDiocesse = "Сергиевская";
+                    break;
+                case 5:
+                    _temple.OrientationDiocesse = "Не выбранно";
                     break;
             }
 
@@ -565,6 +568,12 @@
                 case 19:
                     _temple.OrientationDiocesse = "Полоцкая и Витебская";
                     break;
+                case 20:
+                    _temple.OrientationDiocesse = "Не указано";
+                    break;
+
+
+
             }
 
             switch (selectedAfterClosing)

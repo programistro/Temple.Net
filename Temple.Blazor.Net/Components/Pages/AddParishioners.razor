@@ -52,6 +52,7 @@
                     <MudSelect Tvalue="int" @bind-Value="@selectedGender" class="form-control js-example-basic-single">
                         <MudSelectItem Value="1">Мужской</MudSelectItem>
                         <MudSelectItem Value="2">Женский</MudSelectItem>
+                        <MudSelectItem Value="3">Не указано</MudSelectItem>
                     </MudSelect>
 
                     <div class="form-floating mb-2">
@@ -73,6 +74,7 @@
                             <MudSelectItem Value="3">Священник</MudSelectItem>
                             <MudSelectItem Value="4">Слесарь</MudSelectItem>
                             <MudSelectItem Value="5">Плотник</MudSelectItem>
+                            <MudSelectItem Value="6">Не указано</MudSelectItem>
                         </MudSelect>
                     </div>
 
@@ -88,6 +90,7 @@
                             <MudSelectItem Value="1">Крестьянство</MudSelectItem>
                             <MudSelectItem Value="2">Дворянство</MudSelectItem>
                             <MudSelectItem Value="3">Духовное</MudSelectItem>
+                            <MudSelectItem Value="4">Не указано</MudSelectItem>
                         </MudSelect>
                     </div>
 
@@ -99,6 +102,7 @@
                             <MudSelectItem Value="2">Средняк</MudSelectItem>
                             <MudSelectItem Value="3">Домовладелец</MudSelectItem>
                             <MudSelectItem Value="4">Без имущества</MudSelectItem>
+                            <MudSelectItem Value="5">Не указано</MudSelectItem>
                         </MudSelect>
                     </div>
 
@@ -152,21 +156,21 @@
 </div>
 
 @code {
-    
+
     private bool IsAuth;
-    
+
     public MapPosition position;
     public bool btnActive;
 
     private int selectedItem = 1;
 
     private int selectedSocialStatus = 1;
-    
+
     private int selectedGender = 1;
 
     private int selectedEstate = 1;
-    
-    
+
+
     MapPosition? defPosition;
 
     private Parishioners? _parishioners = new()
@@ -177,7 +181,7 @@
     protected override void OnInitialized()
     {
         defPosition = new MapPosition() { Lat = config.GetValue<double>("Main:DefLat"), Lng = config.GetValue<double>("Main:DefLng") };
-        
+
         if (AuthenticationStateProvider.GetAuthenticationStateAsync().Result.User.Identity.IsAuthenticated)
         {
             IsAuth = true;
@@ -187,7 +191,7 @@
             IsAuth = false;
         }
     }
-    
+
     private long maxFileSize = 1024 * 500;
 
     private int selectedSocial = 1;
@@ -201,7 +205,7 @@
 
         _parishioners.File = path;
     }
-    
+
     private async Task LoadPhoto(InputFileChangeEventArgs e)
     {
         var path = $@"wwwroot/photos/{e.File.Name}";
@@ -211,7 +215,7 @@
 
         _parishioners.Photo = path;
     }
-    
+
     public void MapClickEvent(MapClickEventArgs args)
     {
         //events.Add(DateTime.Now, $"Map clicked at Lat: {args.Position.Lat}, Lng: {args.Position.Lng}");
@@ -254,6 +258,12 @@
             case 2:
                 _parishioners.Gender = "Женский";
                 break;
+            case 3:
+                _parishioners.Gender = "Не указанно";
+                break;
+
+
+
         }
 
         switch (selectedSocialStatus)
@@ -273,6 +283,9 @@
             case 5:
                 _parishioners.SocialStatus = "Плотник";
                 break;
+            case 6:
+                _parishioners.SocialStatus = "Не указано";
+                break;
         }
 
         switch (selectedEstate)
@@ -286,7 +299,56 @@
             case 3:
                 _parishioners.EstateBeforeRevolution = "Духовное";
                 break;
+            case 4:
+                _parishioners.EstateBeforeRevolution = "Не указано";
+                break;
+
+
+
         }
+        switch (selectedSocial)
+        {
+            case 1:
+                _parishioners.Social = "Бедняк";
+                break;
+            case 2:
+                _parishioners.Social = "Средяк";
+                break;
+            case 3:
+                _parishioners.Social = "Домовладелец";
+                break;
+            case 4:
+                _parishioners.Social = "Без имущества";
+                break;
+            case 5:
+                _parishioners.Social = "Не указано";
+                break;
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
         await _context.Parishioners.AddAsync(_parishioners);
         await _context.SaveChangesAsync();
