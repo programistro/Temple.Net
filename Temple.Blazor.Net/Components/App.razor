@@ -24,16 +24,17 @@
     <script src="js/material.min.js"></script>
     <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" rel="stylesheet" />
     <link href="_content/MudBlazor/MudBlazor.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="Temple.Blazor.Net.styles.css" />
     @* <link href="css/mudblazor.css" rel="stylesheet"/> *@
-    @* <MudThemeProvider /> *@
+    <MudThemeProvider />
     @* <MudPopoverProvider/> *@
-    @* $1$ <MudDialogProvider /> #1# *@
+    @* <MudDialogProvider /> *@
     @* <MudSnackbarProvider /> *@
-    <HeadOutlet />
+    <HeadOutlet @rendermode="InteractiveServer"/>
 </head>
 
 <body>
-    <Routes />
+    <Routes @rendermode="InteractiveServer"/>
     <script src="_content/MudBlazor/MudBlazor.min.js"></script>
     <script src="_framework/blazor.web.js"></script>
     </body>

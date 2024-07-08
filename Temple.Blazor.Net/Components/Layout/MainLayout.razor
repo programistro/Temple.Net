@@ -66,10 +66,12 @@
         </div>
     </nav>
 </header>
-<div class="container">
-    <main role="main" class="pb-3">
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+<div>
+    <MudContainer MaxWidth="MaxWidth.ExtraLarge">
         @Body
-    </main>
+    </MudContainer>
 </div>
 
 <script src="js/OSMap.js"></script>
@@ -91,7 +93,7 @@
 
 <style>
     footer {
-        position: absolute;
+        /*position: absolute;*/
         bottom: 0;
         width: 100%;
         text-align: center;

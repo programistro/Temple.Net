@@ -13,108 +13,40 @@
 @inject UserDbContext _context
 @inject AuthenticationStateProvider AuthenticationStateProvider
 @inject IDialogService DialogService
-@layout EmptyLayout
 @page "/admin"
 
 <PageTitle>Панель администратора</PageTitle>
-<MudThemeProvider />
-<MudPopoverProvider/>
-@* <MudDialogProvider /> *@
-<MudSnackbarProvider />
 
-<header>
-    <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="/">Temple.Net</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                    aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                <ul class="navbar-nav flex-grow-1">
-                    <li class="nav-item">
-                        <a class="nav-link text-dark" href="/">Домашняя страница</a>
-                    </li>
-                    <li class="nav-item">
-                        @if (IsAuth == true && (AuthenticationStateProvider.GetAuthenticationStateAsync().Result.User.FindFirst(ClaimTypes.Role).Value) != null)
-                        {
-                        var user = _context.Users.FirstOrDefault(x => x.Email == AuthenticationStateProvider.GetAuthenticationStateAsync().Result.User.FindFirst(ClaimsIdentity.DefaultNameClaimType).Value);
+<MudDialogProvider FullWidth="true"
+                   MaxWidth="MaxWidth.ExtraSmall"
+                   CloseButton="false"
+                   BackdropClick="false"
+                   NoHeader="true"
+                   Position="DialogPosition.Center"
+                   CloseOnEscapeKey="false"/>
 
-                        if (user.Role == "admin")
-                        {
-                        <a class="nav-link text-dark" href="/admin">Админ панель</a>
-                        }
-                        }
-                    </li>
-                    <li class="nav-item">
-                        @if (IsAuth)
-                        {
-                        <a class="nav-link text-dark" href="/add">Добавить</a>
-                        }
-                    </li>
-                    <li class="nav-item" style="margin-left: 5px;">
-                        <a class="nav-link text-dark" href="/map">Карта</a>
-                    </li>
-                    <li class="nav-item ml-auto" style="margin-right: 5px;">
-                        @if (IsAuth)
-                        {
-                        <a class="nav-link text-dark" href="/profile">@AuthenticationStateProvider.GetAuthenticationStateAsync().Result.User.Identity.Name</a>
-                        }
-                        else
-                        {
-                        <a class="nav-link text-dark" href="/reg">Регистрация</a>
-                        }
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </nav>
-</header>
-<div>
-    <MudDialogProvider FullWidth="true"
-                       MaxWidth="MaxWidth.ExtraSmall"
-                       CloseButton="false"
-                       BackdropClick="false"
-                       NoHeader="true"
-                       Position="DialogPosition.Center"
-                       CloseOnEscapeKey="false"/>
+<MudContainer MaxWidth="MaxWidth.Large" Class="my-4 pt-4">
+    <QuickGrid Items="@context.Users">
+        <Microsoft.AspNetCore.Components.QuickGrid.PropertyColumn Property="@(user => user.Email)" Sortable="true"/>
+        <Microsoft.AspNetCore.Components.QuickGrid.PropertyColumn Property="@(user => user.Role)" Sortable="true"/>
+        <Microsoft.AspNetCore.Components.QuickGrid.TemplateColumn Title="Изменить права пользователя">
+            <MudButton Variant="Variant.Filled" Color="Color.Primary" @onclick="@(() => ChangeRole(context))">Изменить</MudButton>
+        </Microsoft.AspNetCore.Components.QuickGrid.TemplateColumn>
+    </QuickGrid>
+</MudContainer>
 
-    <div class="container">
-        <QuickGrid Items="@context.Users">
-            <Microsoft.AspNetCore.Components.QuickGrid.PropertyColumn Property="@(user => user.Email)" Sortable="true"/>
-            <Microsoft.AspNetCore.Components.QuickGrid.PropertyColumn Property="@(user => user.Role)" Sortable="true"/>
-            <Microsoft.AspNetCore.Components.QuickGrid.TemplateColumn Title="Изменить права пользователя">
-                <MudButton Variant="Variant.Filled" Color="Color.Primary" @onclick="@(() => ChangeRole(context))">Изменить</MudButton>
-            </Microsoft.AspNetCore.Components.QuickGrid.TemplateColumn>
-        </QuickGrid>
-    </div>
-
-    <MudDialog @bind-Visible="visible">
-        <TitleContent>
-            Изменить права доступа
-        </TitleContent>
-        <DialogContent>
-            <MudTextField T="string" Label="Права" @bind-value="NewRole"></MudTextField>
-        </DialogContent>
-        <DialogActions>
-            <MudButton Color="Color.Primary" OnClick="OnHideModalClick">Отмена</MudButton>
-            <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="OnChangeClick">Изменить</MudButton>
-        </DialogActions>
-    </MudDialog>
-</div>
-
-<script>
-    Blazor.start().then(() => {
-        Blazor.defaultReconnectionHandler._reconnectCallback = function (d) {
-            document.location.reload();
-        }
-    });
-</script>
-<footer class="border-top footer text-muted page-footer">
-    <div class="container">
-        &copy; 2024 - Temple.Net - <a>Privacy</a>
-    </div>
-</footer>
+<MudDialog @bind-Visible="visible">
+    <TitleContent>
+        Изменить права доступа
+    </TitleContent>
+    <DialogContent>
+        <MudTextField T="string" Label="Права" @bind-value="NewRole"></MudTextField>
+    </DialogContent>
+    <DialogActions>
+        <MudButton Color="Color.Primary" OnClick="OnHideModalClick">Отмена</MudButton>
+        <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="OnChangeClick">Изменить</MudButton>
+    </DialogActions>
+</MudDialog>
 
 @code {
     private User selectUser;
@@ -144,21 +76,5 @@
     private void OnHideModalClick(MouseEventArgs obj)
     {
         visible = false;
-    }
-}
-
-@code {
-    private bool IsAuth;
-
-    protected override void OnInitialized()
-    {
-        if (AuthenticationStateProvider.GetAuthenticationStateAsync().Result.User.Identity.IsAuthenticated)
-        {
-            IsAuth = true;
-        }
-        else
-        {
-            IsAuth = false;
-        }
     }
 }
