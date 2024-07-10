@@ -25,6 +25,9 @@ namespace Temple.Blazor.Net.Migrations
                     b.Property<string>("Appointmenrs")
                         .HasColumnType("TEXT");
 
+                    b.Property<DateTime?>("Year")
+                        .HasColumnType("TEXT");
+
                     b.HasKey("Id");
 
                     b.ToTable("AppointmentsAfterEnd");
@@ -274,6 +277,9 @@ namespace Temple.Blazor.Net.Migrations
                     b.Property<string>("District")
                         .HasColumnType("TEXT");
 
+                    b.Property<string>("Locality")
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("Name")
                         .HasColumnType("TEXT");
 
@@ -292,7 +298,22 @@ namespace Temple.Blazor.Net.Migrations
                     b.Property<int?>("Quantity")
                         .HasColumnType("INTEGER");
 
+                    b.Property<string>("RayonDistrict")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("RayonRegion")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Region")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("SeparateRegion")
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("Type")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("TypeLocality")
                         .HasColumnType("TEXT");
 
                     b.Property<DateTime?>("YearAdaptation")

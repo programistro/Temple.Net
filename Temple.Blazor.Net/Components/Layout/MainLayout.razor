@@ -36,7 +36,7 @@
                         {
                             var user = _context.Users.FirstOrDefault(x => x.Email == AuthenticationStateProvider.GetAuthenticationStateAsync().Result.User.FindFirst(ClaimsIdentity.DefaultNameClaimType).Value);
 
-                            if (user.Role == "admin")
+                            if (user?.Role == "admin")
                             {
                                 <a class="nav-link text-dark" href="/admin">Админ панель</a>
                             }

@@ -8,7 +8,7 @@ public class Temple
     [Key]
     public string Id { get; set; }
     
-    public string? Name { get; set; }
+    public string Name { get; set; }
     
     public string? Type { get; set; }
     
@@ -34,5 +34,35 @@ public class Temple
     
     public string? Province { get; set; } // Губернии и уезды
     
-    public string? District { get; set; } // Округа и районы округов (1924-1930) 
+    public string? District { get; set; } // Округа и районы округов (1924-1930)
+    
+    /// <summary>
+    /// Район округа
+    /// </summary>
+    public string? RayonDistrict { get; set; }
+    
+    /// <summary>
+    /// Область
+    /// </summary>
+    public string? Region { get; set; }
+    
+    /// <summary>
+    /// Район области
+    /// </summary>
+    public string? RayonRegion { get; set; }
+    
+    /// <summary>
+    /// Отедельный район
+    /// </summary>
+    public string? SeparateRegion { get; set; }
+    
+    /// <summary>
+    /// Тип населеного пункта
+    /// </summary>
+    public string? TypeLocality { get; set; }
+    
+    /// <summary>
+    /// Населенай пункт
+    /// </summary>
+    public string? Locality { get; set; }
 }

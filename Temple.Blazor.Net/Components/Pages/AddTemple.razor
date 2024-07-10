@@ -7,6 +7,7 @@
 @inject AppDbContext _context
 @using Newtonsoft.Json
 @using Temple.Blazor.Net.Components.Layout
+@using Temple.Net.Service
 @inject NavigationManager NavigationManager
 @inject ISnackbar Snackbar
 
@@ -17,35 +18,22 @@
     <MudCard>
         <MudCardContent>
             <h5 class="card-title text-center mb-3 fw-light fs-5">Добавить храм</h5>
-            @* <EditForm Model="@_temple" OnSubmit="Sumbit"> *@
-            @* <div class="form-floating mb-2"> *@
             <div>
                 <MudTextField @bind-Value="_temple.Name" Label="Название"/>
             </div>
-            @* <label>Название</label> *@
-            @* </div> *@
 
             <div>
-                @* <h3 class="card-title text-center mb-3 fw-light fs-5">Тип храма</h3> *@
-
-                <MudSelect Label="Тип храма" @bind-Value="selectedType">
-                    <MudSelectItem Value="1">Кафедральный</MudSelectItem>
-                    <MudSelectItem Value="2">Кладбищенский</MudSelectItem>
-                    <MudSelectItem Value="3">Приходской</MudSelectItem>
-                </MudSelect>
+                <MudAutocomplete T="string" Label="Тип храма" @bind-Value="selectedType" SearchFunc="@SearchType"
+                                 ResetValueOnEmptyText="@resetValueOnEmptyText"
+                                 CoerceText="@coerceText" CoerceValue="@coerceValue" AdornmentColor="Color.Primary" />
             </div>
 
             <div style="margin-top: 10px; margin-bottom: 10px;">
                 <MudDatePicker TValue="DateTime?" DateFormat="dd.MM.yyyy"
                                Placeholder="Год основания" @bind-Date="_temple.DateStart" Label="Год основания"/>
-                @* <label>Год основания</label> *@
             </div>
 
-            @* <br/> *@
-
             <div>
-                @* <h3 class="card-title text-center mb-3 fw-light fs-5">Назначение после закрытия</h3> *@
-
                 <div>
 
                     <div style="margin-top: 10px; margin-bottom: 10px;">
@@ -58,12 +46,10 @@
                                        @bind-Date="_temple.YearAdaptation"/>
                     </div>
 
-                    <MudSelect @bind-Value="@selectedAfterClosing" Label="Назначение после закрытия">
-                        <MudSelectItem Value="1">Зернохранилище</MudSelectItem>
-                        <MudSelectItem Value="2">Клуб</MudSelectItem>
-                        <MudSelectItem Value="3">Склад</MudSelectItem>
-                    </MudSelect>
-
+                    <MudAutocomplete T="string" Label="Назначение после закрытия" @bind-Value="selectedAfterClosing" SearchFunc="@SearchAfterClosing"
+                                     ResetValueOnEmptyText="@resetValueOnEmptyText"
+                                     CoerceText="@coerceText" CoerceValue="@coerceValue" AdornmentColor="Color.Primary" />
+                    
                 </div>
             </div>
 
@@ -79,16 +65,9 @@
                         <MudDatePicker TValue="DateTime?" DateFormat="dd.MM.yyyy" Label="Год отпадения" @bind-Date="_temple.Oriention.YearFall" />
                     </div>
 
-                    @* <div class="form-floating mb-2"> *@
-                    @*     <input class="form-control" @bind-value="_temple.Oriention.Oriention"> *@
-                    @*     <label>Церковная ориентация</label> *@
-                    @* </div> *@
-
-                    <MudSelect @bind-Value="@selectedOriention">
-                        <MudSelectItem Value="1">Автокефальная</MudSelectItem>
-                        <MudSelectItem Value="2">Обновленческая</MudSelectItem>
-                        <MudSelectItem Value="3">Тихоновская</MudSelectItem>
-                    </MudSelect>
+                    <MudAutocomplete T="string" Label="Церковная ориентация" @bind-Value="selectedOriention" SearchFunc="@SearchOriention"
+                                     ResetValueOnEmptyText="@resetValueOnEmptyText"
+                                     CoerceText="@coerceText" CoerceValue="@coerceValue" AdornmentColor="Color.Primary" />
 
                     <div style="margin-top: 10px; margin-bottom: 10px;">
                         <MudDatePicker DateFormat="dd.MM.yyyy" Label="Год возрата" @bind-Date="_temple.Oriention.YearRefund"/>
@@ -104,98 +83,24 @@
                         <MudDatePicker DateFormat="dd.MM.yyyy" Label="Год" @bind-Date="_temple.ParshYear"/>
                     </div>
 
-                    @* <div class="form-floating mb-2"> *@
                     <MudTextField T="int?" @bind-value="_temple.Quantity" Label="Количество"/>
-                    @* <label>Количество</label> *@
-                    @* </div> *@
                 </div>
             </div>
 
             <div>
                 <h3 class="card-title text-center mb-3 fw-light fs-5">Епархии</h3>
-
-                <MudSelect @bind-Value="@selectedDiocese">
-                    @if (selectedOriention == 1)
-                    {
-                    <MudSelectItem Value="1">Минская</MudSelectItem>
-                    }
-                    else if (selectedOriention == 2)
-                    {
-                    <MudSelectItem Value="2">Бобруйская</MudSelectItem>
-                    <MudSelectItem Value="3">Велижско-Высочанская</MudSelectItem>
-                    <MudSelectItem Value="4">Витебская</MudSelectItem>
-                    <MudSelectItem Value="5">Гомельская</MudSelectItem>
-                    <MudSelectItem Value="6">Минская</MudSelectItem>
-                    <MudSelectItem Value="7">Могилевская</MudSelectItem>
-                    <MudSelectItem Value="8">Мозырская</MudSelectItem>
-                    <MudSelectItem Value="9">Мстиславская</MudSelectItem>
-                    <MudSelectItem Value="10">Оршанская</MudSelectItem>
-                    <MudSelectItem Value="11">Полоцкая</MudSelectItem>
-                    <MudSelectItem Value="12">Слуцкая</MudSelectItem>
-                    <MudSelectItem Value="13">Чаусская</MudSelectItem>
-                    }
-                    else if (selectedOriention == 3)
-                    {
-                    <MudSelectItem Value="14">Гомельская</MudSelectItem>
-                    <MudSelectItem Value="15">Могилевская и Мстиславская</MudSelectItem>
-                    <MudSelectItem Value="16">Минская и Туровская</MudSelectItem>
-                    <MudSelectItem Value="17">Минская</MudSelectItem>
-                    <MudSelectItem Value=18>Минская и Белорусская</MudSelectItem>
-                    <MudSelectItem Value="19">Полоцкая и Витебская</MudSelectItem>
-                    }
-                </MudSelect>
+                
+                <MudAutocomplete T="string" Label="Епархии" @bind-Value="selectedDiocese" SearchFunc="@SearcDiocese"
+                                 ResetValueOnEmptyText="@resetValueOnEmptyText"
+                                 CoerceText="@coerceText" CoerceValue="@coerceValue" AdornmentColor="Color.Primary" />
             </div>
 
             <div>
                 <h3 class="card-title text-center mb-3 fw-light fs-5">Губернии и уезды</h3>
 
-                <MudSelect @bind-Value="@selectedProvince">
-                    @* <MudSelectGroup Label="Витебская"> *@
-                    <MudSelectItem Value="1">Велижский</MudSelectItem>
-                    <MudSelectItem Value="2">Витебский</MudSelectItem>
-                    <MudSelectItem Value="3">Городокский</MudSelectItem>
-                    <MudSelectItem Value="4">Дриссенский</MudSelectItem>
-                    <MudSelectItem Value="5">Лепельский</MudSelectItem>
-                    <MudSelectItem Value="6">Невельский</MudSelectItem>
-                    <MudSelectItem Value="7">Полоцкий</MudSelectItem>
-                    <MudSelectItem Value="8">Себежский</MudSelectItem>
-
-                    @* </MudSelectGroup> *@
-                    @* <SelectGroup Label="Гомельская"> *@
-                    <MudSelectItem Value="9">Быховский</MudSelectItem>
-                    <MudSelectItem Value="10">Гомельский</MudSelectItem>
-                    <MudSelectItem Value="11">Могилевский</MudSelectItem>
-                    <MudSelectItem Value="12">Рогачевский</MudSelectItem>
-                    <MudSelectItem Value="13">Чаусский</MudSelectItem>
-                    <MudSelectItem Value="14">Чериковский</MudSelectItem>
-                    <MudSelectItem Value="15">Горецкий</MudSelectItem>
-                    <MudSelectItem Value="16">Климовический</MudSelectItem>
-                    <MudSelectItem Value="17">Оршанский</MudSelectItem>
-                    @* </SelectGroup> *@
-                    @* <SelectGroup Label="Минская"> *@
-                    <MudSelectItem Value="18">Бобруйский</MudSelectItem>
-                    <MudSelectItem Value="19">Борисовский</MudSelectItem>
-                    <MudSelectItem Value="20">Игуменский</MudSelectItem>
-                    <MudSelectItem Value="21">Минский</MudSelectItem>
-                    <MudSelectItem Value="22">Мозырский</MudSelectItem>
-                    <MudSelectItem Value="23">Речицкий</MudSelectItem>
-                    <MudSelectItem Value="24">Слуцкий </MudSelectItem>
-                    @* </SelectGroup>
-                             <SelectGroup Label="Могилевская"> *@
-                    <MudSelectItem Value="25">Быховский</MudSelectItem>
-                    <MudSelectItem Value="26">Гомельский</MudSelectItem>
-                    <MudSelectItem Value="27">Горецкий</MudSelectItem>
-                    <MudSelectItem Value="28">Климовичский</MudSelectItem>
-                    <MudSelectItem Value="29">Могилевский</MudSelectItem>
-                    <MudSelectItem Value="30">Мстиславский</MudSelectItem>
-                    <MudSelectItem Value="31">Оршанский</MudSelectItem>
-                    <MudSelectItem Value="32">Рогачёвский</MudSelectItem>
-                    <MudSelectItem Value="33">Сенненский</MudSelectItem>
-                    <MudSelectItem Value="34">Чаусский</MudSelectItem>
-                    <MudSelectItem Value="35">Чериковский</MudSelectItem>
-                    <MudSelectItem Value="36">Не выбрано</MudSelectItem>
-                    @* </SelectGroup> *@
-                </MudSelect>
+                <MudAutocomplete T="string" Label="US States" @bind-Value="selectedProvince" SearchFunc="@SearchProvince"
+                                 ResetValueOnEmptyText="@resetValueOnEmptyText"
+                                 CoerceText="@coerceText" CoerceValue="@coerceValue" />
             </div>
 
             <div>
@@ -390,19 +295,17 @@
 
     MapPosition? defPosition;
 
-    private int selectedType = 1;
+    private string selectedType;
 
-    private int selectedOriention = 1;
+    private string selectedOriention;
 
-    private int selectedDiocese = 1;
+    private string selectedDiocese;
 
     private int selectedDistrict = 1;
 
-    private int selectedProvince = 1;
+    private string selectedProvince;
 
-    private int selectedAfterClosing = 1;
-
-    private int selectedTempleOriention = 1;
+    private string selectedAfterClosing;
 
     private Temple? _temple = new()
     {
@@ -432,6 +335,134 @@
         //actualJson = JsonConvert.SerializeObject(args);
 
         //StateHasChanged();
+    }
+    
+    private string[] types =
+    {
+        "Кафедральный", "Кладбищенский", "Приходской"
+    };
+
+    private string[] afterClosing =
+    {
+        "Зернохранилище", "Клуб", "Склад"
+    };
+
+    private string[] oriention =
+    {
+        "Автокафельная", "Обновличенская", "Тихоновская"
+    };
+    /// <summary>
+    /// Автокафельная
+    /// </summary>
+    private string[] dioceseAvto =
+    {
+        "Автокафельная"
+    };
+    
+    private string[] dioceseObnov =
+    {
+        "Велижско-Высочанская", "Витебская", "Гомельская", "Минская", "Могилевская", "Мозырская", "Мстиславская",
+        "Оршанская", "Полоцкая", "Слуцкая", "Чаусская"
+    };
+
+    private string[] dioceseTixo =
+    {
+        "Гомельская", "Могилевская и Мстиславская", "Минская и Туровская", "Минская", "Минская и Белорусская", 
+        "Полоцкая и Витебская"
+    };
+
+    private string[] provinces =
+    {
+        "Велижский", "Витебский",  "Городоккский",  "Дриссенский",  "Лепельский",  "Невельский",  "Полоцкий",  "Себежский",  "Гомельская",  "Быховский",
+        "Гомельский",  "Могилевский",  "Рогачевский",  "Чаусский",  "Чериковский",  "Горецкий",  "Климовический",  "Оршанской",  "Бобруйский",  "Борисовский",  "Игуменский",  "Минский",
+        "Мозырский",  "Речицкий",  "Слуцкий",  "Быховский",  "Гомельский",  "Горецкий",  "Климовичский",  "Могилевский",  "Мстиславский",  "Оршанский",  "Рогачевский",  "Сенненский",
+        "Чаусский",  "Чериковский"
+    };
+
+    private string[] district =
+    {
+        "", "", "", "", "", "", "", "", "",
+        "", "", "", "", "", "", "", "", "",
+        "", "", "", "", "", "", "", "", "",
+        "", "", "", "", "", "", "", "", "",
+        "", "", "", "", "", "", "", "", "",
+        "", "", "", "", "", "", "", "", "",
+        "", "", "", "", "", "", "", "", "",
+        "", "", "", "", "", "", "", "", "",
+        "", "", "", "", "", "", "", "", "",
+        "", "", "", "", "", "", "", "", "",
+        "", "", "", "", "", "", "", "", "",
+    };
+    
+    private bool coerceText;
+    
+    private bool coerceValue;
+    
+    private bool resetValueOnEmptyText;
+    
+    private async Task<IEnumerable<string>> SearchType(string value, CancellationToken token)
+    {
+        await Task.Delay(5, token);
+
+        if (string.IsNullOrEmpty(value))
+            return types;
+        return types.Where(x => x.Contains(value, StringComparison.InvariantCultureIgnoreCase));
+    }
+
+    private async Task<IEnumerable<string>> SearchAfterClosing(string value, CancellationToken token)
+    {
+        await Task.Delay(5, token);
+
+        if (string.IsNullOrEmpty(value))
+            return afterClosing;
+        return afterClosing.Where(x => x.Contains(value, StringComparison.InvariantCultureIgnoreCase));   
+    }
+
+    private async Task<IEnumerable<string>> SearchOriention(string value, CancellationToken token)
+    {
+        await Task.Delay(5, token);
+
+        if (string.IsNullOrEmpty(value))
+            return oriention;
+        return oriention.Where(x => x.Contains(value, StringComparison.InvariantCultureIgnoreCase));
+    }
+
+    private async Task<IEnumerable<string>> SearcDiocese(string value, CancellationToken token)
+    {
+        await Task.Delay(5, token);
+
+        switch (selectedOriention)
+        {
+            case "Автокафельная":
+                if (string.IsNullOrEmpty(value))
+                    return dioceseAvto;
+                return dioceseAvto.Where(x => x.Contains(value, StringComparison.InvariantCultureIgnoreCase));
+                break;
+            case "Обновличенская":
+                if (string.IsNullOrEmpty(value))
+                    return dioceseObnov;
+                return dioceseObnov.Where(x => x.Contains(value, StringComparison.InvariantCultureIgnoreCase));
+                break;
+            case "Тихоновская":
+                if (string.IsNullOrEmpty(value))
+                    return dioceseAvto;
+                return dioceseAvto.Where(x => x.Contains(value, StringComparison.InvariantCultureIgnoreCase));
+                break;
+                default:
+                if (string.IsNullOrEmpty(value))
+                    return dioceseAvto;
+                return dioceseAvto.Where(x => x.Contains(value, StringComparison.InvariantCultureIgnoreCase));
+                break;
+        }
+    }
+
+    private async Task<IEnumerable<string>> SearchProvince(string value, CancellationToken token)
+    {
+        await Task.Delay(5, token);
+
+        if (string.IsNullOrEmpty(value))
+            return provinces;
+        return provinces.Where(x => x.Contains(value, StringComparison.InvariantCultureIgnoreCase));
     }
 
     private async Task Sumbit()
@@ -466,128 +497,6 @@
             _temple.AppointmentsAfterEnd.Id = Guid.NewGuid().ToString("N");
             _temple.Oriention.Id = Guid.NewGuid().ToString("N");
             _temple.Id = Guid.NewGuid().ToString("N");
-            
-            switch (selectedType)
-            {
-                case 1:
-                    _temple.Type = "Кафедральный";
-                    break;
-                case 2:
-                    _temple.Type = "Кладбищенский";
-                    break;
-                case 3:
-                    _temple.Type = "Монастырский";
-                    break;
-                case 4:
-                    _temple.Type = "Приходской";
-                    break;
-            }
-
-            switch (selectedOriention)
-            {
-                case 1:
-                    _temple.OrientationDiocesse = "Автокефальная";
-                    break;
-                case 2:
-                    _temple.OrientationDiocesse = "Обновлеченская";
-                    break;
-                case 3:
-                    _temple.OrientationDiocesse = "Тихоновская";
-                    break;
-                case 4:
-                    _temple.OrientationDiocesse = "Сергиевская";
-                    break;
-            }
-
-            switch (selectedDiocese)
-            {
-                case 1:
-                    _temple.OrientationDiocesse = "Минская";
-                    break;
-                case 2:
-                    _temple.OrientationDiocesse = "Бобруйская";
-                    break;
-                case 3:
-                    _temple.OrientationDiocesse = "Велижско-Высочанская";
-                    break;
-                case 4:
-                    _temple.OrientationDiocesse = "Витебская";
-                    break;
-                case 5:
-                    _temple.OrientationDiocesse = "Гомельская";
-                    break;
-                case 6:
-                    _temple.OrientationDiocesse = "Минская";
-                    break;
-                case 7:
-                    _temple.OrientationDiocesse = "Могилевская";
-                    break;
-                case 8:
-                    _temple.OrientationDiocesse = "Мозырская";
-                    break;
-                case 9:
-                    _temple.OrientationDiocesse = "Мстиславская";
-                    break;
-                case 10:
-                    _temple.OrientationDiocesse = "Оршанская";
-                    break;
-                case 11:
-                    _temple.OrientationDiocesse = "Полоцкая";
-                    break;
-                case 12:
-                    _temple.OrientationDiocesse = "Слуцкая";
-                    break;
-                case 13:
-                    _temple.OrientationDiocesse = "Чаусская";
-                    break;
-                case 14:
-                    _temple.OrientationDiocesse = "Гомельская";
-                    break;
-                case 15:
-                    _temple.OrientationDiocesse = "Могилевская и Мстиславская";
-                    break;
-                case 16:
-                    _temple.OrientationDiocesse = "Минская и Туровская";
-                    break;
-                case 17:
-                    _temple.OrientationDiocesse = "Минская";
-                    break;
-                case 18:
-                    _temple.OrientationDiocesse = "Минская и Белорусская";
-                    break;
-                case 19:
-                    _temple.OrientationDiocesse = "Полоцкая и Витебская";
-                    break;
-            }
-
-            switch (selectedAfterClosing)
-            {
-                case 1:
-                    _temple.AppointmentsAfterEnd.Appointmenrs = "Зернохранилище";
-                    break;
-                case 2:
-                    _temple.AppointmentsAfterEnd.Appointmenrs = "Клуб";
-                    break;
-                case 3:
-                    _temple.AppointmentsAfterEnd.Appointmenrs = "Склад";
-                    break;
-            }
-
-            switch (selectedTempleOriention)
-            {
-                case 1:
-                    _temple.Oriention.Oriention = "Автокефальная"; 
-                    break;
-                case 2:
-                    _temple.Oriention.Oriention = "Обновленческая"; 
-                    break;
-                case 3:
-                    _temple.Oriention.Oriention = "Тихоновская"; 
-                    break;
-                case 4:
-                    _temple.Oriention.Oriention = "Сергиевская"; 
-                    break;
-            }
 
             switch (selectedDistrict)
             {
@@ -1027,121 +936,11 @@
                     _temple.District = "Не выбрано";
                     break;
             }
+            
+            _temple.FillEmptyFields();
 
-            switch (selectedProvince)
-            {
-                case 1:
-                    _temple.Province = "Велижский";
-                    break;
-                case 2:
-                    _temple.Province = "Витебский";
-                    break;
-                case 3:
-                    _temple.Province = "Городокский";
-                    break;
-                case 4:
-                    _temple.Province = "Дриссенский";
-                    break;
-                case 5:
-                    _temple.Province = "Лепельский";
-                    break;
-                case 6:
-                    _temple.Province = "Невельский";
-                    break;
-                case 7:
-                    _temple.Province = "Полоцкий";
-                    break;
-                case 8:
-                    _temple.Province = "Себежский";
-                    break;
-                case 9:
-                    _temple.Province = "Быховский";
-                    break;
-                case 10:
-                    _temple.Province = "Гомельский";
-                    break;
-                case 11:
-                    _temple.Province = "Могилевский";
-                    break;
-                case 12:
-                    _temple.Province = "Рогачевский";
-                    break;
-                case 13:
-                    _temple.Province = "Чаусский";
-                    break;
-                case 14:
-                    _temple.Province = "Чериковский";
-                    break;
-                case 15:
-                    _temple.Province = "Горецкий";
-                    break;
-                case 16:
-                    _temple.Province = "Климовический";
-                    break;
-                case 17:
-                    _temple.Province = "Оршанский";
-                    break;
-                case 18:
-                    _temple.Province = "Бобруйский";
-                    break;
-                case 19:
-                    _temple.Province = "Борисовский";
-                    break;
-                case 20:
-                    _temple.Province = "Игуменский";
-                    break;
-                case 21:
-                    _temple.Province = "Минский";
-                    break;
-                case 22:
-                    _temple.Province = "Мозырский";
-                    break;
-                case 23:
-                    _temple.Province = "Речицкий";
-                    break;
-                case 24:
-                    _temple.Province = "Слуцкий";
-                    break;
-                case 25:
-                    _temple.Province = "Быховский";
-                    break;
-                case 26:
-                    _temple.Province = "Гомельский";
-                    break;
-                case 27:
-                    _temple.Province = "Горецкий";
-                    break;
-                case 28:
-                    _temple.Province = "Климовичский";
-                    break;
-                case 29:
-                    _temple.Province = "Могилевский";
-                    break;
-                case 30:
-                    _temple.Province = "Мстиславский";
-                    break;
-                case 31:
-                    _temple.Province = "Оршанский";
-                    break;
-                case 32:
-                    _temple.Province = "Рогачёвский";
-                    break;
-                case 33:
-                    _temple.Province = "Сенненский";
-                    break;
-                case 34:
-                    _temple.Province = "Чаусский";
-                    break;
-                case 35:
-                    _temple.Province = "Чаусский";
-                    break;
-                case 36:
-                    _temple.Province = "Не выбрано";
-                    break;
-            }
-
-            await _context.Temples.AddAsync(_temple);
-            await _context.SaveChangesAsync();
+            _context.Temples.Add(_temple);
+            _context.SaveChanges();
             
             NavigationManager.NavigateTo("/?show=true", true);
         }

@@ -2,7 +2,6 @@
 @using Temple.Net.Data
 @using Temple.Net.Models
 @using Microsoft.AspNetCore.Authorization
-@using Microsoft.AspNetCore.Components.QuickGrid
 @using Microsoft.AspNetCore.Authorization
 @using Microsoft.AspNetCore.Components.Authorization
 @using Microsoft.AspNetCore.Components.QuickGrid
@@ -14,6 +13,12 @@
 @inject AuthenticationStateProvider AuthenticationStateProvider
 @inject IDialogService DialogService
 @page "/admin"
+
+<style>
+    footer {
+        position: absolute;
+    }
+</style>
 
 <PageTitle>Панель администратора</PageTitle>
 

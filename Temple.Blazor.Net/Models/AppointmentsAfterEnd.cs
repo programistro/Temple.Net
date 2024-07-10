@@ -8,4 +8,6 @@ public class AppointmentsAfterEnd
     public string Id { get; set; }
     
     public string? Appointmenrs { get; set; } 
+    
+    public DateTime? Year { get; set; }
 }

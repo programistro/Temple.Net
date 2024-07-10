@@ -188,7 +188,6 @@ namespace Temple.Blazor.Net.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Role")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("SecurityStamp")

@@ -4,6 +4,12 @@
 @using OpenStreetMapForBlazor
 @rendermode InteractiveServer
 
+<style>
+    footer {
+        position: absolute;
+    }
+</style>
+
 <div style="height: 500px;">
     <OpenStreetMap ApiKey=@(config.GetValue<string>("Main:OSMapKey")) Zoom="@zoom" Center="@(defPosition)" MapClick="@MapClick" MarkerClick="@MarkerClick">
         <Markers>
@@ -12,10 +18,6 @@
         </Markers>
     </OpenStreetMap>
 </div>
-
-@* <Body> *@
-@*     <link href="css/site.css" rel="stylesheet" /> *@
-@* </Body> *@
 
 @code {
     public MapPosition position;
