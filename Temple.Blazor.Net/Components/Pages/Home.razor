@@ -1,5 +1,6 @@
 ﻿@page "/"
 @using Microsoft.AspNetCore.Components.Server
+@inject ISnackbar Snackbar
 @rendermode InteractiveServer
 
 <PageTitle>Домашняя страница</PageTitle>
@@ -11,3 +12,19 @@
         position: absolute;
     }
 </style>
+
+<MudSnackbarProvider @rendermode="InteractiveServer"/>
+
+@code {
+    [Parameter]
+    [SupplyParameterFromQuery(Name="show")]
+    public bool? IsShowSnack { get; set; }
+
+    protected override void OnInitialized()
+    {
+        if (IsShowSnack == true)
+        {
+            Snackbar.Add("Храм добавлен", Severity.Info);
+        }
+    }
+}

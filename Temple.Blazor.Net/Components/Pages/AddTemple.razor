@@ -8,6 +8,7 @@
 @using Newtonsoft.Json
 @using Temple.Blazor.Net.Components.Layout
 @inject NavigationManager NavigationManager
+@inject ISnackbar Snackbar
 
 <MudPopoverProvider @rendermode="InteractiveServer"/>
 <MudSnackbarProvider @rendermode="InteractiveServer"/>
@@ -377,7 +378,7 @@
             </div>
 
             <div class="d-grid mb-2">
-                <button class="btn btn-lg btn-primary btn-login fw-bold text-uppercase" style="margin-top: 20px;" type="submit">Добавить</button>
+                <MudButton Style="margin-top: 20px;" Color="Color.Primary" Variant="Variant.Filled" OnClick="Sumbit">Добавить</MudButton>
             </div>
         </MudCardContent>
     </MudCard>
@@ -462,6 +463,10 @@
                 break;
             }
 
+            _temple.AppointmentsAfterEnd.Id = Guid.NewGuid().ToString("N");
+            _temple.Oriention.Id = Guid.NewGuid().ToString("N");
+            _temple.Id = Guid.NewGuid().ToString("N");
+            
             switch (selectedType)
             {
                 case 1:
@@ -1138,7 +1143,7 @@
             await _context.Temples.AddAsync(_temple);
             await _context.SaveChangesAsync();
             
-            NavigationManager.NavigateTo("/", true);
+            NavigationManager.NavigateTo("/?show=true", true);
         }
     }
 }
