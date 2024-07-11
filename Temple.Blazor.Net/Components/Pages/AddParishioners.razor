@@ -249,7 +249,7 @@
                 break;
         }
 
-        _parishioners.FillEmptyFields();
+        _parishioners.FillEmptyFields(); //todo тут будет ошибка и чтобы ее избежать в проинцелизированных внутрених классах нужно всем полям пррописать значение по умолчанию
         
         _context.Parishioners.Add(_parishioners);
         _context.SaveChanges();
