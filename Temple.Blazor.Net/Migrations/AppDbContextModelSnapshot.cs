@@ -205,7 +205,7 @@ namespace Temple.Blazor.Net.Migrations
                     b.Property<string>("Photo")
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("Place1Births")
+                    b.Property<string>("PlaceBirths")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("PlaceOfDeath")

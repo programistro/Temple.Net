@@ -10,6 +10,7 @@
 @using Microsoft.AspNetCore.Components.Authorization
 @using Newtonsoft.Json
 @using Temple.Net.Data
+@using Temple.Net.Service
 @inject NavigationManager NavigationManager 
 @rendermode InteractiveServer
 
@@ -302,13 +303,12 @@
             case 4:
                 _parishioners.EstateBeforeRevolution = "Не указано";
                 break;
-
-
-
         }
 
-        await _context.Parishioners.AddAsync(_parishioners);
-        await _context.SaveChangesAsync();
+        _parishioners.FillEmptyFields();
+        
+        _context.Parishioners.Add(_parishioners);
+        _context.SaveChanges();
         NavigationManager.NavigateTo("/", true);
     }
 }

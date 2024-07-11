@@ -46,7 +46,7 @@ public class Parsonalion
     /// <summary>
     ///  место рождения
     /// </summary>
-    public string? Place1Births { get; set; }
+    public string? PlaceBirths { get; set; }
     
     public string? LVLEducation { get; set; }
     

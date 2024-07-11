@@ -95,185 +95,14 @@
                                  CoerceText="@coerceText" CoerceValue="@coerceValue" AdornmentColor="Color.Primary" />
             </div>
 
-            <div>
-                <h3 class="card-title text-center mb-3 fw-light fs-5">Губернии и уезды</h3>
-
-                <MudAutocomplete T="string" Label="US States" @bind-Value="selectedProvince" SearchFunc="@SearchProvince"
+                <MudAutocomplete T="string" Label="Губернии и уезды" @bind-Value="selectedProvince" SearchFunc="@SearchProvince"
                                  ResetValueOnEmptyText="@resetValueOnEmptyText"
                                  CoerceText="@coerceText" CoerceValue="@coerceValue" />
-            </div>
-
+            
             <div>
-                <h3 class="card-title text-center mb-3 fw-light fs-5">Округа и районы округов (1924-1930)</h3>
-
-                <MudSelect @bind-Value="@selectedDistrict">
-                    @*  <SelectGroup Label="Бобруйский (1924-1930)"> *@
-                    <MudSelectItem Value="1">Бобруйский</MudSelectItem>
-                    <MudSelectItem Value="2">Бобруйский 1-й</MudSelectItem>
-                    <MudSelectItem Value="3">Бобруйский 2-й</MudSelectItem>
-                    <MudSelectItem Value="4">Буда-Кошелевский</MudSelectItem>
-                    <MudSelectItem Value="5">Городецкий</MudSelectItem>
-                    <MudSelectItem Value="6">Глусский</MudSelectItem>
-                    <MudSelectItem Value="7">Жлобинский</MudSelectItem>
-                    <MudSelectItem Value="8">Кличевский</MudSelectItem>
-                    <MudSelectItem Value="9">Краснослободский</MudSelectItem>
-                    <MudSelectItem Value="10">Любанский</MudSelectItem>
-                    <MudSelectItem Value="11">Осиповичский</MudSelectItem>
-                    <MudSelectItem Value="12">Паричский</MudSelectItem>
-                    <MudSelectItem Value="13">Рогачевский</MudSelectItem>
-                    <MudSelectItem Value="14">Свислочский</MudSelectItem>
-                    <MudSelectItem Value="15">Слуцкий</MudSelectItem>
-                    <MudSelectItem Value="16">Старобинский</MudSelectItem>
-                    <MudSelectItem Value="17">Стародорожский</MudSelectItem>
-                    <MudSelectItem Value="18">Стрешинский</MudSelectItem>
-                    @*   </SelectGroup>
-                             <SelectGroup Label="Борисовский (1924-1927)"> *@
-                    <MudSelectItem Value="19">Бегомльский</MudSelectItem>
-                    <MudSelectItem Value="20">Березинский</MudSelectItem>
-                    <MudSelectItem Value="21">Борисовский</MudSelectItem>
-                    <MudSelectItem Value="22">Зембинский</MudSelectItem>
-                    <MudSelectItem Value="23">Крупский</MudSelectItem>
-                    <MudSelectItem Value="24">Лепельский</MudSelectItem>
-                    <MudSelectItem Value="25">Плещеницкий</MudSelectItem>
-                    <MudSelectItem Value="26">Холопеничский</MudSelectItem>
-                    <MudSelectItem Value="27">Черейский</MudSelectItem>
-                    @* </SelectGroup>
-                             <SelectGroup Label="Витебский (1924-1930)"> *@
-                    <MudSelectItem Value="28">Бешенковичский</MudSelectItem>
-                    <MudSelectItem Value="29">Витебский</MudSelectItem>
-                    <MudSelectItem Value="30">Высочанский</MudSelectItem>
-                    <MudSelectItem Value="31">Городокский</MudSelectItem>
-                    <MudSelectItem Value="32">Езерищенский</MudSelectItem>
-                    <MudSelectItem Value="33">Лиозненский</MudSelectItem>
-                    <MudSelectItem Value="34">Кузнецовский</MudSelectItem>
-                    <MudSelectItem Value="35">Межанский</MudSelectItem>
-                    <MudSelectItem Value="36">Сенненский</MudSelectItem>
-                    <MudSelectItem Value="37">Сиротинский</MudSelectItem>
-                    <MudSelectItem Value="38">Суражский</MudSelectItem>
-                    <MudSelectItem Value="39">Чашникский</MudSelectItem>
-                    @* </SelectGroup>
-                             <SelectGroup Label="Калининский (1924-1927) "> *@
-                    <MudSelectItem Value="40">Белынковичский</MudSelectItem>
-                    <MudSelectItem Value="41">Климовичский</MudSelectItem>
-                    <MudSelectItem Value="42">Кастюковичский</MudSelectItem>
-                    <MudSelectItem Value="43">Краснопольский</MudSelectItem>
-                    <MudSelectItem Value="44">Кричевский</MudSelectItem>
-                    <MudSelectItem Value="45">Милославичский</MudSelectItem>
-                    <MudSelectItem Value="46">Мстиславский</MudSelectItem>
-                    <MudSelectItem Value="47">Расненский</MudSelectItem>
-                    <MudSelectItem Value="48">Хотимский</MudSelectItem>
-                    <MudSelectItem Value="49">Чериковский</MudSelectItem>
-                    @* </SelectGroup>
-                             <SelectGroup Label="Могилевский (1924-1930)"> *@
-                    <MudSelectItem Value="50">Белыничский</MudSelectItem>
-                    <MudSelectItem Value="51">Березинский</MudSelectItem>
-                    <MudSelectItem Value="52">Борисовский</MudSelectItem>
-                    <MudSelectItem Value="53">Журовичский</MudSelectItem>
-                    <MudSelectItem Value="54">Кастюковичский</MudSelectItem>
-                    <MudSelectItem Value="55">Климовичский</MudSelectItem>
-                    <MudSelectItem Value="56">Кормянский</MudSelectItem>
-                    <MudSelectItem Value="57">Краснопольский</MudSelectItem>
-                    <MudSelectItem Value="58">Кричевский</MudSelectItem>
-                    <MudSelectItem Value="59">Луполовский</MudSelectItem>
-                    <MudSelectItem Value="60">Милославичский</MudSelectItem>
-                    <MudSelectItem Value="61">Могилевский</MudSelectItem>
-                    <MudSelectItem Value="62">Пропойский</MudSelectItem>
-                    <MudSelectItem Value="63">Хотимский</MudSelectItem>
-                    <MudSelectItem Value="64">Чаусский</MudSelectItem>
-                    <MudSelectItem Value="65">Чериковский</MudSelectItem>
-                    <MudSelectItem Value="66">Чечевичский</MudSelectItem>
-                    <MudSelectItem Value="67">Шкловский</MudSelectItem>
-                    @* </SelectGroup>
-                             <SelectGroup Label="Минский (1924-1930)"> *@
-                    <MudSelectItem Value="68">Бегомльский</MudSelectItem>
-                    <MudSelectItem Value="69">Березинский</MudSelectItem>
-                    <MudSelectItem Value="70">Борисовский</MudSelectItem>
-                    <MudSelectItem Value="71">Гресский</MudSelectItem>
-                    <MudSelectItem Value="72">Койдановский</MudSelectItem>
-                    <MudSelectItem Value="73">Зембинский</MudSelectItem>
-                    <MudSelectItem Value="74">Койдановский</MudSelectItem>
-                    <MudSelectItem Value="74">Копыльский</MudSelectItem>
-                    <MudSelectItem Value="76">Острошицко-Городокский</MudSelectItem>
-                    <MudSelectItem Value="77">Плещеницкий</MudSelectItem>
-                    <MudSelectItem Value="78">Пуховичский</MudSelectItem>
-                    <MudSelectItem Value="79">Самохваловичский</MudSelectItem>
-                    <MudSelectItem Value="80">Смиловичский</MudSelectItem>
-                    <MudSelectItem Value="81">Смолевичский</MudSelectItem>
-                    <MudSelectItem Value="82">Узденский</MudSelectItem>
-                    <MudSelectItem Value="83">Червенский</MudSelectItem>
-                    <MudSelectItem Value="84">Холопеничский</MudSelectItem>
-                    <MudSelectItem Value="85">Шацкий</MudSelectItem>
-                    @* </SelectGroup>
-                             <SelectGroup Label="Оршанский (1924-1930)"> *@
-                    <MudSelectItem Value="86">Богушевский</MudSelectItem>
-                    <MudSelectItem Value="87">Горецкий</MudSelectItem>
-                    <MudSelectItem Value="88">Дрибинский</MudSelectItem>
-                    <MudSelectItem Value="89">Дубровенский</MudSelectItem>
-                    <MudSelectItem Value="90">Копысский</MudSelectItem>
-                    <MudSelectItem Value="91">Кохановский</MudSelectItem>
-                    <MudSelectItem Value="92">Круглянский</MudSelectItem>
-                    <MudSelectItem Value="93">Лядненский</MudSelectItem>
-                    <MudSelectItem Value="94">Мстиславский</MudSelectItem>
-                    <MudSelectItem Value="95">Оршанский</MudSelectItem>
-                    <MudSelectItem Value="96">Расненский</MudSelectItem>
-                    <MudSelectItem Value="97">Толочинский</MudSelectItem>
-                    @* </SelectGroup>
-                             <SelectGroup Label="Полоцкий (1924-1930)"> *@
-                    <MudSelectItem Value="98">Ветринский</MudSelectItem>
-                    <MudSelectItem Value="99">Волынецкий</MudSelectItem>
-                    <MudSelectItem Value="100">Борковичский</MudSelectItem>
-                    <MudSelectItem Value="144">Дретунский</MudSelectItem>
-                    <MudSelectItem Value="101">Краснопольский</MudSelectItem>
-                    <MudSelectItem Value="102">Дриссенский</MudSelectItem>
-                    <MudSelectItem Value="103">Освейский</MudSelectItem>
-                    <MudSelectItem Value="104">Полоцкий</MudSelectItem>
-                    <MudSelectItem Value="105">Россонский</MudSelectItem>
-                    <MudSelectItem Value="106">Улльский</MudSelectItem>
-                    <MudSelectItem Value="107">Ушачский</MudSelectItem>
-                    @* </SelectGroup>
-                             <SelectGroup Label="Слуцкий (1924-1927)"> *@
-                    <MudSelectItem Value="108">Гресский</MudSelectItem>
-                    <MudSelectItem Value="109">Копыльский</MudSelectItem>
-                    <MudSelectItem Value="110">Краснослободский</MudSelectItem>
-                    <MudSelectItem Value="111">Любанский</MudSelectItem>
-                    <MudSelectItem Value="112">Слуцкий</MudSelectItem>
-                    <MudSelectItem Value="113">Стародорожский</MudSelectItem>
-                    <MudSelectItem Value="114">Плещеницкий</MudSelectItem>
-                    <MudSelectItem Value="115">Старобинский</MudSelectItem>
-                    @* </SelectGroup>
-                             <SelectGroup Label="Гомельский (1926-1930) "> *@
-                    <MudSelectItem Value="116">Брагинский</MudSelectItem>
-                    <MudSelectItem Value="117">Буда-Кошелевский</MudSelectItem>
-                    <MudSelectItem Value="118">Ветковский</MudSelectItem>
-                    <MudSelectItem Value="119">Гомельский</MudSelectItem>
-                    <MudSelectItem Value="120">Дятловичский</MudSelectItem>
-                    <MudSelectItem Value="121">Добрушский</MudSelectItem>
-                    <MudSelectItem Value="122">Краснобудский</MudSelectItem>
-                    <MudSelectItem Value="123">Носовичский</MudSelectItem>
-                    <MudSelectItem Value="124">Светиловичский</MudSelectItem>
-                    <MudSelectItem Value="143">Уваровичский</MudSelectItem>
-                    <MudSelectItem Value="125">Чечерский</MudSelectItem>
-                    <MudSelectItem Value="126">Брагинский</MudSelectItem>
-                    <MudSelectItem Value="127">Комаринский</MudSelectItem>
-                    <MudSelectItem Value="128">Лоевский</MudSelectItem>
-                    <MudSelectItem Value="129">Речицкий</MudSelectItem>
-                    <MudSelectItem Value="130">Хойникский</MudSelectItem>
-                    <MudSelectItem Value="131">Тереховский</MudSelectItem>
-                    <MudSelectItem Value="132">Буда-Кошелевский</MudSelectItem>
-                    @* </SelectGroup> *@
-                    @* <SelectGroup Label="Речицкий (1926-1927)"> *@
-                    <MudSelectItem Value="133">Брагинский</MudSelectItem>
-                    <MudSelectItem Value="134">Василевичский</MudSelectItem>
-                    <MudSelectItem Value="135">Горвальский</MudSelectItem>
-                    <MudSelectItem Value="136">Комаринский</MudSelectItem>
-                    <MudSelectItem Value="137">Лоевский</MudSelectItem>
-                    <MudSelectItem Value="138">Речицкий</MudSelectItem>
-                    <MudSelectItem Value="139">Хойникский</MudSelectItem>
-                    <MudSelectItem Value="140">Холмечский</MudSelectItem>
-                    <MudSelectItem Value="141">Юровичский</MudSelectItem>
-                    <MudSelectItem Value="147">Не выбрано</MudSelectItem>
-                    @* </SelectGroup> *@
-                </MudSelect>
+                <MudAutocomplete T="string" Label="Округа и районы округов (1924-1930)" @bind-Value="selectedDistrict" SearchFunc="@SearchDistrict"
+                                 ResetValueOnEmptyText="@resetValueOnEmptyText"
+                                 CoerceText="@coerceText" CoerceValue="@coerceValue" />
             </div>
 
             <div>
@@ -301,7 +130,7 @@
 
     private string selectedDiocese;
 
-    private int selectedDistrict = 1;
+    private string selectedDistrict;
 
     private string selectedProvince;
 
@@ -379,19 +208,24 @@
         "Чаусский",  "Чериковский"
     };
 
-    private string[] district =
+    string[] districts = new string[]
     {
-        "", "", "", "", "", "", "", "", "",
-        "", "", "", "", "", "", "", "", "",
-        "", "", "", "", "", "", "", "", "",
-        "", "", "", "", "", "", "", "", "",
-        "", "", "", "", "", "", "", "", "",
-        "", "", "", "", "", "", "", "", "",
-        "", "", "", "", "", "", "", "", "",
-        "", "", "", "", "", "", "", "", "",
-        "", "", "", "", "", "", "", "", "",
-        "", "", "", "", "", "", "", "", "",
-        "", "", "", "", "", "", "", "", "",
+        "Бобруйский", "Бобруйский 1-й", "Бобруйский 2-й", "Буда-Кошелевский", "Городецкий", "Глусский", "Жлобинский",
+        "Кличевский", "Краснослободский", "Любанский", "Осиповичский", "Паричский", "Рогачевский", "Свислочский", "Слуцкий",
+        "Старобинский", "Стародорожский", "Стрешинский", "Бегомльский", "Березинский", "Борисовский", "Зембинский", "Крупский",
+        "Лепельский", "Плещеницкий", "Холопеничский", "Черейский", "Бешенковичский", "Витебский", "Высочанский", "Городокский",
+        "Езерищенский", "Лиозненский", "Кузнецовский", "Межанский", "Сенненский", "Сиротинский", "Суражский", "Чашникский",
+        "Белынковичский", "Климовичский", "Кастюковичский", "Краснопольский", "Кричевский", "Милославичский", "Мстиславский",
+        "Расненский", "Хотимский", "Чериковский", "Белыничский", "Березинский", "Борисовский", "Журовичский", "Кастюковичский",
+        "Климовичский", "Кормянский", "Краснопольский", "Кричевский", "Луполовский", "Милославичский", "Могилевский", "Пропойский",
+        "Хотимский", "Чаусский", "Чериковский", "Чечевичский", "Шкловский", "Бегомльский", "Березинский", "Борисовский", "Гресский",
+        "Койдановский", "Зембинский", "Койдановский", "Копыльский", "Острошицко-Городокский", "Плещеницкий", "Пуховичский",
+        "Самохваловичский", "Смиловичский", "Смолевичский", "Узденский", "Червенский", "Холопеничский", "Шацкий", "Богушевский",
+        "Горецкий", "Дрибинский", "Дубровенский", "Копысский", "Кохановский", "Круглянский", "Лядненский", "Мстиславский",
+        "Оршанский", "Расненский", "Толочинский", "Ветринский", "Волынецкий", "Борковичский", "Дретунский", "Краснопольский",
+        "Дриссенский", "Освейский", "Полоцкий", "Россонский", "Улльский", "Ушачский", "Гресский", "Копыльский", "Краснослободский",
+        "Любанский", "Слуцкий", "Стародорожский", "Плещеницкий", "Старобинский", "Брагинский", "Василевичский", "Горвальский",
+        "Комаринский", "Лоевский", "Речицкий", "Хойникский", "Холмечский", "Юровичский"
     };
     
     private bool coerceText;
@@ -464,6 +298,15 @@
             return provinces;
         return provinces.Where(x => x.Contains(value, StringComparison.InvariantCultureIgnoreCase));
     }
+    
+    private async Task<IEnumerable<string>> SearchDistrict(string value, CancellationToken token)
+    {
+        await Task.Delay(5, token);
+
+        if (string.IsNullOrEmpty(value))
+            return districts;
+        return districts.Where(x => x.Contains(value, StringComparison.InvariantCultureIgnoreCase));
+    }
 
     private async Task Sumbit()
     {
@@ -497,445 +340,6 @@
             _temple.AppointmentsAfterEnd.Id = Guid.NewGuid().ToString("N");
             _temple.Oriention.Id = Guid.NewGuid().ToString("N");
             _temple.Id = Guid.NewGuid().ToString("N");
-
-            switch (selectedDistrict)
-            {
-                case 1:
-                    _temple.District = "Бобруйский";
-                    break;
-                case 2:
-                    _temple.District = "Бобруйский 1-й";
-                    break;
-                case 3:
-                    _temple.District = "Бобруйский 2-й";
-                    break;
-                case 4:
-                    _temple.District = "Буда-Кошелевский";
-                    break;
-                case 5:
-                    _temple.District = "Городецкий";
-                    break;
-                case 6:
-                    _temple.District = "Глусский";
-                    break;
-                case 7:
-                    _temple.District = "Жлобинский";
-                    break;
-                case 8:
-                    _temple.District = "Кличевский";
-                    break;
-                case 9:
-                    _temple.District = "Краснослободский";
-                    break;
-                case 10:
-                    _temple.District = "Любанский";
-                    break;
-                case 11:
-                    _temple.District = "Осиповичский";
-                    break;
-                case 12:
-                    _temple.District = "Паричский";
-                    break;
-                case 13:
-                    _temple.District = "Рогачевский";
-                    break;
-                case 14:
-                    _temple.District = "Свислочский";
-                    break;
-                case 15:
-                    _temple.District = "Слуцкий";
-                    break;
-                case 16:
-                    _temple.District = "Старобинский";
-                    break;
-                case 17:
-                    _temple.District = "Стародорожский";
-                    break;
-                case 18:
-                    _temple.District = "Стрешинский";
-                    break;
-                case 19:
-                    _temple.District = "Бегомльский";
-                    break;
-                case 20:
-                    _temple.District = "Березинский";
-                    break;
-                case 21:
-                    _temple.District = "Борисовский";
-                    break;
-                case 22:
-                    _temple.District = "Зембинский";
-                    break;
-                case 23:
-                    _temple.District = "Крупский";
-                    break;
-                case 24:
-                    _temple.District = "Лепельский";
-                    break;
-                case 25:
-                    _temple.District = "Плещеницкий";
-                    break;
-                case 26:
-                    _temple.District = "Холопеничский";
-                    break;
-                case 27:
-                    _temple.District = "Черейский";
-                    break;
-                case 28:
-                    _temple.District = "Бешенковичский";
-                    break;
-                case 29:
-                    _temple.District = "Витебский";
-                    break;
-                case 30:
-                    _temple.District = "Высочанский";
-                    break;
-                case 31:
-                    _temple.District = "Городокский";
-                    break;
-                case 32:
-                    _temple.District = "Езерищенский";
-                    break;
-                case 33:
-                    _temple.District = "Лиозненский";
-                    break;
-                case 34:
-                    _temple.District = "Кузнецовский";
-                    break;
-                case 35:
-                    _temple.District = "Межанский";
-                    break;
-                case 36:
-                    _temple.District = "Сенненский";
-                    break;
-                case 37:
-                    _temple.District = "Сиротинский";
-                    break;
-                case 38:
-                    _temple.District = "Суражский";
-                    break;
-                case 39:
-                    _temple.District = "Чашникский";
-                    break;
-                case 40:
-                    _temple.District = "Белынковичский";
-                    break;
-                case 41:
-                    _temple.District = "Климовичский";
-                    break;
-                case 42:
-                    _temple.District = "Кастюковичский";
-                    break;
-                case 43:
-                    _temple.District = "Краснопольский";
-                    break;
-                case 44:
-                    _temple.District = "Кричевский";
-                    break;
-                case 45:
-                    _temple.District = "Милославичский";
-                    break;
-                case 46:
-                    _temple.District = "Мстиславский";
-                    break;
-                case 47:
-                    _temple.District = "Расненский";
-                    break;
-                case 48:
-                    _temple.District = "Хотимский";
-                    break;
-                case 49:
-                    _temple.District = "Чериковский";
-                    break;
-                case 50:
-                    _temple.District = "Белыничский";
-                    break;
-                case 51:
-                    _temple.District = "Березинский";
-                    break;
-                case 52:
-                    _temple.District = "Борисовский";
-                    break;
-                case 53:
-                    _temple.District = "Журовичский";
-                    break;
-                case 54:
-                    _temple.District = "Кастюковичский";
-                    break;
-                case 55:
-                    _temple.District = "Климовичский";
-                    break;
-                case 56:
-                    _temple.District = "Кормянский";
-                    break;
-                case 57:
-                    _temple.District = "Краснопольский";
-                    break;
-                case 58:
-                    _temple.District = "Кричевский";
-                    break;
-                case 59:
-                    _temple.District = "Луполовский";
-                    break;
-                case 60:
-                    _temple.District = "Милославичский";
-                    break;
-                case 61:
-                    _temple.District = "Могилевский";
-                    break;
-                case 62:
-                    _temple.District = "Пропойский";
-                    break;
-                case 63:
-                    _temple.District = "Хотимский";
-                    break;
-                case 64:
-                    _temple.District = "Чаусский";
-                    break;
-                case 65:
-                    _temple.District = "Чериковский";
-                    break;
-                case 66:
-                    _temple.District = "Чечевичский";
-                    break;
-                case 67:
-                    _temple.District = "Шкловский";
-                    break;
-                case 68:
-                    _temple.District = "Бегомльский";
-                    break;
-                case 69:
-                    _temple.District = "Березинский";
-                    break;
-                case 70:
-                    _temple.District = "Борисовский";
-                    break;
-                case 71:
-                    _temple.District = "Гресский";
-                    break;
-                case 72:
-                    _temple.District = "Койдановский";
-                    break;
-                case 73:
-                    _temple.District = "Зембинский";
-                    break;
-                case 74:
-                    _temple.District = "Койдановский";
-                    break;
-                case 75:
-                    _temple.District = "Копыльский";
-                    break;
-                case 76:
-                    _temple.District = "Острошицко-Городокский";
-                    break;
-                case 77:
-                    _temple.District = "Плещеницкий";
-                    break;
-                case 78:
-                    _temple.District = "Пуховичский";
-                    break;
-                case 79:
-                    _temple.District = "Самохваловичский";
-                    break;
-                case 80:
-                    _temple.District = "Смиловичский";
-                    break;
-                case 81:
-                    _temple.District = "Смолевичский";
-                    break;
-                case 82:
-                    _temple.District = "Узденский";
-                    break;
-                case 83:
-                    _temple.District = "Червенский";
-                    break;
-                case 84:
-                    _temple.District = "Холопеничский";
-                    break;
-                case 85:
-                    _temple.District = "Шацкий";
-                    break;
-                case 86:
-                    _temple.District = "Богушевский";
-                    break;
-                case 87:
-                    _temple.District = "Горецкий";
-                    break;
-                case 88:
-                    _temple.District = "Дрибинский";
-                    break;
-                case 89:
-                    _temple.District = "Дубровенский";
-                    break;
-                case 90:
-                    _temple.District = "Копысский";
-                    break;
-                case 91:
-                    _temple.District = "Кохановский";
-                    break;
-                case 92:
-                    _temple.District = "Круглянский";
-                    break;
-                case 93:
-                    _temple.District = "Лядненский";
-                    break;
-                case 94:
-                    _temple.District = "Мстиславский";
-                    break;
-                case 95:
-                    _temple.District = "Оршанский";
-                    break;
-                case 96:
-                    _temple.District = "Расненский";
-                    break;
-                case 97:
-                    _temple.District = "Толочинский";
-                    break;
-                case 98:
-                    _temple.District = "Ветринский";
-                    break;
-                case 99:
-                    _temple.District = "Волынецкий";
-                    break;
-                case 100:
-                    _temple.District = "Борковичский";
-                    break;
-                case 101:
-                    _temple.District = "Краснопольский";
-                    break;
-                case 102:
-                    _temple.District = "Дриссенский";
-                    break;
-                case 103:
-                    _temple.District = "Освейский";
-                    break;
-                case 104:
-                    _temple.District = "Полоцкий";
-                    break;
-                case 105:
-                    _temple.District = "Россонский";
-                    break;
-                case 106:
-                    _temple.District = "Улльский";
-                    break;
-                case 107:
-                    _temple.District = "Ушачский";
-                    break;
-                case 108:
-                    _temple.District = "Гресский";
-                    break;
-                case 109:
-                    _temple.District = "Копыльский";
-                    break;
-                case 110:
-                    _temple.District = "Краснослободский";
-                    break;
-                case 111:
-                    _temple.District = "Любанский";
-                    break;
-                case 112:
-                    _temple.District = "Слуцкий";
-                    break;
-                case 113:
-                    _temple.District = "Стародорожский";
-                    break;
-                case 114:
-                    _temple.District = "Плещеницкий";
-                    break;
-                case 115:
-                    _temple.District = "Старобинский";
-                    break;
-                case 116:
-                    _temple.District = "Брагинский";
-                    break;
-                case 117:
-                    _temple.District = "Буда-Кошелевский";
-                    break;
-                case 118:
-                    _temple.District = "Ветковский";
-                    break;
-                case 119:
-                    _temple.District = "Гомельский";
-                    break;
-                case 120:
-                    _temple.District = "Дятловичский";
-                    break;
-                case 121:
-                    _temple.District = "Добрушский";
-                    break;
-                case 122:
-                    _temple.District = "Краснобудский";
-                    break;
-                case 123:
-                    _temple.District = "Носовичский";
-                    break;
-                case 124:
-                    _temple.District = "Светиловичский";
-                    break;
-                case 125:
-                    _temple.District = "Чечерский";
-                    break;
-                case 126:
-                    _temple.District = "Брагинский";
-                    break;
-                case 127:
-                    _temple.District = "Комаринский";
-                    break;
-                case 128:
-                    _temple.District = "Лоевский";
-                    break;
-                case 129:
-                    _temple.District = "Речицкий";
-                    break;
-                case 130:
-                    _temple.District = "Хойникский";
-                    break;
-                case 131:
-                    _temple.District = "Тереховский";
-                    break;
-                case 132:
-                    _temple.District = "Буда-Кошелевский";
-                    break;
-                case 133:
-                    _temple.District = "Брагинский";
-                    break;
-                case 134:
-                    _temple.District = "Василевичский";
-                    break;
-                case 135:
-                    _temple.District = "Горвальский";
-                    break;
-                case 136:
-                    _temple.District = "Комаринский";
-                    break;
-                case 137:
-                    _temple.District = "Лоевский";
-                    break;
-                case 138:
-                    _temple.District = "Речицкий";
-                    break;
-                case 139:
-                    _temple.District = "Хойникский";
-                    break;
-                case 140:
-                    _temple.District = "Хойникский";
-                    break;
-                case 141:
-                    _temple.District = "Юровичский";
-                    break;
-                case 142:
-                    _temple.District = "Хойникский";
-                    break;
-                case 143:
-                    _temple.District = "Уваровичский";
-                    break;
-                case 144:
-                    _temple.District = "Дретунский";
-                    break;
-                case 147:
-                    _temple.District = "Не выбрано";
-                    break;
-            }
             
             _temple.FillEmptyFields();
 
