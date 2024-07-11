@@ -1,0 +1,40 @@
+﻿@using Temple.Net.Models
+@using Microsoft.AspNetCore.Components.QuickGrid
+@inject AppDbContext context
+
+<QuickGrid Items="@context.Temples">
+    <Microsoft.AspNetCore.Components.QuickGrid.PropertyColumn Property="@(temple => temple.Name)" Sortable="true" Title="Название"/>
+    <Microsoft.AspNetCore.Components.QuickGrid.PropertyColumn Property="@(temple => temple.Quantity)" Sortable="true" Title="Количество прихожан"/>
+    <Microsoft.AspNetCore.Components.QuickGrid.PropertyColumn Property="@(temple => temple.DateStart)" Sortable="true" Title="Год основания"/>
+    <Microsoft.AspNetCore.Components.QuickGrid.PropertyColumn Property="@(temple => temple.DateEnd)" Sortable="true" Title="Год закрытия"/>
+    <Microsoft.AspNetCore.Components.QuickGrid.PropertyColumn Property="@(temple => temple.Province)" Sortable="true" Title="Губерния"/>
+    <Microsoft.AspNetCore.Components.QuickGrid.PropertyColumn Property="@(temple => temple.District)" Sortable="true" Title="Округ"/>
+    <Microsoft.AspNetCore.Components.QuickGrid.PropertyColumn Property="@(temple => temple.RayonDistrict)" Sortable="true" Title="Район округа"/>
+    <Microsoft.AspNetCore.Components.QuickGrid.PropertyColumn Property="@(temple => temple.Region)" Sortable="true" Title="Область"/>
+    <Microsoft.AspNetCore.Components.QuickGrid.PropertyColumn Property="@(temple => temple.Region)" Sortable="true" Title="Область"/>
+    <Microsoft.AspNetCore.Components.QuickGrid.PropertyColumn Property="@(temple => temple.Type)" Sortable="true" Title="Тип"/>
+    <Microsoft.AspNetCore.Components.QuickGrid.PropertyColumn Property="@(temple => temple.RayonDistrict)" Sortable="true" Title="Район округа"/>
+    <Microsoft.AspNetCore.Components.QuickGrid.PropertyColumn Property="@(temple => temple.Region)" Sortable="true" Title="Область"/>
+    <Microsoft.AspNetCore.Components.QuickGrid.PropertyColumn Property="@(temple => temple.RayonRegion)" Sortable="true" Title="Район области"/>
+    <Microsoft.AspNetCore.Components.QuickGrid.PropertyColumn Property="@(temple => temple.SeparateRegion)" Sortable="true" Title="Отдельный район"/>
+    <Microsoft.AspNetCore.Components.QuickGrid.PropertyColumn Property="@(temple => temple.TypeLocality)" Sortable="true" Title="Тип населеного пункта"/>
+    <Microsoft.AspNetCore.Components.QuickGrid.PropertyColumn Property="@(temple => temple.Locality)" Sortable="true" Title="Населеный пункт"/>
+    <Microsoft.AspNetCore.Components.QuickGrid.PropertyColumn Property="@(temple => temple.Oriention.Oriention)" Sortable="true" Title="Церковная ориентация"/>
+    <Microsoft.AspNetCore.Components.QuickGrid.PropertyColumn Property="@(temple => temple.Oriention.YearFall)" Sortable="true" Title="Год отпадения"/>
+    <Microsoft.AspNetCore.Components.QuickGrid.PropertyColumn Property="@(temple => temple.Oriention.YearRefund)" Sortable="true" Title="Год возврата"/>
+    <Microsoft.AspNetCore.Components.QuickGrid.PropertyColumn Property="@(temple => temple.AppointmentsAfterEnd.Appointmenrs)" Sortable="true" Title="Назначение после закрытия"/>
+    <Microsoft.AspNetCore.Components.QuickGrid.PropertyColumn Property="@(temple => temple.AppointmentsAfterEnd.Year)" Sortable="true" Title="Год приспособления"/>
+    <Microsoft.AspNetCore.Components.QuickGrid.PropertyColumn Property="@(temple => temple.YearAdaptation)" Sortable="true" Title="Год основания"/>
+    <Microsoft.AspNetCore.Components.QuickGrid.PropertyColumn Property="@(temple => temple.YearDestruction)" Sortable="true" Title="Год уничтожения"/>
+    <Microsoft.AspNetCore.Components.QuickGrid.TemplateColumn Title="Изменить права пользователя">
+        <MudButton Variant="Variant.Filled" Color="Color.Primary" @onclick="@(() => Change(context))">Изменить</MudButton>
+    </Microsoft.AspNetCore.Components.QuickGrid.TemplateColumn>
+</QuickGrid>
+
+@code {
+
+    private void Change(Temple temple)
+    {
+        
+    }
+}

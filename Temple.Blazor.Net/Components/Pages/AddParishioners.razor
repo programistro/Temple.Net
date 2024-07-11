@@ -1,5 +1,4 @@
-﻿@page "/add/pashinioners"
-@using OpenStreetMapForBlazor
+﻿@using OpenStreetMapForBlazor
 @using Temple.Net.Models
 @using Temple.Blazor.Net.Components.Layout
 @inject IConfiguration config
@@ -11,150 +10,100 @@
 @using Newtonsoft.Json
 @using Temple.Net.Data
 @using Temple.Net.Service
-@inject NavigationManager NavigationManager 
-@rendermode InteractiveServer
+@inject NavigationManager NavigationManager
 
-<div class="row">
-    <div class="col-lg-10 col-xl-9 mx-auto">
-        <div class="card flex-row my-5 border-0 shadow rounded-3 overflow-hidden">
-            <div class="card-body p-4 p-sm-5">
-                <h5 class="card-title text-center mb-3 fw-light fs-5">Добавить пригожанина</h5>
-                <EditForm Model="@_parishioners" OnSubmit="Sumbit">
-                    <div class="form-floating mb-2">
-                        <input type="text" class="form-control" @bind-value="_parishioners.LastName">
-                        <label>Фамилия</label>
-                    </div>
+<MudPopoverProvider @rendermode="InteractiveServer"/>
+<MudSnackbarProvider @rendermode="InteractiveServer"/>
 
-                    <div class="form-floating mb-2">
-                        <input type="text" class="form-control" @bind-value="_parishioners.Name">
-                        <label>Имя</label>
-                    </div>
+<MudContainer MaxWidth="MaxWidth.Large" Style="width: 45%; margin-bottom: 20px;">
+    <MudCard>
+        <MudCardContent>
+            <h5 class="card-title text-center mb-3 fw-light fs-5">Добавить персоналии</h5>
 
-                    <div class="form-floating mb-2">
-                        <input type="text" class="form-control" @bind-value="_parishioners.Otch">
-                        <label>Отчество</label>
-                    </div>
+            <MudTextField Label="Фамилия" @bind-Value="_parishioners.LastName"/>
 
-                    <div class="form-floating mb-2">
-                        <input class="form-control" @bind-value="_parishioners.TempleName">
-                        <label>Название храма</label>
-                    </div>
+            <MudTextField Label="Имя" @bind-Value="_parishioners.Name"/>
 
-                    <div class="form-floating mb-2">
-                        <input class="form-control" @bind-value="_parishioners.Age" type="number">
-                        <label>Возраст</label>
-                    </div>
+            <MudTextField Label="Отчество" @bind-Value="_parishioners.Otch"/>
 
-                    @* <div class="form-floating mb-2"> *@
-                    @*     <input class="form-control" @bind-value="_parishioners.Gender"> *@
-                    @*     <label>Пол</label> *@
-                    @* </div> *@
-                    
-                    <MudSelect Tvalue="int" @bind-Value="@selectedGender" class="form-control js-example-basic-single">
-                        <MudSelectItem Value="1">Мужской</MudSelectItem>
-                        <MudSelectItem Value="2">Женский</MudSelectItem>
-                        <MudSelectItem Value="3">Не указано</MudSelectItem>
-                    </MudSelect>
+            <MudTextField Label="Название храма" @bind-Value="_parishioners.TempleName"/>
 
-                    <div class="form-floating mb-2">
-                        <input class="form-control" @bind-value="_parishioners.Adress">
-                        <label>Адрес</label>
-                    </div>
+            <MudTextField Label="Возраст" @bind-Value="_parishioners.Age" T="int?"/>
 
-                    @* <div class="form-floating mb-2"> *@
-                    @*     <input class="form-control" @bind-value="_parishioners.SocialStatus"> *@
-                    @*     <label>Общественное и служебное положение c 1914</label> *@
-                    @* </div> *@
-                    
-                    <div>
-                        <h3 class="card-title text-center mb-3 fw-light fs-5">Общественное и служебное положение c 1914</h3>
+            <MudSelect Tvalue="int" @bind-Value="@selectedGender" class="form-control js-example-basic-single">
+                <MudSelectItem Value="1">Мужской</MudSelectItem>
+                <MudSelectItem Value="2">Женский</MudSelectItem>
+                <MudSelectItem Value="3">Не указано</MudSelectItem>
+            </MudSelect>
 
-                        <MudSelect T="int" @bind-Value="@selectedSocialStatus">
-                            <MudSelectItem Value="1">Землепашец</MudSelectItem>
-                            <MudSelectItem Value="2">Домохозяйство</MudSelectItem>
-                            <MudSelectItem Value="3">Священник</MudSelectItem>
-                            <MudSelectItem Value="4">Слесарь</MudSelectItem>
-                            <MudSelectItem Value="5">Плотник</MudSelectItem>
-                            <MudSelectItem Value="6">Не указано</MudSelectItem>
-                        </MudSelect>
-                    </div>
+            <MudTextField Label="Адрес" @bind-Value="_parishioners.Adress"/>
 
-                    @* <div class="form-floating mb-2"> *@
-                    @*     <input class="form-control" @bind-value="_parishioners.EstateBeforeRevolution"> *@
-                    @*     <label>Принадлежность к сословию до революции</label> *@
-                    @* </div> *@
-
-                    <div>
-                        <h3 class="card-title text-center mb-3 fw-light fs-5">Принадлежность к сословию до революции</h3>
-
-                        <MudSelect T="int" @bind-Value="@selectedEstate">
-                            <MudSelectItem Value="1">Крестьянство</MudSelectItem>
-                            <MudSelectItem Value="2">Дворянство</MudSelectItem>
-                            <MudSelectItem Value="3">Духовное</MudSelectItem>
-                            <MudSelectItem Value="4">Не указано</MudSelectItem>
-                        </MudSelect>
-                    </div>
-
-                    <div>
-                        <h3 class="card-title text-center mb-3 fw-light fs-5">Имущественное положение</h3>
-
-                        <MudSelect T="int" @bind-Value="@selectedSocial">
-                            <MudSelectItem Value="1">Бедняк</MudSelectItem>
-                            <MudSelectItem Value="2">Средняк</MudSelectItem>
-                            <MudSelectItem Value="3">Домовладелец</MudSelectItem>
-                            <MudSelectItem Value="4">Без имущества</MudSelectItem>
-                            <MudSelectItem Value="5">Не указано</MudSelectItem>
-                        </MudSelect>
-                    </div>
-
-                    <div style="margin-top: 10px; margin-bottom: 10px;">
-                        <MudDatePicker T="DateTime?" DateFormat="yyy" Label="Время присоединения к религиозному культу" @bind-Date="_parishioners.DateJoinRelligios"/>
-                    </div>
-
-                    <div style="margin-top: 10px; margin-bottom: 10px;">
-                        <MudDatePicker T="DateTime?" DateFormat="yyy" Label="Год упоменания" @bind-Date="_parishioners.YearMention"/>
-                    </div>
-
-                    <div style="margin-top: 10px; margin-bottom: 10px;">
-                        <MudDatePicker T="DateTime?" DateFormat="yyy" Label="Год возрата" @bind-Date="_parishioners.YearRestart"/>
-                    </div>
-
-                    <div class="form-floating mb-2">
-                        <input class="form-control" @bind-value="_parishioners.Note">
-                        <label>Премичания</label>
-                    </div>
-
-                    <div class="form-floating mb-2">
-                        <input class="form-control" @bind-value="_parishioners.Source">
-                        <label>Источники</label>
-                    </div>
-
-                    <div style="margin-top: 10px;">
-                        <div class="input-file-row">
-                            <label class="input-file">
-                                <InputFile OnChange="LoadPhoto" accept="image/*"/>
-                                <span>Выберите фотографию</span>
-                            </label>
-                            <div class="input-file-list"></div>
-                        </div>
-
-                        <div class="input-file-row">
-                            <label class="input-file">
-                                <InputFile OnChange="LoadFile"/>
-                                <span>Выберите файл</span>
-                            </label>
-                            <div class="input-file-list"></div>
-                        </div>
-                    </div>
-                    
-                    <div class="d-grid mb-2">
-                        <button class="btn btn-lg btn-primary btn-login fw-bold text-uppercase" style="margin-top: 20px;" type="submit">Добавить</button>
-                    </div>
-                </EditForm>
+            <div>
+                <MudAutocomplete T="string" Label="Общественное и служебное положение c 1914" @bind-Value="selectedSocialStatus" SearchFunc="@SearchSocial"
+                                 ResetValueOnEmptyText="@resetValueOnEmptyText"
+                                 CoerceText="@coerceText" CoerceValue="@coerceValue" AdornmentColor="Color.Primary" />
             </div>
-        </div>
-    </div>
-</div>
+
+            <div>
+                <MudSelect T="int" @bind-Value="@selectedEstate" Label="Принадлежность к сословию до революции">
+                    <MudSelectItem Value="1">Крестьянство</MudSelectItem>
+                    <MudSelectItem Value="2">Дворянство</MudSelectItem>
+                    <MudSelectItem Value="3">Духовное</MudSelectItem>
+                    <MudSelectItem Value="4">Не указано</MudSelectItem>
+                </MudSelect>
+            </div>
+
+            <div>
+                <MudSelect T="int" @bind-Value="@selectedSocial" Label="Имущественное положение">
+                    <MudSelectItem Value="1">Бедняк</MudSelectItem>
+                    <MudSelectItem Value="2">Средняк</MudSelectItem>
+                    <MudSelectItem Value="3">Домовладелец</MudSelectItem>
+                    <MudSelectItem Value="4">Без имущества</MudSelectItem>
+                    <MudSelectItem Value="5">Не указано</MudSelectItem>
+                </MudSelect>
+            </div>
+
+            <div style="margin-top: 10px; margin-bottom: 10px;">
+                <MudDatePicker T="DateTime?" DateFormat="yyy" Label="Время присоединения к религиозному культу" @bind-Date="_parishioners.DateJoinRelligios"/>
+            </div>
+
+            <div style="margin-top: 10px; margin-bottom: 10px;">
+                <MudDatePicker T="DateTime?" DateFormat="yyy" Label="Год упоменания" @bind-Date="_parishioners.YearMention"/>
+            </div>
+
+            <div style="margin-top: 10px; margin-bottom: 10px;">
+                <MudDatePicker T="DateTime?" DateFormat="yyy" Label="Год возрата" @bind-Date="_parishioners.YearRestart"/>
+            </div>
+
+            <MudTextField Label="Примичания" @bind-Value="_parishioners.Note"/>
+
+            <MudTextField Label="Источники" @bind-Value="_parishioners.Source"/>
+
+            <div style="margin-top: 10px;">
+                <div class="input-file-row">
+                    <label class="input-file">
+                        <InputFile OnChange="LoadPhoto" accept="image/*"/>
+                        <span>Выберите фотографию</span>
+                    </label>
+                    <div class="input-file-list"></div>
+                </div>
+
+                <div class="input-file-row">
+                    <label class="input-file">
+                        <InputFile OnChange="LoadFile"/>
+                        <span>Выберите файл</span>
+                    </label>
+                    <div class="input-file-list"></div>
+                </div>
+            </div>
+
+            <div class="d-grid mb-2">
+                <MudButton Style="margin-top: 20px;" Color="Color.Primary" Variant="Variant.Filled" OnClick="Sumbit">Добавить</MudButton>
+            </div>
+        </MudCardContent>
+    </MudCard>
+</MudContainer>
+
 
 @code {
 
@@ -165,7 +114,7 @@
 
     private int selectedItem = 1;
 
-    private int selectedSocialStatus = 1;
+    private string selectedSocialStatus;
 
     private int selectedGender = 1;
 
@@ -228,7 +177,27 @@
 
         //StateHasChanged();
     }
+    
+    private bool coerceText;
+    
+    private bool coerceValue;
+    
+    private bool resetValueOnEmptyText;
 
+    private string[] socialsStatus =
+    {
+        "Землепащец", "Домохозяйство", "Священник", "Слесарь", "Плотник"
+    };
+    
+    private async Task<IEnumerable<string>> SearchSocial(string value, CancellationToken token)
+    {
+        await Task.Delay(5, token);
+
+        if (string.IsNullOrEmpty(value))
+            return socialsStatus;
+        return socialsStatus.Where(x => x.Contains(value, StringComparison.InvariantCultureIgnoreCase));
+    }
+    
     private async Task Sumbit()
     {
         switch (selectedSocial)
@@ -262,31 +231,6 @@
             case 3:
                 _parishioners.Gender = "Не указанно";
                 break;
-
-
-
-        }
-
-        switch (selectedSocialStatus)
-        {
-            case 1:
-                _parishioners.SocialStatus = "Землепашец";
-                break;
-            case 2:
-                _parishioners.SocialStatus = "Домохозяйство";
-                break;
-            case 3:
-                _parishioners.SocialStatus = "Священник";
-                break;
-            case 4:
-                _parishioners.SocialStatus = "Слесарь";
-                break;
-            case 5:
-                _parishioners.SocialStatus = "Плотник";
-                break;
-            case 6:
-                _parishioners.SocialStatus = "Не указано";
-                break;
         }
 
         switch (selectedEstate)
@@ -309,6 +253,6 @@
         
         _context.Parishioners.Add(_parishioners);
         _context.SaveChanges();
-        NavigationManager.NavigateTo("/", true);
+        NavigationManager.NavigateTo("/?show=true", true);
     }
 }
