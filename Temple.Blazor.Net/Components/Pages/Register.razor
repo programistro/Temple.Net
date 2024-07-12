@@ -22,39 +22,26 @@
             <div class="card flex-row my-5 border-0 shadow rounded-3 overflow-hidden">
                 <div class="card-body p-4 p-sm-5">
                     <h5 class="card-title text-center mb-5 fw-light fs-5">Регистрация</h5>
-                    @* <EditForm Model="model" OnSubmit="Submit"> *@
-                        @* <div class="form-floating mb-3"> *@
-                        @*     <input type="email" class="form-control" @bind-value="model.Email"> *@
-                        @*     <label>Почта</label> *@
-                        @* </div> *@
-                        <MudTextField @bind-Value="model.Email" Label="Почта"/>
-                        @* *@
-                        @* <div class="form-floating mb-3"> *@
-                        @*     <input type="password" class="form-control" @bind-value="model.Password"> *@
-                        @*     <label>Пароль</label> *@
-                        @* </div> *@
-                        <MudTextField @bind-Value="model.Password" Label="Пароль" InputType="InputType.Password"/>
-                        @* *@
-                        @* <div class="form-floating mb-3"> *@
-                        @*     <input type="password" class="form-control" @bind-value="validPassword"> *@
-                        @*     <label>Подвердите пароль</label> *@
-                        @* </div> *@
-                        <MudTextField @bind-Value="validPassword" Label="Подверждение пароля" InputType="InputType.Password"/>
+                    <MudTextField @bind-Value="model.Email" Label="Почта"/>
+                        
+                    <MudTextField @bind-Value="model.Password" Label="Пароль" InputType="InputType.Password"/>
+                        
+                    <MudTextField @bind-Value="validPassword" Label="Подверждение пароля" InputType="InputType.Password"/>
 
-                        <div class="d-grid mb-2" style="text-align: center; margin-top: 10px;">
-                            <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="@Submit">Зарегистрироваться</MudButton>
-                        </div>
+                    <div class="d-grid mb-2" style="text-align: center; margin-top: 10px;">
+                        <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="@Submit">Зарегистрироваться</MudButton>
+                    </div>
 
-                        <a class="d-block text-center mt-2 small" href="/login">Имеете уже у нас аккаунт?Нажмите что бы войти</a>
-                    @* </EditForm> *@
+                    <a class="d-block text-center mt-2 small" href="/login">Имеете уже у нас аккаунт?Нажмите что бы войти</a>
                 </div>
             </div>
         </div>
     </div>
+    <div>
+        <p>@Message</p>
+    </div>
 </div>
-<div>
-    <p>@Message</p>
-</div>
+
 
 @code {
     private AuthViewModel model = new();
@@ -96,8 +83,8 @@
                 PasswordHash = await _userService.CreatePasswordHashAsync(model.Password),
             };
 
-            await _context.Users.AddAsync(newUser);
-            await _context.SaveChangesAsync();
+            _context.Users.Add(newUser);
+            _context.SaveChanges();
 
             NavigationManager.NavigateTo($"auth/singin?email={model.Email}&role={newUser.Role}", true);
         }

@@ -88,7 +88,7 @@
                     <div class="input-file-list"></div>
                 </div>
 
-                <div class="input-file-row">
+                <div class="input-file-row" style="margin-top: 10px;">
                     <label class="input-file">
                         <InputFile OnChange="LoadFile"/>
                         <span>Выберите файл</span>
@@ -106,12 +106,6 @@
 
 
 @code {
-
-    private bool IsAuth;
-
-    public MapPosition position;
-    public bool btnActive;
-
     private int selectedItem = 1;
 
     private string selectedSocialStatus;
@@ -125,22 +119,8 @@
 
     private Parishioners? _parishioners = new()
     {
-        Id = Guid.NewGuid().ToString("N")
+        Id = Guid.NewGuid().ToString("N"),
     };
-
-    protected override void OnInitialized()
-    {
-        defPosition = new MapPosition() { Lat = config.GetValue<double>("Main:DefLat"), Lng = config.GetValue<double>("Main:DefLng") };
-
-        if (AuthenticationStateProvider.GetAuthenticationStateAsync().Result.User.Identity.IsAuthenticated)
-        {
-            IsAuth = true;
-        }
-        else
-        {
-            IsAuth = false;
-        }
-    }
 
     private long maxFileSize = 1024 * 500;
 
@@ -164,18 +144,6 @@
         await e.File.OpenReadStream(maxFileSize).CopyToAsync(fs);
 
         _parishioners.Photo = path;
-    }
-
-    public void MapClickEvent(MapClickEventArgs args)
-    {
-        //events.Add(DateTime.Now, $"Map clicked at Lat: {args.Position.Lat}, Lng: {args.Position.Lng}");
-
-        if (args != null) position = args.Position;
-
-        //btnActive = !(position.Lng == defPosition.Lng && position.Lat == defPosition.Lat);
-        //actualJson = JsonConvert.SerializeObject(args);
-
-        //StateHasChanged();
     }
     
     private bool coerceText;
@@ -249,10 +217,10 @@
                 break;
         }
 
-        _parishioners.FillEmptyFields(); //todo тут будет ошибка и чтобы ее избежать в проинцелизированных внутрених классах нужно всем полям пррописать значение по умолчанию
+        _parishioners.FillEmptyFields();
         
         _context.Parishioners.Add(_parishioners);
         _context.SaveChanges();
-        NavigationManager.NavigateTo("/?show=true", true);
+        NavigationManager.NavigateTo("/?show=true&obj=прихожане", true);
     }
 }

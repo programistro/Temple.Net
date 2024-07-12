@@ -167,7 +167,7 @@
                 <div class="input-file-list"></div>
             </div>
 
-            <div class="input-file-row">
+            <div class="input-file-row" style="margin-top: 10px;">
                 <label class="input-file">
                     <InputFile OnChange="LoadFile"/>
                     <span>Выберите файл</span>
@@ -383,6 +383,6 @@
         _context.Parsonalions.Add(_parsonalion);
         _context.SaveChanges();
         
-        NavigationManager.NavigateTo("/?show=true", true);
+        NavigationManager.NavigateTo("/?show=true&obj=персоналии", true);
     }
 }

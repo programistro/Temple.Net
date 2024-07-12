@@ -23,30 +23,20 @@
             <div class="card flex-row my-5 border-0 shadow rounded-3 overflow-hidden">
                 <div class="card-body p-4 p-sm-5">
                     <h5 class="card-title text-center mb-5 fw-light fs-5">Регистрация</h5>
-                    @* <EditForm Model="model" OnSubmit="Submit"> *@
-                        @* <div class="form-floating mb-3"> *@
-                        @*     <input type="email" class="form-control" @bind-value="model.Email"> *@
-                    @*     <label>Почта</label> *@
-                        <MudTextField @bind-Value="model.Email" Label="Почта"/>
-                        @* </div> *@
-                        @* *@
-                        @* <div class="form-floating mb-3"> *@
-                        @*     <input type="password" class="form-control" @bind-value="model.Password"> *@
-                        @*     <label>Пароль</label> *@
-                    @* </div> *@
+                    <MudTextField @bind-Value="model.Email" Label="Почта"/>
+                    
                     <MudTextField @bind-Value="model.Password" Label="Пароль" InputType="InputType.Password"/>
 
-                        <div class="d-grid mb-2">
-                            <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="Submit">Войти</MudButton>
-                        </div>
-                    @* </EditForm> *@
+                    <div class="d-grid mb-2" style="margin-top: 10px;">
+                        <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="Submit">Войти</MudButton>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
-<div>
-    <p>@Message</p>
+    <div>
+        <p>@Message</p>
+    </div>
 </div>
 
 @code {

@@ -11,7 +11,7 @@ public static class TempleExtensions
     public static void FillEmptyFields<T>(this T target) where T : class
     {
         // Получаем все свойства класса Temple
-        var properties = typeof(Temple).GetProperties();
+        var properties = typeof(T).GetProperties();
 
         foreach (var property in properties)
         {

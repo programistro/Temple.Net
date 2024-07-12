@@ -17,14 +17,30 @@
 
 @code {
     [Parameter]
+    [SupplyParameterFromQuery(Name = "obj")]
+    public string? Object { get; set; }
+    
+    [Parameter]
     [SupplyParameterFromQuery(Name="show")]
     public bool? IsShowSnack { get; set; }
+    
 
     protected override void OnInitialized()
     {
         if (IsShowSnack == true)
         {
-            Snackbar.Add("Храм добавлен", Severity.Info);
+            switch (Object)
+            {
+                case "храм":
+                    Snackbar.Add("Храм добавлен", Severity.Info);
+                    break;
+                    case "персоналии":
+                    Snackbar.Add("Персоналия добавлена", Severity.Info);
+                    break;
+                case "прихожане":
+                    Snackbar.Add("Прихожанин добавлен", Severity.Info);
+                    break;
+            }
         }
     }
 }
