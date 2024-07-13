@@ -2421,9 +2421,9 @@
 
     	            // If there’s a date, check where it is relative to the target.
     	            if ( $.isArray( value ) ) {
-    	                var dateTime = calendar.create( value ).pick;
-    	                if ( dateTime < dateObject.pick ) hasEnabledBeforeTarget = true;
-    	                else if ( dateTime > dateObject.pick ) hasEnabledAfterTarget = true;
+    	                var DateTime = calendar.create( value ).pick;
+    	                if ( DateTime < dateObject.pick ) hasEnabledBeforeTarget = true;
+    	                else if ( DateTime > dateObject.pick ) hasEnabledAfterTarget = true;
     	            }
 
     	            // Return only integers for enabled weekdays.

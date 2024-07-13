@@ -1,40 +1,184 @@
 ﻿@using Temple.Net.Models
 @using Microsoft.AspNetCore.Components.QuickGrid
+@using Microsoft.EntityFrameworkCore
 @inject AppDbContext context
 
-<QuickGrid Items="@context.Temples">
-    <Microsoft.AspNetCore.Components.QuickGrid.PropertyColumn Property="@(temple => temple.Name)" Sortable="true" Title="Название"/>
-    <Microsoft.AspNetCore.Components.QuickGrid.PropertyColumn Property="@(temple => temple.Quantity)" Sortable="true" Title="Количество прихожан"/>
-    <Microsoft.AspNetCore.Components.QuickGrid.PropertyColumn Property="@(temple => temple.DateStart)" Sortable="true" Title="Год основания"/>
-    <Microsoft.AspNetCore.Components.QuickGrid.PropertyColumn Property="@(temple => temple.DateEnd)" Sortable="true" Title="Год закрытия"/>
-    <Microsoft.AspNetCore.Components.QuickGrid.PropertyColumn Property="@(temple => temple.Province)" Sortable="true" Title="Губерния"/>
-    <Microsoft.AspNetCore.Components.QuickGrid.PropertyColumn Property="@(temple => temple.District)" Sortable="true" Title="Округ"/>
-    <Microsoft.AspNetCore.Components.QuickGrid.PropertyColumn Property="@(temple => temple.RayonDistrict)" Sortable="true" Title="Район округа"/>
-    <Microsoft.AspNetCore.Components.QuickGrid.PropertyColumn Property="@(temple => temple.Region)" Sortable="true" Title="Область"/>
-    <Microsoft.AspNetCore.Components.QuickGrid.PropertyColumn Property="@(temple => temple.Region)" Sortable="true" Title="Область"/>
-    <Microsoft.AspNetCore.Components.QuickGrid.PropertyColumn Property="@(temple => temple.Type)" Sortable="true" Title="Тип"/>
-    <Microsoft.AspNetCore.Components.QuickGrid.PropertyColumn Property="@(temple => temple.RayonDistrict)" Sortable="true" Title="Район округа"/>
-    <Microsoft.AspNetCore.Components.QuickGrid.PropertyColumn Property="@(temple => temple.Region)" Sortable="true" Title="Область"/>
-    <Microsoft.AspNetCore.Components.QuickGrid.PropertyColumn Property="@(temple => temple.RayonRegion)" Sortable="true" Title="Район области"/>
-    <Microsoft.AspNetCore.Components.QuickGrid.PropertyColumn Property="@(temple => temple.SeparateRegion)" Sortable="true" Title="Отдельный район"/>
-    <Microsoft.AspNetCore.Components.QuickGrid.PropertyColumn Property="@(temple => temple.TypeLocality)" Sortable="true" Title="Тип населеного пункта"/>
-    <Microsoft.AspNetCore.Components.QuickGrid.PropertyColumn Property="@(temple => temple.Locality)" Sortable="true" Title="Населеный пункт"/>
-    <Microsoft.AspNetCore.Components.QuickGrid.PropertyColumn Property="@(temple => temple.Oriention.Oriention)" Sortable="true" Title="Церковная ориентация"/>
-    <Microsoft.AspNetCore.Components.QuickGrid.PropertyColumn Property="@(temple => temple.Oriention.YearFall)" Sortable="true" Title="Год отпадения"/>
-    <Microsoft.AspNetCore.Components.QuickGrid.PropertyColumn Property="@(temple => temple.Oriention.YearRefund)" Sortable="true" Title="Год возврата"/>
-    <Microsoft.AspNetCore.Components.QuickGrid.PropertyColumn Property="@(temple => temple.AppointmentsAfterEnd.Appointmenrs)" Sortable="true" Title="Назначение после закрытия"/>
-    <Microsoft.AspNetCore.Components.QuickGrid.PropertyColumn Property="@(temple => temple.AppointmentsAfterEnd.Year)" Sortable="true" Title="Год приспособления"/>
-    <Microsoft.AspNetCore.Components.QuickGrid.PropertyColumn Property="@(temple => temple.YearAdaptation)" Sortable="true" Title="Год основания"/>
-    <Microsoft.AspNetCore.Components.QuickGrid.PropertyColumn Property="@(temple => temple.YearDestruction)" Sortable="true" Title="Год уничтожения"/>
-    <Microsoft.AspNetCore.Components.QuickGrid.TemplateColumn Title="Изменить права пользователя">
-        <MudButton Variant="Variant.Filled" Color="Color.Primary" @onclick="@(() => Change(context))">Изменить</MudButton>
-    </Microsoft.AspNetCore.Components.QuickGrid.TemplateColumn>
-</QuickGrid>
+<style>
+    body {
+        overflow-x: scroll;
+    }
+</style>
 
+@* <QuickGrid Items="@itemsQueryable"> *@
+@*     <Microsoft.AspNetCore.Components.QuickGrid.PropertyColumn Property="@(temple => temple.Name)" Sortable="true" Title="Название"/> *@
+@*             <Microsoft.AspNetCore.Components.QuickGrid.PropertyColumn Property="@(temple => temple.Quantity)" Sortable="true" Title="Количество прихожан"/> *@
+@*             <Microsoft.AspNetCore.Components.QuickGrid.PropertyColumn Property="@(temple => temple.DateStart)" Sortable="true" Title="Год основания"/> *@
+@*             <Microsoft.AspNetCore.Components.QuickGrid.PropertyColumn Property="@(temple => temple.DateEnd)" Sortable="true" Title="Год закрытия"/> *@
+@*             <Microsoft.AspNetCore.Components.QuickGrid.PropertyColumn Property="@(temple => temple.Province)" Sortable="true" Title="Губерния"/> *@
+@*             <Microsoft.AspNetCore.Components.QuickGrid.PropertyColumn Property="@(temple => temple.District)" Sortable="true" Title="Округ"/> *@
+@*             <Microsoft.AspNetCore.Components.QuickGrid.PropertyColumn Property="@(temple => temple.RayonDistrict)" Sortable="true" Title="Район округа"/> *@
+@*             <Microsoft.AspNetCore.Components.QuickGrid.PropertyColumn Property="@(temple => temple.Region)" Sortable="true" Title="Область"/> *@
+@*             <Microsoft.AspNetCore.Components.QuickGrid.PropertyColumn Property="@(temple => temple.Type)" Sortable="true" Title="Тип"/> *@
+@*             <Microsoft.AspNetCore.Components.QuickGrid.PropertyColumn Property="@(temple => temple.RayonDistrict)" Sortable="true" Title="Район округа"/> *@
+@*             <Microsoft.AspNetCore.Components.QuickGrid.PropertyColumn Property="@(temple => temple.Region)" Sortable="true" Title="Область"/> *@
+@*             <Microsoft.AspNetCore.Components.QuickGrid.PropertyColumn Property="@(temple => temple.RayonRegion)" Sortable="true" Title="Район области"/> *@
+@*             <Microsoft.AspNetCore.Components.QuickGrid.PropertyColumn Property="@(temple => temple.SeparateRegion)" Sortable="true" Title="Отдельный район"/> *@
+@*             <Microsoft.AspNetCore.Components.QuickGrid.PropertyColumn Property="@(temple => temple.TypeLocality)" Sortable="true" Title="Тип населеного пункта"/> *@
+@*             <Microsoft.AspNetCore.Components.QuickGrid.PropertyColumn Property="@(temple => temple.Locality)" Sortable="true" Title="Населеный пункт"/> *@
+@*             <Microsoft.AspNetCore.Components.QuickGrid.PropertyColumn Property="@(temple => temple.Oriention.Oriention)" Sortable="true" Title="Церковная ориентация"/> *@
+@*             <Microsoft.AspNetCore.Components.QuickGrid.PropertyColumn Property="@(temple => temple.Oriention.YearFall)" Sortable="true" Title="Год отпадения"/> *@
+@*             <Microsoft.AspNetCore.Components.QuickGrid.PropertyColumn Property="@(temple => temple.Oriention.YearRefund)" Sortable="true" Title="Год возврата"/> *@
+@*             <Microsoft.AspNetCore.Components.QuickGrid.PropertyColumn Property="@(temple => temple.AppointmentsAfterEnd.Appointmenrs)" Sortable="true" Title="Назначение после закрытия"/> *@
+@*             <Microsoft.AspNetCore.Components.QuickGrid.PropertyColumn Property="@(temple => temple.AppointmentsAfterEnd.Year)" Sortable="true" Title="Год приспособления"/> *@
+@*             <Microsoft.AspNetCore.Components.QuickGrid.PropertyColumn Property="@(temple => temple.YearAdaptation)" Sortable="true" Title="Год основания"/> *@
+@*             <Microsoft.AspNetCore.Components.QuickGrid.PropertyColumn Property="@(temple => temple.YearDestruction)" Sortable="true" Title="Год уничтожения"/> *@
+@*     <Microsoft.AspNetCore.Components.QuickGrid.TemplateColumn Title="Изменить права пользователя"> *@
+@*         <MudButton Variant="Variant.Filled" Color="Color.Primary" @onclick="@(() => Change(context))">Изменить</MudButton> *@
+@*     </Microsoft.AspNetCore.Components.QuickGrid.TemplateColumn> *@
+@* </QuickGrid> *@
+@* *@
+@* @code { *@
+@*     IQueryable<Temple>? itemsQueryable; *@
+@* *@
+@* *@
+@*     protected override async Task OnInitializedAsync() *@
+@*     { *@
+@*         var items = context.Temples *@
+@*             .Include(t => t.AppointmentsAfterEnd) *@
+@*             .Include(t => t.Oriention) *@
+@*             // Добавьте здесь другие Include для дополнительных связей *@
+@*             .AsQueryable(); *@
+@*         itemsQueryable = items; *@
+@*     } *@
+@* *@
+@*     private void Change(Temple temple) *@
+@*     { *@
+@*          *@
+@*     } *@
+@* } *@
+
+<MudTable Items="@Elements" Dense="@dense" Hover="@hover" Bordered="@bordered" Striped="@striped" Filter="new Func<Temple,bool>(FilterFunc1)" @bind-SelectedItem="selectedItem">
+    <ToolBarContent>
+        <MudText Typo="Typo.h6">Храмы</MudText>
+        <MudSpacer />
+        <MudTextField @bind-Value="searchString1" Placeholder="Search" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
+    </ToolBarContent>
+    <HeaderContent>
+        <MudTh><MudTableSortLabel SortBy="new Func<Temple, object>(x=>x.Name)">Название</MudTableSortLabel></MudTh>
+        <MudTh><MudTableSortLabel SortBy="new Func<Temple, object>(x=>x.Quantity)">Количество прихожан</MudTableSortLabel></MudTh>
+        <MudTh><MudTableSortLabel SortBy="new Func<Temple, object>(x=>x.DateStart)">Год основания</MudTableSortLabel></MudTh>
+        <MudTh><MudTableSortLabel SortBy="new Func<Temple, object>(x=>x.DateEnd)">Год закрытия</MudTableSortLabel></MudTh>
+        <MudTh><MudTableSortLabel SortBy="new Func<Temple, object>(x=>x.Province)">Губерния</MudTableSortLabel></MudTh>
+        <MudTh><MudTableSortLabel SortBy="new Func<Temple, object>(x=>x.DateStart)">Округ</MudTableSortLabel>Округ</MudTh>
+        <MudTh><MudTableSortLabel SortBy="new Func<Temple, object>(x=>x.RayonDistrict)">Район округа</MudTableSortLabel></MudTh>
+        <MudTh><MudTableSortLabel SortBy="new Func<Temple, object>(x=>x.Region)">Область</MudTableSortLabel></MudTh>
+        <MudTh><MudTableSortLabel SortBy="new Func<Temple, object>(x=>x.Type)">Тип</MudTableSortLabel></MudTh>
+        <MudTh><MudTableSortLabel SortBy="new Func<Temple, object>(x=>x.RayonDistrict)">Район области</MudTableSortLabel></MudTh>
+        <MudTh><MudTableSortLabel SortBy="new Func<Temple, object>(x=>x.SeparateRegion)">Отдельный район</MudTableSortLabel></MudTh>
+        <MudTh><MudTableSortLabel SortBy="new Func<Temple, object>(x=>x.TypeLocality)">Тип населенного пункта</MudTableSortLabel></MudTh>
+        <MudTh><MudTableSortLabel SortBy="new Func<Temple, object>(x=>x.Locality)">Населеный пункт</MudTableSortLabel></MudTh>
+        <MudTh><MudTableSortLabel SortBy="new Func<Temple, object>(x=>x.Oriention.Oriention)">Церковная ориентаиця</MudTableSortLabel></MudTh>
+        <MudTh><MudTableSortLabel SortBy="new Func<Temple, object>(x=>x.Oriention.YearFall)">Год отпадения</MudTableSortLabel></MudTh>
+        <MudTh><MudTableSortLabel SortBy="new Func<Temple, object>(x=>x.Oriention.YearRefund)">Год возрата</MudTableSortLabel></MudTh>
+        <MudTh><MudTableSortLabel SortBy="new Func<Temple, object>(x=>x.AppointmentsAfterEnd.Appointmenrs)">Назначение после закрытия</MudTableSortLabel></MudTh>
+        <MudTh><MudTableSortLabel SortBy="new Func<Temple, object>(x=>x.AppointmentsAfterEnd.Year)">Год приспособления</MudTableSortLabel></MudTh>
+        <MudTh><MudTableSortLabel SortBy="new Func<Temple, object>(x=>x.YearAdaptation)">Год основания</MudTableSortLabel></MudTh>
+        <MudTh><MudTableSortLabel SortBy="new Func<Temple, object>(x=>x.YearDestruction)">Год уничтожения</MudTableSortLabel></MudTh>
+    </HeaderContent>
+    <RowTemplate>
+        @* <MudTd DataLabel="Name">@context.Name</MudTd> *@
+        @* <MudTd DataLabel="Locality">@context.Quantity</MudTd> *@
+        @* <MudTd DataLabel="DateStart">@context.DateStart</MudTd> *@
+        @* <MudTd DataLabel="DateEnd">@context.DateEnd</MudTd> *@
+        @* <MudTd DataLabel="Province">@context.Province</MudTd> *@
+        @* <MudTd DataLabel="District">@context.District</MudTd> *@
+        @* <MudTd DataLabel="RayonDistrict">@context.RayonDistrict</MudTd> *@
+        @* <MudTd DataLabel="Region">@context.Region</MudTd> *@
+        @* <MudTd DataLabel="Type">@context.Type</MudTd> *@
+        @* <MudTd DataLabel="RayonDistrict">@context.RayonDistrict</MudTd> *@
+        @* <MudTd DataLabel="SeparateRegion">@context.SeparateRegion</MudTd> *@
+        @* <MudTd DataLabel="TypeLocality">@context.TypeLocality</MudTd> *@
+        @* <MudTd DataLabel="Locality">@context.Locality</MudTd> *@
+        @* <MudTd DataLabel="Oriention">@context.Oriention.Oriention</MudTd> *@
+        @* <MudTd DataLabel="YearFall">@context.Oriention.YearFall</MudTd> *@
+        @* <MudTd DataLabel="YearRefund">@context.Oriention.YearRefund</MudTd> *@
+        @* <MudTd DataLabel="Appointmenrs">@context.AppointmentsAfterEnd.Appointmenrs</MudTd> *@
+        @* <MudTd DataLabel="Year">@context.AppointmentsAfterEnd.Year</MudTd> *@
+        @* <MudTd DataLabel="YearAdaptation">@context.YearAdaptation</MudTd> *@
+        @* <MudTd DataLabel="YearDestruction">@context.YearDestruction</MudTd> *@
+        @foreach (var prop in typeof(Temple).GetProperties())
+        {
+            var propertyName = prop.Name;
+            var propertyValue = prop.GetValue(context);
+
+            <MudTd DataLabel="@propertyName">
+                <MudTextField @bind-Value="propertyValue" Required/>
+            </MudTd>
+        }
+    </RowTemplate>
+    <RowEditingTemplate>
+        <MudTd DataLabel="Name">
+            <MudTextField @bind-Value="context.Name" Required />
+        </MudTd>
+        <MudTd DataLabel="Sign">
+            <MudTextField @bind-Value="context.Quantity" Required />
+        </MudTd>
+        <MudTd DataLabel="Name">
+            <MudTextField @bind-Value="context.DateStart" Required />
+        </MudTd>
+        <MudTd DataLabel="Position">
+            <MudNumericField @bind-Value="context.DateEnd" Required/>
+        </MudTd>
+        <MudTd DataLabel="Molar mass">
+            <MudTextField @bind-Value="context.Province" Required />
+        </MudTd>
+        <MudTd DataLabel="Sign">
+            <MudTextField @bind-Value="context.Quantity" Required />
+        </MudTd>
+    </RowEditingTemplate>
+    <PagerContent>
+        <MudTablePager />
+    </PagerContent>
+</MudTable>
+
+@* <div class="d-flex flex-wrap mt-4"> *@
+@*     <MudSwitch @bind-Value="hover" Color="Color.Primary">Hover</MudSwitch> *@
+@*     <MudSwitch @bind-Value="dense" Color="Color.Secondary">Dense</MudSwitch> *@
+@*     <MudSwitch @bind-Value="striped" Color="Color.Tertiary">Striped</MudSwitch> *@
+@*     <MudSwitch @bind-Value="bordered" Color="Color.Warning">Bordered</MudSwitch> *@
+@*     <MudSpacer /> *@
+@*     <div style="min-width:200px;"> *@
+@*         <MudText Class="align-self-center d-inline">Selected1: @selectedItem?.Name</MudText> *@
+@*     </div> *@
+@* </div> *@
 @code {
+    private bool dense = false;
+    private bool hover = true;
+    private bool striped = true;
+    private bool bordered = true;
+    private string searchString1 = "";
+    private Temple selectedItem = null;
+    private HashSet<Temple> selectedItems = new();
 
-    private void Change(Temple temple)
+    private IEnumerable<Temple> Elements = new List<Temple>();
+
+    protected override async Task OnInitializedAsync()
     {
-        
+        Elements = context.Temples
+            .Include(t => t.AppointmentsAfterEnd)
+            .Include(t => t.Oriention);
+    }
+
+    private bool FilterFunc1(Temple element) => FilterFunc(element, searchString1);
+
+    private bool FilterFunc(Temple element, string searchString)
+    {
+        if (string.IsNullOrWhiteSpace(searchString))
+            return true;
+        if (element.Name.Contains(searchString, StringComparison.OrdinalIgnoreCase))
+            return true;
+        if ($"{element.Name} {element.Province} {element.TypeLocality}".Contains(searchString))
+            return true;
+        return false;
     }
 }

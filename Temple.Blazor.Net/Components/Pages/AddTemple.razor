@@ -95,14 +95,48 @@
                                  CoerceText="@coerceText" CoerceValue="@coerceValue" AdornmentColor="Color.Primary" />
             </div>
 
-                <MudAutocomplete T="string" Label="Губернии и уезды" @bind-Value="selectedProvince" SearchFunc="@SearchProvince"
+            <h3 class="card-title text-center mb-3 fw-light fs-5">Губернии и уезды</h3>
+
+            <MudAutocomplete T="string" Label="Губернии" @bind-Value="selectedProvince" SearchFunc="@SearchProvince"
+                             ResetValueOnEmptyText="@resetValueOnEmptyText"
+                             CoerceText="@coerceText" CoerceValue="@coerceValue" />
+            
+            <MudAutocomplete T="string" Label="Уезды" @bind-Value="selectedCounties" SearchFunc="@SearchProvince"
                                  ResetValueOnEmptyText="@resetValueOnEmptyText"
                                  CoerceText="@coerceText" CoerceValue="@coerceValue" />
+
+            <h3 class="card-title text-center mb-3 fw-light fs-5">Округа и районы округов (1924-1930)</h3>
+
+            <div>
+                <MudAutocomplete T="string" Label="Округа" @bind-Value="selectedOcrug" SearchFunc="@SearchOcrug"
+                                 ResetValueOnEmptyText="@resetValueOnEmptyText"
+                                 CoerceText="@coerceText" CoerceValue="@coerceValue" />
+            </div>
+
+            <div>
+                <MudAutocomplete T="string" Label="Район" @bind-Value="selectedDistrict" SearchFunc="@SearchDistcirt"
+                                 ResetValueOnEmptyText="@resetValueOnEmptyText"
+                                 CoerceText="@coerceText" CoerceValue="@coerceValue" />
+            </div>
+
+            <div>
+                <MudTextField @bind-Value="_temple.TypeLocality" Label="Тип населеного пункта"/>
+            </div>
+
+            <div>
+                <MudTextField @bind-Value="_temple.Locality" Label="Населеный пункт"/>
+            </div>
             
             <div>
-                <MudAutocomplete T="string" Label="Округа и районы округов (1924-1930)" @bind-Value="selectedDistrict" SearchFunc="@SearchDistrict"
-                                 ResetValueOnEmptyText="@resetValueOnEmptyText"
-                                 CoerceText="@coerceText" CoerceValue="@coerceValue" />
+                <MudTextField @bind-Value="_temple.RayonRegion" Label="Район области"/>
+            </div>
+
+            <div>
+                <MudTextField @bind-Value="_temple.Region" Label="Регион"/>
+            </div>
+
+            <div>
+                <MudTextField @bind-Value="_temple.RayonDistrict" Label="Район округа"/>
             </div>
 
             <div>
@@ -136,6 +170,10 @@
 
     private string selectedAfterClosing;
 
+    private string selectedOcrug;
+
+    private string selectedCounties;
+    
     private Temple? _temple = new()
     {
         AppointmentsAfterEnd = new()
@@ -165,7 +203,7 @@
 
         //StateHasChanged();
     }
-    
+
     private string[] types =
     {
         "Кафедральный", "Кладбищенский", "Приходской"
@@ -180,6 +218,7 @@
     {
         "Автокафельная", "Обновличенская", "Тихоновская"
     };
+
     /// <summary>
     /// Автокафельная
     /// </summary>
@@ -187,7 +226,7 @@
     {
         "Автокафельная"
     };
-    
+
     private string[] dioceseObnov =
     {
         "Велижско-Высочанская", "Витебская", "Гомельская", "Минская", "Могилевская", "Мозырская", "Мстиславская",
@@ -196,36 +235,143 @@
 
     private string[] dioceseTixo =
     {
-        "Гомельская", "Могилевская и Мстиславская", "Минская и Туровская", "Минская", "Минская и Белорусская", 
+        "Гомельская", "Могилевская и Мстиславская", "Минская и Туровская", "Минская", "Минская и Белорусская",
         "Полоцкая и Витебская"
     };
 
-    private string[] provinces =
+    private string[] countiesVit =
     {
-        "Велижский", "Витебский",  "Городоккский",  "Дриссенский",  "Лепельский",  "Невельский",  "Полоцкий",  "Себежский",  "Гомельская",  "Быховский",
-        "Гомельский",  "Могилевский",  "Рогачевский",  "Чаусский",  "Чериковский",  "Горецкий",  "Климовический",  "Оршанской",  "Бобруйский",  "Борисовский",  "Игуменский",  "Минский",
-        "Мозырский",  "Речицкий",  "Слуцкий",  "Быховский",  "Гомельский",  "Горецкий",  "Климовичский",  "Могилевский",  "Мстиславский",  "Оршанский",  "Рогачевский",  "Сенненский",
-        "Чаусский",  "Чериковский"
+        "Велижский", "Витебский", "Городоккский", "Дриссенский", "Лепельский", "Невельский", "Полоцкий", "Себежский",
+        "Суражский"
     };
 
-    string[] districts = new string[]
+    private string[] countiesGom =
+    {
+        "Гомельская", "Быховский",
+        "Гомельский", "Могилевский", "Рогачевский", "Чаусский", "Чериковский", "Горецкий", "Климовический", "Оршанской"
+    };
+
+    private string[] countiesMin =
+    {
+        "Бобруйский", "Борисовский", "Игуменский", "Минский",
+        "Мозырский", "Речицкий", "Слуцкий"
+    };
+
+    private string[] countiesMog =
+    {
+        "Быховский", "Гомельский", "Горецкий", "Климовичский", "Могилевский", "Мстиславский", "Оршанский", "Рогачевский", "Сенненский",
+        "Чаусский", "Чериковский"  
+    };
+
+    ///<summary>
+    /// Уезды
+    /// </summary>
+    private string[] counties =
+    {
+        "Витебская", "Гомельская", "Минская", "Могилевская", "Смоленская"
+    };
+
+    public string[] ocrugs =
+    {
+        "Бобруйский (1924-1930)", "Борисовский (1924-1927)", "Витебский (1924-1930)", "Калининский (1924-1927)",
+        "Могилевский (1924-1930)", "Мозырский (1924-1930)", "Минский (1924-1930)", "Оршанский (1924-1930)", "Полоцкий (1924-1930)",
+        "Слуцкий (1924-1927)", "Гомельский (1926-1930)", "Речицкий (1926-1927)"
+    };
+
+    private string[] ocrugBobrFirst =
     {
         "Бобруйский", "Бобруйский 1-й", "Бобруйский 2-й", "Буда-Кошелевский", "Городецкий", "Глусский", "Жлобинский",
         "Кличевский", "Краснослободский", "Любанский", "Осиповичский", "Паричский", "Рогачевский", "Свислочский", "Слуцкий",
-        "Старобинский", "Стародорожский", "Стрешинский", "Бегомльский", "Березинский", "Борисовский", "Зембинский", "Крупский",
-        "Лепельский", "Плещеницкий", "Холопеничский", "Черейский", "Бешенковичский", "Витебский", "Высочанский", "Городокский",
-        "Езерищенский", "Лиозненский", "Кузнецовский", "Межанский", "Сенненский", "Сиротинский", "Суражский", "Чашникский",
+        "Старобинский", "Стародорожский", "Стрешинский"
+    };
+
+    private string[] ocrugBobrSecond =
+    {
+        "Бегомльский", "Березинский", "Борисовский", "Зембинский", "Крупский",
+        "Лепельский", "Плещеницкий", "Холопеничский", "Черейский"
+    };
+
+    private string[] ocrugVit =
+    {
+        "Бешенковичский", "Витебский", "Высочанский", "Городокский",
+        "Езерищенский", "Лиозненский", "Кузнецовский", "Межанский", "Сенненский", "Сиротинский", "Суражский", "Чашникский"
+    };
+
+    private string[] ocrugKalin =
+    {
         "Белынковичский", "Климовичский", "Кастюковичский", "Краснопольский", "Кричевский", "Милославичский", "Мстиславский",
-        "Расненский", "Хотимский", "Чериковский", "Белыничский", "Березинский", "Борисовский", "Журовичский", "Кастюковичский",
+        "Расненский", "Хотимский", "Чериковский"
+    };
+
+    private string[] ocrugMog =
+    {
+        "Белыничский", "Березинский", "Борисовский", "Журовичский", "Кастюковичский",
         "Климовичский", "Кормянский", "Краснопольский", "Кричевский", "Луполовский", "Милославичский", "Могилевский", "Пропойский",
-        "Хотимский", "Чаусский", "Чериковский", "Чечевичский", "Шкловский", "Бегомльский", "Березинский", "Борисовский", "Гресский",
+        "Хотимский", "Чаусский", "Чериковский", "Чечевичский", "Шкловский"
+    };
+
+    private string[] ocrugMoz =
+    {
+        "Мозырский (1924-1930)", "Житковичский", "Калинковичский", "Каролинский",
+        "Копаткевичский", "Лельчицкий", "Мозырский", "Наровлянский", "Озаричский", "Петриковский"
+    };
+
+    /// <summary>
+    /// Минский
+    /// </summary>
+    private string[] ocrugMin =
+    {
+        "Бегомльский", "Березинский", "Борисовский", "Гресский",
         "Койдановский", "Зембинский", "Койдановский", "Копыльский", "Острошицко-Городокский", "Плещеницкий", "Пуховичский",
-        "Самохваловичский", "Смиловичский", "Смолевичский", "Узденский", "Червенский", "Холопеничский", "Шацкий", "Богушевский",
+        "Самохваловичский", "Смиловичский", "Смолевичский", "Узденский", "Червенский", "Холопеничский", "Шацкий"
+    };
+
+    ///<summary>
+    /// Оршанский
+    /// </summary>
+    private string[] ocrugOrsh =
+    {
+        "Богушевский",
         "Горецкий", "Дрибинский", "Дубровенский", "Копысский", "Кохановский", "Круглянский", "Лядненский", "Мстиславский",
-        "Оршанский", "Расненский", "Толочинский", "Ветринский", "Волынецкий", "Борковичский", "Дретунский", "Краснопольский",
-        "Дриссенский", "Освейский", "Полоцкий", "Россонский", "Улльский", "Ушачский", "Гресский", "Копыльский", "Краснослободский",
-        "Любанский", "Слуцкий", "Стародорожский", "Плещеницкий", "Старобинский", "Брагинский", "Василевичский", "Горвальский",
-        "Комаринский", "Лоевский", "Речицкий", "Хойникский", "Холмечский", "Юровичский"
+        "Оршанский", "Расненский", "Толочинский"
+    };
+
+    ///<summary>>
+    /// Полоцкий
+    /// </summary>
+    private string[] ocrugPoloc =
+    {
+        "Ветринский", "Волынецкий", "Борковичский", "Дретунский", "Краснопольский",
+        "Дриссенский", "Освейский", "Полоцкий", "Россонский", "Улльский", "Ушачский"
+    };
+
+    ///<summary>>
+    /// Слуцкий
+    /// </summary>
+    private string[] ocrugSlyc =
+    {
+        "Гресский", "Копыльский", "Краснослободский",
+        "Любанский", "Слуцкий", "Стародорожский", "Старобинский"
+    };
+
+    ///<summary>>
+    /// Гомельский
+    /// </summary>
+    private string[] ocrugGom =
+    {
+        "Брагинский", "Буда-Кошелевский", "Ветковский",
+        "Гомельский", "Дятловичский", "Добрушский", "Комаринский", "Краснобудский",
+        "Носовичский", "Светиловичский", "Уваровичский", "Чечерский",
+        "Брагинский", "Комаринский", "Лоевский", "Речицкий", "Хойникский", "Тереховский", "Буда-Кошелевский"
+    };
+
+    ///<summary>
+    ///  Речинский
+    /// </summary>
+    private string[] ocrugRech =
+    {
+        "Брагинский", "Василевичский", "Горвальский", "Комаринский", "Лоевский",
+        "Речицкий", "Хойникский", "Холмечский", "Юровичский"
     };
     
     private bool coerceText;
@@ -289,23 +435,136 @@
                 break;
         }
     }
+    
+    private async Task<IEnumerable<string>> SearchOcrug(string value, CancellationToken token)
+    {
+        await Task.Delay(5, token);
+
+        if (string.IsNullOrEmpty(value))
+            return ocrugs;
+        return ocrugs.Where(x => x.Contains(value, StringComparison.InvariantCultureIgnoreCase));
+    }
 
     private async Task<IEnumerable<string>> SearchProvince(string value, CancellationToken token)
     {
         await Task.Delay(5, token);
 
         if (string.IsNullOrEmpty(value))
-            return provinces;
-        return provinces.Where(x => x.Contains(value, StringComparison.InvariantCultureIgnoreCase));
+            return counties;
+        return counties.Where(x => x.Contains(value, StringComparison.InvariantCultureIgnoreCase));
     }
-    
-    private async Task<IEnumerable<string>> SearchDistrict(string value, CancellationToken token)
+
+    private async Task<IEnumerable<string>> SearchCounties(string value, CancellationToken token)
     {
         await Task.Delay(5, token);
 
-        if (string.IsNullOrEmpty(value))
-            return districts;
-        return districts.Where(x => x.Contains(value, StringComparison.InvariantCultureIgnoreCase));
+        switch (selectedProvince)
+        {
+            case "Витебская":
+                if (string.IsNullOrEmpty(value))
+                    return countiesVit;
+                return countiesVit.Where(x => x.Contains(value, StringComparison.InvariantCultureIgnoreCase));
+                break;
+            case "Гомельская":
+                if (string.IsNullOrEmpty(value))
+                    return countiesGom;
+                return countiesGom.Where(x => x.Contains(value, StringComparison.InvariantCultureIgnoreCase));
+                break;
+            case "Минская":
+                if (string.IsNullOrEmpty(value))
+                    return countiesMin;
+                return countiesMin.Where(x => x.Contains(value, StringComparison.InvariantCultureIgnoreCase));
+                break;
+            case "Могилевская":
+                if (string.IsNullOrEmpty(value))
+                    return countiesMog;
+                return countiesMog.Where(x => x.Contains(value, StringComparison.InvariantCultureIgnoreCase));
+                break;
+            case "Смоленская":
+                if (string.IsNullOrEmpty(value))
+                    return ocrugGom.Where(x => x.Contains(value, StringComparison.InvariantCultureIgnoreCase));
+                return ocrugGom.Where(x => x.Contains(value, StringComparison.InvariantCultureIgnoreCase));
+                break;
+                default:
+                if (string.IsNullOrEmpty(value))
+                    return ocrugGom.Where(x => x.Contains(value, StringComparison.InvariantCultureIgnoreCase));
+                return ocrugGom.Where(x => x.Contains(value, StringComparison.InvariantCultureIgnoreCase));
+                break;
+        }
+    }
+
+    private async Task<IEnumerable<string>> SearchDistcirt(string value, CancellationToken token)
+    {
+        await Task.Delay(5, token);
+
+        switch (selectedOcrug)
+        {
+            case "Бобруйский (1924-1930)":
+                if (string.IsNullOrEmpty(value))
+                    return ocrugBobrFirst;
+                return ocrugGom.Where(x => x.Contains(value, StringComparison.InvariantCultureIgnoreCase));
+                break;
+            case "Борисовский (1924-1927)":
+                if (string.IsNullOrEmpty(value))
+                    return ocrugBobrSecond;
+                return ocrugBobrSecond.Where(x => x.Contains(value, StringComparison.InvariantCultureIgnoreCase));
+                break;  
+            case "Витебский (1924-1930)":
+                if (string.IsNullOrEmpty(value))
+                    return ocrugVit;
+                return ocrugVit.Where(x => x.Contains(value, StringComparison.InvariantCultureIgnoreCase));
+                break; 
+            case "Калининский (1924-1927)":
+                if (string.IsNullOrEmpty(value))
+                    return ocrugKalin;
+                return ocrugKalin.Where(x => x.Contains(value, StringComparison.InvariantCultureIgnoreCase));
+                break;
+            case "Могилевский (1924-1930)":
+                if (string.IsNullOrEmpty(value))
+                    return ocrugMog;
+                return ocrugMog.Where(x => x.Contains(value, StringComparison.InvariantCultureIgnoreCase));
+                break;
+            case "Мозырский (1924-1930)":
+                if (string.IsNullOrEmpty(value))
+                    return ocrugMoz;
+                return ocrugMoz.Where(x => x.Contains(value, StringComparison.InvariantCultureIgnoreCase));
+                break;
+            case "Минский (1924-1930)":
+                if (string.IsNullOrEmpty(value))
+                    return ocrugMin;
+                return ocrugMin.Where(x => x.Contains(value, StringComparison.InvariantCultureIgnoreCase));
+                break;
+            case "Оршанский (1924-1930)":
+                if (string.IsNullOrEmpty(value))
+                    return ocrugOrsh;
+                return ocrugOrsh.Where(x => x.Contains(value, StringComparison.InvariantCultureIgnoreCase));
+                break;
+            case "Полоцкий (1924-1930)":
+                if (string.IsNullOrEmpty(value))
+                    return ocrugPoloc;
+                return ocrugPoloc.Where(x => x.Contains(value, StringComparison.InvariantCultureIgnoreCase));
+                break;
+            case "Слуцкий (1924-1927)":
+                if (string.IsNullOrEmpty(value))
+                    return ocrugSlyc;
+                return ocrugSlyc.Where(x => x.Contains(value, StringComparison.InvariantCultureIgnoreCase));
+                break;
+            case "Гомельский (1926-1930)":
+                if (string.IsNullOrEmpty(value))
+                    return ocrugGom;
+                return ocrugGom.Where(x => x.Contains(value, StringComparison.InvariantCultureIgnoreCase));
+                break;
+            case "Речицкий (1926-1927)":
+                if (string.IsNullOrEmpty(value))
+                    return ocrugRech;
+                return ocrugRech.Where(x => x.Contains(value, StringComparison.InvariantCultureIgnoreCase));
+                break;
+            default:
+                if (string.IsNullOrEmpty(value))
+                    return ocrugGom;
+                return ocrugGom.Where(x => x.Contains(value, StringComparison.InvariantCultureIgnoreCase));
+                break;
+        }
     }
 
     private async Task Sumbit()
@@ -337,12 +596,23 @@
                 break;
             }
 
+            _temple.Type = selectedType;
+            _temple.Province = selectedProvince;
+            _temple.Counties = selectedCounties;
+            _temple.District = selectedDistrict;
+            _temple.Ocrug = selectedOcrug;
+            _temple.AppointmentsAfterEnd.Appointmenrs = selectedAfterClosing;
+            _temple.Oriention.Oriention = selectedOriention;
+            _temple.OrientationDiocesse = selectedDiocese;
+
             _temple.AppointmentsAfterEnd.Id = Guid.NewGuid().ToString("N");
             _temple.Oriention.Id = Guid.NewGuid().ToString("N");
             _temple.Id = Guid.NewGuid().ToString("N");
             
             _temple.FillEmptyFields();
-
+            _temple.AppointmentsAfterEnd.FillEmptyFields();
+            _temple.Oriention.FillEmptyFields();
+            
             _context.Temples.Add(_temple);
             _context.SaveChanges();
             

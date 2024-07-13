@@ -440,7 +440,7 @@ select {
 // Remove the dropdown arrow only from text type inputs built with datalists in Chrome.
 // See https://stackoverflow.com/a/54997118
 
-[list]:not([type="date"]):not([type="datetime-local"]):not([type="month"]):not([type="week"]):not([type="time"])::-webkit-calendar-picker-indicator {
+[list]:not([type="date"]):not([type="DateTime-local"]):not([type="month"]):not([type="week"]):not([type="time"])::-webkit-calendar-picker-indicator {
   display: none !important;
 }
 
@@ -508,16 +508,16 @@ legend {
   }
 }
 
-// Fix height of inputs with a type of datetime-local, date, month, week, or time
+// Fix height of inputs with a type of DateTime-local, date, month, week, or time
 // See https://github.com/twbs/bootstrap/issues/18842
 
-::-webkit-datetime-edit-fields-wrapper,
-::-webkit-datetime-edit-text,
-::-webkit-datetime-edit-minute,
-::-webkit-datetime-edit-hour-field,
-::-webkit-datetime-edit-day-field,
-::-webkit-datetime-edit-month-field,
-::-webkit-datetime-edit-year-field {
+::-webkit-DateTime-edit-fields-wrapper,
+::-webkit-DateTime-edit-text,
+::-webkit-DateTime-edit-minute,
+::-webkit-DateTime-edit-hour-field,
+::-webkit-DateTime-edit-day-field,
+::-webkit-DateTime-edit-month-field,
+::-webkit-DateTime-edit-year-field {
   padding: 0;
 }
 

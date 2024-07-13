@@ -32,9 +32,22 @@ public class Temple
     
     //public string Diocesse { get; set; }
     
-    public string? Province { get; set; } // Губернии и уезды
+    /// <summary>
+    /// Губернии
+    /// </summary>
+    public string? Province { get; set; }
+    
+    /// <summary>
+    /// Уезды
+    /// </summary>
+    public string? Counties { get; set; }
     
     public string? District { get; set; } // Округа и районы округов (1924-1930)
+    
+    /// <summary>
+    ///  Округ
+    /// </summary>
+    public string? Ocrug { get; set; }
     
     /// <summary>
     /// Район округа
