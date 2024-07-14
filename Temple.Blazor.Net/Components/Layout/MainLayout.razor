@@ -51,6 +51,17 @@
                     <li class="nav-item" style="margin-left: 5px;">
                         <a class="nav-link text-dark" href="/map">Карта</a>
                     </li>
+                    <li class="nav-item" style="margin-left: 10px;">
+                        @if (IsAuth == true && (AuthenticationStateProvider.GetAuthenticationStateAsync().Result.User.FindFirst(ClaimTypes.Role).Value) != null)
+                        {
+                        var user = _context.Users.FirstOrDefault(x => x.Email == AuthenticationStateProvider.GetAuthenticationStateAsync().Result.User.FindFirst(ClaimsIdentity.DefaultNameClaimType).Value);
+
+                        if (user?.Role == "admin" || user?.Role == "edit")
+                        {
+                        <a class="nav-link text-dark" href="/database">База данных</a>
+                        }
+                        }
+                    </li>
                     <li class="nav-item ml-auto" style="margin-right: 5px;">
                         @if (IsAuth)
                         {
