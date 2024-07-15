@@ -1,39 +1,206 @@
 ﻿@using Temple.Net.Models
 @using Microsoft.AspNetCore.Components.QuickGrid
+@using Microsoft.EntityFrameworkCore
 @inject AppDbContext context
+@inject ISnackbar Snackbar
 
-<QuickGrid Items="@context.Temples">
-    <Microsoft.AspNetCore.Components.QuickGrid.PropertyColumn Property="@(temple => temple.Name)" Sortable="true" Title="Название"/>
-    <Microsoft.AspNetCore.Components.QuickGrid.PropertyColumn Property="@(temple => temple.Quantity)" Sortable="true" Title="Количество прихожан"/>
-    <Microsoft.AspNetCore.Components.QuickGrid.PropertyColumn Property="@(temple => temple.DateStart)" Sortable="true" Title="Год основания"/>
-    <Microsoft.AspNetCore.Components.QuickGrid.PropertyColumn Property="@(temple => temple.DateEnd)" Sortable="true" Title="Год закрытия"/>
-    <Microsoft.AspNetCore.Components.QuickGrid.PropertyColumn Property="@(temple => temple.Province)" Sortable="true" Title="Губерния"/>
-    <Microsoft.AspNetCore.Components.QuickGrid.PropertyColumn Property="@(temple => temple.District)" Sortable="true" Title="Округ"/>
-    <Microsoft.AspNetCore.Components.QuickGrid.PropertyColumn Property="@(temple => temple.RayonDistrict)" Sortable="true" Title="Район округа"/>
-    <Microsoft.AspNetCore.Components.QuickGrid.PropertyColumn Property="@(temple => temple.Region)" Sortable="true" Title="Область"/>
-    <Microsoft.AspNetCore.Components.QuickGrid.PropertyColumn Property="@(temple => temple.Region)" Sortable="true" Title="Область"/>
-    <Microsoft.AspNetCore.Components.QuickGrid.PropertyColumn Property="@(temple => temple.Type)" Sortable="true" Title="Тип"/>
-    <Microsoft.AspNetCore.Components.QuickGrid.PropertyColumn Property="@(temple => temple.RayonDistrict)" Sortable="true" Title="Район округа"/>
-    <Microsoft.AspNetCore.Components.QuickGrid.PropertyColumn Property="@(temple => temple.Region)" Sortable="true" Title="Область"/>
-    <Microsoft.AspNetCore.Components.QuickGrid.PropertyColumn Property="@(temple => temple.RayonRegion)" Sortable="true" Title="Район области"/>
-    <Microsoft.AspNetCore.Components.QuickGrid.PropertyColumn Property="@(temple => temple.SeparateRegion)" Sortable="true" Title="Отдельный район"/>
-    <Microsoft.AspNetCore.Components.QuickGrid.PropertyColumn Property="@(temple => temple.TypeLocality)" Sortable="true" Title="Тип населеного пункта"/>
-    <Microsoft.AspNetCore.Components.QuickGrid.PropertyColumn Property="@(temple => temple.Locality)" Sortable="true" Title="Населеный пункт"/>
-    <Microsoft.AspNetCore.Components.QuickGrid.PropertyColumn Property="@(temple => temple.Oriention.Oriention)" Sortable="true" Title="Церковная ориентация"/>
-    <Microsoft.AspNetCore.Components.QuickGrid.PropertyColumn Property="@(temple => temple.Oriention.YearFall)" Sortable="true" Title="Год отпадения"/>
-    <Microsoft.AspNetCore.Components.QuickGrid.PropertyColumn Property="@(temple => temple.Oriention.YearRefund)" Sortable="true" Title="Год возврата"/>
-    <Microsoft.AspNetCore.Components.QuickGrid.PropertyColumn Property="@(temple => temple.AppointmentsAfterEnd.Appointmenrs)" Sortable="true" Title="Назначение после закрытия"/>
-    <Microsoft.AspNetCore.Components.QuickGrid.PropertyColumn Property="@(temple => temple.AppointmentsAfterEnd.Year)" Sortable="true" Title="Год приспособления"/>
-    <Microsoft.AspNetCore.Components.QuickGrid.PropertyColumn Property="@(temple => temple.YearAdaptation)" Sortable="true" Title="Год основания"/>
-    <Microsoft.AspNetCore.Components.QuickGrid.PropertyColumn Property="@(temple => temple.YearDestruction)" Sortable="true" Title="Год уничтожения"/>
-    <Microsoft.AspNetCore.Components.QuickGrid.TemplateColumn Title="Изменить права пользователя">
-        <MudButton Variant="Variant.Filled" Color="Color.Primary" @onclick="@(() => Change(context))">Изменить</MudButton>
-    </Microsoft.AspNetCore.Components.QuickGrid.TemplateColumn>
-</QuickGrid>
+<style>
+    body {
+        overflow-x: scroll;
+    }
+</style>
 
+<MudTable Items="@Elements" Dense="@dense" Hover="@hover" Bordered="@bordered" Striped="@striped"
+          Filter="new Func<Parishioners,bool>(FilterFunc1)" @bind-SelectedItem="selectedItem"
+          CommitEditTooltip="Commit Edit"
+          OnCommitEditClick="@(() => Snackbar.Add("Commit Edit Handler Invoked"))" RowEditPreview="BackupItem"
+          RowEditCancel="ResetItemToOriginalValues"
+          RowEditCommit="ItemHasBeenCommitted" IsEditRowSwitchingBlocked="@blockSwitch" ApplyButtonPosition="@applyButtonPosition"
+          EditButtonPosition="@editButtonPosition" EditTrigger="@editTrigger">
+    <ToolBarContent>
+        <MudText Typo="Typo.h6">Прихожане</MudText>
+        <MudSpacer />
+        <MudTextField @bind-Value="searchString1" Placeholder="Найти" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
+    </ToolBarContent>
+    <HeaderContent>
+        <MudTh><MudTableSortLabel SortBy="new Func<Parishioners, object>(x=>x.Name)">Имя</MudTableSortLabel></MudTh>
+        <MudTh><MudTableSortLabel SortBy="new Func<Parishioners, object>(x=>x.LastName)">Фамилия</MudTableSortLabel></MudTh>
+        <MudTh><MudTableSortLabel SortBy="new Func<Parishioners, object>(x=>x.Otch)">Отчество</MudTableSortLabel></MudTh>
+        <MudTh><MudTableSortLabel SortBy="new Func<Parishioners, object>(x=>x.Adress)">Адрес</MudTableSortLabel></MudTh>
+        <MudTh><MudTableSortLabel SortBy="new Func<Parishioners, object>(x=>x.Age)">Возраст</MudTableSortLabel></MudTh>
+        <MudTh><MudTableSortLabel SortBy="new Func<Parishioners, object>(x=>x.Gender)">Пол</MudTableSortLabel></MudTh>
+        <MudTh><MudTableSortLabel SortBy="new Func<Parishioners, object>(x=>x.Social)">Имущественное положение</MudTableSortLabel></MudTh>
+        <MudTh><MudTableSortLabel SortBy="new Func<Parishioners, object>(x=>x.SocialStatus)">Общественное и служебное положение</MudTableSortLabel></MudTh>
+        <MudTh><MudTableSortLabel SortBy="new Func<Parishioners, object>(x=>x.PropertyStatus)">Тип</MudTableSortLabel></MudTh>
+        <MudTh><MudTableSortLabel SortBy="new Func<Parishioners, object>(x=>x.TempleName)">Название храма</MudTableSortLabel></MudTh>
+        <MudTh><MudTableSortLabel SortBy="new Func<Parishioners, object>(x=>x.DateJoinRelligios)">Время присоединения к религиозному культу</MudTableSortLabel></MudTh>
+        <MudTh><MudTableSortLabel SortBy="new Func<Parishioners, object>(x=>x.Source)">Источник</MudTableSortLabel></MudTh>
+        <MudTh><MudTableSortLabel SortBy="new Func<Parishioners, object>(x=>x.YearMention)">Год упоменания</MudTableSortLabel></MudTh>
+        <MudTh><MudTableSortLabel SortBy="new Func<Parishioners, object>(x=>x.YearRestart)">Год возрата</MudTableSortLabel></MudTh>
+        <MudTh><MudTableSortLabel SortBy="new Func<Parishioners, object>(x=>x.EstateBeforeRevolution)">Принадлежность к сословию до революции</MudTableSortLabel></MudTh>
+        <MudTh><MudTableSortLabel SortBy="new Func<Parishioners, object>(x=>x.Note)">Примечания</MudTableSortLabel></MudTh>
+    </HeaderContent>
+    <ColGroup>
+        @if (applyButtonPosition.DisplayApplyButtonAtStart() || (editButtonPosition.DisplayEditButtonAtStart() && editTrigger == TableEditTrigger.EditButton))
+        {
+        <col style="width:50px;" />
+        }
+        <col style="width:50px;" />
+        <col style="width:80px;" />
+        <col style="width:50%;" />
+        <col />
+        <col />
+        @if (applyButtonPosition.DisplayApplyButtonAtEnd() || (editButtonPosition.DisplayEditButtonAtEnd() && editTrigger == TableEditTrigger.EditButton))
+        {
+        <col style="width:50px;" />
+        }
+    </ColGroup>
+    <RowTemplate>
+        <MudTd DataLabel="Name">@context.Name</MudTd>
+        <MudTd DataLabel="LastName">@context.LastName</MudTd>
+        <MudTd DataLabel="Otch">@context.Otch</MudTd>
+        <MudTd DataLabel="DateEnd">@context.Adress</MudTd>
+        <MudTd DataLabel="Age">@context.Age</MudTd>
+        <MudTd DataLabel="Gender">@context.Gender</MudTd>
+        <MudTd DataLabel="Social">@context.Social</MudTd>
+        <MudTd DataLabel="SocialStatus">@context.SocialStatus</MudTd>
+        <MudTd DataLabel="PropertyStatus">@context.PropertyStatus</MudTd>
+        <MudTd DataLabel="TempleName">@context.TempleName</MudTd>
+        <MudTd DataLabel="DateJoinRelligios">@context.DateJoinRelligios</MudTd>
+        <MudTd DataLabel="Source">@context.Source</MudTd>
+        <MudTd DataLabel="YearMention">@context.YearMention</MudTd>
+        <MudTd DataLabel="YearRestart">@context.YearRestart</MudTd>
+        <MudTd DataLabel="EstateBeforeRevolution">@context.EstateBeforeRevolution</MudTd>
+        <MudTd DataLabel="Note">@context.Note</MudTd>
+    </RowTemplate>
+    <RowEditingTemplate>
+        <MudTd DataLabel="Name">
+            <MudTextField @bind-Value="context.Name" Required />
+        </MudTd>
+        <MudTd DataLabel="LastName">
+            <MudTextField @bind-Value="context.LastName" Required />
+        </MudTd>
+        <MudTd DataLabel="Otch">
+            <MudTextField @bind-Value="context.Otch" Required />
+        </MudTd>
+        <MudTd DataLabel="Adress">
+            <MudTextField @bind-Value="context.Adress" Required/>
+        </MudTd>
+        <MudTd DataLabel="Age">
+            <MudNumericField @bind-Value="context.Age" Required />
+        </MudTd>
+        <MudTd DataLabel="Gender">
+            <MudTextField @bind-Value="context.Gender" Required />
+        </MudTd>
+        <MudTd DataLabel="Social">
+            <MudTextField @bind-Value="context.Social" Required />
+        </MudTd>
+        <MudTd DataLabel="Region">
+            <MudTextField @bind-Value="context.SocialStatus" Required />
+        </MudTd>
+        <MudTd DataLabel="Type">
+            <MudTextField @bind-Value="context.PropertyStatus" Required />
+        </MudTd>
+        <MudTd DataLabel="RayonRegion">
+            <MudTextField @bind-Value="context.TempleName" Required />
+        </MudTd>
+        <MudTd DataLabel="SeparateRegion">
+            <MudTextField @bind-Value="context.DateJoinRelligios" Required />
+        </MudTd>
+        <MudTd DataLabel="TypeLocality">
+            <MudTextField @bind-Value="context.Source" Required />
+        </MudTd>
+        <MudTd DataLabel="Locality">
+            <MudTextField @bind-Value="context.YearMention" Required />
+        </MudTd>
+        <MudTd DataLabel="Oriention.Oriention">
+            <MudTextField @bind-Value="context.YearRestart" Required />
+        </MudTd>
+        <MudTd DataLabel="Oriention.YearFall">
+            <MudTextField @bind-Value="context.EstateBeforeRevolution" Required />
+        </MudTd>
+        <MudTd DataLabel="Oriention.YearRefund">
+            <MudTextField @bind-Value="context.Note" Required />
+        </MudTd>
+    </RowEditingTemplate>
+    <PagerContent>
+        <MudTablePager />
+    </PagerContent>
+    <EditButtonContent Context="button">
+        <MudIconButton Size="@Size.Small" Icon="@Icons.Material.Outlined.Edit" Class="pa-0" OnClick="@button.ButtonAction" Disabled="@button.ButtonDisabled" />
+    </EditButtonContent>
+</MudTable>
 @code {
+    private bool dense = true;
+    private bool hover = true;
+    private bool striped = true;
+    private bool bordered = true;
+    private bool blockSwitch = false;
+    private string searchString1 = "";
+    private Parishioners selectedItem = null;
+    private HashSet<Parishioners> selectedItems = new();
+    private Parishioners elementBeforeEdit;
+    private HashSet<Parishioners> selectedItems1 = new HashSet<Parishioners>();
+    private TableApplyButtonPosition applyButtonPosition = TableApplyButtonPosition.End;
+    private TableEditButtonPosition editButtonPosition = TableEditButtonPosition.End;
+    private TableEditTrigger editTrigger = TableEditTrigger.RowClick;
 
-    private void Change(Temple temple)
+    private IEnumerable<Parishioners> Elements = new List<Parishioners>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        Elements = context.Parishioners;
+    }
+
+    private bool FilterFunc1(Parishioners element) => FilterFunc(element, searchString1);
+
+    private bool FilterFunc(Parishioners element, string searchString)
+    {
+        if (string.IsNullOrWhiteSpace(searchString))
+            return true;
+        if (element.Name.Contains(searchString, StringComparison.OrdinalIgnoreCase))
+            return true;
+        if ($"{element.Name} {element.LastName} {element.LastName}".Contains(searchString))
+            return true;
+        return false;
+    }
+
+    private void ItemHasBeenCommitted(object? parishioners)
+    {
+        var element = parishioners as Parishioners;
+
+        var item = context.Parishioners.FirstOrDefault(x => x.Id == element.Id);
+
+        if (item != null)
+        {
+            item.Name = element.Name;
+            item.LastName = element.LastName;
+            item.Otch = element.Otch;
+            item.Adress = element.Adress;
+            item.Age = element.Age;
+            item.Gender = element.Gender;
+            item.Social = element.Social;
+            item.SocialStatus = element.SocialStatus;
+            item.PropertyStatus = element.PropertyStatus;
+            item.TempleName = element.TempleName;
+            item.DateJoinRelligios = element.DateJoinRelligios;
+            item.Source = element.Source;
+            item.YearMention = element.YearMention;
+            item.YearRestart = element.YearRestart;
+            item.EstateBeforeRevolution = element.EstateBeforeRevolution;
+            item.Note = element.Note;
+
+            context.Parishioners.Update(item);
+            context.SaveChanges();
+        }
+    }
+
+    private void BackupItem(object element)
+    {
+        
+    }
+
+    private void ResetItemToOriginalValues(object element)
     {
         
     }

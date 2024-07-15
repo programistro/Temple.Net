@@ -24,12 +24,20 @@
 
             <MudTextField T="string?" @bind-Value="_parsonalion.MonaxName" Label="Монашеское имя"/>
 
-            <div style="margin-top: 10px; margin-bottom: 10px;">
+            <div style="margin-top: 10px; margin-bottom: 10px; display: flex; align-items: center; text-align: center; justify-content: space-between;">
                 <MudDatePicker T="DateTime?" DateFormat="yyyy" @bind-Date="_parsonalion.Born" Label="Год рождения"/>
+
+                <MudTooltip Text="Можете не вписывать значение если не известно">
+                    <MudIconButton Icon="@Icons.Material.Filled.QuestionMark" aria-label="Вопрос" Size="Size.Small"/>
+                </MudTooltip>
             </div>
 
-            <div style="margin-top: 10px; margin-bottom: 10px;">
+            <div style="margin-top: 10px; margin-bottom: 10px; display: flex; align-items: center; text-align: center; justify-content: space-between;">
                 <MudDatePicker T="DateTime?" DateFormat="yyyy" Label="Год смерти"  @bind-Date="_parsonalion.Death"/>
+
+                <MudTooltip Text="Можете не вписывать значение если не известно">
+                    <MudIconButton Icon="@Icons.Material.Filled.QuestionMark" aria-label="Вопрос" Size="Size.Small"/>
+                </MudTooltip>
             </div>
 
             <MudTextField T="string?" @bind-Value="_parsonalion.PlaceOfDeath" Label="Место смерти"/>
@@ -51,8 +59,12 @@
                 <h3 class="card-title text-center mb-3 fw-light fs-5">Образование</h3>
 
                 <div>
-                    <div style="margin-top: 10px; margin-bottom: 10px;">
-                        <MudDatePicker T="DateTime?" DateFormat="dd.MM.yyyy" Label="Год поступление" @bind-Date="_parsonalion.Education.YearAdmission"/>
+                    <div style="margin-top: 10px; margin-bottom: 10px; display: flex; align-items: center; text-align: center; justify-content: space-between;">
+                        <MudDatePicker T="DateTime?" DateFormat="yyyy" Label="Год поступление" @bind-Date="_parsonalion.Education.YearAdmission"/>
+
+                        <MudTooltip Text="Можете не вписывать значение если не известно">
+                            <MudIconButton Icon="@Icons.Material.Filled.QuestionMark" aria-label="Вопрос" Size="Size.Small"/>
+                        </MudTooltip>
                     </div>
 
                     <MudTextField @bind-Value="_parsonalion.Education.Institution" Label="Учреждение образования"/>
@@ -69,8 +81,12 @@
                         </MudSelect>
                     </div>
 
-                    <div style="margin-top: 10px; margin-bottom: 10px;">
+                    <div style="margin-top: 10px; margin-bottom: 10px; display: flex; align-items: center; text-align: center; justify-content: space-between;">
                         <MudDatePicker T="DateTime?" DateFormat="yyyy" DisplayFormat="yyyy" Label="Год выпуска" @bind-Date="_parsonalion.Education.YearOfRease"/>
+
+                        <MudTooltip Text="Можете не вписывать значение если не известно">
+                            <MudIconButton Icon="@Icons.Material.Filled.QuestionMark" aria-label="Вопрос" Size="Size.Small"/>
+                        </MudTooltip>
                     </div>
                 </div>
             </div>
@@ -79,8 +95,12 @@
                 <h3 class="card-title text-center mb-3 fw-light fs-5">Меры государственного воздействия</h3>
 
                 <div>
-                    <div style="margin-top: 10px; margin-bottom: 10px;">
+                    <div style="margin-top: 10px; margin-bottom: 10px; display: flex; align-items: center; text-align: center; justify-content: space-between;">
                         <MudDatePicker T="DateTime?" DateFormat="dd.MM.yyyy"  Label="Год ареста" @bind-Date="_parsonalion.State.YearArrest"/>
+
+                        <MudTooltip Text="Можете не вписывать значение если не известно">
+                            <MudIconButton Icon="@Icons.Material.Filled.QuestionMark" aria-label="Вопрос" Size="Size.Small"/>
+                        </MudTooltip>
                     </div>
 
                     <h4 class="card-title text-center mb-3 fw-light fs-5">Приговор</h4>
@@ -91,12 +111,20 @@
                                          CoerceText="@coerceText" CoerceValue="@coerceValue" AdornmentColor="Color.Primary" />
                     </div>
 
-                    <div style="margin-top: 10px; margin-bottom: 10px;">
+                    <div style="margin-top: 10px; margin-bottom: 10px; display: flex; align-items: center; text-align: center; justify-content: space-between;">
                         <MudDatePicker T="DateTime?" DateFormat="dd.MM.yyyy" Label="Год приговора" @bind-Date="_parsonalion.State.YearSentence"/>
+
+                        <MudTooltip Text="Можете не вписывать значение если не известно">
+                            <MudIconButton Icon="@Icons.Material.Filled.QuestionMark" aria-label="Вопрос" Size="Size.Small"/>
+                        </MudTooltip>
                     </div>
 
-                    <div style="margin-top: 10px; margin-bottom: 10px;">
+                    <div style="margin-top: 10px; margin-bottom: 10px; display: flex; align-items: center; text-align: center; justify-content: space-between;">
                         <MudDatePicker T="DateTime?" DateFormat="dd.MM.yyyy" Label="Год реабелитации" @bind-Date="_parsonalion.State.YearRehabilitation"/>
+
+                        <MudTooltip Text="Можете не вписывать значение если не известно">
+                            <MudIconButton Icon="@Icons.Material.Filled.QuestionMark" aria-label="Вопрос" Size="Size.Small"/>
+                        </MudTooltip>
                     </div>
 
                     <MudTextField @bind-Value="_parsonalion.State.Rehabilitaion" Label="Реабилитирующий орган"/>
@@ -107,14 +135,22 @@
                 <h3 class="card-title text-center mb-3 fw-light fs-5">Церковная ориентация</h3>
 
                 <div>
-                    <div style="margin-top: 10px; margin-bottom: 10px;">
+                    <div style="margin-top: 10px; margin-bottom: 10px; display: flex; align-items: center; text-align: center; justify-content: space-between;">
                         <MudDatePicker T="DateTime?" DateFormat="dd.MM.yyyy" Label="Год отпадения" @bind-Date="_parsonalion.Oriention.YearFall"/>
+
+                        <MudTooltip Text="Можете не вписывать значение если не известно">
+                            <MudIconButton Icon="@Icons.Material.Filled.QuestionMark" aria-label="Вопрос" Size="Size.Small"/>
+                        </MudTooltip>
                     </div>
 
                     <MudTextField @bind-Value="_parsonalion.Oriention.Oriention" Label="Церковная ориентация"/>
 
-                    <div style="margin-top: 10px; margin-bottom: 10px;">
+                    <div style="margin-top: 10px; margin-bottom: 10px; display: flex; align-items: center; text-align: center; justify-content: space-between;">
                         <MudDatePicker T="DateTime?" DateFormat="dd.MM.yyyy" Label="Год возрата" @bind-Date="_parsonalion.Oriention.YearRefund"/>
+
+                        <MudTooltip Text="Можете не вписывать значение если не известно">
+                            <MudIconButton Icon="@Icons.Material.Filled.QuestionMark" aria-label="Вопрос" Size="Size.Small"/>
+                        </MudTooltip>
                     </div>
                 </div>
             </div>
@@ -123,16 +159,24 @@
                 <h3 class="card-title text-center mb-3 fw-light fs-5">Сан</h3>
 
                 <div>
-                    <div style="margin-top: 10px; margin-bottom: 10px;">
+                    <div style="margin-top: 10px; margin-bottom: 10px; display: flex; align-items: center; text-align: center; justify-content: space-between;">
                         <MudDatePicker T="DateTime?" DateFormat="dd.MM.yyyy"  Label="Год рукоположения" @bind-Date="_parsonalion.Sun.YearOrdinations"/>
+
+                        <MudTooltip Text="Можете не вписывать значение если не известно">
+                            <MudIconButton Icon="@Icons.Material.Filled.QuestionMark" aria-label="Вопрос" Size="Size.Small"/>
+                        </MudTooltip>
                     </div>
 
                     <MudAutocomplete T="string" Label="Награда" @bind-Value="selectedSunName" SearchFunc="@SearchAward"
                                      ResetValueOnEmptyText="@resetValueOnEmptyText"
                                      CoerceText="@coerceText" CoerceValue="@coerceValue" AdornmentColor="Color.Primary" />
 
-                    <div style="margin-top: 10px; margin-bottom: 10px;">
+                    <div style="margin-top: 10px; margin-bottom: 10px; display: flex; align-items: center; text-align: center; justify-content: space-between;">
                         <MudDatePicker T="DateTime?" DateFormat="dd.MM.yyyy"  Label="Год снятия сана" @bind-Date="_parsonalion.Sun.YearDefrock"/>
+
+                        <MudTooltip Text="Можете не вписывать значение если не известно">
+                            <MudIconButton Icon="@Icons.Material.Filled.QuestionMark" aria-label="Вопрос" Size="Size.Small"/>
+                        </MudTooltip>
                     </div>
                 </div>
             </div>
@@ -141,8 +185,12 @@
                 <h3 class="card-title text-center mb-3 fw-light fs-5">Награды</h3>
 
                 <div>
-                    <div style="margin-top: 10px; margin-bottom: 10px;">
+                    <div style="margin-top: 10px; margin-bottom: 10px; display: flex; align-items: center; text-align: center; justify-content: space-between;">
                         <MudDatePicker T="DateTime?" DateFormat="dd.MM.yyyy"  Label="Год награждения" @bind-Date="_parsonalion.Award.YearAward"/>
+
+                        <MudTooltip Text="Можете не вписывать значение если не известно">
+                            <MudIconButton Icon="@Icons.Material.Filled.QuestionMark" aria-label="Вопрос" Size="Size.Small"/>
+                        </MudTooltip>
                     </div>
 
                     <MudAutocomplete T="string" Label="Награда" @bind-Value="selectedAward" SearchFunc="@SearchAward"
@@ -151,8 +199,12 @@
                 </div>
             </div>
 
-            <div style="margin-top: 10px; margin-bottom: 10px;">
+            <div style="margin-top: 10px; margin-bottom: 10px; display: flex; align-items: center; text-align: center; justify-content: space-between;">
                 <MudDatePicker T="DateTime?" DateFormat="dd.MM.yyyy"  Label="Год упоминания" @bind-Date="_parsonalion.YearMention"/>
+
+                <MudTooltip Text="Можете не вписывать значение если не известно">
+                    <MudIconButton Icon="@Icons.Material.Filled.QuestionMark" aria-label="Вопрос" Size="Size.Small"/>
+                </MudTooltip>
             </div>
 
             <MudTextField @bind-Value="_parsonalion.Note" Label="Примечания"/>
@@ -379,6 +431,11 @@
         }
         
         _parsonalion.FillEmptyFields();
+        _parsonalion.Education.FillEmptyFields();
+        _parsonalion.Oriention.FillEmptyFields();
+        _parsonalion.Award.FillEmptyFields();
+        _parsonalion.Sun.FillEmptyFields();
+        _parsonalion.State.FillEmptyFields();
         
         _context.Parsonalions.Add(_parsonalion);
         _context.SaveChanges();

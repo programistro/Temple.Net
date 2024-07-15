@@ -28,22 +28,32 @@
                                  CoerceText="@coerceText" CoerceValue="@coerceValue" AdornmentColor="Color.Primary" />
             </div>
 
-            <div style="margin-top: 10px; margin-bottom: 10px;">
-                <MudDatePicker TValue="DateTime?" DateFormat="dd.MM.yyyy"
-                               Placeholder="Год основания" @bind-Date="_temple.DateStart" Label="Год основания"/>
+            <div style="margin-top: 10px; margin-bottom: 10px; display: flex; align-items: center; text-align: center; justify-content: space-between;">
+                <MudDatePicker TValue="DateTime?" DateFormat="dd.MM.yyyy" @bind-Date="_temple.DateStart" Label="Год основания" Style="width: 100%"/>
+
+                <MudTooltip Text="Можете не вписывать значение если не известно">
+                    <MudIconButton Icon="@Icons.Material.Filled.QuestionMark" aria-label="Вопрос" Size="Size.Small"/>
+                </MudTooltip>
             </div>
 
             <div>
                 <div>
-
-                    <div style="margin-top: 10px; margin-bottom: 10px;">
+                    <div style="margin-top: 10px; margin-bottom: 10px; display: flex; align-items: center; text-align: center; justify-content: space-between;">
                         <MudDatePicker TValue="DateTime?" DateFormat="dd.MM.yyyy"
                                        Label="Год закрытия" @bind-Date="_temple.DateEnd"/>
+
+                        <MudTooltip Text="Можете не вписывать значение если не известно">
+                            <MudIconButton Icon="@Icons.Material.Filled.QuestionMark" aria-label="Вопрос" Size="Size.Small"/>
+                        </MudTooltip>
                     </div>
 
-                    <div style="margin-top: 10px; margin-bottom: 10px;">
+                    <div style="margin-top: 10px; margin-bottom: 10px; display: flex; align-items: center; text-align: center; justify-content: space-between;">
                         <MudDatePicker TValue="DateTime?" DateFormat="dd.MM.yyyy" Label="Год приспособления"
                                        @bind-Date="_temple.YearAdaptation"/>
+
+                        <MudTooltip Text="Можете не вписывать значение если не известно">
+                            <MudIconButton Icon="@Icons.Material.Filled.QuestionMark" aria-label="Вопрос" Size="Size.Small"/>
+                        </MudTooltip>
                     </div>
 
                     <MudAutocomplete T="string" Label="Назначение после закрытия" @bind-Value="selectedAfterClosing" SearchFunc="@SearchAfterClosing"
@@ -53,24 +63,36 @@
                 </div>
             </div>
 
-            <div style="margin-top: 10px; margin-bottom: 10px;">
+            <div style="margin-top: 10px; margin-bottom: 10px; display: flex; align-items: center; text-align: center; justify-content: space-between;">
                 <MudDatePicker TValue="DateTime?" DateFormat="dd.MM.yyyy" Label="Год уничтожения" @bind-Date="_temple.YearDestruction" />
+
+                <MudTooltip Text="Можете не вписывать значение если не известно">
+                    <MudIconButton Icon="@Icons.Material.Filled.QuestionMark" aria-label="Вопрос" Size="Size.Small"/>
+                </MudTooltip>
             </div>
 
             <div>
                 <h3 class="card-title text-center mb-3 fw-light fs-5">Церковная ориентация</h3>
 
                 <div>
-                    <div style="margin-top: 10px; margin-bottom: 10px;">
+                    <div style="margin-top: 10px; margin-bottom: 10px; display: flex; align-items: center; text-align: center; justify-content: space-between;">
                         <MudDatePicker TValue="DateTime?" DateFormat="dd.MM.yyyy" Label="Год отпадения" @bind-Date="_temple.Oriention.YearFall" />
+
+                        <MudTooltip Text="Можете не вписывать значение если не известно">
+                            <MudIconButton Icon="@Icons.Material.Filled.QuestionMark" aria-label="Вопрос" Size="Size.Small"/>
+                        </MudTooltip>
                     </div>
 
                     <MudAutocomplete T="string" Label="Церковная ориентация" @bind-Value="selectedOriention" SearchFunc="@SearchOriention"
                                      ResetValueOnEmptyText="@resetValueOnEmptyText"
                                      CoerceText="@coerceText" CoerceValue="@coerceValue" AdornmentColor="Color.Primary" />
 
-                    <div style="margin-top: 10px; margin-bottom: 10px;">
+                    <div style="margin-top: 10px; margin-bottom: 10px; display: flex; align-items: center; text-align: center; justify-content: space-between;">
                         <MudDatePicker DateFormat="dd.MM.yyyy" Label="Год возрата" @bind-Date="_temple.Oriention.YearRefund"/>
+
+                        <MudTooltip Text="Можете не вписывать значение если не известно">
+                            <MudIconButton Icon="@Icons.Material.Filled.QuestionMark" aria-label="Вопрос" Size="Size.Small"/>
+                        </MudTooltip>
                     </div>
                 </div>
             </div>
@@ -79,8 +101,12 @@
                 <h3 class="card-title text-center mb-3 fw-light fs-5">Количество прихожан</h3>
 
                 <div>
-                    <div style="margin-top: 10px; margin-bottom: 10px;">
+                    <div style="margin-top: 10px; margin-bottom: 10px; display: flex; align-items: center; text-align: center; justify-content: space-between;">
                         <MudDatePicker DateFormat="dd.MM.yyyy" Label="Год" @bind-Date="_temple.ParshYear"/>
+
+                        <MudTooltip Text="Можете не вписывать значение если не известно">
+                            <MudIconButton Icon="@Icons.Material.Filled.QuestionMark" aria-label="Вопрос" Size="Size.Small"/>
+                        </MudTooltip>
                     </div>
 
                     <MudTextField T="int?" @bind-value="_temple.Quantity" Label="Количество"/>

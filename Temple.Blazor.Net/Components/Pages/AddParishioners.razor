@@ -63,16 +63,28 @@
                 </MudSelect>
             </div>
 
-            <div style="margin-top: 10px; margin-bottom: 10px;">
+            <div style="margin-top: 10px; margin-bottom: 10px; display: flex; align-items: center; text-align: center; justify-content: space-between;">
                 <MudDatePicker T="DateTime?" DateFormat="yyy" Label="Время присоединения к религиозному культу" @bind-Date="_parishioners.DateJoinRelligios"/>
+
+                <MudTooltip Text="Можете не вписывать значение если не известно">
+                    <MudIconButton Icon="@Icons.Material.Filled.QuestionMark" aria-label="Вопрос" Size="Size.Small"/>
+                </MudTooltip>
             </div>
 
-            <div style="margin-top: 10px; margin-bottom: 10px;">
+            <div style="margin-top: 10px; margin-bottom: 10px; display: flex; align-items: center; text-align: center; justify-content: space-between;">
                 <MudDatePicker T="DateTime?" DateFormat="yyy" Label="Год упоменания" @bind-Date="_parishioners.YearMention"/>
+
+                <MudTooltip Text="Можете не вписывать значение если не известно">
+                    <MudIconButton Icon="@Icons.Material.Filled.QuestionMark" aria-label="Вопрос" Size="Size.Small"/>
+                </MudTooltip>
             </div>
 
-            <div style="margin-top: 10px; margin-bottom: 10px;">
+            <div style="margin-top: 10px; margin-bottom: 10px; display: flex; align-items: center; text-align: center; justify-content: space-between;">
                 <MudDatePicker T="DateTime?" DateFormat="yyy" Label="Год возрата" @bind-Date="_parishioners.YearRestart"/>
+
+                <MudTooltip Text="Можете не вписывать значение если не известно">
+                    <MudIconButton Icon="@Icons.Material.Filled.QuestionMark" aria-label="Вопрос" Size="Size.Small"/>
+                </MudTooltip>
             </div>
 
             <MudTextField Label="Примичания" @bind-Value="_parishioners.Note"/>
