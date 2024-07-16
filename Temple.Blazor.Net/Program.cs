@@ -39,11 +39,6 @@ builder.Services.AddMudServices(config =>
 builder.Services.AddAuthorizationCore();
 builder.Services.AddMudBlazorDialog();
 builder.Services.AddDbContextFactory<AppDbContext>();
-// builder.Services.AddIdentity<User, IdentityRole>(options => options.SignIn.RequireConfirmedAccount = false)
-//     .AddEntityFrameworkStores<UserDbContext>()
-//     .AddSignInManager()
-//     .AddDefaultTokenProviders();
-//builder.Services.AddCascadingAuthenticationState();
 
 var app = builder.Build();
 
@@ -54,8 +49,6 @@ if (!app.Environment.IsDevelopment())
     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
-
-app.MapBlazorHub();
 
 app.UseHttpsRedirection();
 
