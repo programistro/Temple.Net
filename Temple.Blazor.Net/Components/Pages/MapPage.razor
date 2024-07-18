@@ -10,59 +10,27 @@
     }
 </style>
 
-<div style="height: 500px;">
-    <OpenStreetMap ApiKey=@(config.GetValue<string>("Main:OSMapKey")) Zoom="@zoom" Center="@(defPosition)" MapClick="@MapClick" MarkerClick="@MarkerClick">
-        <Markers>
-            @* <MapMarker Title="123" Label="123" Position="@(CenterMap)" /> *@
-            @* <MapMarker Title="123" Label="122222223" Position="@(CenterMap)" /> *@
-        </Markers>
-    </OpenStreetMap>
-</div>
+<div id="map" style="height: 400px; width: 100%;"></div>
 
 @code {
-    public MapPosition position;
-
-    private MapPosition? defPosition;
-    
-    protected override void OnInitialized()
+    protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        defPosition = new MapPosition() { Lat = config.GetValue<double>("Main:DefLat"), Lng = config.GetValue<double>("Main:DefLng") };
-
-        MapMarker marker = new();
-        
-        marker.Position = defPosition;
-        marker.Label = "Заметка";
-        marker.Title = "Какая то заметка";
+        if (firstRender)
+        {
+            await JSRuntime.InvokeVoidAsync("initMap");
+            await JSRuntime.InvokeVoidAsync("console.log", "Hello, world!");
+        }
     }
 
-    public void MapClickEvent(MapClickEventArgs args)
+    [JSInvokable]
+    public static void ReceiveCoordinates(double[] coordinates)
     {
-        //events.Add(DateTime.Now, $"Map clicked at Lat: {args.Position.Lat}, Lng: {args.Position.Lng}");
-
-        if (args != null) position = args.Position;
-
-        //btnActive = !(position.Lng == defPosition.Lng && position.Lat == defPosition.Lat);
-        //actualJson = JsonConvert.SerializeObject(args);
-
-        //StateHasChanged();
-    }
-    
-    int zoom = 11;
-
-    [Parameter]
-    public MapPosition CenterMap { get; set; }
-
-    [Parameter]
-    public EventCallback<MapClickEventArgs> Click { get; set; }
-
-    void MapClick(MapClickEventArgs args)
-    {
-        StateHasChanged();
-        Click.InvokeAsync(args);
-    }
-
-    void MarkerClick(MapMarker marker)
-    {
-        StateHasChanged();
+        if (coordinates.Length >= 2) // Проверяем, что массив содержит хотя бы два элемента
+        {
+            double lat = coordinates[0];
+            double lng = coordinates[1];
+            Console.WriteLine($"Received marker coordinates: {lat}, {lng}");
+            // Здесь вы можете добавить логику для обработки полученных координат
+        }
     }
 }
