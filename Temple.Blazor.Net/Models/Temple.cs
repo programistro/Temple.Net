@@ -78,4 +78,10 @@ public class Temple
     /// Населенай пункт
     /// </summary>
     public string? Locality { get; set; }
+
+    public double Lat { get; set; }
+
+    public double Lng { get; set; }
+
+    public string TempleNameOnMap { get;set; }
 }
