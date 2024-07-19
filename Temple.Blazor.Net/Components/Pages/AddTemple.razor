@@ -166,9 +166,10 @@
             </div>
 
             <div>
-                <div style="height: 500px; margin-top: 20px;">
+                @* <div style="height: 500px; margin-top: 20px;">
                     <OSMap Click="@MapClickEvent" CenterMap="@defPosition" />
-                </div>
+                </div> *@
+                <div id="map" style="height: 400px; width: 100%;"></div>
             </div>
 
             <div class="d-grid mb-2">
@@ -406,6 +407,10 @@
     
     private bool resetValueOnEmptyText;
     
+    private double Lng;
+
+    private double Lat;
+
     private async Task<IEnumerable<string>> SearchType(string value, CancellationToken token)
     {
         await Task.Delay(5, token);
@@ -595,7 +600,7 @@
 
     private async Task Sumbit()
     {
-        string url = $"https://catalog.api.2gis.com/3.0/items/geocode?lon={defPosition.Lng}&lat={defPosition.Lat}&fields=items.point&key=2c437b2b-790f-4f22-9ec5-3889ea3e0bc4";
+        string url = $"https://catalog.api.2gis.com/3.0/items/geocode?lon={Lng}&lat={Lat}&fields=items.point&key=2c437b2b-790f-4f22-9ec5-3889ea3e0bc4";
 
         using HttpClient client = new HttpClient();
         HttpResponseMessage response = await client.GetAsync(url.Replace(",", "."));
@@ -617,7 +622,7 @@
                 Console.WriteLine($"Name: {item.name}");
                 Console.WriteLine($"Subtype: {item.subtype}");
                 Console.WriteLine();
-                _temple.Province = item.full_name;
+                _temple.TempleNameOnMap = item.full_name;
 
                 break;
             }
@@ -643,6 +648,36 @@
             _context.SaveChanges();
             
             NavigationManager.NavigateTo("/?show=true&obj=храм", true);
+        }
+    }
+
+    private DotNetObjectReference<AddTemple>? dotNetHelper;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            dotNetHelper = DotNetObjectReference.Create(this);
+            await JSRuntime.InvokeVoidAsync("initMap", dotNetHelper);
+        }
+    }
+
+    public void Dispose()
+    {
+        dotNetHelper?.Dispose();
+    }
+
+   [JSInvokable]
+    public void ReceiveCoordinates(double[] coordinates)
+    {
+        if (coordinates.Length >= 2)
+        {
+            double lat = coordinates[0];
+            double lng = coordinates[1];
+
+            Lat = lat;
+            Lng = lng;
+            Console.WriteLine($"Received marker coordinates: {lat}, {lng}");
         }
     }
 }
