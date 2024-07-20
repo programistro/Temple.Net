@@ -1,7 +1,7 @@
 ﻿@inject IConfiguration config
 @inject IJSRuntime JSRuntime
 @page "/map"
-@using OpenStreetMapForBlazor
+@inject AppDbContext _context
 @rendermode InteractiveServer
 
 <style>
@@ -19,18 +19,14 @@
         {
             await JSRuntime.InvokeVoidAsync("initMap");
             await JSRuntime.InvokeVoidAsync("console.log", "Hello, world!");
-        }
-    }
-
-    [JSInvokable]
-    public static void ReceiveCoordinates(double[] coordinates)
-    {
-        if (coordinates.Length >= 2) // Проверяем, что массив содержит хотя бы два элемента
-        {
-            double lat = coordinates[0];
-            double lng = coordinates[1];
-            Console.WriteLine($"Received marker coordinates: {lat}, {lng}");
-            // Здесь вы можете добавить логику для обработки полученных координат
+            await JSRuntime.InvokeVoidAsync("disableClickHandler");
+            foreach (var temple in _context.Temples)
+            {
+                if (temple.Lng != 0 || temple.Lat != 0)
+                {
+                    await JSRuntime.InvokeVoidAsync("addMarker", temple.Lat, temple.Lng);
+                }
+            }
         }
     }
 }

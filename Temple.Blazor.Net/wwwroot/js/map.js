@@ -1,5 +1,9 @@
+var map;
+var currentMarker = null;
+var enableClickToAddMarker = false;
+
 window.initMap = function (dotNetHelper) {
-    var map = L.map('map').setView([51.505, -0.09], 13);
+    map = L.map('map').setView([51.505, -0.09], 13);
 
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
@@ -12,6 +16,7 @@ window.initMap = function (dotNetHelper) {
     window.currentMarker = null;
 
     map.on('click', function(e) {
+        if (!enableClickToAddMarker) return;
         var coordinates = e.latlng;
         
         if (window.currentMarker !== null) {
@@ -23,4 +28,23 @@ window.initMap = function (dotNetHelper) {
         // Используем dotNetHelper для вызова нестатического метода ReceiveCoordinates
         dotNetHelper.invokeMethodAsync('ReceiveCoordinates', [coordinates.lat, coordinates.lng]);
     });
+};
+
+window.enableClickHandler = function() {
+    enableClickToAddMarker = true;
+};
+
+// Функция для отключения обработчика клика
+window.disableClickHandler = function() {
+    enableClickToAddMarker = false;
+};
+
+window.addMarker = function(lat, lng) {
+    // Удаление предыдущего маркера, если он есть
+    if (window.currentMarker) {
+        map.removeLayer(window.currentMarker);
+    }
+
+    // Создание нового маркера и добавление его на карту
+    window.currentMarker = L.marker([lat, lng]).addTo(map);
 };
