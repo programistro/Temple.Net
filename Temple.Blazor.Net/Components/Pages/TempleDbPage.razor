@@ -46,6 +46,7 @@
         <MudTh><MudTableSortLabel SortBy="new Func<Temple, object>(x=>x.Ocrug)">Округ</MudTableSortLabel></MudTh>
         <MudTh><MudTableSortLabel SortBy="new Func<Temple, object>(x=>x.Counties)">Уезды</MudTableSortLabel></MudTh>
         <MudTh><MudTableSortLabel SortBy="new Func<Temple, object>(x=>x.OrientationDiocesse)">Ориентация епапрхии</MudTableSortLabel></MudTh>
+        <MudTh><MudTableSortLabel SortBy="new Func<Temple, object>(x=>x.TempleNameOnMap)">Место на карте</MudTableSortLabel></MudTh>
     </HeaderContent>
     <ColGroup>
         @if (applyButtonPosition.DisplayApplyButtonAtStart() || (editButtonPosition.DisplayEditButtonAtStart() && editTrigger == TableEditTrigger.EditButton))
@@ -86,6 +87,7 @@
         <MudTd DataLabel="Ocrug">@context.Ocrug</MudTd>
         <MudTd DataLabel="Counties">@context.Counties</MudTd>
         <MudTd DataLabel="OrientationDiocesse">@context.OrientationDiocesse</MudTd>
+        <MudTd DataLabel="TempleNameOnMap">@context.TempleNameOnMap</MudTd>
     </RowTemplate>
     <RowEditingTemplate>
         <MudTd DataLabel="Name">
@@ -156,6 +158,9 @@
         </MudTd>
         <MudTd DataLabel="OrientationDiocesse">
             <MudTextField @bind-Value="context.OrientationDiocesse" Required />
+        </MudTd>
+        <MudTd DataLabel="TempleNameOnMap">
+            <MudTextField @bind-Value="context.TempleNameOnMap" Required />
         </MudTd>
     </RowEditingTemplate>
     <PagerContent>
@@ -243,6 +248,7 @@
             item.YearDestruction = element.YearDestruction;
             item.ParshYear = element.ParshYear;
             item.Province = element.Province;
+            item.TempleNameOnMap = element.TempleNameOnMap;
 
             context.Temples.Update(item);
             context.SaveChanges();

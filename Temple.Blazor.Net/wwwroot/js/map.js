@@ -5,6 +5,10 @@ window.initMap = function (dotNetHelper) {
         attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
     }).addTo(map);
 
+    map.locate({setView: true, maxZoom: 10});
+    
+    L.control.locate().addTo(map);
+    
     window.currentMarker = null;
 
     map.on('click', function(e) {
