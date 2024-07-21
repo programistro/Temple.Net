@@ -19,14 +19,16 @@
     <MudCard>
         <MudCardContent>
             <h5 class="card-title text-center mb-3 fw-light fs-5">Добавить персоналии</h5>
-
+            
+            <MudAutocomplete T="string" Label="Название храма" @bind-Value="_parishioners.TempleName" SearchFunc="@SearchTemple"
+                             ResetValueOnEmptyText="@resetValueOnEmptyText"
+                             CoerceText="@coerceText" CoerceValue="@coerceValue" AdornmentColor="Color.Primary" />
+            
             <MudTextField Label="Фамилия" @bind-Value="_parishioners.LastName"/>
 
             <MudTextField Label="Имя" @bind-Value="_parishioners.Name"/>
 
             <MudTextField Label="Отчество" @bind-Value="_parishioners.Otch"/>
-
-            <MudTextField Label="Название храма" @bind-Value="_parishioners.TempleName"/>
 
             <MudTextField Label="Возраст" @bind-Value="_parishioners.Age" T="int?"/>
 
@@ -125,14 +127,21 @@
     private int selectedGender = 1;
 
     private int selectedEstate = 1;
-
-
-    MapPosition? defPosition;
+    
 
     private Parishioners? _parishioners = new()
     {
         Id = Guid.NewGuid().ToString("N"),
     };
+
+    private IQueryable<string> _temples;
+    
+    protected override void OnInitialized()
+    {
+        _temples = _context.Temples
+            .Where(x => x.Name != "Пусто")
+            .Select(x => x.Name);
+    }
 
     private long maxFileSize = 1024 * 500;
 
@@ -176,6 +185,15 @@
         if (string.IsNullOrEmpty(value))
             return socialsStatus;
         return socialsStatus.Where(x => x.Contains(value, StringComparison.InvariantCultureIgnoreCase));
+    }
+    
+    private async Task<IEnumerable<string>> SearchTemple(string value, CancellationToken token)
+    {
+        await Task.Delay(5, token);
+
+        if (string.IsNullOrEmpty(value))
+            return _temples;
+        return _temples.Where(x => x.Contains(value, StringComparison.InvariantCultureIgnoreCase));
     }
     
     private async Task Sumbit()
@@ -228,7 +246,7 @@
                 _parishioners.EstateBeforeRevolution = "Не указано";
                 break;
         }
-
+        
         _parishioners.FillEmptyFields();
         
         _context.Parishioners.Add(_parishioners);

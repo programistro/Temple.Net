@@ -10,7 +10,14 @@
     }
 </style>
 
-<div id="map" style="height: 400px; width: 100%;"></div>
+<MudGrid Justify="Justify.Center" Style="margin-left: 100px;">
+    <MudCard>
+        <MudCardContent>
+            
+        </MudCardContent>
+    </MudCard>
+    <div id="map" style="height: 85vh; width: 66%; margin-bottom: 50px; margin-top: 20px"></div>
+</MudGrid>
 
 @code {
     protected override async Task OnAfterRenderAsync(bool firstRender)
@@ -24,7 +31,7 @@
             {
                 if (temple.Lng != 0 || temple.Lat != 0)
                 {
-                    await JSRuntime.InvokeVoidAsync("addMarker", temple.Lat, temple.Lng);
+                    await JSRuntime.InvokeVoidAsync("addMarker", temple.Lat, temple.Lng, temple.Name);
                 }
             }
         }

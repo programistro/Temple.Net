@@ -19,8 +19,10 @@ window.initMap = function (dotNetHelper) {
         if (!enableClickToAddMarker) return;
         var coordinates = e.latlng;
         
-        if (window.currentMarker !== null) {
-            map.removeLayer(window.currentMarker);
+        if(enableClickToAddMarker == true){
+            if (window.currentMarker !== null) {
+                map.removeLayer(window.currentMarker);
+            }
         }
         
         window.currentMarker = L.marker([coordinates.lat, coordinates.lng]).addTo(map);
@@ -39,12 +41,9 @@ window.disableClickHandler = function() {
     enableClickToAddMarker = false;
 };
 
-window.addMarker = function(lat, lng) {
-    // Удаление предыдущего маркера, если он есть
-    if (window.currentMarker) {
-        map.removeLayer(window.currentMarker);
-    }
+window.addMarker = function(lat, lng, title) {
+    currentMarker = L.marker([lat, lng]).addTo(map);
 
-    // Создание нового маркера и добавление его на карту
-    window.currentMarker = L.marker([lat, lng]).addTo(map);
+    // Привязка всплывающего окна к маркеру
+    currentMarker.bindPopup(title).openPopup();
 };

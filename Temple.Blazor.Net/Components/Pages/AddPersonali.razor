@@ -27,11 +27,13 @@
             <div style="margin-top: 10px; margin-bottom: 10px; display: flex; align-items: center; text-align: center; justify-content: space-between;">
                 <MudDatePicker T="DateTime?" DateFormat="yyyy" @bind-Date="_parsonalion.Born" Label="Год рождения"/>
 
-                <MudTextField T="string?" @bind-Value="_parsonalion.PlaceBirths" Label="Место рождение"/>
-
                 <MudTooltip Text="Можете не вписывать значение если не известно">
                     <MudIconButton Icon="@Icons.Material.Filled.QuestionMark" aria-label="Вопрос" Size="Size.Small"/>
                 </MudTooltip>
+            </div>
+
+            <div style="margin-top: 10px; margin-bottom: 10px; display: flex; align-items: center; text-align: center; justify-content: space-between;">
+                <MudTextField T="string?" @bind-Value="_parsonalion.PlaceBirths" Label="Место рождение"/>
             </div>
 
             <div style="margin-top: 10px; margin-bottom: 10px; display: flex; align-items: center; text-align: center; justify-content: space-between;">
