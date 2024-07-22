@@ -7,19 +7,224 @@
 <style>
     footer {
         position: absolute;
+        display: none;
     }
+    /** {*/
+    /*    outline: 4px solid green !important;*/
+    /*}*/
 </style>
 
-<MudGrid Justify="Justify.Center" Style="margin-left: 100px;">
-    <MudCard>
-        <MudCardContent>
-            
-        </MudCardContent>
-    </MudCard>
-    <div id="map" style="height: 85vh; width: 66%; margin-bottom: 50px; margin-top: 20px"></div>
+<MudPopoverProvider @rendermode="InteractiveServer"/>
+<MudSnackbarProvider @rendermode="InteractiveServer"/>
+
+<MudGrid Spacing="4" Justify="Justify.Center">
+    <MudItem>
+        <MudCard Style="width: 228px; margin-left: 50px;">
+            <MudCardContent>
+                <div>
+                    <MudSelect T="string" Label="Церковная ориентация" @bind-Value="selectedOriention">
+                        @foreach (var item in _context.Temples)
+                        {
+                            <MudSelectItem Value="@($"{item.OrientationDiocesse}")"/>
+                        }
+                    </MudSelect>
+                    
+                    <MudSelect T="string" Label="Епархия" @bind-Value="selectedDiocese">
+                        @foreach (var item in _context.Temples)
+                        {
+                            <MudSelectItem Value="@($"{item.OrientationDiocesse}")"/>
+                        }
+                    </MudSelect>
+                    
+                    <MudSelect T="string" Label="Благочиние" @bind-Value="selectedDiocese">
+                        @foreach (var item in _context.Temples)
+                        {
+                            <MudSelectItem Value="@($"{item.OrientationDiocesse}")"/>
+                        }
+                    </MudSelect>
+                </div>
+            </MudCardContent>
+        </MudCard>
+    </MudItem>
+    <MudItem>
+        <MudCard Style="width: 228px;">
+            <MudCardContent>
+                <div>
+                    <MudSelect T="string" Label="Губерния" @bind-Value="selectedProvince">
+                        @foreach (var item in _context.Temples)
+                        {
+                            <MudSelectItem Value="@($"{item.Province}")"/>
+                        }
+                    </MudSelect>
+    
+                    <MudSelect T="string" Label="Уезд" @bind-Value="selectedCounties">
+                        @foreach (var item in _context.Temples)
+                        {
+                            <MudSelectItem Value="@($"{item.Counties}")"/>
+                        }
+                    </MudSelect>
+                </div>
+            </MudCardContent>
+        </MudCard>
+    </MudItem>
+    <MudItem>
+        <MudCard Style="width: 228px;">
+            <MudCardContent>
+                <div>
+                    <MudSelect T="string" Label="Округ" @bind-Value="selectedOcrug">
+                        @foreach (var item in _context.Temples)
+                        {
+                            <MudSelectItem Value="@($"{item.Ocrug}")"/>
+                        }
+                    </MudSelect>
+
+                    <MudSelect T="string" Label="Район округа" @bind-Value="selectedRayonOcrug">
+                        @foreach (var item in _context.Temples)
+                        {
+                            <MudSelectItem Value="@($"{item.RayonDistrict}")"/>
+                        }
+                    </MudSelect>
+                </div>
+            </MudCardContent>
+        </MudCard>
+    </MudItem>
+    <MudItem>
+        <MudCard Style="width: 228px;">
+            <MudCardContent>
+                <div>
+                    <MudSelect T="string" Label="Район области" @bind-Value="selectedRayonRegion">
+                        @foreach (var item in _context.Temples)
+                        {
+                            <MudSelectItem Value="@($"{item.SeparateRegion}")"/>
+                        }
+                    </MudSelect>
+
+                    <MudSelect T="string" Label="Отб район" @bind-Value="selectedRegion">
+                        @foreach (var item in _context.Temples)
+                        {
+                            <MudSelectItem Value="@($"{item.Region}")"/>
+                        }
+                    </MudSelect>
+                </div>
+            </MudCardContent>
+        </MudCard>
+    </MudItem>
+    <MudItem>
+        <MudCard Style="width: 228px;">
+            <MudCardContent>
+                <div>
+                    <MudSelect T="string" Label="Храм" @bind-Value="selectedTemple">
+                        @foreach (var item in _context.Temples)
+                        {
+                            <MudSelectItem Value="@($"{item.Name}")"/>
+                        }
+                    </MudSelect>
+
+                    <MudSelect T="string" Label="Тип храма" @bind-Value="selectedTempleType">
+                        @foreach (var item in _context.Temples)
+                        {
+                            <MudSelectItem Value="@($"{item.Type}")"/>
+                        }
+                    </MudSelect>
+                    
+                    <MudSelect T="string" Label="Насленый пункт" @bind-Value="selectedLocality">
+                        @foreach (var item in _context.Temples)
+                        {
+                            <MudSelectItem Value="@($"{item.Locality}")"/>
+                        }
+                    </MudSelect>
+                </div>
+            </MudCardContent>
+        </MudCard>
+    </MudItem>
+    <MudItem>
+        <MudCard Style="width: 228px;">
+            <MudCardContent>
+                <div>
+                    <MudSelect T="string" Label="Фамилия" @bind-Value="selectedLastName">
+                        @foreach (var item in _context.Parsonalions)
+                        {
+                            <MudSelectItem Value="@($"{item.LastName}")"/>
+                        }
+                    </MudSelect>
+
+                    <MudSelect T="string" Label="Имя" @bind-Value="selectedName">
+                        @foreach (var item in _context.Parsonalions)
+                        {
+                            <MudSelectItem Value="@($"{item.Name}")"/>
+                        }
+                    </MudSelect>
+                    
+                    <MudSelect T="string" Label="Отчество" @bind-Value="selectedOtch">
+                        @foreach (var item in _context.Parsonalions)
+                        {
+                            <MudSelectItem Value="@($"{item.Otch}")"/>
+                        }
+                    </MudSelect>
+                    
+                    <MudSelect T="string" Label="Монашеское имя" @bind-Value="selectedMonaxName">
+                        @foreach (var item in _context.Parsonalions)
+                        {
+                            <MudSelectItem Value="@($"{item.MonaxName}")"/>
+                        }
+                    </MudSelect>
+                </div>
+            </MudCardContent>
+        </MudCard>
+    </MudItem>
+    <MudFlexBreak/>
+    <MudItem>
+        <MudPaper Height="580px" Width="192vh">
+            <div id="map" style="height: 580px; width: 100%;"></div>
+        </MudPaper>
+    </MudItem>
 </MudGrid>
 
 @code {
+    private string selectedSeach;
+
+    private string selectedOriention;
+
+    /// <summary>
+    /// Губеиния
+    /// </summary>
+    private string selectedProvince;
+
+    ///<summary>
+    /// Уезды
+    /// </summary>
+    private string selectedCounties;
+    
+    /// <summary>
+    /// Церковная ориентация
+    /// </summary>
+    private string selectedDiocese;
+
+    private string selectedOcrug;
+    
+    private string selectedRayonOcrug;
+    
+    private string selectedRayonRegion;
+    
+    private string selectedRegion;
+    
+    private string selectedTemple;
+    
+    private string selectedTempleType;
+    
+    ///<summary>
+    /// Населеный пункт
+    /// </summary>
+    private string selectedLocality;
+
+    private string selectedName;
+    
+    private string selectedLastName;
+    
+    private string selectedOtch;
+    
+    private string selectedMonaxName;
+    
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (firstRender)
