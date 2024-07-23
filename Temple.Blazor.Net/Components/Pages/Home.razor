@@ -1,6 +1,8 @@
 ﻿@page "/"
 @using Microsoft.AspNetCore.Components.Server
+@using Temple.Net.Models
 @inject ISnackbar Snackbar
+@inject IJSRuntime JSRuntime
 @rendermode InteractiveServer
 
 <PageTitle>Домашняя страница</PageTitle>
@@ -15,15 +17,27 @@
 
 <MudSnackbarProvider @rendermode="InteractiveServer"/>
 
+<MudTextField Format="yyyy" @bind-Value="temple.YearReferences" Label="Введите год" Max="4" ErrorText="Не правильно введеная форма" RequiredError="Не правильно введеная форма  " />
+
+@code {
+    private string yearInput;
+
+    private async Task ValidateYear(FocusEventArgs e)
+    {
+           
+    }
+}
+
 @code {
     [Parameter]
     [SupplyParameterFromQuery(Name = "obj")]
     public string? Object { get; set; }
-    
+
     [Parameter]
     [SupplyParameterFromQuery(Name="show")]
     public bool? IsShowSnack { get; set; }
-    
+
+    private Temple temple = new();
 
     protected override void OnInitialized()
     {

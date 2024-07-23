@@ -83,5 +83,10 @@ public class Temple
 
     public double Lng { get; set; }
 
+    /// <summary>
+    /// Год упоминания
+    /// </summary>
+    public DateTime? YearReferences { get; set; }
+
     public string TempleNameOnMap { get;set; }
 }

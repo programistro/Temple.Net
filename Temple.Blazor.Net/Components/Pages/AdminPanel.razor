@@ -30,6 +30,9 @@
                    Position="DialogPosition.Center"
                    CloseOnEscapeKey="false"/>
 
+<MudPopoverProvider @rendermode="InteractiveServer" />
+<MudSnackbarProvider @rendermode="InteractiveServer" />
+
 <MudContainer MaxWidth="MaxWidth.Large" Class="my-4 pt-4">
     <QuickGrid Items="@context.Users">
         <Microsoft.AspNetCore.Components.QuickGrid.PropertyColumn Property="@(user => user.Email)" Sortable="true"/>
@@ -45,7 +48,11 @@
         Изменить права доступа
     </TitleContent>
     <DialogContent>
-        <MudTextField T="string" Label="Права" @bind-value="NewRole"></MudTextField>
+        <MudSelect T="string" Label="Выыберите прва доступа пользователю:" @bind-Value="NewRole">
+            <MudSelectItem Value="@("Читатель")"/>
+            <MudSelectItem Value="@("Редактор")"/>
+            <MudSelectItem Value="@("Администратор")"/>
+        </MudSelect>
     </DialogContent>
     <DialogActions>
         <MudButton Color="Color.Primary" OnClick="OnHideModalClick">Отмена</MudButton>
@@ -57,22 +64,32 @@
     private User selectUser;
 
     private bool visible = false;
-    // private Modal changeModal = default!;
 
     private string NewRole;
-    
+
     private async Task ChangeRole(User user)
     {
         var options = new DialogOptions { CloseOnEscapeKey = true };
 
         selectUser = user;
-        // changeModal.Show();
         visible = true;
     }
-    
+
     private async Task OnChangeClick()
     {
-        selectUser.Role = NewRole;
+        switch (NewRole)
+        {
+            case "Читатель":
+                selectUser.Role = "read";
+                break;
+            case "Редактор":
+                selectUser.Role = "edit";
+                break;
+            case "Администратор":
+                selectUser.Role = "admin";
+                break;
+        }
+
         context.Users.Update(selectUser);
         context.SaveChanges();
         visible = false;

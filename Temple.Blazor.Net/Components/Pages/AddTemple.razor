@@ -71,6 +71,14 @@
                 </MudTooltip>
             </div>
 
+            <div style="margin-top: 10px; margin-bottom: 10px; display: flex; align-items: center; text-align: center; justify-content: space-between;">
+                <MudDatePicker TValue="DateTime?" DateFormat="dd.MM.yyyy" Label="Год упоминания" @bind-Date="_temple.YearReferences" />
+
+                <MudTooltip Text="Можете не вписывать значение если не известно">
+                    <MudIconButton Icon="@Icons.Material.Filled.QuestionMark" aria-label="Вопрос" Size="Size.Small" />
+                </MudTooltip>
+            </div>
+
             <div>
                 <h3 class="card-title text-center mb-3 fw-light fs-5">Церковная ориентация</h3>
 
