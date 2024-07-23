@@ -25,21 +25,30 @@
                     <MudSelect T="string" Label="Церковная ориентация" @bind-Value="selectedOriention">
                         @foreach (var item in _context.Temples)
                         {
-                            <MudSelectItem Value="@($"{item.OrientationDiocesse}")"/>
+                            if (item.OrientationDiocesse != "Пусто")
+                            {
+                                <MudSelectItem Value="@($"{item.OrientationDiocesse}")"/>
+                            }
                         }
                     </MudSelect>
                     
                     <MudSelect T="string" Label="Епархия" @bind-Value="selectedDiocese">
                         @foreach (var item in _context.Temples)
                         {
-                            <MudSelectItem Value="@($"{item.OrientationDiocesse}")"/>
+                            if (item.OrientationDiocesse != "Пусто")
+                            {
+                                <MudSelectItem Value="@($"{item.OrientationDiocesse}")"/>
+                            }
                         }
                     </MudSelect>
                     
                     <MudSelect T="string" Label="Благочиние" @bind-Value="selectedDiocese">
                         @foreach (var item in _context.Temples)
                         {
-                            <MudSelectItem Value="@($"{item.OrientationDiocesse}")"/>
+                            if (item.OrientationDiocesse != "Пусто")
+                            {
+                                <MudSelectItem Value="@($"{item.OrientationDiocesse}")"/>
+                            }
                         }
                     </MudSelect>
                 </div>
@@ -53,14 +62,20 @@
                     <MudSelect T="string" Label="Губерния" @bind-Value="selectedProvince">
                         @foreach (var item in _context.Temples)
                         {
-                            <MudSelectItem Value="@($"{item.Province}")"/>
+                            if (item.Province != "Пусто")
+                            {
+                                <MudSelectItem Value="@($"{item.Province}")"/>
+                            }
                         }
                     </MudSelect>
     
                     <MudSelect T="string" Label="Уезд" @bind-Value="selectedCounties">
                         @foreach (var item in _context.Temples)
                         {
-                            <MudSelectItem Value="@($"{item.Counties}")"/>
+                            if (item.Counties != "Пусто")
+                            {
+                                <MudSelectItem Value="@($"{item.Counties}")"/>
+                            }
                         }
                     </MudSelect>
                 </div>
@@ -74,14 +89,20 @@
                     <MudSelect T="string" Label="Округ" @bind-Value="selectedOcrug">
                         @foreach (var item in _context.Temples)
                         {
-                            <MudSelectItem Value="@($"{item.Ocrug}")"/>
+                            if (item.Ocrug != "Пусто")
+                            {
+                                <MudSelectItem Value="@($"{item.Ocrug}")"/>
+                            }
                         }
                     </MudSelect>
 
                     <MudSelect T="string" Label="Район округа" @bind-Value="selectedRayonOcrug">
                         @foreach (var item in _context.Temples)
                         {
-                            <MudSelectItem Value="@($"{item.RayonDistrict}")"/>
+                            if (item.RayonDistrict != "Пусто")
+                            {
+                                <MudSelectItem Value="@($"{item.RayonDistrict}")"/>
+                            }
                         }
                     </MudSelect>
                 </div>
@@ -95,14 +116,20 @@
                     <MudSelect T="string" Label="Район области" @bind-Value="selectedRayonRegion">
                         @foreach (var item in _context.Temples)
                         {
-                            <MudSelectItem Value="@($"{item.SeparateRegion}")"/>
+                            if (item.SeparateRegion != "Пусто")
+                            {
+                                <MudSelectItem Value="@($"{item.SeparateRegion}")"/>
+                            }
                         }
                     </MudSelect>
 
                     <MudSelect T="string" Label="Отб район" @bind-Value="selectedRegion">
                         @foreach (var item in _context.Temples)
                         {
-                            <MudSelectItem Value="@($"{item.Region}")"/>
+                            if (item.Region != "Пусто")
+                            {
+                                <MudSelectItem Value="@($"{item.Region}")"/>
+                            }
                         }
                     </MudSelect>
                 </div>
@@ -116,21 +143,30 @@
                     <MudSelect T="string" Label="Храм" @bind-Value="selectedTemple">
                         @foreach (var item in _context.Temples)
                         {
-                            <MudSelectItem Value="@($"{item.Name}")"/>
+                            if (item.Name != "Пусто")
+                            { 
+                                <MudSelectItem Value="@($"{item.Name}")"/>  
+                            }
                         }
                     </MudSelect>
 
                     <MudSelect T="string" Label="Тип храма" @bind-Value="selectedTempleType">
                         @foreach (var item in _context.Temples)
                         {
-                            <MudSelectItem Value="@($"{item.Type}")"/>
+                            if (item.Type != "Пусто")
+                            {
+                                <MudSelectItem Value="@($"{item.Type}")"/>
+                            }
                         }
                     </MudSelect>
                     
                     <MudSelect T="string" Label="Насленый пункт" @bind-Value="selectedLocality">
                         @foreach (var item in _context.Temples)
                         {
-                            <MudSelectItem Value="@($"{item.Locality}")"/>
+                            if (item.Locality != "Пусто")
+                            {
+                                <MudSelectItem Value="@($"{item.Locality}")"/>
+                            }
                         }
                     </MudSelect>
                 </div>
@@ -144,28 +180,40 @@
                     <MudSelect T="string" Label="Фамилия" @bind-Value="selectedLastName">
                         @foreach (var item in _context.Parsonalions)
                         {
-                            <MudSelectItem Value="@($"{item.LastName}")"/>
+                            if (item.LastName != "Пусто")
+                            {
+                                <MudSelectItem Value="@($"{item.LastName}")"/>
+                            }
                         }
                     </MudSelect>
 
                     <MudSelect T="string" Label="Имя" @bind-Value="selectedName">
                         @foreach (var item in _context.Parsonalions)
                         {
-                            <MudSelectItem Value="@($"{item.Name}")"/>
+                            if (item.Name != "Пусто")
+                            {
+                                <MudSelectItem Value="@($"{item.Name}")"/>
+                            }
                         }
                     </MudSelect>
                     
                     <MudSelect T="string" Label="Отчество" @bind-Value="selectedOtch">
                         @foreach (var item in _context.Parsonalions)
                         {
-                            <MudSelectItem Value="@($"{item.Otch}")"/>
+                            if (item.Otch != "Пусто")
+                            {
+                                <MudSelectItem Value="@($"{item.Otch}")"/>
+                            }
                         }
                     </MudSelect>
                     
                     <MudSelect T="string" Label="Монашеское имя" @bind-Value="selectedMonaxName">
                         @foreach (var item in _context.Parsonalions)
                         {
-                            <MudSelectItem Value="@($"{item.MonaxName}")"/>
+                            if (item.MonaxName != "Пусто")
+                            {
+                                <MudSelectItem Value="@($"{item.MonaxName}")"/>
+                            }
                         }
                     </MudSelect>
                 </div>
