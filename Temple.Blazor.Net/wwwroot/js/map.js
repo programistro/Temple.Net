@@ -1,6 +1,7 @@
 var map;
 var currentMarker = null;
 var enableClickToAddMarker = false;
+var markers = [];
 
 window.initMap = function (dotNetHelper) {
     map = L.map('map').setView([51.505, -0.09], 13);
@@ -42,8 +43,20 @@ window.disableClickHandler = function() {
 };
 
 window.addMarker = function(lat, lng, title) {
-    currentMarker = L.marker([lat, lng]).addTo(map);
+    // Создание нового маркера и добавление его на карту
+    var newMarker = L.marker([lat, lng]).addTo(map);
+    newMarker.bindPopup(title).openPopup();
 
-    // Привязка всплывающего окна к маркеру
-    currentMarker.bindPopup(title).openPopup();
+    // Добавление маркера в массив
+    markers.push(newMarker);
+};
+
+window.clearAllMarkers = function() {
+    // Проходим по каждому маркеру в массиве markers
+    for (var i = 0; i < markers.length; i++) {
+        // Удаляем маркер с карты
+        map.removeLayer(markers[i]);
+    }
+    // Очищаем массив markers
+    markers = [];
 };

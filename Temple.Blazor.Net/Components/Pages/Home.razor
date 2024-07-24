@@ -15,18 +15,6 @@
     }
 </style>
 
-<MudSnackbarProvider @rendermode="InteractiveServer"/>
-
-<MudTextField Format="yyyy" @bind-Value="temple.YearReferences" Label="Введите год" Max="4" ErrorText="Не правильно введеная форма" RequiredError="Не правильно введеная форма  " />
-
-@code {
-    private string yearInput;
-
-    private async Task ValidateYear(FocusEventArgs e)
-    {
-           
-    }
-}
 
 @code {
     [Parameter]
@@ -34,10 +22,8 @@
     public string? Object { get; set; }
 
     [Parameter]
-    [SupplyParameterFromQuery(Name="show")]
+    [SupplyParameterFromQuery(Name = "show")]
     public bool? IsShowSnack { get; set; }
-
-    private Temple temple = new();
 
     protected override void OnInitialized()
     {

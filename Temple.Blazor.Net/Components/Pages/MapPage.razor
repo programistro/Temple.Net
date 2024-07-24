@@ -1,6 +1,7 @@
 ﻿@inject IConfiguration config
 @inject IJSRuntime JSRuntime
 @page "/map"
+@using Microsoft.EntityFrameworkCore
 @inject AppDbContext _context
 @rendermode InteractiveServer
 
@@ -22,18 +23,15 @@
         <MudCard Style="width: 228px; margin-left: 50px;">
             <MudCardContent>
                 <div>
-                    <MudSelect T="string" Label="Церковная ориентация" @bind-Value="selectedOriention">
-                        @foreach (var item in _context.Temples)
+                    <MudSelect T="string" Label="Церковная ориентация" @bind-Value="selectedOriention" SelectedValuesChanged="@(values => HandleFilterChange("Orientation", values.FirstOrDefault()))">
+                        @foreach (var uniqueOriention in _temples.Select(item => item.Oriention.Oriention).Where(o => o != "Пусто").Distinct())
                         {
-                            if (item.OrientationDiocesse != "Пусто")
-                            {
-                                <MudSelectItem Value="@($"{item.OrientationDiocesse}")"/>
-                            }
+                            <MudSelectItem Value="@uniqueOriention"/>
                         }
                     </MudSelect>
                     
-                    <MudSelect T="string" Label="Епархия" @bind-Value="selectedDiocese">
-                        @foreach (var item in _context.Temples)
+                    <MudSelect T="string" Label="Епархия" @bind-Value="selectedDiocese" SelectedValuesChanged="@(value => HandleFilterChange("Diocese", value.FirstOrDefault()))">
+                        @foreach (var item in _temples)
                         {
                             if (item.OrientationDiocesse != "Пусто")
                             {
@@ -43,7 +41,7 @@
                     </MudSelect>
                     
                     <MudSelect T="string" Label="Благочиние" @bind-Value="selectedDiocese">
-                        @foreach (var item in _context.Temples)
+                        @foreach (var item in _temples)
                         {
                             if (item.OrientationDiocesse != "Пусто")
                             {
@@ -60,7 +58,7 @@
             <MudCardContent>
                 <div>
                     <MudSelect T="string" Label="Губерния" @bind-Value="selectedProvince">
-                        @foreach (var item in _context.Temples)
+                        @foreach (var item in _temples)
                         {
                             if (item.Province != "Пусто")
                             {
@@ -70,7 +68,7 @@
                     </MudSelect>
     
                     <MudSelect T="string" Label="Уезд" @bind-Value="selectedCounties">
-                        @foreach (var item in _context.Temples)
+                        @foreach (var item in _temples)
                         {
                             if (item.Counties != "Пусто")
                             {
@@ -87,7 +85,7 @@
             <MudCardContent>
                 <div>
                     <MudSelect T="string" Label="Округ" @bind-Value="selectedOcrug">
-                        @foreach (var item in _context.Temples)
+                        @foreach (var item in _temples)
                         {
                             if (item.Ocrug != "Пусто")
                             {
@@ -97,7 +95,7 @@
                     </MudSelect>
 
                     <MudSelect T="string" Label="Район округа" @bind-Value="selectedRayonOcrug">
-                        @foreach (var item in _context.Temples)
+                        @foreach (var item in _temples)
                         {
                             if (item.RayonDistrict != "Пусто")
                             {
@@ -114,7 +112,7 @@
             <MudCardContent>
                 <div>
                     <MudSelect T="string" Label="Район области" @bind-Value="selectedRayonRegion">
-                        @foreach (var item in _context.Temples)
+                        @foreach (var item in _temples)
                         {
                             if (item.SeparateRegion != "Пусто")
                             {
@@ -124,7 +122,7 @@
                     </MudSelect>
 
                     <MudSelect T="string" Label="Отб район" @bind-Value="selectedRegion">
-                        @foreach (var item in _context.Temples)
+                        @foreach (var item in _temples)
                         {
                             if (item.Region != "Пусто")
                             {
@@ -141,7 +139,7 @@
             <MudCardContent>
                 <div>
                     <MudSelect T="string" Label="Храм" @bind-Value="selectedTemple">
-                        @foreach (var item in _context.Temples)
+                        @foreach (var item in _temples)
                         {
                             if (item.Name != "Пусто")
                             { 
@@ -151,7 +149,7 @@
                     </MudSelect>
 
                     <MudSelect T="string" Label="Тип храма" @bind-Value="selectedTempleType">
-                        @foreach (var item in _context.Temples)
+                        @foreach (var item in _temples)
                         {
                             if (item.Type != "Пусто")
                             {
@@ -161,7 +159,7 @@
                     </MudSelect>
                     
                     <MudSelect T="string" Label="Насленый пункт" @bind-Value="selectedLocality">
-                        @foreach (var item in _context.Temples)
+                        @foreach (var item in _temples)
                         {
                             if (item.Locality != "Пусто")
                             {
@@ -272,17 +270,66 @@
     private string selectedOtch;
     
     private string selectedMonaxName;
+
+    IEnumerable<Temple> _temples = new List<Temple>();
     
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (firstRender)
         {
+            _temples = _context.Temples
+                .Include(t => t.AppointmentsAfterEnd)
+                .Include(t => t.Oriention);
             await JSRuntime.InvokeVoidAsync("initMap");
             await JSRuntime.InvokeVoidAsync("console.log", "Hello, world!");
             await JSRuntime.InvokeVoidAsync("disableClickHandler");
-            foreach (var temple in _context.Temples)
+            foreach (var temple in _temples)
             {
                 if (temple.Lng != 0 || temple.Lat != 0)
+                {
+                    await JSRuntime.InvokeVoidAsync("addMarker", temple.Lat, temple.Lng, temple.Name);
+                }
+            }
+        }
+    }
+
+    // private async Task ChangeOriention(IEnumerable<string> obj)
+    // {
+    //     // await Task.Run(() =>
+    //     // {
+    //     await JSRuntime.InvokeVoidAsync("clearAllMarkers");
+    //     // });
+    //     foreach (var temple in _temples)
+    //     {
+    //         if (temple.Lng != 0 || temple.Lat != 0)
+    //         {
+    //             if (temple.Oriention.Oriention == selectedOriention)
+    //             {
+    //                 JSRuntime.InvokeVoidAsync("addMarker", temple.Lat, temple.Lng, temple.Name);
+    //             }
+    //         }
+    //     }
+    // }
+    
+    private async Task HandleFilterChange(string filterType, string filterValue)
+    {
+        await JSRuntime.InvokeVoidAsync("clearAllMarkers");
+        foreach (var temple in _temples)
+        {
+            if (temple.Lng != 0 || temple.Lat != 0)
+            {
+                bool matchesFilter = false;
+                switch (filterType)
+                {
+                    case "Orientation":
+                        matchesFilter = temple.Oriention.Oriention == filterValue;
+                        break;
+                    case "Diocese":
+                        matchesFilter = temple.OrientationDiocesse == filterValue;
+                        break;
+                }
+
+                if (matchesFilter)
                 {
                     await JSRuntime.InvokeVoidAsync("addMarker", temple.Lat, temple.Lng, temple.Name);
                 }
