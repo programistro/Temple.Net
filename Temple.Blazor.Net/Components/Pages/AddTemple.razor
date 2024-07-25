@@ -121,13 +121,9 @@
                 </div>
             </div>
 
-            <div>
-                <h3 class="card-title text-center mb-3 fw-light fs-5">Епархии</h3>
-                
-                <MudAutocomplete T="string" Label="Епархии" @bind-Value="selectedDiocese" SearchFunc="@SearcDiocese"
-                                 ResetValueOnEmptyText="@resetValueOnEmptyText"
-                                 CoerceText="@coerceText" CoerceValue="@coerceValue" AdornmentColor="Color.Primary" />
-            </div>
+            <MudAutocomplete T="string" Label="Епархии" @bind-Value="selectedDiocese" SearchFunc="@SearcDiocese"
+                             ResetValueOnEmptyText="@resetValueOnEmptyText"
+                             CoerceText="@coerceText" CoerceValue="@coerceValue" AdornmentColor="Color.Primary" />
 
             <h3 class="card-title text-center mb-3 fw-light fs-5">Губернии и уезды</h3>
 
@@ -135,7 +131,7 @@
                              ResetValueOnEmptyText="@resetValueOnEmptyText"
                              CoerceText="@coerceText" CoerceValue="@coerceValue" />
             
-            <MudAutocomplete T="string" Label="Уезды" @bind-Value="selectedCounties" SearchFunc="@SearchProvince"
+            <MudAutocomplete T="string" Label="Уезды" @bind-Value="selectedCounties" SearchFunc="@SearchCounties"
                                  ResetValueOnEmptyText="@resetValueOnEmptyText"
                                  CoerceText="@coerceText" CoerceValue="@coerceValue" />
 
@@ -279,6 +275,22 @@
         "Быховский", "Гомельский", "Горецкий", "Климовичский", "Могилевский", "Мстиславский", "Оршанский", "Рогачевский", "Сенненский",
         "Чаусский", "Чериковский"  
     };
+    
+    private string[] combinedCounties =
+    {
+        // Элементы из countiesVit
+        "Велижский", "Витебский", "Городоккский", "Дриссенский", "Лепельский", "Невельский", "Полоцкий", "Себежский", "Суражский",
+    
+        // Элементы из countiesGom
+        "Гомельская", "Быховский", "Гомельский", "Могилевский", "Рогачевский", "Чаусский", "Чериковский", "Горецкий", "Климовический", "Оршанской",
+    
+        // Элементы из countiesMin
+        "Бобруйский", "Борисовский", "Игуменский", "Минский", "Мозырский", "Речицкий", "Слуцкий",
+    
+        // Элементы из countiesMog
+        "Быховский", "Гомельский", "Горецкий", "Климовичский", "Могилевский", "Мстиславский", "Оршанский", "Рогачевский", "Сенненский", "Чаусский", "Чериковский"
+    };
+
 
     ///<summary>
     /// Уезды
@@ -446,8 +458,8 @@
                 break;
             case "Тихоновская":
                 if (string.IsNullOrEmpty(value))
-                    return dioceseAvto;
-                return dioceseAvto.Where(x => x.Contains(value, StringComparison.InvariantCultureIgnoreCase));
+                    return dioceseTixo;
+                return dioceseTixo.Where(x => x.Contains(value, StringComparison.InvariantCultureIgnoreCase));
                 break;
                 default:
                 if (string.IsNullOrEmpty(value))
@@ -508,8 +520,8 @@
                 break;
                 default:
                 if (string.IsNullOrEmpty(value))
-                    return ocrugGom.Where(x => x.Contains(value, StringComparison.InvariantCultureIgnoreCase));
-                return ocrugGom.Where(x => x.Contains(value, StringComparison.InvariantCultureIgnoreCase));
+                    return combinedCounties.Where(x => x.Contains(value, StringComparison.InvariantCultureIgnoreCase));
+                return combinedCounties.Where(x => x.Contains(value, StringComparison.InvariantCultureIgnoreCase));
                 break;
         }
     }

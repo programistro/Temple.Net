@@ -23,32 +23,31 @@
         <MudCard Style="width: 228px; margin-left: 50px;">
             <MudCardContent>
                 <div>
-                    <MudSelect T="string" Label="Церковная ориентация" @bind-Value="selectedOriention" SelectedValuesChanged="@(values => HandleFilterChange("Orientation", values.FirstOrDefault()))">
+                    <MudSelect T="string" Label="Церковная ориентация" @bind-Value="selectedOriention" SelectedValuesChanged="HandleOrientionFilterChange" 
+                               Disabled="IsDisabledFirst">
                         @foreach (var uniqueOriention in _temples.Select(item => item.Oriention.Oriention).Where(o => o != "Пусто").Distinct())
                         {
                             <MudSelectItem Value="@uniqueOriention"/>
                         }
                     </MudSelect>
                     
-                    <MudSelect T="string" Label="Епархия" @bind-Value="selectedDiocese" SelectedValuesChanged="@(value => HandleFilterChange("Diocese", value.FirstOrDefault()))">
-                        @foreach (var item in _temples)
+                    <MudSelect T="string" Label="Епархия" @bind-Value="selectedDiocese" SelectedValuesChanged="HandleOrientionFilterChange"
+                               Disabled="IsDisabledFirst">
+                        @foreach (var uniqueOriention in _temples.Select(item => item.OrientationDiocesse).Where(o => o != "Пусто").Distinct())
                         {
-                            if (item.OrientationDiocesse != "Пусто")
-                            {
-                                <MudSelectItem Value="@($"{item.OrientationDiocesse}")"/>
-                            }
+                            <MudSelectItem Value="@uniqueOriention"/>
                         }
                     </MudSelect>
                     
-                    <MudSelect T="string" Label="Благочиние" @bind-Value="selectedDiocese">
-                        @foreach (var item in _temples)
-                        {
-                            if (item.OrientationDiocesse != "Пусто")
-                            {
-                                <MudSelectItem Value="@($"{item.OrientationDiocesse}")"/>
-                            }
-                        }
-                    </MudSelect>
+                    @* <MudSelect T="string" Label="Благочиние" @bind-Value="selectedDiocese"> *@
+                    @*     @foreach (var item in _temples) *@
+                    @*     { *@
+                    @*         if (item.OrientationDiocesse != "Пусто") *@
+                    @*         { *@
+                    @*             <MudSelectItem Value="@($"{item.OrientationDiocesse}")"/> *@
+                    @*         } *@
+                    @*     } *@
+                    @* </MudSelect> *@
                 </div>
             </MudCardContent>
         </MudCard>
@@ -57,23 +56,19 @@
         <MudCard Style="width: 228px;">
             <MudCardContent>
                 <div>
-                    <MudSelect T="string" Label="Губерния" @bind-Value="selectedProvince">
-                        @foreach (var item in _temples)
+                    <MudSelect T="string" Label="Губерния" @bind-Value="selectedProvince" Disabled="IsDisabledSecond" 
+                               SelectedValuesChanged="HandleProvinceFilterChange">
+                        @foreach (var uniqueOriention in _temples.Select(item => item.Province).Where(o => o != "Пусто").Distinct())
                         {
-                            if (item.Province != "Пусто")
-                            {
-                                <MudSelectItem Value="@($"{item.Province}")"/>
-                            }
+                            <MudSelectItem Value="@uniqueOriention"/>
                         }
                     </MudSelect>
     
-                    <MudSelect T="string" Label="Уезд" @bind-Value="selectedCounties">
-                        @foreach (var item in _temples)
+                    <MudSelect T="string" Label="Уезд" @bind-Value="selectedCounties" Disabled="IsDisabledSecond" 
+                               SelectedValuesChanged="HandleProvinceFilterChange">
+                        @foreach (var uniqueOriention in _temples.Select(item => item.Counties).Where(o => o != "Пусто").Distinct())
                         {
-                            if (item.Counties != "Пусто")
-                            {
-                                <MudSelectItem Value="@($"{item.Counties}")"/>
-                            }
+                            <MudSelectItem Value="@uniqueOriention"/>
                         }
                     </MudSelect>
                 </div>
@@ -84,23 +79,17 @@
         <MudCard Style="width: 228px;">
             <MudCardContent>
                 <div>
-                    <MudSelect T="string" Label="Округ" @bind-Value="selectedOcrug">
-                        @foreach (var item in _temples)
+                    <MudSelect T="string" Label="Округ" @bind-Value="selectedOcrug" Disabled="IsDisabledThird">
+                        @foreach (var uniqueOriention in _temples.Select(item => item.Ocrug).Where(o => o != "Пусто").Distinct())
                         {
-                            if (item.Ocrug != "Пусто")
-                            {
-                                <MudSelectItem Value="@($"{item.Ocrug}")"/>
-                            }
+                            <MudSelectItem Value="@uniqueOriention"/>
                         }
                     </MudSelect>
 
-                    <MudSelect T="string" Label="Район округа" @bind-Value="selectedRayonOcrug">
-                        @foreach (var item in _temples)
+                    <MudSelect T="string" Label="Район округа" @bind-Value="selectedRayonOcrug" Disabled="IsDisabledThird">
+                        @foreach (var uniqueOriention in _temples.Select(item => item.RayonDistrict).Where(o => o != "Пусто").Distinct())
                         {
-                            if (item.RayonDistrict != "Пусто")
-                            {
-                                <MudSelectItem Value="@($"{item.RayonDistrict}")"/>
-                            }
+                            <MudSelectItem Value="@uniqueOriention"/>
                         }
                     </MudSelect>
                 </div>
@@ -111,23 +100,17 @@
         <MudCard Style="width: 228px;">
             <MudCardContent>
                 <div>
-                    <MudSelect T="string" Label="Район области" @bind-Value="selectedRayonRegion">
-                        @foreach (var item in _temples)
+                    <MudSelect T="string" Label="Район области" @bind-Value="selectedRayonRegion" Disabled="IsDisabledFourth">
+                        @foreach (var uniqueOriention in _temples.Select(item => item.SeparateRegion).Where(o => o != "Пусто").Distinct())
                         {
-                            if (item.SeparateRegion != "Пусто")
-                            {
-                                <MudSelectItem Value="@($"{item.SeparateRegion}")"/>
-                            }
+                            <MudSelectItem Value="@uniqueOriention"/>
                         }
                     </MudSelect>
 
-                    <MudSelect T="string" Label="Отб район" @bind-Value="selectedRegion">
-                        @foreach (var item in _temples)
+                    <MudSelect T="string" Label="Отб район" @bind-Value="selectedRegion" Disabled="IsDisabledFourth">
+                        @foreach (var uniqueOriention in _temples.Select(item => item.Region).Where(o => o != "Пусто").Distinct())
                         {
-                            if (item.Region != "Пусто")
-                            {
-                                <MudSelectItem Value="@($"{item.Region}")"/>
-                            }
+                            <MudSelectItem Value="@uniqueOriention"/>
                         }
                     </MudSelect>
                 </div>
@@ -138,33 +121,24 @@
         <MudCard Style="width: 228px;">
             <MudCardContent>
                 <div>
-                    <MudSelect T="string" Label="Храм" @bind-Value="selectedTemple">
-                        @foreach (var item in _temples)
+                    <MudSelect T="string" Label="Храм" @bind-Value="selectedTemple" Disabled="IsDisabledFifth">
+                        @foreach (var uniqueOriention in _temples.Select(item => item.Name).Where(o => o != "Пусто").Distinct())
                         {
-                            if (item.Name != "Пусто")
-                            { 
-                                <MudSelectItem Value="@($"{item.Name}")"/>  
-                            }
+                            <MudSelectItem Value="@uniqueOriention"/>
                         }
                     </MudSelect>
 
-                    <MudSelect T="string" Label="Тип храма" @bind-Value="selectedTempleType">
-                        @foreach (var item in _temples)
+                    <MudSelect T="string" Label="Тип храма" @bind-Value="selectedTempleType" Disabled="IsDisabledFifth">
+                        @foreach (var uniqueOriention in _temples.Select(item => item.Type).Where(o => o != "Пусто").Distinct())
                         {
-                            if (item.Type != "Пусто")
-                            {
-                                <MudSelectItem Value="@($"{item.Type}")"/>
-                            }
+                            <MudSelectItem Value="@uniqueOriention"/>
                         }
                     </MudSelect>
                     
-                    <MudSelect T="string" Label="Насленый пункт" @bind-Value="selectedLocality">
-                        @foreach (var item in _temples)
+                    <MudSelect T="string" Label="Насленый пункт" @bind-Value="selectedLocality" Disabled="IsDisabledFifth">
+                        @foreach (var uniqueOriention in _temples.Select(item => item.Locality).Where(o => o != "Пусто").Distinct())
                         {
-                            if (item.Locality != "Пусто")
-                            {
-                                <MudSelectItem Value="@($"{item.Locality}")"/>
-                            }
+                            <MudSelectItem Value="@uniqueOriention"/>
                         }
                     </MudSelect>
                 </div>
@@ -175,48 +149,39 @@
         <MudCard Style="width: 228px;">
             <MudCardContent>
                 <div>
-                    <MudSelect T="string" Label="Фамилия" @bind-Value="selectedLastName">
-                        @foreach (var item in _context.Parsonalions)
+                    <MudSelect T="string" Label="Фамилия" @bind-Value="selectedLastName" Disabled="IsDisabledSixth">
+                        @foreach (var uniqueOriention in _parsonalions.Select(item => item.LastName).Where(o => o != "Пусто").Distinct())
                         {
-                            if (item.LastName != "Пусто")
-                            {
-                                <MudSelectItem Value="@($"{item.LastName}")"/>
-                            }
+                            <MudSelectItem Value="@uniqueOriention"/>
                         }
                     </MudSelect>
 
-                    <MudSelect T="string" Label="Имя" @bind-Value="selectedName">
-                        @foreach (var item in _context.Parsonalions)
+                    <MudSelect T="string" Label="Имя" @bind-Value="selectedName" Disabled="IsDisabledSixth">
+                        @foreach (var uniqueOriention in _parsonalions.Select(item => item.Name).Where(o => o != "Пусто").Distinct())
                         {
-                            if (item.Name != "Пусто")
-                            {
-                                <MudSelectItem Value="@($"{item.Name}")"/>
-                            }
+                            <MudSelectItem Value="@uniqueOriention"/>
                         }
                     </MudSelect>
                     
-                    <MudSelect T="string" Label="Отчество" @bind-Value="selectedOtch">
-                        @foreach (var item in _context.Parsonalions)
+                    <MudSelect T="string" Label="Отчество" @bind-Value="selectedOtch" Disabled="IsDisabledSixth">
+                        @foreach (var uniqueOriention in _parsonalions.Select(item => item.Otch).Where(o => o != "Пусто").Distinct())
                         {
-                            if (item.Otch != "Пусто")
-                            {
-                                <MudSelectItem Value="@($"{item.Otch}")"/>
-                            }
+                            <MudSelectItem Value="@uniqueOriention"/>
                         }
                     </MudSelect>
                     
-                    <MudSelect T="string" Label="Монашеское имя" @bind-Value="selectedMonaxName">
-                        @foreach (var item in _context.Parsonalions)
+                    <MudSelect T="string" Label="Монашеское имя" @bind-Value="selectedMonaxName" Disabled="IsDisabledSixth">
+                        @foreach (var uniqueOriention in _parsonalions.Select(item => item.MonaxName).Where(o => o != "Пусто").Distinct())
                         {
-                            if (item.MonaxName != "Пусто")
-                            {
-                                <MudSelectItem Value="@($"{item.MonaxName}")"/>
-                            }
+                        <MudSelectItem Value="@uniqueOriention"/>
                         }
                     </MudSelect>
                 </div>
             </MudCardContent>
         </MudCard>
+        <MudItem>
+            <MudLink OnClick="ResetValues">Сбросить</MudLink>
+        </MudItem>
     </MudItem>
     <MudFlexBreak/>
     <MudItem>
@@ -273,6 +238,22 @@
 
     IEnumerable<Temple> _temples = new List<Temple>();
     
+    IEnumerable<Parsonalion> _parsonalions = new List<Parsonalion>();
+    
+    IEnumerable<Parishioners> _parishioners = new List<Parishioners>();
+
+    private bool IsDisabledFirst = false;
+    
+    private bool IsDisabledSecond = false;
+    
+    private bool IsDisabledThird = false;
+    
+    private bool IsDisabledFourth = false;
+    
+    private bool IsDisabledFifth = false;
+    
+    private bool IsDisabledSixth = false;
+    
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (firstRender)
@@ -292,47 +273,124 @@
             }
         }
     }
-
-    // private async Task ChangeOriention(IEnumerable<string> obj)
-    // {
-    //     // await Task.Run(() =>
-    //     // {
-    //     await JSRuntime.InvokeVoidAsync("clearAllMarkers");
-    //     // });
-    //     foreach (var temple in _temples)
-    //     {
-    //         if (temple.Lng != 0 || temple.Lat != 0)
-    //         {
-    //             if (temple.Oriention.Oriention == selectedOriention)
-    //             {
-    //                 JSRuntime.InvokeVoidAsync("addMarker", temple.Lat, temple.Lng, temple.Name);
-    //             }
-    //         }
-    //     }
-    // }
     
-    private async Task HandleFilterChange(string filterType, string filterValue)
+    private async Task HandleOrientionFilterChange()
     {
         await JSRuntime.InvokeVoidAsync("clearAllMarkers");
         foreach (var temple in _temples)
         {
             if (temple.Lng != 0 || temple.Lat != 0)
             {
-                bool matchesFilter = false;
-                switch (filterType)
+                if (selectedOriention != "")
                 {
-                    case "Orientation":
-                        matchesFilter = temple.Oriention.Oriention == filterValue;
-                        break;
-                    case "Diocese":
-                        matchesFilter = temple.OrientationDiocesse == filterValue;
-                        break;
+                    if (temple.Oriention.Oriention == selectedOriention)
+                    {
+                        await JSRuntime.InvokeVoidAsync("addMarker", temple.Lat, temple.Lng, temple.Name);   
+                    }
                 }
+                if (selectedCounties != "" && selectedDiocese != "")
+                {
+                    if (temple.Oriention.Oriention == selectedOriention && temple.OrientationDiocesse == selectedDiocese)
+                    {
+                        await JSRuntime.InvokeVoidAsync("addMarker", temple.Lat, temple.Lng, temple.Name);   
+                    }
+                }
+                if (selectedDiocese != "")
+                {
+                    if (temple.OrientationDiocesse == selectedDiocese)
+                    {
+                        await JSRuntime.InvokeVoidAsync("addMarker", temple.Lat, temple.Lng, temple.Name);
+                    }
+                }
+            }
+        }
 
-                if (matchesFilter)
+        IsDisabledSecond = true;
+        IsDisabledThird = true;
+        IsDisabledFourth = true;
+        IsDisabledFifth = true;
+        IsDisabledSixth = true;
+    }
+    
+    private Dictionary<string, bool> addedMarkers = new Dictionary<string, bool>();
+    
+    private async Task HandleProvinceFilterChange()
+    {
+        await JSRuntime.InvokeVoidAsync("clearAllMarkers");
+        addedMarkers.Clear();
+
+        foreach (var temple in _temples)
+        {
+            if (temple.Lng != 0 || temple.Lat != 0)
+            {
+                string markerId = $"{temple.Lat}_{temple.Lng}_{temple.Name}";
+
+                if (!addedMarkers.ContainsKey(markerId))
                 {
-                    await JSRuntime.InvokeVoidAsync("addMarker", temple.Lat, temple.Lng, temple.Name);
+                    if (selectedProvince != "" && temple.Province == selectedProvince)
+                    {
+                        await JSRuntime.InvokeVoidAsync("addMarker", temple.Lat, temple.Lng, temple.Name);
+                        addedMarkers[markerId] = true;
+                    }
+                    else if (selectedProvince != "" && selectedCounties != "" && temple.Province == selectedProvince && temple.Counties == selectedCounties)
+                    {
+                        await JSRuntime.InvokeVoidAsync("addMarker", temple.Lat, temple.Lng, temple.Name);
+                        addedMarkers[markerId] = true;
+                    }
+                    else if (selectedCounties != "" && temple.Counties == selectedCounties)
+                    {
+                        await JSRuntime.InvokeVoidAsync("addMarker", temple.Lat, temple.Lng, temple.Name);
+                        addedMarkers[markerId] = true;
+                    }
                 }
+            }
+        }
+
+        IsDisabledFirst = true;
+        IsDisabledThird = true;
+        IsDisabledFourth = true;
+        IsDisabledFifth = true;
+        IsDisabledSixth = true;
+    }
+
+    private async void ResetValues()
+    {
+        selectedDiocese = "";
+        selectedCounties = "";
+        selectedName = "";
+        selectedLocality = "";
+        selectedOriention = "";
+        selectedOcrug = "";
+        selectedOtch = "";
+        selectedProvince = "";
+        selectedRegion = "";
+        selectedSeach = "";
+        selectedTemple = "";
+        selectedLastName = "";
+        selectedRayonRegion = "";
+        selectedRayonOcrug = "";
+        selectedLocality = "";
+        selectedName = "";
+        selectedLastName = "";
+        selectedOtch = "";
+        selectedMonaxName = "";
+        IsDisabledFirst = false;
+        IsDisabledSecond = false;
+        IsDisabledThird = false;
+        IsDisabledFourth = false;
+        IsDisabledFifth = false;
+        IsDisabledSixth = false;
+        
+        if (_parsonalions.Count() == 0)
+        {
+            IsDisabledSixth = true;
+        }
+        
+        foreach (var temple in _temples)
+        {
+            if (temple.Lng != 0 || temple.Lat != 0)
+            {
+                await JSRuntime.InvokeVoidAsync("addMarker", temple.Lat, temple.Lng, temple.Name);
             }
         }
     }
