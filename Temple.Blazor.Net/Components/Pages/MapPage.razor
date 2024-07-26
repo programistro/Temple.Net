@@ -101,14 +101,15 @@
         <MudCard Style="width: 228px;">
             <MudCardContent>
                 <div>
-                    <MudSelect T="string" Label="Район области" @bind-Value="selectedRayonRegion" Disabled="IsDisabledFourth">
+                    <MudSelect T="string" Label="Район области" @bind-Value="selectedRayonRegion" Disabled="IsDisabledFourth"
+                               SelectedValuesChanged="HandleRegionFilterChange">
                         @foreach (var uniqueOriention in _temples.Select(item => item.SeparateRegion).Where(o => o != "Пусто").Distinct())
                         {
                             <MudSelectItem Value="@uniqueOriention"/>
                         }
                     </MudSelect>
 
-                    <MudSelect T="string" Label="Отб район" @bind-Value="selectedRegion" Disabled="IsDisabledFourth">
+                    <MudSelect T="string" Label="Отб район" @bind-Value="selectedRegion" Disabled="IsDisabledFourth" SelectedValuesChanged="HandleRegionFilterChange">
                         @foreach (var uniqueOriention in _temples.Select(item => item.Region).Where(o => o != "Пусто").Distinct())
                         {
                             <MudSelectItem Value="@uniqueOriention"/>
@@ -122,21 +123,21 @@
         <MudCard Style="width: 228px;">
             <MudCardContent>
                 <div>
-                    <MudSelect T="string" Label="Храм" @bind-Value="selectedTemple" Disabled="IsDisabledFifth">
+                    <MudSelect T="string" Label="Храм" @bind-Value="selectedTemple" Disabled="IsDisabledFifth" SelectedValuesChanged="HandlTempleFilterChange">
                         @foreach (var uniqueOriention in _temples.Select(item => item.Name).Where(o => o != "Пусто").Distinct())
                         {
                             <MudSelectItem Value="@uniqueOriention"/>
                         }
                     </MudSelect>
 
-                    <MudSelect T="string" Label="Тип храма" @bind-Value="selectedTempleType" Disabled="IsDisabledFifth">
+                    <MudSelect T="string" Label="Тип храма" @bind-Value="selectedTempleType" Disabled="IsDisabledFifth" SelectedValuesChanged="HandlTempleFilterChange">
                         @foreach (var uniqueOriention in _temples.Select(item => item.Type).Where(o => o != "Пусто").Distinct())
                         {
                             <MudSelectItem Value="@uniqueOriention"/>
                         }
                     </MudSelect>
                     
-                    <MudSelect T="string" Label="Насленый пункт" @bind-Value="selectedLocality" Disabled="IsDisabledFifth">
+                    <MudSelect T="string" Label="Насленый пункт" @bind-Value="selectedLocality" Disabled="IsDisabledFifth" SelectedValuesChanged="HandlTempleFilterChange">
                         @foreach (var uniqueOriention in _temples.Select(item => item.Locality).Where(o => o != "Пусто").Distinct())
                         {
                             <MudSelectItem Value="@uniqueOriention"/>
@@ -180,14 +181,14 @@
                 </div>
             </MudCardContent>
         </MudCard>
-        <MudItem>
+        <MudItem Style="margin-top: 2px;">
             <MudLink OnClick="ResetValues">Сбросить</MudLink>
         </MudItem>
     </MudItem>
     <MudFlexBreak/>
-    <MudItem>
-        <MudPaper Height="580px" Width="192vh">
-            <div id="map" style="height: 580px; width: 100%;"></div>
+    <MudItem Style="margin-bottom: 5px;">
+        <MudPaper Height="575px" Width="192vh">
+            <div id="map" style="height: 575px; width: 100%;"></div>
         </MudPaper>
     </MudItem>
 </MudGrid>
@@ -282,21 +283,21 @@
         {
             if (temple.Lng != 0 || temple.Lat != 0)
             {
-                if (selectedOriention != "" && selectedDiocese != "")
+                if (!string.IsNullOrEmpty(selectedOriention) && !string.IsNullOrEmpty(selectedDiocese))
                 {
                     if (temple.Oriention.Oriention == selectedOriention && temple.OrientationDiocesse == selectedDiocese)
                     {
                         await JSRuntime.InvokeVoidAsync("addMarker", temple.Lat, temple.Lng, temple.Name);
                     }
                 }
-                else if (selectedDiocese != "")
+                else if (!string.IsNullOrEmpty(selectedDiocese))
                 {
                     if (temple.OrientationDiocesse == selectedDiocese)
                     {
                         await JSRuntime.InvokeVoidAsync("addMarker", temple.Lat, temple.Lng, temple.Name);
                     }
                 }
-                else if (selectedOriention != "")
+                else if (!string.IsNullOrEmpty(selectedOriention))
                 {
                     if (temple.Oriention.Oriention == selectedOriention)
                     {
@@ -321,21 +322,21 @@
         {
             if (temple.Lng != 0 || temple.Lat != 0)
             {
-                if (selectedCounties != "" && selectedProvince != "")
+                if (!string.IsNullOrEmpty(selectedCounties) && !string.IsNullOrEmpty(selectedProvince))
                 {
                     if (temple.Counties == selectedCounties && temple.Province == selectedProvince)
                     {
                         await JSRuntime.InvokeVoidAsync("addMarker", temple.Lat, temple.Lng, temple.Name);
                     }
                 }
-                else if (selectedCounties != "")
+                else if (!string.IsNullOrEmpty(selectedCounties))
                 {
                     if (temple.Counties == selectedCounties)
                     {
                         await JSRuntime.InvokeVoidAsync("addMarker", temple.Lat, temple.Lng, temple.Name);
                     }
                 }
-                else if (selectedProvince != "")
+                else if (!string.IsNullOrEmpty(selectedProvince))
                 {
                     if (temple.Province == selectedProvince)
                     {
@@ -373,6 +374,7 @@
         selectedLastName = "";
         selectedOtch = "";
         selectedMonaxName = "";
+        selectedTempleType = "";
         IsDisabledFirst = false;
         IsDisabledSecond = false;
         IsDisabledThird = false;
@@ -401,21 +403,21 @@
         {
             if (temple.Lng != 0 || temple.Lat != 0)
             {
-                if (selectedOcrug != "" && selectedRayonOcrug != "")
+                if (!string.IsNullOrEmpty(selectedOcrug) && !string.IsNullOrEmpty(selectedRayonOcrug))
                 {
                     if (temple.Ocrug == selectedOcrug && temple.RayonDistrict == selectedRayonOcrug)
                     {
                         await JSRuntime.InvokeVoidAsync("addMarker", temple.Lat, temple.Lng, temple.Name);
                     }
                 }
-                else if (selectedRayonOcrug != "")
+                else if (!string.IsNullOrEmpty(selectedRayonOcrug))
                 {
                     if (temple.RayonDistrict == selectedRayonOcrug)
                     {
                         await JSRuntime.InvokeVoidAsync("addMarker", temple.Lat, temple.Lng, temple.Name);
                     }
                 }
-                else if (selectedOcrug != "")
+                else if (!string.IsNullOrEmpty(selectedOcrug))
                 {
                     if (temple.Ocrug == selectedOcrug)
                     {
@@ -429,6 +431,104 @@
         IsDisabledFirst = true;
         IsDisabledFourth = true;
         IsDisabledFifth = true;
+        IsDisabledSixth = true;
+    }
+    
+    private async Task HandleRegionFilterChange()
+    {     
+        await JSRuntime.InvokeVoidAsync("clearAllMarkers");
+        foreach (var temple in _temples)
+        {
+            if (temple.Lng != 0 || temple.Lat != 0)
+            {
+                if (!string.IsNullOrEmpty(selectedRayonRegion) && !string.IsNullOrEmpty(selectedRegion))
+                {
+                    if (temple.RayonRegion == selectedRayonRegion && temple.Region == selectedRegion)
+                    {
+                        await JSRuntime.InvokeVoidAsync("addMarker", temple.Lat, temple.Lng, temple.Name);
+                    }
+                }
+                else if (!string.IsNullOrEmpty(selectedRayonRegion))
+                {
+                    if (temple.RayonRegion == selectedRayonRegion)
+                    {
+                        await JSRuntime.InvokeVoidAsync("addMarker", temple.Lat, temple.Lng, temple.Name);
+                    }
+                }
+                else if (!string.IsNullOrEmpty(selectedRegion))
+                {
+                    if (temple.Region == selectedRegion)
+                    {
+                        await JSRuntime.InvokeVoidAsync("addMarker", temple.Lat, temple.Lng, temple.Name);
+                    }
+                }
+            }
+        }
+
+        IsDisabledSecond = true;
+        IsDisabledFirst = true;
+        IsDisabledThird = true;
+        IsDisabledFifth = true;
+        IsDisabledSixth = true;
+    }
+    
+    private async Task HandlTempleFilterChange()
+    {     
+        await JSRuntime.InvokeVoidAsync("clearAllMarkers");
+        foreach (var temple in _temples)
+        {
+            if (temple.Lng != 0 || temple.Lat != 0)
+            {
+                if (!string.IsNullOrEmpty(selectedTemple) && !string.IsNullOrEmpty(selectedTempleType)
+                    && !string.IsNullOrEmpty(selectedLocality))
+                {
+                    if (temple.Name == selectedTemple && temple.Type == selectedTempleType && temple.Locality == selectedLocality)
+                    {
+                        await JSRuntime.InvokeVoidAsync("addMarker", temple.Lat, temple.Lng, temple.Name);
+                    }
+                }
+                if (!string.IsNullOrEmpty(selectedTemple) && !string.IsNullOrEmpty(selectedLocality))
+                {
+                    if (temple.Name == selectedTemple && temple.Locality == selectedLocality)
+                    {
+                        await JSRuntime.InvokeVoidAsync("addMarker", temple.Lat, temple.Lng, temple.Name);
+                    }
+                }
+                if (!string.IsNullOrEmpty(selectedLocality) && !string.IsNullOrEmpty(selectedTempleType))
+                {
+                    if (temple.Locality == temple.Locality && temple.Type == selectedTempleType)
+                    {
+                        await JSRuntime.InvokeVoidAsync("addMarker", temple.Lat, temple.Lng, temple.Name);
+                    }
+                }
+                else if (!string.IsNullOrEmpty(selectedTemple))
+                {
+                    if (temple.Name == selectedTemple)
+                    {
+                        await JSRuntime.InvokeVoidAsync("addMarker", temple.Lat, temple.Lng, temple.Name);
+                    }
+                }
+                else if (!string.IsNullOrEmpty(selectedTempleType))
+                {
+                    if (temple.Type == selectedTempleType)
+                    {
+                        await JSRuntime.InvokeVoidAsync("addMarker", temple.Lat, temple.Lng, temple.Name);
+                    }
+                }
+                else if (!string.IsNullOrEmpty(selectedLocality))
+                {
+                    if (temple.Locality == selectedLocality)
+                    {
+                        await JSRuntime.InvokeVoidAsync("addMarker", temple.Lat, temple.Lng, temple.Name);
+                    }
+                }
+            }
+        }
+
+        IsDisabledSecond = true;
+        IsDisabledFirst = true;
+        IsDisabledThird = true;
+        IsDisabledFourth = true;
         IsDisabledSixth = true;
     }
 }
