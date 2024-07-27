@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.Runtime.InteropServices.JavaScript;
 
-namespace Temple.Net.Models;
+namespace Temple.Core;
 
 public class Temple
 {
@@ -12,19 +12,19 @@ public class Temple
     
     public string? Type { get; set; }
     
-    public DateTime? DateStart { get; set; }
+    public DateOnly? DateStart { get; set; }
     
-    public DateTime? DateEnd { get; set; }
+    public DateOnly? DateEnd { get; set; }
     
     public AppointmentsAfterEnd? AppointmentsAfterEnd { get; set; }
     
-    public DateTime? YearAdaptation { get; set; }
+    public DateOnly? YearAdaptation { get; set; }
     
-    public DateTime? YearDestruction { get; set; }
+    public DateOnly? YearDestruction { get; set; }
     
     public TempleOriention? Oriention { get; set; }
     
-    public DateTime? ParshYear { get; set; }
+    public DateOnly? ParshYear { get; set; }
     
     public int? Quantity { get; set; }
     
@@ -86,7 +86,12 @@ public class Temple
     /// <summary>
     /// Год упоминания
     /// </summary>
-    public DateTime? YearReferences { get; set; }
+    public DateOnly? YearReferences { get; set; }
 
     public string TempleNameOnMap { get;set; }
+    
+    /// <summary>
+    /// Благоличие
+    /// </summary>
+    public string Benevolence { get; set; }
 }

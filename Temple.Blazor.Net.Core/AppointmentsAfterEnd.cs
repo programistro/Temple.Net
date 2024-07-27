@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Temple.Net.Models;
+namespace Temple.Core;
 
 public class AppointmentsAfterEnd
 {
@@ -9,5 +9,5 @@ public class AppointmentsAfterEnd
     
     public string? Appointmenrs { get; set; } 
     
-    public DateTime? Year { get; set; }
+    public DateOnly? Year { get; set; }
 }

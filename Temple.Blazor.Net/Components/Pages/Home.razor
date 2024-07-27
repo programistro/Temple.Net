@@ -1,20 +1,21 @@
-﻿@page "/"
+﻿@page "/home"
+@using System.Globalization
 @using Microsoft.AspNetCore.Components.Server
 @using Temple.Net.Models
 @inject ISnackbar Snackbar
 @inject IJSRuntime JSRuntime
 @rendermode InteractiveServer
 
+<MudSnackbarProvider @rendermode="InteractiveServer" />
+
 <PageTitle>Домашняя страница</PageTitle>
 
 Домашняя страница
-
 <style>
     footer {
         position: absolute;
     }
 </style>
-
 
 @code {
     [Parameter]
@@ -24,22 +25,25 @@
     [Parameter]
     [SupplyParameterFromQuery(Name = "show")]
     public bool? IsShowSnack { get; set; }
-
-    protected override void OnInitialized()
+    
+    protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        if (IsShowSnack == true)
+        if (firstRender)
         {
-            switch (Object)
+            if (IsShowSnack == true)
             {
-                case "храм":
-                    Snackbar.Add("Храм добавлен", Severity.Info);
-                    break;
+                switch (Object)
+                {
+                    case "храм":
+                        Snackbar.Add("Храм добавлен", Severity.Info);
+                        break;
                     case "персоналии":
-                    Snackbar.Add("Персоналия добавлена", Severity.Info);
-                    break;
-                case "прихожане":
-                    Snackbar.Add("Прихожанин добавлен", Severity.Info);
-                    break;
+                        Snackbar.Add("Персоналия добавлена", Severity.Info);
+                        break;
+                    case "прихожане":
+                        Snackbar.Add("Прихожанин добавлен", Severity.Info);
+                        break;
+                }
             }
         }
     }

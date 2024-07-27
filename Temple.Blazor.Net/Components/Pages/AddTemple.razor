@@ -1,4 +1,5 @@
-﻿@using System.Security.Claims
+﻿@using System.Globalization
+@using System.Security.Claims
 @using Microsoft.AspNetCore.Components.Authorization
 @using OpenStreetMapForBlazor
 @using Temple.Net.Models
@@ -9,10 +10,10 @@
 @using Temple.Blazor.Net.Components.Layout
 @using Temple.Net.Service
 @inject NavigationManager NavigationManager
+@inject ValidationService ValidationService
 @inject ISnackbar Snackbar
 
 <MudPopoverProvider @rendermode="InteractiveServer"/>
-<MudSnackbarProvider @rendermode="InteractiveServer"/>
 
 <MudContainer MaxWidth="MaxWidth.Large" Style="width: 45%; margin-bottom: 20px;">
     <MudCard>
@@ -28,31 +29,33 @@
                                  CoerceText="@coerceText" CoerceValue="@coerceValue" AdornmentColor="Color.Primary" />
             </div>
 
-            <div style="margin-top: 10px; margin-bottom: 10px; display: flex; align-items: center; text-align: center; justify-content: space-between;">
-                <MudDatePicker TValue="DateTime?" DateFormat="dd.MM.yyyy" @bind-Date="_temple.DateStart" Label="Год основания" Style="width: 100%"/>
+            <div style="margin-top: 10px; margin-bottom: 10px; display: flex; align-items: center; text-align: center; 
+            justify-content: space-between; width: 100%;">
+                @* <MudDatePicker TValue="DateTime?" DateFormat="dd.MM.yyyy" @bind-Date="_temple.DateStart" Label="Год основания" Style="width: 100%"/> *@
 
-                <MudTooltip Text="Можете не вписывать значение если не известно">
-                    <MudIconButton Icon="@Icons.Material.Filled.QuestionMark" aria-label="Вопрос" Size="Size.Small"/>
+                <MudTooltip Text="Пишите дату в формате ДД. ММ.ГГГГ; ММ.ГГГГ, ГГГГ">
+                    <MudTextField Label="Год основания" @bind-Value="dateStart" Validation="ValidationService.Validation" Style="width: 100%"/>
                 </MudTooltip>
             </div>
 
             <div>
                 <div>
                     <div style="margin-top: 10px; margin-bottom: 10px; display: flex; align-items: center; text-align: center; justify-content: space-between;">
-                        <MudDatePicker TValue="DateTime?" DateFormat="dd.MM.yyyy"
-                                       Label="Год закрытия" @bind-Date="_temple.DateEnd"/>
+                        @* <MudDatePicker TValue="DateTime?" DateFormat="dd.MM.yyyy" *@
+                        @*                Label="Год закрытия" @bind-Date="_temple.DateEnd"/> *@
 
-                        <MudTooltip Text="Можете не вписывать значение если не известно">
-                            <MudIconButton Icon="@Icons.Material.Filled.QuestionMark" aria-label="Вопрос" Size="Size.Small"/>
+                        <MudTooltip Text="Пишите дату в формате ДД. ММ.ГГГГ; ММ.ГГГГ, ГГГГ">
+                            <MudTextField Label="Год закрытия" @bind-Value="dateEnd" Validation="ValidationService.Validation" Style="width: 100%"/>
                         </MudTooltip>
                     </div>
 
                     <div style="margin-top: 10px; margin-bottom: 10px; display: flex; align-items: center; text-align: center; justify-content: space-between;">
-                        <MudDatePicker TValue="DateTime?" DateFormat="dd.MM.yyyy" Label="Год приспособления"
-                                       @bind-Date="_temple.YearAdaptation"/>
+                        @* <MudDatePicker TValue="DateTime?" DateFormat="dd.MM.yyyy" Label="Год приспособления" *@
+                                       @* @bind-Date="_temple.YearAdaptation"/> *@
 
-                        <MudTooltip Text="Можете не вписывать значение если не известно">
-                            <MudIconButton Icon="@Icons.Material.Filled.QuestionMark" aria-label="Вопрос" Size="Size.Small"/>
+                        <MudTooltip Text="Пишите дату в формате ДД. ММ.ГГГГ; ММ.ГГГГ, ГГГГ">
+                            @* <MudIconButton Icon="@Icons.Material.Filled.QuestionMark" aria-label="Вопрос" Size="Size.Small"/> *@
+                            <MudTextField Label="Год приспособления" @bind-Value="yearAdaptation" Validation="ValidationService.Validation" Style="width: 100%"/>
                         </MudTooltip>
                     </div>
 
@@ -64,18 +67,18 @@
             </div>
 
             <div style="margin-top: 10px; margin-bottom: 10px; display: flex; align-items: center; text-align: center; justify-content: space-between;">
-                <MudDatePicker TValue="DateTime?" DateFormat="dd.MM.yyyy" Label="Год уничтожения" @bind-Date="_temple.YearDestruction" />
+                @* <MudDatePicker TValue="DateTime?" DateFormat="dd.MM.yyyy" Label="Год уничтожения" @bind-Date="_temple.YearDestruction" /> *@
 
-                <MudTooltip Text="Можете не вписывать значение если не известно">
-                    <MudIconButton Icon="@Icons.Material.Filled.QuestionMark" aria-label="Вопрос" Size="Size.Small"/>
+                <MudTooltip Text="Пишите дату в формате ГГГГ">
+                    <MudTextField Label="Год уничтожения" @bind-Value="yearDestruction" Validation="ValidationService.ValidationOnlyYear" Style="width: 100%"/>
                 </MudTooltip>
             </div>
 
             <div style="margin-top: 10px; margin-bottom: 10px; display: flex; align-items: center; text-align: center; justify-content: space-between;">
-                <MudDatePicker TValue="DateTime?" DateFormat="dd.MM.yyyy" Label="Год упоминания" @bind-Date="_temple.YearReferences" />
+                @* <MudDatePicker TValue="DateTime?" DateFormat="dd.MM.yyyy" Label="Год упоминания" @bind-Date="_temple.YearReferences" /> *@
 
-                <MudTooltip Text="Можете не вписывать значение если не известно">
-                    <MudIconButton Icon="@Icons.Material.Filled.QuestionMark" aria-label="Вопрос" Size="Size.Small" />
+                <MudTooltip Text="Пишите дату в формате ДД. ММ.ГГГГ; ММ.ГГГГ, ГГГГ">
+                    <MudTextField Label="Год упоминания" @bind-Value="yearReferences" Validation="ValidationService.Validation" Style="width: 100%"/>
                 </MudTooltip>
             </div>
 
@@ -84,10 +87,10 @@
 
                 <div>
                     <div style="margin-top: 10px; margin-bottom: 10px; display: flex; align-items: center; text-align: center; justify-content: space-between;">
-                        <MudDatePicker TValue="DateTime?" DateFormat="dd.MM.yyyy" Label="Год отпадения" @bind-Date="_temple.Oriention.YearFall" />
+                        @* <MudDatePicker TValue="DateTime?" DateFormat="dd.MM.yyyy" Label="Год отпадения" @bind-Date="_temple.Oriention.YearFall" /> *@
 
-                        <MudTooltip Text="Можете не вписывать значение если не известно">
-                            <MudIconButton Icon="@Icons.Material.Filled.QuestionMark" aria-label="Вопрос" Size="Size.Small"/>
+                        <MudTooltip Text="Пишите дату в формате ДД. ММ.ГГГГ; ММ.ГГГГ, ГГГГ">
+                            <MudTextField Label="Год отпадения" @bind-Value="yearFall" Validation="ValidationService.Validation" Style="width: 100%"/>
                         </MudTooltip>
                     </div>
 
@@ -96,10 +99,10 @@
                                      CoerceText="@coerceText" CoerceValue="@coerceValue" AdornmentColor="Color.Primary" />
 
                     <div style="margin-top: 10px; margin-bottom: 10px; display: flex; align-items: center; text-align: center; justify-content: space-between;">
-                        <MudDatePicker DateFormat="dd.MM.yyyy" Label="Год возрата" @bind-Date="_temple.Oriention.YearRefund"/>
-
-                        <MudTooltip Text="Можете не вписывать значение если не известно">
-                            <MudIconButton Icon="@Icons.Material.Filled.QuestionMark" aria-label="Вопрос" Size="Size.Small"/>
+                        @* <MudDatePicker DateFormat="dd.MM.yyyy" Label="Год возрата" @bind-Date="_temple.Oriention.YearRefund"/> *@
+                        
+                        <MudTooltip Text="Пишите дату в формате ДД. ММ.ГГГГ; ММ.ГГГГ, ГГГГ">
+                            <MudTextField Label="Год возрата" @bind-Value="yearRefuund" Validation="ValidationService.Validation" Style="width: 100%"/>
                         </MudTooltip>
                     </div>
                 </div>
@@ -110,10 +113,10 @@
 
                 <div>
                     <div style="margin-top: 10px; margin-bottom: 10px; display: flex; align-items: center; text-align: center; justify-content: space-between;">
-                        <MudDatePicker DateFormat="dd.MM.yyyy" Label="Год" @bind-Date="_temple.ParshYear"/>
+                        @* <MudDatePicker DateFormat="dd.MM.yyyy" Label="Год" @bind-Date="_temple.ParshYear"/> *@
 
-                        <MudTooltip Text="Можете не вписывать значение если не известно">
-                            <MudIconButton Icon="@Icons.Material.Filled.QuestionMark" aria-label="Вопрос" Size="Size.Small"/>
+                        <MudTooltip Text="Пишите дату в формате ДД. ММ.ГГГГ; ММ.ГГГГ, ГГГГ">
+                            <MudTextField Label="Год" @bind-Value="parshYear" Validation="ValidationService.Validation" Style="width: 100%"/>
                         </MudTooltip>
                     </div>
 
@@ -124,6 +127,10 @@
             <MudAutocomplete T="string" Label="Епархии" @bind-Value="selectedDiocese" SearchFunc="@SearcDiocese"
                              ResetValueOnEmptyText="@resetValueOnEmptyText"
                              CoerceText="@coerceText" CoerceValue="@coerceValue" AdornmentColor="Color.Primary" />
+            
+            <div>
+                <MudTextField @bind-Value="_temple.Benevolence" Label="Благоличие"/>
+            </div>
 
             <h3 class="card-title text-center mb-3 fw-light fs-5">Губернии и уезды</h3>
 
@@ -203,7 +210,7 @@
     private string selectedOcrug;
 
     private string selectedCounties;
-    
+
     private Temple? _temple = new()
     {
         AppointmentsAfterEnd = new()
@@ -216,6 +223,8 @@
         },
         Id = Guid.NewGuid().ToString("N")
     };
+
+    #region ValuesForAutoComplete
 
     private string[] types =
     {
@@ -273,20 +282,20 @@
     private string[] countiesMog =
     {
         "Быховский", "Гомельский", "Горецкий", "Климовичский", "Могилевский", "Мстиславский", "Оршанский", "Рогачевский", "Сенненский",
-        "Чаусский", "Чериковский"  
+        "Чаусский", "Чериковский"
     };
-    
+
     private string[] combinedCounties =
     {
         // Элементы из countiesVit
         "Велижский", "Витебский", "Городоккский", "Дриссенский", "Лепельский", "Невельский", "Полоцкий", "Себежский", "Суражский",
-    
+
         // Элементы из countiesGom
         "Гомельская", "Быховский", "Гомельский", "Могилевский", "Рогачевский", "Чаусский", "Чериковский", "Горецкий", "Климовический", "Оршанской",
-    
+
         // Элементы из countiesMin
         "Бобруйский", "Борисовский", "Игуменский", "Минский", "Мозырский", "Речицкий", "Слуцкий",
-    
+
         // Элементы из countiesMog
         "Быховский", "Гомельский", "Горецкий", "Климовичский", "Могилевский", "Мстиславский", "Оршанский", "Рогачевский", "Сенненский", "Чаусский", "Чериковский"
     };
@@ -402,13 +411,15 @@
         "Брагинский", "Василевичский", "Горвальский", "Комаринский", "Лоевский",
         "Речицкий", "Хойникский", "Холмечский", "Юровичский"
     };
-    
+
+    #endregion
+
     private bool coerceText;
-    
-    private bool coerceValue;
-    
+
+    private bool coerceValue = true;
+
     private bool resetValueOnEmptyText;
-    
+
     private double Lng;
 
     private double Lat;
@@ -428,7 +439,7 @@
 
         if (string.IsNullOrEmpty(value))
             return afterClosing;
-        return afterClosing.Where(x => x.Contains(value, StringComparison.InvariantCultureIgnoreCase));   
+        return afterClosing.Where(x => x.Contains(value, StringComparison.InvariantCultureIgnoreCase));
     }
 
     private async Task<IEnumerable<string>> SearchOriention(string value, CancellationToken token)
@@ -461,14 +472,14 @@
                     return dioceseTixo;
                 return dioceseTixo.Where(x => x.Contains(value, StringComparison.InvariantCultureIgnoreCase));
                 break;
-                default:
+            default:
                 if (string.IsNullOrEmpty(value))
                     return dioceseAvto;
                 return dioceseAvto.Where(x => x.Contains(value, StringComparison.InvariantCultureIgnoreCase));
                 break;
         }
     }
-    
+
     private async Task<IEnumerable<string>> SearchOcrug(string value, CancellationToken token)
     {
         await Task.Delay(5, token);
@@ -518,7 +529,7 @@
                     return ocrugGom.Where(x => x.Contains(value, StringComparison.InvariantCultureIgnoreCase));
                 return ocrugGom.Where(x => x.Contains(value, StringComparison.InvariantCultureIgnoreCase));
                 break;
-                default:
+            default:
                 if (string.IsNullOrEmpty(value))
                     return combinedCounties.Where(x => x.Contains(value, StringComparison.InvariantCultureIgnoreCase));
                 return combinedCounties.Where(x => x.Contains(value, StringComparison.InvariantCultureIgnoreCase));
@@ -541,12 +552,12 @@
                 if (string.IsNullOrEmpty(value))
                     return ocrugBobrSecond;
                 return ocrugBobrSecond.Where(x => x.Contains(value, StringComparison.InvariantCultureIgnoreCase));
-                break;  
+                break;
             case "Витебский (1924-1930)":
                 if (string.IsNullOrEmpty(value))
                     return ocrugVit;
                 return ocrugVit.Where(x => x.Contains(value, StringComparison.InvariantCultureIgnoreCase));
-                break; 
+                break;
             case "Калининский (1924-1927)":
                 if (string.IsNullOrEmpty(value))
                     return ocrugKalin;
@@ -600,6 +611,26 @@
         }
     }
 
+    #region ValuesForDate
+
+    private string dateStart;
+
+    private string dateEnd;
+
+    private string yearAdaptation;
+
+    private string yearDestruction;
+
+    private string yearReferences;
+
+    private string parshYear;
+
+    private string yearRefuund;
+    
+    private string yearFall;
+
+    #endregion
+
     private async Task Sumbit()
     {
         if (Lat == 0 || Lng == 0)
@@ -636,6 +667,16 @@
                 }
             }
         }
+
+        _temple.DateStart = dateStart.SetDateTime();
+        _temple.DateEnd = dateEnd.SetDateTime();
+        _temple.YearAdaptation = yearAdaptation.SetDateTime();
+        _temple.YearDestruction = yearDestruction.SetDateTime();
+        _temple.YearReferences = yearReferences.SetDateTime();
+        _temple.ParshYear = parshYear.SetDateTime();
+        _temple.Oriention.YearFall = yearFall.SetDateTime();
+        _temple.Oriention.YearRefund = yearRefuund.SetDateTime();
+
         _temple.Type = selectedType;
         _temple.Province = selectedProvince;
         _temple.Counties = selectedCounties;
@@ -658,7 +699,7 @@
         _context.Temples.Add(_temple);
         _context.SaveChanges();
 
-        NavigationManager.NavigateTo("/?show=true&obj=храм", true);
+        NavigationManager.NavigateTo("/home?show=true&obj=храм", true);
     }
 
     private DotNetObjectReference<AddTemple>? dotNetHelper;
@@ -678,7 +719,7 @@
         dotNetHelper?.Dispose();
     }
 
-   [JSInvokable]
+    [JSInvokable]
     public void ReceiveCoordinates(double[] coordinates)
     {
         if (coordinates.Length >= 2)

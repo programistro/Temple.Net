@@ -1,8 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.Diagnostics.Metrics;
-using Microsoft.AspNetCore.Components.Forms;
 
-namespace Temple.Net.Models;
+namespace Temple.Core;
 
 public class Parsonalion
 {
@@ -17,9 +16,9 @@ public class Parsonalion
     
     public string? MonaxName { get; set; }
     
-    public DateTime? Born { get; set; }
+    public DateOnly? Born { get; set; }
     
-    public DateTime? Death { get; set; }
+    public DateOnly? Death { get; set; }
     
     public string? Nation { get; set; }
     
@@ -37,7 +36,7 @@ public class Parsonalion
     
     public MeasuresState? State { get; set; }
     
-    public DateTime? YearMention { get; set; }
+    public DateOnly? YearMention { get; set; }
     
     public string? Note { get; set; }
     

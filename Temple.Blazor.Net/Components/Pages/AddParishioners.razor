@@ -7,13 +7,14 @@
 @using System.Security.Claims
 @inject AppDbContext _context
 @using Microsoft.AspNetCore.Components.Authorization
+@using Microsoft.VisualBasic
 @using Newtonsoft.Json
 @using Temple.Net.Data
 @using Temple.Net.Service
+@inject ValidationService ValidationService 
 @inject NavigationManager NavigationManager
 
 <MudPopoverProvider @rendermode="InteractiveServer"/>
-<MudSnackbarProvider @rendermode="InteractiveServer"/>
 
 <MudContainer MaxWidth="MaxWidth.Large" Style="width: 45%; margin-bottom: 20px;">
     <MudCard>
@@ -66,26 +67,33 @@
             </div>
 
             <div style="margin-top: 10px; margin-bottom: 10px; display: flex; align-items: center; text-align: center; justify-content: space-between;">
-                <MudDatePicker T="DateTime?" DateFormat="yyy" Label="Время присоединения к религиозному культу" @bind-Date="_parishioners.DateJoinRelligios"/>
+                @* <MudDatePicker T="DateTime?" DateFormat="yyy" Label="Время присоединения к религиозному культу" @bind-Date="_parishioners.DateJoinRelligios"/> *@
+                @* *@
+                @* <MudTooltip Text="Можете не вписывать значение если не известно"> *@
+                @*     <MudIconButton Icon="@Icons.Material.Filled.QuestionMark" aria-label="Вопрос" Size="Size.Small"/> *@
+                @* </MudTooltip> *@
 
-                <MudTooltip Text="Можете не вписывать значение если не известно">
-                    <MudIconButton Icon="@Icons.Material.Filled.QuestionMark" aria-label="Вопрос" Size="Size.Small"/>
+                <MudTooltip Text="Пишите дату в формате ДД. ММ.ГГГГ; ММ.ГГГГ, ГГГГ">
+                    <MudTextField Label="Время присоединения к религиозному культу" @bind-Value="dateJoinRelligios" Validation="ValidationService.Validation" Style="width: 100%"/>
                 </MudTooltip>
             </div>
 
             <div style="margin-top: 10px; margin-bottom: 10px; display: flex; align-items: center; text-align: center; justify-content: space-between;">
-                <MudDatePicker T="DateTime?" DateFormat="yyy" Label="Год упоменания" @bind-Date="_parishioners.YearMention"/>
-
-                <MudTooltip Text="Можете не вписывать значение если не известно">
-                    <MudIconButton Icon="@Icons.Material.Filled.QuestionMark" aria-label="Вопрос" Size="Size.Small"/>
+                @* <MudDatePicker T="DateTime?" DateFormat="yyy" Label="Год упоменания" @bind-Date="_parishioners.YearMention"/> *@
+                @* *@
+                <MudTooltip Text="Пишите дату в формате ДД. ММ.ГГГГ; ММ.ГГГГ, ГГГГ">
+                    <MudTextField Label="Год упоменания" @bind-Value="yearMention" Validation="ValidationService.Validation" Style="width: 100%"/>
                 </MudTooltip>
             </div>
 
             <div style="margin-top: 10px; margin-bottom: 10px; display: flex; align-items: center; text-align: center; justify-content: space-between;">
-                <MudDatePicker T="DateTime?" DateFormat="yyy" Label="Год возрата" @bind-Date="_parishioners.YearRestart"/>
-
-                <MudTooltip Text="Можете не вписывать значение если не известно">
-                    <MudIconButton Icon="@Icons.Material.Filled.QuestionMark" aria-label="Вопрос" Size="Size.Small"/>
+                @* <MudDatePicker T="DateTime?" DateFormat="yyy" Label="Год возрата" @bind-Date="_parishioners.YearRestart"/> *@
+                @* *@
+                @* <MudTooltip Text="Можете не вписывать значение если не известно"> *@
+                @*     <MudIconButton Icon="@Icons.Material.Filled.QuestionMark" aria-label="Вопрос" Size="Size.Small"/> *@
+                @* </MudTooltip> *@
+                <MudTooltip Text="Пишите дату в формате ДД. ММ.ГГГГ; ММ.ГГГГ, ГГГГ">
+                    <MudTextField Label="Год возрата" @bind-Value="yearRestart" Validation="ValidationService.Validation" Style="width: 100%"/>
                 </MudTooltip>
             </div>
 
@@ -169,7 +177,7 @@
     
     private bool coerceText;
     
-    private bool coerceValue;
+    private bool coerceValue = true;
     
     private bool resetValueOnEmptyText;
 
@@ -195,6 +203,16 @@
             return _temples;
         return _temples.Where(x => x.Contains(value, StringComparison.InvariantCultureIgnoreCase));
     }
+
+    #region ValuesForDate
+
+    private string yearRestart;
+
+    private string yearMention;
+
+    private string dateJoinRelligios;
+    
+    #endregion
     
     private async Task Sumbit()
     {
@@ -246,11 +264,15 @@
                 _parishioners.EstateBeforeRevolution = "Не указано";
                 break;
         }
+
+        _parishioners.YearRestart = yearRestart.SetDateTime();
+        _parishioners.YearMention = yearMention.SetDateTime();
+        _parishioners.DateJoinRelligios = dateJoinRelligios.SetDateTime();
         
         _parishioners.FillEmptyFields();
         
         _context.Parishioners.Add(_parishioners);
         _context.SaveChanges();
-        NavigationManager.NavigateTo("/?show=true&obj=прихожане", true);
+        NavigationManager.NavigateTo("/home?show=true&obj=прихожане", true);
     }
 }

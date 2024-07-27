@@ -1,7 +1,9 @@
 ﻿@page "/add"
 @using System.Security.Claims
+@using Microsoft.AspNetCore.Authorization
 @using Microsoft.AspNetCore.Components.Authorization
 @using Temple.Blazor.Net.Components.Layout
+@attribute [Authorize]
 @rendermode InteractiveServer
 
 <PageTitle>Добавить</PageTitle>

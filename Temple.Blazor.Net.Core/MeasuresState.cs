@@ -1,19 +1,19 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Temple.Net.Models;
+namespace Temple.Core;
 
 public class MeasuresState
 {
     [Key]
     public string Id { get; set; }
     
-    public DateTime? YearArrest { get; set; }
+    public DateOnly? YearArrest { get; set; }
     
     public string? Verdict { get; set; }
     
-    public DateTime? YearSentence { get; set; }
+    public DateOnly? YearSentence { get; set; }
     
-    public DateTime? YearRehabilitation { get; set; }
+    public DateOnly? YearRehabilitation { get; set; }
     
     public string? Rehabilitaion { get; set; }
 }

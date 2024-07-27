@@ -1352,7 +1352,8 @@ ul {
 }
 
 .mud-tooltip-root.mud-tooltip-inline {
-    display: inline-block
+    display: inline-block;
+    width: 100%;
 }
 
 .mud-tooltip {

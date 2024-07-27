@@ -31,4 +31,8 @@
      <Folder Include="wwwroot\photos\" />
    </ItemGroup>
 
+   <ItemGroup>
+     <ProjectReference Include="..\Temple.Blazor.Net.Core\Temple.Blazor.Net.Core.csproj" />
+   </ItemGroup>
+
 </Project>
