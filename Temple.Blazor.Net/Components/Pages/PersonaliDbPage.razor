@@ -51,7 +51,7 @@
     <ColGroup>
         @if (applyButtonPosition.DisplayApplyButtonAtStart() || (editButtonPosition.DisplayEditButtonAtStart() && editTrigger == TableEditTrigger.EditButton))
         {
-        <col style="width:50px;" />
+            <col style="width:50px;" />
         }
         <col style="width:50px;" />
         <col style="width:80px;" />
@@ -60,7 +60,7 @@
         <col />
         @if (applyButtonPosition.DisplayApplyButtonAtEnd() || (editButtonPosition.DisplayEditButtonAtEnd() && editTrigger == TableEditTrigger.EditButton))
         {
-        <col style="width:50px;" />
+            <col style="width:50px;" />
         }
     </ColGroup>
     <RowTemplate>
@@ -170,6 +170,7 @@
         <MudIconButton Size="@Size.Small" Icon="@Icons.Material.Outlined.Edit" Class="pa-0" OnClick="@button.ButtonAction" Disabled="@button.ButtonDisabled" />
     </EditButtonContent>
 </MudTable>
+
 @code {
     private bool dense = true;
     private bool hover = true;
@@ -205,7 +206,7 @@
             return true;
         if (element.Name.Contains(searchString, StringComparison.OrdinalIgnoreCase))
             return true;
-        if ($"{element.Name} {element.LastName} {element.Name}".Contains(searchString))
+        if ($"{element.Name} {element.LastName} {element.Otch}".Contains(searchString))
             return true;
         return false;
     }

@@ -160,7 +160,7 @@
             return true;
         if (element.Name.Contains(searchString, StringComparison.OrdinalIgnoreCase))
             return true;
-        if ($"{element.Name} {element.LastName} {element.LastName}".Contains(searchString))
+        if ($"{element.Name} {element.LastName} {element.Otch}".Contains(searchString))
             return true;
         return false;
     }

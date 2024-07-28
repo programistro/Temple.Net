@@ -81,6 +81,10 @@
                     <MudTextField Label="Год упоминания" @bind-Value="yearReferences" Validation="ValidationService.Validation" Style="width: 100%"/>
                 </MudTooltip>
             </div>
+            
+            <div>
+                <MudTextField @bind-Value="_temple.Benevolence" Label="Благоличие"/>
+            </div>
 
             <div>
                 <h3 class="card-title text-center mb-3 fw-light fs-5">Церковная ориентация</h3>
@@ -127,10 +131,7 @@
             <MudAutocomplete T="string" Label="Епархии" @bind-Value="selectedDiocese" SearchFunc="@SearcDiocese"
                              ResetValueOnEmptyText="@resetValueOnEmptyText"
                              CoerceText="@coerceText" CoerceValue="@coerceValue" AdornmentColor="Color.Primary" />
-            
-            <div>
-                <MudTextField @bind-Value="_temple.Benevolence" Label="Благоличие"/>
-            </div>
+
 
             <h3 class="card-title text-center mb-3 fw-light fs-5">Губернии и уезды</h3>
 

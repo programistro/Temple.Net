@@ -1,22 +1,20 @@
-﻿@inject IConfiguration config
-@inject IJSRuntime JSRuntime
-@page "/map"
+﻿@using Temple.Net.Service
 @using Microsoft.EntityFrameworkCore
+@inject IConfiguration config
+@inject IJSRuntime JSRuntime
 @inject AppDbContext _context
+@inject ValidationService ValidationService
 @rendermode InteractiveServer
+@page "/map"
 
 <style>
     footer {
         position: absolute;
         display: none;
     }
-    /** {*/
-    /*    outline: 4px solid green !important;*/
-    /*}*/
 </style>
 
 <MudPopoverProvider @rendermode="InteractiveServer"/>
-<MudSnackbarProvider @rendermode="InteractiveServer"/>
 
 <MudGrid Spacing="4" Justify="Justify.Center">
     <MudItem>
@@ -38,16 +36,14 @@
                             <MudSelectItem Value="@uniqueOriention"/>
                         }
                     </MudSelect>
-                    
-                    @* <MudSelect T="string" Label="Благочиние" @bind-Value="selectedDiocese"> *@
-                    @*     @foreach (var item in _temples) *@
-                    @*     { *@
-                    @*         if (item.OrientationDiocesse != "Пусто") *@
-                    @*         { *@
-                    @*             <MudSelectItem Value="@($"{item.OrientationDiocesse}")"/> *@
-                    @*         } *@
-                    @*     } *@
-                    @* </MudSelect> *@
+
+                    <MudSelect T="string" Label="Благоличие" @bind-Value="selectedBenevolence" SelectedValuesChanged="HandleOrientionFilterChange"
+                               Disabled="IsDisabledFirst">
+                        @foreach (var uniqueOriention in _temples.Select(item => item.Benevolence).Where(o => o != "Пусто").Distinct())
+                        {
+                        <MudSelectItem Value="@uniqueOriention"/>
+                        }
+                    </MudSelect>
                 </div>
             </MudCardContent>
         </MudCard>
@@ -122,6 +118,25 @@
     <MudItem>
         <MudCard Style="width: 228px;">
             <MudCardContent>
+                <MudText Typo="Typo.subtitle1">Год упоменания</MudText>
+                <MudSelect T="string" @bind-Value="selectedStartDate" Label="Начальная дата" SelectedValuesChanged="HandleDateFilterChange">
+                    @foreach (var item in _temples.Select(item => item.YearReferences).Distinct())
+                    {
+                    <MudSelectItem Value="@item.ToString()"/>
+                    }
+                </MudSelect>
+                <MudSelect T="string" @bind-Value="selectedEndDate" Label="Конечная дата дата" SelectedValuesChanged="HandleDateFilterChange">
+                    @foreach (var item in _temples.Select(item => item.YearReferences).Distinct())
+                    {
+                    <MudSelectItem Value="@item.ToString()"/>
+                    }
+                </MudSelect>
+            </MudCardContent>
+        </MudCard>
+    </MudItem>
+    <MudItem>
+        <MudCard Style="width: 228px;">
+            <MudCardContent>
                 <div>
                     <MudSelect T="string" Label="Храм" @bind-Value="selectedTemple" Disabled="IsDisabledFifth" SelectedValuesChanged="HandlTempleFilterChange">
                         @foreach (var uniqueOriention in _temples.Select(item => item.Name).Where(o => o != "Пусто").Distinct())
@@ -175,7 +190,7 @@
                     <MudSelect T="string" Label="Монашеское имя" @bind-Value="selectedMonaxName" Disabled="IsDisabledSixth">
                         @foreach (var uniqueOriention in _parsonalions.Select(item => item.MonaxName).Where(o => o != "Пусто").Distinct())
                         {
-                        <MudSelectItem Value="@uniqueOriention"/>
+                            <MudSelectItem Value="@uniqueOriention"/>
                         }
                     </MudSelect>
                 </div>
@@ -194,6 +209,9 @@
 </MudGrid>
 
 @code {
+
+    #region SelectedItem
+
     private string selectedSeach;
 
     private string selectedOriention;
@@ -224,6 +242,11 @@
     private string selectedTemple;
     
     private string selectedTempleType;
+
+    /// <summary>
+    /// Благоличие
+    /// </summary>
+    private string selectedBenevolence;
     
     ///<summary>
     /// Населеный пункт
@@ -237,6 +260,12 @@
     private string selectedOtch;
     
     private string selectedMonaxName;
+
+    private string selectedStartDate;
+
+    private string selectedEndDate;
+    
+    #endregion
 
     IEnumerable<Temple> _temples = new List<Temple>();
     
@@ -264,13 +293,13 @@
                 .Include(t => t.AppointmentsAfterEnd)
                 .Include(t => t.Oriention);
             await JSRuntime.InvokeVoidAsync("initMap");
-            await JSRuntime.InvokeVoidAsync("console.log", "Hello, world!");
             await JSRuntime.InvokeVoidAsync("disableClickHandler");
             foreach (var temple in _temples)
             {
                 if (temple.Lng != 0 || temple.Lat != 0)
                 {
-                    await JSRuntime.InvokeVoidAsync("addMarker", temple.Lat, temple.Lng, temple.Name);
+                    if(temple.Name != "Пусто")
+                        await JSRuntime.InvokeVoidAsync("addMarker", temple.Lat, temple.Lng, temple.Name);
                 }
             }
         }
@@ -283,6 +312,14 @@
         {
             if (temple.Lng != 0 || temple.Lat != 0)
             {
+                if (!string.IsNullOrEmpty(selectedOriention) && !string.IsNullOrEmpty(selectedDiocese) && !string.IsNullOrEmpty(selectedBenevolence))
+                {
+                    if (temple.Oriention.Oriention == selectedOriention && temple.OrientationDiocesse == selectedDiocese 
+                                                                        && temple.Benevolence == selectedBenevolence)
+                    {
+                        await JSRuntime.InvokeVoidAsync("addMarker", temple.Lat, temple.Lng, temple.Name);
+                    }
+                }
                 if (!string.IsNullOrEmpty(selectedOriention) && !string.IsNullOrEmpty(selectedDiocese))
                 {
                     if (temple.Oriention.Oriention == selectedOriention && temple.OrientationDiocesse == selectedDiocese)
@@ -300,6 +337,13 @@
                 else if (!string.IsNullOrEmpty(selectedOriention))
                 {
                     if (temple.Oriention.Oriention == selectedOriention)
+                    {
+                        await JSRuntime.InvokeVoidAsync("addMarker", temple.Lat, temple.Lng, temple.Name);
+                    }
+                }
+                else if (!string.IsNullOrEmpty(selectedBenevolence))
+                {
+                    if (temple.Benevolence == selectedBenevolence)
                     {
                         await JSRuntime.InvokeVoidAsync("addMarker", temple.Lat, temple.Lng, temple.Name);
                     }
@@ -375,6 +419,8 @@
         selectedOtch = "";
         selectedMonaxName = "";
         selectedTempleType = "";
+        selectedStartDate = "";
+        selectedEndDate = "";
         IsDisabledFirst = false;
         IsDisabledSecond = false;
         IsDisabledThird = false;
@@ -530,5 +576,38 @@
         IsDisabledThird = true;
         IsDisabledFourth = true;
         IsDisabledSixth = true;
+    }
+
+    private async Task HandleDateFilterChange()
+    {
+        await JSRuntime.InvokeVoidAsync("clearAllMarkers");
+
+        foreach (var temple in _temples)
+        {
+            if (temple.Lng != 0 || temple.Lat != 0)
+            {
+                if (!string.IsNullOrEmpty(selectedStartDate) && !string.IsNullOrEmpty(selectedEndDate))
+                {
+                    if (temple.YearReferences >= selectedStartDate.SetDateTime() && temple.YearReferences <= selectedEndDate.SetDateTime())
+                    {
+                        await JSRuntime.InvokeVoidAsync("addMarker", temple.Lat, temple.Lng, temple.Name);   
+                    }
+                }
+                if (!string.IsNullOrEmpty(selectedStartDate) && string.IsNullOrEmpty(selectedEndDate))
+                {
+                    if (temple.YearReferences >= selectedStartDate.SetDateTime())
+                    {
+                        await JSRuntime.InvokeVoidAsync("addMarker", temple.Lat, temple.Lng, temple.Name);   
+                    }
+                }
+                else if (!string.IsNullOrEmpty(selectedEndDate) && string.IsNullOrEmpty(selectedStartDate))
+                {
+                    if (temple.YearReferences <= selectedEndDate.SetDateTime())
+                    {
+                        await JSRuntime.InvokeVoidAsync("addMarker", temple.Lat, temple.Lng, temple.Name);
+                    }   
+                }
+            }
+        }
     }
 }
