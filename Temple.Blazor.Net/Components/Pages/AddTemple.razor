@@ -20,7 +20,7 @@
         <MudCardContent>
             <h5 class="card-title text-center mb-3 fw-light fs-5">Добавить храм</h5>
             <div>
-                <MudTextField @bind-Value="_temple.Name" Label="Название"/>
+                <MudTextField @bind-Value="_temple.Name" Label="Название" Validation="CheckName"/>
             </div>
 
             <div>
@@ -31,8 +31,6 @@
 
             <div style="margin-top: 10px; margin-bottom: 10px; display: flex; align-items: center; text-align: center; 
             justify-content: space-between; width: 100%;">
-                @* <MudDatePicker TValue="DateTime?" DateFormat="dd.MM.yyyy" @bind-Date="_temple.DateStart" Label="Год основания" Style="width: 100%"/> *@
-
                 <MudTooltip Text="Пишите дату в формате ДД. ММ.ГГГГ; ММ.ГГГГ, ГГГГ">
                     <MudTextField Label="Год основания" @bind-Value="dateStart" Validation="ValidationService.Validation" Style="width: 100%"/>
                 </MudTooltip>
@@ -41,18 +39,12 @@
             <div>
                 <div>
                     <div style="margin-top: 10px; margin-bottom: 10px; display: flex; align-items: center; text-align: center; justify-content: space-between;">
-                        @* <MudDatePicker TValue="DateTime?" DateFormat="dd.MM.yyyy" *@
-                        @*                Label="Год закрытия" @bind-Date="_temple.DateEnd"/> *@
-
                         <MudTooltip Text="Пишите дату в формате ДД. ММ.ГГГГ; ММ.ГГГГ, ГГГГ">
                             <MudTextField Label="Год закрытия" @bind-Value="dateEnd" Validation="ValidationService.Validation" Style="width: 100%"/>
                         </MudTooltip>
                     </div>
 
                     <div style="margin-top: 10px; margin-bottom: 10px; display: flex; align-items: center; text-align: center; justify-content: space-between;">
-                        @* <MudDatePicker TValue="DateTime?" DateFormat="dd.MM.yyyy" Label="Год приспособления" *@
-                                       @* @bind-Date="_temple.YearAdaptation"/> *@
-
                         <MudTooltip Text="Пишите дату в формате ДД. ММ.ГГГГ; ММ.ГГГГ, ГГГГ">
                             @* <MudIconButton Icon="@Icons.Material.Filled.QuestionMark" aria-label="Вопрос" Size="Size.Small"/> *@
                             <MudTextField Label="Год приспособления" @bind-Value="yearAdaptation" Validation="ValidationService.Validation" Style="width: 100%"/>
@@ -67,16 +59,12 @@
             </div>
 
             <div style="margin-top: 10px; margin-bottom: 10px; display: flex; align-items: center; text-align: center; justify-content: space-between;">
-                @* <MudDatePicker TValue="DateTime?" DateFormat="dd.MM.yyyy" Label="Год уничтожения" @bind-Date="_temple.YearDestruction" /> *@
-
                 <MudTooltip Text="Пишите дату в формате ГГГГ">
                     <MudTextField Label="Год уничтожения" @bind-Value="yearDestruction" Validation="ValidationService.ValidationOnlyYear" Style="width: 100%"/>
                 </MudTooltip>
             </div>
 
             <div style="margin-top: 10px; margin-bottom: 10px; display: flex; align-items: center; text-align: center; justify-content: space-between;">
-                @* <MudDatePicker TValue="DateTime?" DateFormat="dd.MM.yyyy" Label="Год упоминания" @bind-Date="_temple.YearReferences" /> *@
-
                 <MudTooltip Text="Пишите дату в формате ДД. ММ.ГГГГ; ММ.ГГГГ, ГГГГ">
                     <MudTextField Label="Год упоминания" @bind-Value="yearReferences" Validation="ValidationService.Validation" Style="width: 100%"/>
                 </MudTooltip>
@@ -91,8 +79,6 @@
 
                 <div>
                     <div style="margin-top: 10px; margin-bottom: 10px; display: flex; align-items: center; text-align: center; justify-content: space-between;">
-                        @* <MudDatePicker TValue="DateTime?" DateFormat="dd.MM.yyyy" Label="Год отпадения" @bind-Date="_temple.Oriention.YearFall" /> *@
-
                         <MudTooltip Text="Пишите дату в формате ДД. ММ.ГГГГ; ММ.ГГГГ, ГГГГ">
                             <MudTextField Label="Год отпадения" @bind-Value="yearFall" Validation="ValidationService.Validation" Style="width: 100%"/>
                         </MudTooltip>
@@ -103,8 +89,6 @@
                                      CoerceText="@coerceText" CoerceValue="@coerceValue" AdornmentColor="Color.Primary" />
 
                     <div style="margin-top: 10px; margin-bottom: 10px; display: flex; align-items: center; text-align: center; justify-content: space-between;">
-                        @* <MudDatePicker DateFormat="dd.MM.yyyy" Label="Год возрата" @bind-Date="_temple.Oriention.YearRefund"/> *@
-                        
                         <MudTooltip Text="Пишите дату в формате ДД. ММ.ГГГГ; ММ.ГГГГ, ГГГГ">
                             <MudTextField Label="Год возрата" @bind-Value="yearRefuund" Validation="ValidationService.Validation" Style="width: 100%"/>
                         </MudTooltip>
@@ -117,8 +101,6 @@
 
                 <div>
                     <div style="margin-top: 10px; margin-bottom: 10px; display: flex; align-items: center; text-align: center; justify-content: space-between;">
-                        @* <MudDatePicker DateFormat="dd.MM.yyyy" Label="Год" @bind-Date="_temple.ParshYear"/> *@
-
                         <MudTooltip Text="Пишите дату в формате ДД. ММ.ГГГГ; ММ.ГГГГ, ГГГГ">
                             <MudTextField Label="Год" @bind-Value="parshYear" Validation="ValidationService.Validation" Style="width: 100%"/>
                         </MudTooltip>
@@ -704,6 +686,14 @@
     }
 
     private DotNetObjectReference<AddTemple>? dotNetHelper;
+    
+    private IEnumerable<string> CheckName()
+    {
+        if (_context.Temples.Any(t => t.Name == _temple.Name))
+        {
+            yield return "Храм с таким именем уже существует";
+        }
+    }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
