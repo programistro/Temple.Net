@@ -24,18 +24,19 @@
             <div class="card flex-row my-5 border-0 shadow rounded-3 overflow-hidden">
                 <div class="card-body p-4 p-sm-5">
                     <h5 class="card-title text-center mb-5 fw-light fs-5">Регистрация</h5>
-                    <MudTextField @bind-Value="model.Email" Label="Почта" Validation="@(new EmailAddressAttribute() { ErrorMessage = "Неверный формат электронной почты" })"/>
-                        
-                    <MudTextField @bind-Value="model.Password" Label="Пароль" InputType="InputType.Password" @ref="pwField1"
-                                  Validation="@(new Func<string, IEnumerable<string>>(PasswordStrength))" Required="true" RequiredError="Пароль обязателен"/>
-                        
-                    <MudTextField @bind-Value="validPassword" Label="Подверждение пароля" InputType="InputType.Password"
-                                  Required="true" RequiredError="Пароль обязателен" Validation="@(new Func<string, string>(PasswordMatch))"/>
+                    <MudForm>
+                        <MudTextField @bind-Value="model.Email" Label="Email" Validation="@(new EmailAddressAttribute() { ErrorMessage = "Неверный формат электронной почты" })"/>
 
-                    <div class="d-grid mb-2" style="text-align: center; margin-top: 10px;">
-                        <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="@Submit">Зарегистрироваться</MudButton>
-                    </div>
+                        <MudTextField @bind-Value="model.Password" Label="Пароль" InputType="InputType.Password" @ref="pwField1"
+                                      Validation="@(new Func<string, IEnumerable<string>>(PasswordStrength))" Required="true" RequiredError="Пароль обязателен"/>
 
+                        <MudTextField @bind-Value="validPassword" Label="Подверждение пароля" InputType="InputType.Password"
+                                      Required="true" RequiredError="Пароль обязателен" Validation="@(new Func<string, string>(PasswordMatch))"/>
+
+                        <div class="d-grid mb-2" style="text-align: center; margin-top: 10px;">
+                            <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="@Submit">Зарегистрироваться</MudButton>
+                        </div>
+                    </MudForm>
                     <a class="d-block text-center mt-2 small" href="/login">Имеете уже у нас аккаунт?Нажмите что бы войти</a>
                 </div>
             </div>

@@ -23,10 +23,10 @@
                 <div>
                     <MudSelect T="string" Label="Церковная ориентация" @bind-Value="selectedOriention" SelectedValuesChanged="HandleOrientionFilterChange" 
                                Disabled="IsDisabledFirst">
-                        @foreach (var uniqueOriention in _temples.Select(item => item.Oriention.Oriention).Where(o => o != "Пусто").Distinct())
-                        {
-                            <MudSelectItem Value="@uniqueOriention"/>
-                        }
+                        @* @foreach (var uniqueOriention in _temples.Select(item => item.Oriention.Oriention).Where(o => o != "Пусто").Distinct()) *@
+                        @* { *@
+                        @*     <MudSelectItem Value="@uniqueOriention"/> *@
+                        @* } *@
                     </MudSelect>
                     
                     <MudSelect T="string" Label="Епархия" @bind-Value="selectedDiocese" SelectedValuesChanged="HandleOrientionFilterChange"
@@ -312,42 +312,42 @@
         {
             if (temple.Lng != 0 || temple.Lat != 0)
             {
-                if (!string.IsNullOrEmpty(selectedOriention) && !string.IsNullOrEmpty(selectedDiocese) && !string.IsNullOrEmpty(selectedBenevolence))
-                {
-                    if (temple.Oriention.Oriention == selectedOriention && temple.OrientationDiocesse == selectedDiocese 
-                                                                        && temple.Benevolence == selectedBenevolence)
-                    {
-                        await JSRuntime.InvokeVoidAsync("addMarker", temple.Lat, temple.Lng, temple.Name);
-                    }
-                }
-                if (!string.IsNullOrEmpty(selectedOriention) && !string.IsNullOrEmpty(selectedDiocese))
-                {
-                    if (temple.Oriention.Oriention == selectedOriention && temple.OrientationDiocesse == selectedDiocese)
-                    {
-                        await JSRuntime.InvokeVoidAsync("addMarker", temple.Lat, temple.Lng, temple.Name);
-                    }
-                }
-                else if (!string.IsNullOrEmpty(selectedDiocese))
-                {
-                    if (temple.OrientationDiocesse == selectedDiocese)
-                    {
-                        await JSRuntime.InvokeVoidAsync("addMarker", temple.Lat, temple.Lng, temple.Name);
-                    }
-                }
-                else if (!string.IsNullOrEmpty(selectedOriention))
-                {
-                    if (temple.Oriention.Oriention == selectedOriention)
-                    {
-                        await JSRuntime.InvokeVoidAsync("addMarker", temple.Lat, temple.Lng, temple.Name);
-                    }
-                }
-                else if (!string.IsNullOrEmpty(selectedBenevolence))
-                {
-                    if (temple.Benevolence == selectedBenevolence)
-                    {
-                        await JSRuntime.InvokeVoidAsync("addMarker", temple.Lat, temple.Lng, temple.Name);
-                    }
-                }
+                // if (!string.IsNullOrEmpty(selectedOriention) && !string.IsNullOrEmpty(selectedDiocese) && !string.IsNullOrEmpty(selectedBenevolence))
+                // {
+                //     if (temple.Oriention.Oriention == selectedOriention && temple.OrientationDiocesse == selectedDiocese 
+                //                                                         && temple.Benevolence == selectedBenevolence)
+                //     {
+                //         await JSRuntime.InvokeVoidAsync("addMarker", temple.Lat, temple.Lng, temple.Name);
+                //     }
+                // }
+                // if (!string.IsNullOrEmpty(selectedOriention) && !string.IsNullOrEmpty(selectedDiocese))
+                // {
+                //     if (temple.Oriention.Oriention == selectedOriention && temple.OrientationDiocesse == selectedDiocese)
+                //     {
+                //         await JSRuntime.InvokeVoidAsync("addMarker", temple.Lat, temple.Lng, temple.Name);
+                //     }
+                // }
+                // else if (!string.IsNullOrEmpty(selectedDiocese))
+                // {
+                //     if (temple.OrientationDiocesse == selectedDiocese)
+                //     {
+                //         await JSRuntime.InvokeVoidAsync("addMarker", temple.Lat, temple.Lng, temple.Name);
+                //     }
+                // }
+                // else if (!string.IsNullOrEmpty(selectedOriention))
+                // {
+                //     if (temple.Oriention.Oriention == selectedOriention)
+                //     {
+                //         await JSRuntime.InvokeVoidAsync("addMarker", temple.Lat, temple.Lng, temple.Name);
+                //     }
+                // }
+                // else if (!string.IsNullOrEmpty(selectedBenevolence))
+                // {
+                //     if (temple.Benevolence == selectedBenevolence)
+                //     {
+                //         await JSRuntime.InvokeVoidAsync("addMarker", temple.Lat, temple.Lng, temple.Name);
+                //     }
+                // }
             }
         }
 

@@ -22,7 +22,7 @@ public class Temple
     
     public DateOnly? YearDestruction { get; set; }
     
-    public TempleOriention? Oriention { get; set; }
+    public List<TempleOriention?> Oriention { get; set; }
     
     public DateOnly? ParshYear { get; set; }
     
