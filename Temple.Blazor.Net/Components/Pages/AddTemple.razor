@@ -88,7 +88,7 @@
                     <MudIconButton Icon="@Icons.Material.Filled.Add" Size="Size.Small" Style="margin-bottom: 9px; margin-left: 7px;" OnClick="ShowOrientionDialog"/>
                 </div>
 
-                <MudList T="string">
+                <MudList T="string" SelectionMode="SelectionMode.ToggleSelection">
                     @foreach (var item in _temple.Oriention)
                     {
                         <MudListItem Text="@item.Oriention"/>
@@ -120,30 +120,12 @@
                         </div>
                     </DialogContent>
                     <DialogActions>
-                        <MudButton Color="Color.Primary" OnClick="OnHideModalClick">Отмена</MudButton>
-                        <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="OnChangeClick">Изменить</MudButton>
+                        <MudButton Color="Color.Primary" OnClick="OnHideModalOrientionClick">Отмена</MudButton>
+                        <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="OnChangeOrientionClick">Изменить</MudButton>
                     </DialogActions>
                 </MudDialog>
-                
-                @* <div> *@
-                @*     <div style="margin-top: 10px; margin-bottom: 10px; display: flex; align-items: center; text-align: center; justify-content: space-between;"> *@
-                @*         <MudTooltip Text="Пишите дату в формате ДД. ММ.ГГГГ; ММ.ГГГГ, ГГГГ"> *@
-                @*             <MudTextField Label="Год отпадения" @bind-Value="yearFall" Validation="ValidationService.Validation" Style="width: 100%"/> *@
-                @*         </MudTooltip> *@
-                @*     </div> *@
-                @* *@
-                @*     <MudAutocomplete T="string" Label="Церковная ориентация" @bind-Value="selectedOriention" SearchFunc="@SearchOriention" *@
-                @*                      ResetValueOnEmptyText="@resetValueOnEmptyText" *@
-                @*                      CoerceText="@coerceText" CoerceValue="@coerceValue" AdornmentColor="Color.Primary" /> *@
-                @* *@
-                @*     <div style="margin-top: 10px; margin-bottom: 10px; display: flex; align-items: center; text-align: center; justify-content: space-between;"> *@
-                @*         <MudTooltip Text="Пишите дату в формате ДД. ММ.ГГГГ; ММ.ГГГГ, ГГГГ"> *@
-                @*             <MudTextField Label="Год возрата" @bind-Value="yearRefuund" Validation="ValidationService.Validation" Style="width: 100%"/> *@
-                @*         </MudTooltip> *@
-                @*     </div> *@
-                @* </div> *@
             </div>
-
+            
             <div>
                 <h3 class="card-title text-center mb-3 fw-light fs-5">Количество прихожан</h3>
 
@@ -244,7 +226,11 @@
 
     private bool visibleOriention = false;
 
+    private bool visiblePersonal = false;
+
     private List<TempleOriention> _orientions = new();
+
+    private List<Parsonalion> _parsonalions = new();
 
     private Temple? _temple = new()
     {
@@ -662,7 +648,7 @@
     private string parshYear;
 
     private string yearRefuund;
-    
+
     private string yearFall;
 
     #endregion
@@ -734,7 +720,7 @@
     }
 
     private DotNetObjectReference<AddTemple>? dotNetHelper;
-    
+
     private IEnumerable<string> CheckName()
     {
         if (_context.Temples.Any(t => t.Name == _temple.Name))
@@ -774,18 +760,18 @@
 
     private void ShowOrientionDialog() => visibleOriention = true;
 
-    private void OnHideModalClick() => visibleOriention = false;
+    private void OnHideModalOrientionClick() => visibleOriention = false;
 
-    private void OnChangeClick()
+    private void OnChangeOrientionClick()
     {
         TempleOriention oriention = new();
 
         oriention.Oriention = selectedOriention;
         oriention.YearFall = yearFall.SetDateTime();
         oriention.YearRefund = yearRefuund.SetDateTime();
-        
+
         oriention.FillEmptyFields();
-        
+
         _temple.Oriention.Add(oriention);
 
         visibleOriention = false;
