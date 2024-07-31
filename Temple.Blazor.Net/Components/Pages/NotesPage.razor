@@ -1,4 +1,8 @@
-﻿@page "/notes"
+﻿@inject AppDbContext _context
+@rendermode InteractiveServer
+@attribute [Authorize]
+@page "/notes"
+@using Microsoft.AspNetCore.Authorization
 
 <style>
     footer {
@@ -42,12 +46,30 @@
     <MudLink>Я</MudLink>
 </div>
 
+@{
+    var uniqueTemples = _context.Temples
+        .Where(t => t.District != "Пусто") // Фильтруем элементы, которые не равны "Пусто"
+        .GroupBy(t => t.District) // Группируем по District
+        .Select(g => g.First()) // Выбираем первый элемент из каждой группы
+        .ToList(); // Преобразуем результат в список
+}
+
+@foreach (var item in uniqueTemples)
+{
+    <MudText>@item.District</MudText>
+    <MudText>@item.Benevolence</MudText>
+    <MudText>@item.Counties</MudText>
+    <MudText>@item.Locality</MudText>
+    <MudText>@item.Province</MudText>
+    <MudText>@item.Region</MudText>
+    <MudText>@item.Type</MudText>
+    <MudText>@item.TypeLocality</MudText>
+    <MudText>@item.OrientationDiocesse</MudText>
+    <MudText>@item.SeparateRegion</MudText>
+}
+
 <style>
     .mud-link.mud-link-underline-hover {
         margin-right: 5px;
     }
 </style>
-
-@code {
-    
-}

@@ -23,10 +23,13 @@
                 <div>
                     <MudSelect T="string" Label="Церковная ориентация" @bind-Value="selectedOriention" SelectedValuesChanged="HandleOrientionFilterChange" 
                                Disabled="IsDisabledFirst">
-                        @* @foreach (var uniqueOriention in _temples.Select(item => item.Oriention.Oriention).Where(o => o != "Пусто").Distinct()) *@
-                        @* { *@
-                        @*     <MudSelectItem Value="@uniqueOriention"/> *@
-                        @* } *@
+                        @foreach (var uniqueOriention in _temples.Select(item => item.Oriention).Distinct())
+                        {
+                            @foreach (var item in uniqueOriention)
+                            {
+                                <MudSelectItem Value="@item.Oriention"/>
+                            }
+                        }
                     </MudSelect>
                     
                     <MudSelect T="string" Label="Епархия" @bind-Value="selectedDiocese" SelectedValuesChanged="HandleOrientionFilterChange"
