@@ -37,6 +37,17 @@
                         }
                     </li>
                     <li class="nav-item" style="margin-left: 5px;">
+                        @if (IsAuth == true && (AuthenticationStateProvider.GetAuthenticationStateAsync().Result.User.FindFirst(ClaimTypes.Role).Value) != null)
+                        {
+                            var user = _context.Users.FirstOrDefault(x => x.Email == AuthenticationStateProvider.GetAuthenticationStateAsync().Result.User.FindFirst(ClaimsIdentity.DefaultNameClaimType).Value);
+
+                            if (user?.Role == "admin" || user?.Role == "edit")
+                            {
+                                <a class="nav-link text-dark" href="/find">Поиск</a>
+                            }
+                        }
+                    </li>
+                    <li class="nav-item" style="margin-left: 5px;">
                         @if (IsAuth)
                         {
                             <a class="nav-link text-dark" href="/add">Добавить</a>

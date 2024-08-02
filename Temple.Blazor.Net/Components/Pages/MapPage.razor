@@ -123,15 +123,25 @@
             <MudCardContent>
                 <MudText Typo="Typo.subtitle1">Год упоменания</MudText>
                 <MudSelect T="string" @bind-Value="selectedStartDate" Label="Начальная дата" SelectedValuesChanged="HandleDateFilterChange">
-                    @foreach (var item in _temples.Select(item => item.YearReferences).Distinct())
+                    @* @foreach (var item in _temples.Select(item => item.YearReferences).Distinct()) *@
+                    @* { *@
+                    @* <MudSelectItem Value="@item.ToString()"/> *@
+                    @* } *@
+                    @foreach (var uniqueOriention in _temples.Select(item => item.YearReferences).Distinct())
                     {
-                    <MudSelectItem Value="@item.ToString()"/>
+                        @foreach (var item in uniqueOriention)
+                        {
+                            <MudSelectItem Value="@item.ToString()"/>
+                        }
                     }
                 </MudSelect>
                 <MudSelect T="string" @bind-Value="selectedEndDate" Label="Конечная дата дата" SelectedValuesChanged="HandleDateFilterChange">
-                    @foreach (var item in _temples.Select(item => item.YearReferences).Distinct())
+                    @foreach (var uniqueOriention in _temples.Select(item => item.YearReferences).Distinct())
                     {
-                    <MudSelectItem Value="@item.ToString()"/>
+                        @foreach (var item in uniqueOriention)
+                        {
+                            <MudSelectItem Value="@item.ToString()"/>
+                        }
                     }
                 </MudSelect>
             </MudCardContent>
@@ -591,21 +601,21 @@
             {
                 if (!string.IsNullOrEmpty(selectedStartDate) && !string.IsNullOrEmpty(selectedEndDate))
                 {
-                    if (temple.YearReferences >= selectedStartDate.SetDateTime() && temple.YearReferences <= selectedEndDate.SetDateTime())
+                    if (temple.YearReferences.Any(date => date >= selectedStartDate.SetDateTime() && date <= selectedEndDate.SetDateTime()))
                     {
                         await JSRuntime.InvokeVoidAsync("addMarker", temple.Lat, temple.Lng, temple.Name);   
                     }
                 }
                 if (!string.IsNullOrEmpty(selectedStartDate) && string.IsNullOrEmpty(selectedEndDate))
                 {
-                    if (temple.YearReferences >= selectedStartDate.SetDateTime())
+                    if (temple.YearReferences.Any(date => date >= selectedStartDate.SetDateTime()))
                     {
                         await JSRuntime.InvokeVoidAsync("addMarker", temple.Lat, temple.Lng, temple.Name);   
                     }
                 }
                 else if (!string.IsNullOrEmpty(selectedEndDate) && string.IsNullOrEmpty(selectedStartDate))
                 {
-                    if (temple.YearReferences <= selectedEndDate.SetDateTime())
+                    if (temple.YearReferences.Any(date => date <= selectedEndDate.SetDateTime()))
                     {
                         await JSRuntime.InvokeVoidAsync("addMarker", temple.Lat, temple.Lng, temple.Name);
                     }   

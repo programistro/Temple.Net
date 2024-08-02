@@ -1,8 +1,10 @@
 ﻿@using Temple.Net.Models
 @using Microsoft.AspNetCore.Components.QuickGrid
 @using Microsoft.EntityFrameworkCore
+@rendermode InteractiveServer
 @inject AppDbContext context
 @inject ISnackbar Snackbar
+@inject IDialogService DialogService
 
 <style>
     body {
@@ -10,13 +12,34 @@
     }
 </style>
 
-<MudTable Items="@Elements" Dense="@dense" Hover="@hover" Bordered="@bordered" Striped="@striped" 
+<style>
+    .selected {
+        background-color: #1E88E5 !important;
+    }
+    .selected > td {
+        color: white !important;
+    }
+    .selected > td .mud-input {
+        color: white !important;
+    }
+</style>
+
+<MudPopoverProvider @rendermode="InteractiveServer"/>
+
+<MudDialogProvider FullWidth="true"
+                   MaxWidth="MaxWidth.ExtraSmall"
+                   CloseButton="true"
+                   BackdropClick="false"
+                   NoHeader="true"
+                   Position="DialogPosition.Center"
+                   CloseOnEscapeKey="true"/>
+
+<MudTable T="Temple" Items="@Elements" Dense="@dense" Hover="@hover" Bordered="@bordered" Striped="@striped" 
           Filter="new Func<Temple,bool>(FilterFunc1)" @bind-SelectedItem="selectedItem"
           CommitEditTooltip="Commit Edit"
-          OnCommitEditClick="@(() => Snackbar.Add("Commit Edit Handler Invoked"))" RowEditPreview="BackupItem" 
-          RowEditCancel="ResetItemToOriginalValues"
-          RowEditCommit="ItemHasBeenCommitted" IsEditRowSwitchingBlocked="@blockSwitch" ApplyButtonPosition="@applyButtonPosition"
-          EditButtonPosition="@editButtonPosition" EditTrigger="@editTrigger">
+          OnCommitEditClick="@(() => Snackbar.Add("Commit Edit Handler Invoked"))"
+          EditButtonPosition="@editButtonPosition" EditTrigger="@editTrigger" OnRowClick="@RowClickEvent"
+          @ref="mudTable" RowClass="cursor-pointer">
     <ToolBarContent>
         <MudText Typo="Typo.h6">Храмы</MudText>
         <MudSpacer />
@@ -89,80 +112,6 @@
         <MudTd DataLabel="OrientationDiocesse">@context.OrientationDiocesse</MudTd>
         <MudTd DataLabel="TempleNameOnMap">@context.TempleNameOnMap</MudTd>
     </RowTemplate>
-    <RowEditingTemplate>
-        <MudTd DataLabel="Name">
-            <MudTextField @bind-Value="context.Name" Required />
-        </MudTd>
-        <MudTd DataLabel="Quantity">
-            <MudNumericField @bind-Value="context.Quantity" Required />
-        </MudTd>
-        <MudTd DataLabel="DateStart">
-            <MudTextField @bind-Value="context.DateStart" Required />
-        </MudTd>
-        <MudTd DataLabel="DateEnd">
-            <MudTextField @bind-Value="context.DateEnd" Required/>
-        </MudTd>
-        <MudTd DataLabel="Province">
-            <MudTextField @bind-Value="context.Province" Required />
-        </MudTd>
-        <MudTd DataLabel="District">
-            <MudTextField @bind-Value="context.District" Required />
-        </MudTd>
-        <MudTd DataLabel="RayonDistrict">
-            <MudTextField @bind-Value="context.RayonDistrict" Required />
-        </MudTd>
-        <MudTd DataLabel="Region">
-            <MudTextField @bind-Value="context.Region" Required />
-        </MudTd>
-        <MudTd DataLabel="Type">
-            <MudTextField @bind-Value="context.Type" Required />
-        </MudTd>
-        <MudTd DataLabel="RayonRegion">
-            <MudTextField @bind-Value="context.RayonRegion" Required />
-        </MudTd>
-        <MudTd DataLabel="SeparateRegion">
-            <MudTextField @bind-Value="context.SeparateRegion" Required />
-        </MudTd>
-        <MudTd DataLabel="TypeLocality">
-            <MudTextField @bind-Value="context.TypeLocality" Required />
-        </MudTd>
-        <MudTd DataLabel="Locality">
-            <MudTextField @bind-Value="context.Locality" Required />
-        </MudTd>
-        @* <MudTd DataLabel="Oriention.Oriention"> *@
-        @*     <MudTextField @bind-Value="context.Oriention.Oriention" Required /> *@
-        @* </MudTd> *@
-        @* <MudTd DataLabel="Oriention.YearFall"> *@
-        @*     <MudTextField @bind-Value="context.Oriention.YearFall" Required /> *@
-        @* </MudTd> *@
-        @* <MudTd DataLabel="Oriention.YearRefund"> *@
-        @*     <MudTextField @bind-Value="context.Oriention.YearRefund" Required /> *@
-        @* </MudTd> *@
-        <MudTd DataLabel="AppointmentsAfterEnd.Appointmenrs">
-            <MudTextField @bind-Value="context.AppointmentsAfterEnd.Appointmenrs" Required />
-        </MudTd>
-        <MudTd DataLabel="AppointmentsAfterEnd.Year">
-            <MudTextField @bind-Value="context.AppointmentsAfterEnd.Year" Required />
-        </MudTd>
-        <MudTd DataLabel="YearAdaptation">
-            <MudTextField @bind-Value="context.YearAdaptation" Required />
-        </MudTd>
-        <MudTd DataLabel="YearDestruction">
-            <MudTextField @bind-Value="context.YearDestruction" Required />
-        </MudTd>
-        <MudTd DataLabel="Ocrug">
-            <MudTextField @bind-Value="context.Ocrug" Required />
-        </MudTd>
-        <MudTd DataLabel="Counties">
-            <MudTextField @bind-Value="context.Counties" Required />
-        </MudTd>
-        <MudTd DataLabel="OrientationDiocesse">
-            <MudTextField @bind-Value="context.OrientationDiocesse" Required />
-        </MudTd>
-        <MudTd DataLabel="TempleNameOnMap">
-            <MudTextField @bind-Value="context.TempleNameOnMap" Required />
-        </MudTd>
-    </RowEditingTemplate>
     <PagerContent>
         <MudTablePager />
     </PagerContent>
@@ -170,6 +119,14 @@
         <MudIconButton Size="@Size.Small" Icon="@Icons.Material.Outlined.Edit" Class="pa-0" OnClick="@button.ButtonAction" Disabled="@button.ButtonDisabled" />
     </EditButtonContent>
 </MudTable>
+
+<MudDialog @bind-Visible="visibleModal">
+    <DialogContent>
+        <div>
+            <AddTemple IsEdit="true" Temple="selectedItem" OnClose="HandleClose"/>
+        </div>
+    </DialogContent>
+</MudDialog>
 
 @code {
     private bool dense = true;
@@ -185,8 +142,37 @@
     private TableApplyButtonPosition applyButtonPosition = TableApplyButtonPosition.End;
     private TableEditButtonPosition editButtonPosition = TableEditButtonPosition.End;
     private TableEditTrigger editTrigger = TableEditTrigger.RowClick;
+    
+    private int selectedRowNumber = -1;
+    private MudTable<Temple> mudTable;
+    private bool visibleModal = false;
+    
+    private void RowClickEvent(TableRowClickEventArgs<Temple> tableRowClickEventArgs)
+    {
+        if (selectedItem != null)
+        {
+            var findItem = context.Temples.FirstOrDefault(x => x.Id == selectedItem.Id);
 
-    private bool visibleFornDialog = false;
+            if (findItem != null)
+            {
+                visibleModal = true;
+            }
+        }   
+    }
+    
+    private void Callback(TableRowClickEventArgs<Temple> obj)
+    {
+        throw new NotImplementedException();
+    }
+
+    private void SelectChange(Temple temple) => visibleModal = true;
+
+    private void HideModal() => visibleModal = false;
+
+    private void OnChange()
+    {
+           
+    }
     
     private IEnumerable<Temple> Elements = new List<Temple>();
 
@@ -209,51 +195,15 @@
             return true;
         return false;
     }
-
-    private void ItemHasBeenCommitted(object? temple)
-    {
-        var element = temple as Temple;
-        
-        var item = context.Temples.FirstOrDefault(x => x.Id == element.Id);
-
-        if (item != null)
-        {
-            item.Name = element.Name;
-            item.Type = element.Type;
-            item.DateStart = element.DateStart;
-            item.DateEnd = element.DateEnd;
-            item.Counties = element.Counties;
-            item.Locality = element.Locality;
-            item.TypeLocality = element.TypeLocality;
-            item.Ocrug = element.Ocrug;
-            item.District = element.District;
-            item.RayonRegion = element.RayonRegion;
-            item.RayonDistrict = element.RayonDistrict;
-            item.Quantity = element.Quantity;
-            // item.Oriention.Oriention = element.Oriention.Oriention;
-            // item.Oriention.YearFall = element.Oriention.YearFall;
-            // item.Oriention.YearRefund = element.Oriention.YearRefund;
-            item.AppointmentsAfterEnd.Appointmenrs = element.AppointmentsAfterEnd.Appointmenrs;
-            item.AppointmentsAfterEnd.Year = element.AppointmentsAfterEnd.Year;
-            item.OrientationDiocesse = element.OrientationDiocesse;
-            item.YearAdaptation = element.YearAdaptation;
-            item.YearDestruction = element.YearDestruction;
-            item.ParshYear = element.ParshYear;
-            item.Province = element.Province;
-            item.TempleNameOnMap = element.TempleNameOnMap;
-
-            context.Temples.Update(item);
-            context.SaveChanges();
-        }
-    }
     
-    private void BackupItem(object element)
+    private void HandleClose()
     {
-        
+        visibleModal = false;
     }
 
-    private void ResetItemToOriginalValues(object element)
+    private string SelectedRowClassFunc(Temple arg1, int arg2)
     {
-        
+        throw new NotImplementedException();
     }
+
 }

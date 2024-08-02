@@ -86,12 +86,12 @@ public class Temple
     /// <summary>
     /// Год упоминания
     /// </summary>
-    public DateOnly? YearReferences { get; set; }
+    public List<DateOnly>? YearReferences { get; set; }
 
-    public string TempleNameOnMap { get;set; }
+    public string? TempleNameOnMap { get;set; }
     
     /// <summary>
     /// Благоличие
     /// </summary>
-    public string Benevolence { get; set; }
+    public string? Benevolence { get; set; }
 }

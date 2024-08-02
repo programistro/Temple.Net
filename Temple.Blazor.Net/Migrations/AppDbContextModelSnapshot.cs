@@ -269,7 +269,6 @@ namespace Temple.Blazor.Net.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Benevolence")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Counties")
@@ -325,7 +324,6 @@ namespace Temple.Blazor.Net.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<string>("TempleNameOnMap")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Type")
@@ -340,7 +338,7 @@ namespace Temple.Blazor.Net.Migrations
                     b.Property<DateOnly?>("YearDestruction")
                         .HasColumnType("TEXT");
 
-                    b.Property<DateOnly?>("YearReferences")
+                    b.Property<string>("YearReferences")
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");

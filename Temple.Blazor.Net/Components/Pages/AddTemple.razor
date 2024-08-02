@@ -64,11 +64,37 @@
                     <MudTextField Label="Год уничтожения" @bind-Value="yearDestruction" Validation="ValidationService.ValidationOnlyYear" Style="width: 100%"/>
                 </MudTooltip>
             </div>
+            
+            <div>
+                <div class="containerOriention" style="justify-content: center; margin-top: 5px;">
+                    <h6 class="text-center mb-3 fw-light fs-5">Год упоменания</h6>
+                    <MudIconButton Icon="@Icons.Material.Filled.Add" Size="Size.Small" Style="margin-bottom: 9px; margin-left: 7px;" OnClick="ShowReferencYearClick"/>
+                </div>
 
-            <div style="margin-top: 10px; margin-bottom: 10px; display: flex; align-items: center; text-align: center; justify-content: space-between;">
-                <MudTooltip Text="Пишите дату в формате ДД. ММ.ГГГГ; ММ.ГГГГ, ГГГГ">
-                    <MudTextField Label="Год упоминания" @bind-Value="yearReferences" Validation="ValidationService.Validation" Style="width: 100%"/>
-                </MudTooltip>
+                <MudList T="string" SelectionMode="SelectionMode.ToggleSelection">
+                    @foreach (var item in _temple?.YearReferences)
+                    {
+                        <MudListItem Text="@item.ToString()"/>
+                    }
+                </MudList>
+
+                <MudDialog @bind-Visible="visibleReferencYear">
+                    <DialogContent>
+                        <div>
+                            <h3 class="card-title text-center mb-3 fw-light fs-5">Год упоменания</h3>
+
+                            <div style="margin-top: 10px; margin-bottom: 10px; display: flex; align-items: center; text-align: center; justify-content: space-between;">
+                                <MudTooltip Text="Пишите дату в формате ДД. ММ.ГГГГ; ММ.ГГГГ, ГГГГ">
+                                    <MudTextField Label="Год упоминания" @bind-Value="yearReferences" Validation="ValidationService.Validation" Style="width: 100%"/>
+                                </MudTooltip>
+                            </div>
+                        </div>
+                    </DialogContent>
+                    <DialogActions>
+                        <MudButton Color="Color.Primary" OnClick="OnHideModalReferencYearClick">Отмена</MudButton>
+                        <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="OnChangeReferencYearClick">Изменить</MudButton>
+                    </DialogActions>
+                </MudDialog>
             </div>
             
             <div>
@@ -85,7 +111,7 @@
             <div>
                 <div class="containerOriention" style="justify-content: center; margin-top: 5px;">
                     <h6 class="text-center mb-3 fw-light fs-5">Церковная ориентация</h6>
-                    <MudIconButton Icon="@Icons.Material.Filled.Add" Size="Size.Small" Style="margin-bottom: 9px; margin-left: 7px;" OnClick="ShowOrientionDialog"/>
+                    <MudIconButton Icon="@Icons.Material.Filled.Add" Size="Size.Small" Style="margin-bottom: 9px; margin-left: 7px;" OnClick="ShowReferencYearClick"/>
                 </div>
 
                 <MudList T="string" SelectionMode="SelectionMode.ToggleSelection">
@@ -192,7 +218,7 @@
             <div>
                 <div id="map" style="height: 400px; width: 100%; margin-top: 10px;"></div>
             </div>
-
+            
             <div class="d-grid mb-2">
                 <MudButton Style="margin-top: 20px;" Color="Color.Primary" Variant="Variant.Filled" OnClick="Sumbit">Добавить</MudButton>
             </div>
@@ -205,7 +231,10 @@
 </MudContainer>
  
 @code {
-
+    [Parameter] public bool IsEdit { get; set; } = false;
+    
+    [Parameter] public Temple Temple { get; set; } = new(); 
+    
     private string message = "";
 
     private string selectedType;
@@ -242,6 +271,7 @@
         // {
         //     Id = Guid.NewGuid().ToString("N")
         // },
+        YearReferences = new(),
         Oriention = new(),
         Id = Guid.NewGuid().ToString("N")
     };
@@ -694,7 +724,7 @@
         _temple.DateEnd = dateEnd.SetDateTime();
         _temple.YearAdaptation = yearAdaptation.SetDateTime();
         _temple.YearDestruction = yearDestruction.SetDateTime();
-        _temple.YearReferences = yearReferences.SetDateTime();
+        // _temple.YearReferences = yearReferences.SetDateTime();
         _temple.ParshYear = parshYear.SetDateTime();
 
         _temple.Type = selectedType;
@@ -713,10 +743,27 @@
         _temple.FillEmptyFields();
         _temple.AppointmentsAfterEnd.FillEmptyFields();
 
-        _context.Temples.Add(_temple);
-        _context.SaveChanges();
+        if (IsEdit == true)
+        {
+            Temple = _temple;
 
-        NavigationManager.NavigateTo("/home?show=true&obj=храм", true);
+            CloseDialog();
+        }
+        else
+        {
+            _context.Temples.Add(_temple);
+            _context.SaveChanges();
+
+            NavigationManager.NavigateTo("/home?show=true&obj=храм", true);
+        }
+    }
+    
+    [Parameter]
+    public EventCallback OnClose { get; set; }
+
+    private async Task CloseDialog()
+    {
+        await OnClose.InvokeAsync();
     }
 
     private DotNetObjectReference<AddTemple>? dotNetHelper;
@@ -776,4 +823,17 @@
 
         visibleOriention = false;
     }
+
+    private bool visibleReferencYear = false;
+
+    private void ShowReferencYearClick() => visibleReferencYear = true;
+
+    private void OnChangeReferencYearClick()
+    {
+        _temple.YearReferences.Add(yearReferences.SetDateTime());
+
+        visibleReferencYear = false;
+    }
+
+    private void OnHideModalReferencYearClick() => visibleReferencYear = false;
 }
