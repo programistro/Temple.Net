@@ -13,223 +13,444 @@
 @inject ValidationService ValidationService
 @inject ISnackbar Snackbar
 
-<MudPopoverProvider @rendermode="InteractiveServer"/>
-<MudDialogProvider @rendermode="InteractiveServer" MaxWidth="MaxWidth.ExtraExtraLarge"
-                   Position="DialogPosition.Center"/>
+@if (IsEdit == false)
+{
+    <MudDialogProvider @rendermode="InteractiveServer" MaxWidth="MaxWidth.ExtraExtraLarge"
+                       Position="DialogPosition.Center"/>
+}
 
-<MudContainer MaxWidth="MaxWidth.Large" Style="width: 45%; margin-bottom: 20px;">
-    <MudCard>
-        <MudCardContent>
-            <h5 class="card-title text-center mb-3 fw-light fs-5">Добавить храм</h5>
-            <div>
-                <MudTextField @bind-Value="_temple.Name" Label="Название" Validation="CheckName"/>
-            </div>
-
-            <div>
-                <MudAutocomplete T="string" Label="Тип храма" @bind-Value="selectedType" SearchFunc="@SearchType"
-                                 ResetValueOnEmptyText="@resetValueOnEmptyText"
-                                 CoerceText="@coerceText" CoerceValue="@coerceValue" AdornmentColor="Color.Primary" />
-            </div>
-
-            <div style="margin-top: 10px; margin-bottom: 10px; display: flex; align-items: center; text-align: center; 
-            justify-content: space-between; width: 100%;">
-                <MudTooltip Text="Пишите дату в формате ДД. ММ.ГГГГ; ММ.ГГГГ, ГГГГ">
-                    <MudTextField Label="Год основания" @bind-Value="dateStart" Validation="ValidationService.Validation" Style="width: 100%"/>
-                </MudTooltip>
-            </div>
-
-            <div>
+@if (IsEdit == false)
+{
+    <MudContainer MaxWidth="MaxWidth.Large" Style="width: 45%; margin-bottom: 20px;">
+        <MudCard>
+            <MudCardContent>
+                <h5 class="card-title text-center mb-3 fw-light fs-5">Добавить храм</h5>
                 <div>
-                    <div style="margin-top: 10px; margin-bottom: 10px; display: flex; align-items: center; text-align: center; justify-content: space-between;">
-                        <MudTooltip Text="Пишите дату в формате ДД. ММ.ГГГГ; ММ.ГГГГ, ГГГГ">
-                            <MudTextField Label="Год закрытия" @bind-Value="dateEnd" Validation="ValidationService.Validation" Style="width: 100%"/>
-                        </MudTooltip>
-                    </div>
+                    <MudTextField @bind-Value="_temple.Name" Label="Название" Validation="CheckName"/>
+                </div>
 
-                    <div style="margin-top: 10px; margin-bottom: 10px; display: flex; align-items: center; text-align: center; justify-content: space-between;">
-                        <MudTooltip Text="Пишите дату в формате ДД. ММ.ГГГГ; ММ.ГГГГ, ГГГГ">
-                            <MudTextField Label="Год приспособления" @bind-Value="yearAdaptation" Validation="ValidationService.Validation" Style="width: 100%"/>
-                        </MudTooltip>
-                    </div>
-
-                    <MudAutocomplete T="string" Label="Назначение после закрытия" @bind-Value="selectedAfterClosing" SearchFunc="@SearchAfterClosing"
+                <div>
+                    <MudAutocomplete T="string" Label="Тип храма" @bind-Value="selectedType" SearchFunc="@SearchType"
                                      ResetValueOnEmptyText="@resetValueOnEmptyText"
                                      CoerceText="@coerceText" CoerceValue="@coerceValue" AdornmentColor="Color.Primary" />
-                    
-                </div>
-            </div>
-
-            <div style="margin-top: 10px; margin-bottom: 10px; display: flex; align-items: center; text-align: center; justify-content: space-between;">
-                <MudTooltip Text="Пишите дату в формате ГГГГ">
-                    <MudTextField Label="Год уничтожения" @bind-Value="yearDestruction" Validation="ValidationService.ValidationOnlyYear" Style="width: 100%"/>
-                </MudTooltip>
-            </div>
-            
-            <div>
-                <div class="containerOriention" style="justify-content: center; margin-top: 5px;">
-                    <h6 class="text-center mb-3 fw-light fs-5">Год упоменания</h6>
-                    <MudIconButton Icon="@Icons.Material.Filled.Add" Size="Size.Small" Style="margin-bottom: 9px; margin-left: 7px;" OnClick="ShowReferencYearClick"/>
                 </div>
 
-                <MudList T="string" SelectionMode="SelectionMode.ToggleSelection">
-                    @foreach (var item in _temple?.YearReferences)
-                    {
-                        <MudListItem Text="@item.ToString()"/>
-                    }
-                </MudList>
+                <div style="margin-top: 10px; margin-bottom: 10px; display: flex; align-items: center; text-align: center; 
+            justify-content: space-between; width: 100%;">
+                    <MudTooltip Text="Пишите дату в формате ДД. ММ.ГГГГ; ММ.ГГГГ, ГГГГ">
+                        <MudTextField Label="Год основания" @bind-Value="dateStart" Validation="ValidationService.Validation" Style="width: 100%"/>
+                    </MudTooltip>
+                </div>
 
-                <MudDialog @bind-Visible="visibleReferencYear">
-                    <DialogContent>
-                        <div>
-                            <h3 class="card-title text-center mb-3 fw-light fs-5">Год упоменания</h3>
-
-                            <div style="margin-top: 10px; margin-bottom: 10px; display: flex; align-items: center; text-align: center; justify-content: space-between;">
-                                <MudTooltip Text="Пишите дату в формате ДД. ММ.ГГГГ; ММ.ГГГГ, ГГГГ">
-                                    <MudTextField Label="Год упоминания" @bind-Value="yearReferences" Validation="ValidationService.Validation" Style="width: 100%"/>
-                                </MudTooltip>
-                            </div>
+                <div>
+                    <div>
+                        <div style="margin-top: 10px; margin-bottom: 10px; display: flex; align-items: center; text-align: center; justify-content: space-between;">
+                            <MudTooltip Text="Пишите дату в формате ДД. ММ.ГГГГ; ММ.ГГГГ, ГГГГ">
+                                <MudTextField Label="Год закрытия" @bind-Value="dateEnd" Validation="ValidationService.Validation" Style="width: 100%"/>
+                            </MudTooltip>
                         </div>
-                    </DialogContent>
-                    <DialogActions>
-                        <MudButton Color="Color.Primary" OnClick="OnHideModalReferencYearClick">Отмена</MudButton>
-                        <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="OnChangeReferencYearClick">Изменить</MudButton>
-                    </DialogActions>
-                </MudDialog>
-            </div>
-            
-            <div>
-                <MudTextField @bind-Value="_temple.Benevolence" Label="Благоличие"/>
-            </div>
 
-            <style>
+                        <div style="margin-top: 10px; margin-bottom: 10px; display: flex; align-items: center; text-align: center; justify-content: space-between;">
+                            <MudTooltip Text="Пишите дату в формате ДД. ММ.ГГГГ; ММ.ГГГГ, ГГГГ">
+                                <MudTextField Label="Год приспособления" @bind-Value="yearAdaptation" Validation="ValidationService.Validation" Style="width: 100%"/>
+                            </MudTooltip>
+                        </div>
+
+                        <MudAutocomplete T="string" Label="Назначение после закрытия" @bind-Value="selectedAfterClosing" SearchFunc="@SearchAfterClosing"
+                                         ResetValueOnEmptyText="@resetValueOnEmptyText"
+                                         CoerceText="@coerceText" CoerceValue="@coerceValue" AdornmentColor="Color.Primary" />
+                    
+                    </div>
+                </div>
+
+                <div style="margin-top: 10px; margin-bottom: 10px; display: flex; align-items: center; text-align: center; justify-content: space-between;">
+                    <MudTooltip Text="Пишите дату в формате ГГГГ">
+                        <MudTextField Label="Год уничтожения" @bind-Value="yearDestruction" Validation="ValidationService.ValidationOnlyYear" Style="width: 100%"/>
+                    </MudTooltip>
+                </div>
+            
+                <div>
+                    <div class="containerOriention" style="justify-content: center; margin-top: 5px;">
+                        <h6 class="text-center mb-3 fw-light fs-5">Год упоменания</h6>
+                        <MudIconButton Icon="@Icons.Material.Filled.Add" Size="Size.Small" Style="margin-bottom: 9px; margin-left: 7px;" OnClick="ShowReferencYearClick"/>
+                    </div>
+
+                    <MudList T="string" SelectionMode="SelectionMode.ToggleSelection">
+                        @foreach (var item in _temple?.YearReferences)
+                        {
+                            <MudListItem Text="@item.ToString()"/>
+                        }
+                    </MudList>
+
+                    <MudDialog @bind-Visible="visibleReferencYear">
+                        <DialogContent>
+                            <div>
+                                <h3 class="card-title text-center mb-3 fw-light fs-5">Год упоменания</h3>
+
+                                <div style="margin-top: 10px; margin-bottom: 10px; display: flex; align-items: center; text-align: center; justify-content: space-between;">
+                                    <MudTooltip Text="Пишите дату в формате ДД. ММ.ГГГГ; ММ.ГГГГ, ГГГГ">
+                                        <MudTextField Label="Год упоминания" @bind-Value="yearReferences" Validation="ValidationService.Validation" Style="width: 100%"/>
+                                    </MudTooltip>
+                                </div>
+                            </div>
+                        </DialogContent>
+                        <DialogActions>
+                            <MudButton Color="Color.Primary" OnClick="OnHideModalReferencYearClick">Отмена</MudButton>
+                            <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="OnChangeReferencYearClick">Изменить</MudButton>
+                        </DialogActions>
+                    </MudDialog>
+                </div>
+            
+                <div>
+                    <MudTextField @bind-Value="_temple.Benevolence" Label="Благоличие"/>
+                </div>
+
+                <style>
                 .containerOriention {
                     display: flex;
                     align-items: center; /* Выравнивание по вертикали */
                 }
             </style>
             
-            <div>
-                <div class="containerOriention" style="justify-content: center; margin-top: 5px;">
-                    <h6 class="text-center mb-3 fw-light fs-5">Церковная ориентация</h6>
-                    <MudIconButton Icon="@Icons.Material.Filled.Add" Size="Size.Small" Style="margin-bottom: 9px; margin-left: 7px;" OnClick="ShowReferencYearClick"/>
+                <div>
+                    <div class="containerOriention" style="justify-content: center; margin-top: 5px;">
+                        <h6 class="text-center mb-3 fw-light fs-5">Церковная ориентация</h6>
+                        <MudIconButton Icon="@Icons.Material.Filled.Add" Size="Size.Small" Style="margin-bottom: 9px; margin-left: 7px;" OnClick="ShowReferencYearClick"/>
+                    </div>
+
+                    <MudList T="string" SelectionMode="SelectionMode.ToggleSelection">
+                        @foreach (var item in _temple.Oriention)
+                        {
+                            <MudListItem Text="@item.Oriention"/>
+                        }
+                    </MudList>
+
+                    <MudDialog @bind-Visible="visibleOriention">
+                        <DialogContent>
+                            <div>
+                                <h3 class="card-title text-center mb-3 fw-light fs-5">Церковная ориентация</h3>
+
+                                <div>
+                                    <div style="margin-top: 10px; margin-bottom: 10px; display: flex; align-items: center; text-align: center; justify-content: space-between;">
+                                        <MudTooltip Text="Пишите дату в формате ДД. ММ.ГГГГ; ММ.ГГГГ, ГГГГ">
+                                            <MudTextField Label="Год отпадения" @bind-Value="yearFall" Validation="ValidationService.Validation" Style="width: 100%"/>
+                                        </MudTooltip>
+                                    </div>
+
+                                    <MudAutocomplete T="string" Label="Церковная ориентация" @bind-Value="selectedOriention" SearchFunc="@SearchOriention"
+                                                     ResetValueOnEmptyText="@resetValueOnEmptyText"
+                                                     CoerceText="@coerceText" CoerceValue="@coerceValue" AdornmentColor="Color.Primary" />
+
+                                    <div style="margin-top: 10px; margin-bottom: 10px; display: flex; align-items: center; text-align: center; justify-content: space-between;">
+                                        <MudTooltip Text="Пишите дату в формате ДД. ММ.ГГГГ; ММ.ГГГГ, ГГГГ">
+                                            <MudTextField Label="Год возрата" @bind-Value="yearRefuund" Validation="ValidationService.Validation" Style="width: 100%"/>
+                                        </MudTooltip>
+                                    </div>
+                                </div>
+                            </div>
+                        </DialogContent>
+                        <DialogActions>
+                            <MudButton Color="Color.Primary" OnClick="OnHideModalOrientionClick">Отмена</MudButton>
+                            <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="OnChangeOrientionClick">Изменить</MudButton>
+                        </DialogActions>
+                    </MudDialog>
+                </div>
+            
+                <div>
+                    <h3 class="card-title text-center mb-3 fw-light fs-5">Количество прихожан</h3>
+
+                    <div>
+                        <div style="margin-top: 10px; margin-bottom: 10px; display: flex; align-items: center; text-align: center; justify-content: space-between;">
+                            <MudTooltip Text="Пишите дату в формате ДД. ММ.ГГГГ; ММ.ГГГГ, ГГГГ">
+                                <MudTextField Label="Год" @bind-Value="parshYear" Validation="ValidationService.Validation" Style="width: 100%"/>
+                            </MudTooltip>
+                        </div>
+
+                        <MudTextField T="int?" @bind-value="_temple.Quantity" Label="Количество"/>
+                    </div>
                 </div>
 
-                <MudList T="string" SelectionMode="SelectionMode.ToggleSelection">
-                    @foreach (var item in _temple.Oriention)
-                    {
-                        <MudListItem Text="@item.Oriention"/>
-                    }
-                </MudList>
+                <MudAutocomplete T="string" Label="Епархии" @bind-Value="selectedDiocese" SearchFunc="@SearcDiocese"
+                                 ResetValueOnEmptyText="@resetValueOnEmptyText"
+                                 CoerceText="@coerceText" CoerceValue="@coerceValue" AdornmentColor="Color.Primary" />
 
-                <MudDialog @bind-Visible="visibleOriention">
-                    <DialogContent>
-                        <div>
-                            <h3 class="card-title text-center mb-3 fw-light fs-5">Церковная ориентация</h3>
 
+                <h3 class="card-title text-center mb-3 fw-light fs-5">Губернии и уезды</h3>
+
+                <MudAutocomplete T="string" Label="Губернии" @bind-Value="selectedProvince" SearchFunc="@SearchProvince"
+                                 ResetValueOnEmptyText="@resetValueOnEmptyText"
+                                 CoerceText="@coerceText" CoerceValue="@coerceValue" />
+            
+                <MudAutocomplete T="string" Label="Уезды" @bind-Value="selectedCounties" SearchFunc="@SearchCounties"
+                                 ResetValueOnEmptyText="@resetValueOnEmptyText"
+                                 CoerceText="@coerceText" CoerceValue="@coerceValue" />
+
+                <h3 class="card-title text-center mb-3 fw-light fs-5">Округа и районы округов (1924-1930)</h3>
+
+                <div>
+                    <MudAutocomplete T="string" Label="Округа" @bind-Value="selectedOcrug" SearchFunc="@SearchOcrug"
+                                     ResetValueOnEmptyText="@resetValueOnEmptyText"
+                                     CoerceText="@coerceText" CoerceValue="@coerceValue" />
+                </div>
+
+                <div>
+                    <MudAutocomplete T="string" Label="Район" @bind-Value="selectedDistrict" SearchFunc="@SearchDistcirt"
+                                     ResetValueOnEmptyText="@resetValueOnEmptyText"
+                                     CoerceText="@coerceText" CoerceValue="@coerceValue" />
+                </div>
+
+                <div>
+                    <MudTextField @bind-Value="_temple.TypeLocality" Label="Тип населеного пункта"/>
+                </div>
+
+                <div>
+                    <MudTextField @bind-Value="_temple.Locality" Label="Населеный пункт"/>
+                </div>
+            
+                <div>
+                    <MudTextField @bind-Value="_temple.RayonRegion" Label="Район области"/>
+                </div>
+
+                <div>
+                    <MudTextField @bind-Value="_temple.Region" Label="Область"/>
+                </div>
+
+                <div>
+                    <MudTextField @bind-Value="_temple.RayonDistrict" Label="Район округа"/>
+                </div>
+
+                <div>
+                    <div id="map" style="height: 400px; width: 100%; margin-top: 10px;"></div>
+                </div>
+            
+                <div class="d-grid mb-2">
+                    <MudButton Style="margin-top: 20px;" Color="Color.Primary" Variant="Variant.Filled" OnClick="Sumbit">Добавить</MudButton>
+                </div>
+            
+                <div>
+                    <p>@message</p>
+                </div>
+            </MudCardContent>
+        </MudCard>
+    </MudContainer>
+}
+else if (IsEdit == true)
+{
+    <MudContainer MaxWidth="MaxWidth.Large" Style="width: 45%; margin-bottom: 20px;">
+        <MudCard>
+            <MudCardContent>
+                <h5 class="card-title text-center mb-3 fw-light fs-5">Добавить храм</h5>
+                <div>
+                    <MudTextField @bind-Value="Temple.Name" Label="Название" Validation="CheckName"/>
+                </div>
+
+                <div>
+                    <MudAutocomplete T="string" Label="Тип храма" @bind-Value="selectedType" SearchFunc="@SearchType"
+                                     ResetValueOnEmptyText="@resetValueOnEmptyText"
+                                     CoerceText="@coerceText" CoerceValue="@coerceValue" AdornmentColor="Color.Primary" />
+                </div>
+
+                <div style="margin-top: 10px; margin-bottom: 10px; display: flex; align-items: center; text-align: center; 
+            justify-content: space-between; width: 100%;">
+                    <MudTooltip Text="Пишите дату в формате ДД. ММ.ГГГГ; ММ.ГГГГ, ГГГГ">
+                        <MudTextField Label="Год основания" @bind-Value="dateStart" Validation="ValidationService.Validation" Style="width: 100%"/>
+                    </MudTooltip>
+                </div>
+
+                <div>
+                    <div>
+                        <div style="margin-top: 10px; margin-bottom: 10px; display: flex; align-items: center; text-align: center; justify-content: space-between;">
+                            <MudTooltip Text="Пишите дату в формате ДД. ММ.ГГГГ; ММ.ГГГГ, ГГГГ">
+                                <MudTextField Label="Год закрытия" @bind-Value="dateEnd" Validation="ValidationService.Validation" Style="width: 100%"/>
+                            </MudTooltip>
+                        </div>
+
+                        <div style="margin-top: 10px; margin-bottom: 10px; display: flex; align-items: center; text-align: center; justify-content: space-between;">
+                            <MudTooltip Text="Пишите дату в формате ДД. ММ.ГГГГ; ММ.ГГГГ, ГГГГ">
+                                <MudTextField Label="Год приспособления" @bind-Value="yearAdaptation" Validation="ValidationService.Validation" Style="width: 100%"/>
+                            </MudTooltip>
+                        </div>
+
+                        <MudAutocomplete T="string" Label="Назначение после закрытия" @bind-Value="selectedAfterClosing" SearchFunc="@SearchAfterClosing"
+                                         ResetValueOnEmptyText="@resetValueOnEmptyText"
+                                         CoerceText="@coerceText" CoerceValue="@coerceValue" AdornmentColor="Color.Primary" />
+
+                    </div>
+                </div>
+
+                <div style="margin-top: 10px; margin-bottom: 10px; display: flex; align-items: center; text-align: center; justify-content: space-between;">
+                    <MudTooltip Text="Пишите дату в формате ГГГГ">
+                        <MudTextField Label="Год уничтожения" @bind-Value="yearDestruction" Validation="ValidationService.ValidationOnlyYear" Style="width: 100%"/>
+                    </MudTooltip>
+                </div>
+
+                <div>
+                    <div class="containerOriention" style="justify-content: center; margin-top: 5px;">
+                        <h6 class="text-center mb-3 fw-light fs-5">Год упоменания</h6>
+                        <MudIconButton Icon="@Icons.Material.Filled.Add" Size="Size.Small" Style="margin-bottom: 9px; margin-left: 7px;" OnClick="ShowReferencYearClick"/>
+                    </div>
+
+                    <MudList T="string" SelectionMode="SelectionMode.ToggleSelection">
+                        @foreach (var item in _temple?.YearReferences)
+                        {
+                        <MudListItem Text="@item.ToString()"/>
+                        }
+                    </MudList>
+
+                    <MudDialog @bind-Visible="visibleReferencYear">
+                        <DialogContent>
                             <div>
-                                <div style="margin-top: 10px; margin-bottom: 10px; display: flex; align-items: center; text-align: center; justify-content: space-between;">
-                                    <MudTooltip Text="Пишите дату в формате ДД. ММ.ГГГГ; ММ.ГГГГ, ГГГГ">
-                                        <MudTextField Label="Год отпадения" @bind-Value="yearFall" Validation="ValidationService.Validation" Style="width: 100%"/>
-                                    </MudTooltip>
-                                </div>
-
-                                <MudAutocomplete T="string" Label="Церковная ориентация" @bind-Value="selectedOriention" SearchFunc="@SearchOriention"
-                                                 ResetValueOnEmptyText="@resetValueOnEmptyText"
-                                                 CoerceText="@coerceText" CoerceValue="@coerceValue" AdornmentColor="Color.Primary" />
+                                <h3 class="card-title text-center mb-3 fw-light fs-5">Год упоменания</h3>
 
                                 <div style="margin-top: 10px; margin-bottom: 10px; display: flex; align-items: center; text-align: center; justify-content: space-between;">
                                     <MudTooltip Text="Пишите дату в формате ДД. ММ.ГГГГ; ММ.ГГГГ, ГГГГ">
-                                        <MudTextField Label="Год возрата" @bind-Value="yearRefuund" Validation="ValidationService.Validation" Style="width: 100%"/>
+                                        <MudTextField Label="Год упоминания" @bind-Value="yearReferences" Validation="ValidationService.Validation" Style="width: 100%"/>
                                     </MudTooltip>
                                 </div>
                             </div>
-                        </div>
-                    </DialogContent>
-                    <DialogActions>
-                        <MudButton Color="Color.Primary" OnClick="OnHideModalOrientionClick">Отмена</MudButton>
-                        <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="OnChangeOrientionClick">Изменить</MudButton>
-                    </DialogActions>
-                </MudDialog>
-            </div>
-            
-            <div>
-                <h3 class="card-title text-center mb-3 fw-light fs-5">Количество прихожан</h3>
+                        </DialogContent>
+                        <DialogActions>
+                            <MudButton Color="Color.Primary" OnClick="OnHideModalReferencYearClick">Отмена</MudButton>
+                            <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="OnChangeReferencYearClick">Изменить</MudButton>
+                        </DialogActions>
+                    </MudDialog>
+                </div>
 
                 <div>
-                    <div style="margin-top: 10px; margin-bottom: 10px; display: flex; align-items: center; text-align: center; justify-content: space-between;">
-                        <MudTooltip Text="Пишите дату в формате ДД. ММ.ГГГГ; ММ.ГГГГ, ГГГГ">
-                            <MudTextField Label="Год" @bind-Value="parshYear" Validation="ValidationService.Validation" Style="width: 100%"/>
-                        </MudTooltip>
+                    <MudTextField @bind-Value="_temple.Benevolence" Label="Благоличие"/>
+                </div>
+
+                <style>
+                    .containerOriention {
+                        display: flex;
+                        align-items: center; /* Выравнивание по вертикали */
+                    }
+                </style>
+
+                <div>
+                    <div class="containerOriention" style="justify-content: center; margin-top: 5px;">
+                        <h6 class="text-center mb-3 fw-light fs-5">Церковная ориентация</h6>
+                        <MudIconButton Icon="@Icons.Material.Filled.Add" Size="Size.Small" Style="margin-bottom: 9px; margin-left: 7px;" OnClick="ShowReferencYearClick"/>
                     </div>
 
-                    <MudTextField T="int?" @bind-value="_temple.Quantity" Label="Количество"/>
+                    <MudList T="string" SelectionMode="SelectionMode.ToggleSelection">
+                        @foreach (var item in Temple.Oriention)
+                        {
+                            <MudListItem Text="@item.Oriention"/>
+                        }
+                    </MudList>
+
+                    <MudDialog @bind-Visible="visibleOriention">
+                        <DialogContent>
+                            <div>
+                                <h3 class="card-title text-center mb-3 fw-light fs-5">Церковная ориентация</h3>
+
+                                <div>
+                                    <div style="margin-top: 10px; margin-bottom: 10px; display: flex; align-items: center; text-align: center; justify-content: space-between;">
+                                        <MudTooltip Text="Пишите дату в формате ДД. ММ.ГГГГ; ММ.ГГГГ, ГГГГ">
+                                            <MudTextField Label="Год отпадения" @bind-Value="yearFall" Validation="ValidationService.Validation" Style="width: 100%"/>
+                                        </MudTooltip>
+                                    </div>
+
+                                    <MudAutocomplete T="string" Label="Церковная ориентация" @bind-Value="selectedOriention" SearchFunc="@SearchOriention"
+                                                     ResetValueOnEmptyText="@resetValueOnEmptyText"
+                                                     CoerceText="@coerceText" CoerceValue="@coerceValue" AdornmentColor="Color.Primary" />
+
+                                    <div style="margin-top: 10px; margin-bottom: 10px; display: flex; align-items: center; text-align: center; justify-content: space-between;">
+                                        <MudTooltip Text="Пишите дату в формате ДД. ММ.ГГГГ; ММ.ГГГГ, ГГГГ">
+                                            <MudTextField Label="Год возрата" @bind-Value="yearRefuund" Validation="ValidationService.Validation" Style="width: 100%"/>
+                                        </MudTooltip>
+                                    </div>
+                                </div>
+                            </div>
+                        </DialogContent>
+                        <DialogActions>
+                            <MudButton Color="Color.Primary" OnClick="OnHideModalOrientionClick">Отмена</MudButton>
+                            <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="OnChangeOrientionClick">Изменить</MudButton>
+                        </DialogActions>
+                    </MudDialog>
                 </div>
-            </div>
 
-            <MudAutocomplete T="string" Label="Епархии" @bind-Value="selectedDiocese" SearchFunc="@SearcDiocese"
-                             ResetValueOnEmptyText="@resetValueOnEmptyText"
-                             CoerceText="@coerceText" CoerceValue="@coerceValue" AdornmentColor="Color.Primary" />
+                <div>
+                    <h3 class="card-title text-center mb-3 fw-light fs-5">Количество прихожан</h3>
+
+                    <div>
+                        <div style="margin-top: 10px; margin-bottom: 10px; display: flex; align-items: center; text-align: center; justify-content: space-between;">
+                            <MudTooltip Text="Пишите дату в формате ДД. ММ.ГГГГ; ММ.ГГГГ, ГГГГ">
+                                <MudTextField Label="Год" @bind-Value="parshYear" Validation="ValidationService.Validation" Style="width: 100%"/>
+                            </MudTooltip>
+                        </div>
+
+                        <MudTextField T="int?" @bind-value="_temple.Quantity" Label="Количество"/>
+                    </div>
+                </div>
+
+                <MudAutocomplete T="string" Label="Епархии" @bind-Value="selectedDiocese" SearchFunc="@SearcDiocese"
+                                 ResetValueOnEmptyText="@resetValueOnEmptyText"
+                                 CoerceText="@coerceText" CoerceValue="@coerceValue" AdornmentColor="Color.Primary" />
 
 
-            <h3 class="card-title text-center mb-3 fw-light fs-5">Губернии и уезды</h3>
+                <h3 class="card-title text-center mb-3 fw-light fs-5">Губернии и уезды</h3>
 
-            <MudAutocomplete T="string" Label="Губернии" @bind-Value="selectedProvince" SearchFunc="@SearchProvince"
-                             ResetValueOnEmptyText="@resetValueOnEmptyText"
-                             CoerceText="@coerceText" CoerceValue="@coerceValue" />
-            
-            <MudAutocomplete T="string" Label="Уезды" @bind-Value="selectedCounties" SearchFunc="@SearchCounties"
+                <MudAutocomplete T="string" Label="Губернии" @bind-Value="selectedProvince" SearchFunc="@SearchProvince"
                                  ResetValueOnEmptyText="@resetValueOnEmptyText"
                                  CoerceText="@coerceText" CoerceValue="@coerceValue" />
 
-            <h3 class="card-title text-center mb-3 fw-light fs-5">Округа и районы округов (1924-1930)</h3>
-
-            <div>
-                <MudAutocomplete T="string" Label="Округа" @bind-Value="selectedOcrug" SearchFunc="@SearchOcrug"
+                <MudAutocomplete T="string" Label="Уезды" @bind-Value="selectedCounties" SearchFunc="@SearchCounties"
                                  ResetValueOnEmptyText="@resetValueOnEmptyText"
                                  CoerceText="@coerceText" CoerceValue="@coerceValue" />
-            </div>
 
-            <div>
-                <MudAutocomplete T="string" Label="Район" @bind-Value="selectedDistrict" SearchFunc="@SearchDistcirt"
-                                 ResetValueOnEmptyText="@resetValueOnEmptyText"
-                                 CoerceText="@coerceText" CoerceValue="@coerceValue" />
-            </div>
+                <h3 class="card-title text-center mb-3 fw-light fs-5">Округа и районы округов (1924-1930)</h3>
 
-            <div>
-                <MudTextField @bind-Value="_temple.TypeLocality" Label="Тип населеного пункта"/>
-            </div>
+                <div>
+                    <MudAutocomplete T="string" Label="Округа" @bind-Value="selectedOcrug" SearchFunc="@SearchOcrug"
+                                     ResetValueOnEmptyText="@resetValueOnEmptyText"
+                                     CoerceText="@coerceText" CoerceValue="@coerceValue" />
+                </div>
 
-            <div>
-                <MudTextField @bind-Value="_temple.Locality" Label="Населеный пункт"/>
-            </div>
-            
-            <div>
-                <MudTextField @bind-Value="_temple.RayonRegion" Label="Район области"/>
-            </div>
+                <div>
+                    <MudAutocomplete T="string" Label="Район" @bind-Value="selectedDistrict" SearchFunc="@SearchDistcirt"
+                                     ResetValueOnEmptyText="@resetValueOnEmptyText"
+                                     CoerceText="@coerceText" CoerceValue="@coerceValue" />
+                </div>
 
-            <div>
-                <MudTextField @bind-Value="_temple.Region" Label="Область"/>
-            </div>
+                <div>
+                    <MudTextField @bind-Value="Temple.TypeLocality" Label="Тип населеного пункта"/>
+                </div>
 
-            <div>
-                <MudTextField @bind-Value="_temple.RayonDistrict" Label="Район округа"/>
-            </div>
+                <div>
+                    <MudTextField @bind-Value="Temple.Locality" Label="Населеный пункт"/>
+                </div>
 
-            <div>
-                <div id="map" style="height: 400px; width: 100%; margin-top: 10px;"></div>
-            </div>
-            
-            <div class="d-grid mb-2">
-                <MudButton Style="margin-top: 20px;" Color="Color.Primary" Variant="Variant.Filled" OnClick="Sumbit">Добавить</MudButton>
-            </div>
-            
-            <div>
-                <p>@message</p>
-            </div>
-        </MudCardContent>
-    </MudCard>
-</MudContainer>
- 
+                <div>
+                    <MudTextField @bind-Value="Temple.RayonRegion" Label="Район области"/>
+                </div>
+
+                <div>
+                    <MudTextField @bind-Value="Temple.Region" Label="Область"/>
+                </div>
+
+                <div>
+                    <MudTextField @bind-Value="Temple.RayonDistrict" Label="Район округа"/>
+                </div>
+
+                <div>
+                    <div id="map" style="height: 400px; width: 100%; margin-top: 10px;"></div>
+                </div>
+
+                <div class="d-grid mb-2">
+                    <MudButton Style="margin-top: 20px;" Color="Color.Primary" Variant="Variant.Filled" OnClick="Sumbit">Обновить</MudButton>
+                </div>
+
+                <div>
+                    <p>@message</p>
+                </div>
+            </MudCardContent>
+        </MudCard>
+    </MudContainer>
+}
+
+
 @code {
     [Parameter] public bool IsEdit { get; set; } = false;
     
@@ -267,10 +488,6 @@
         {
             Id = Guid.NewGuid().ToString("N")
         },
-        // Oriention = new()
-        // {
-        //     Id = Guid.NewGuid().ToString("N")
-        // },
         YearReferences = new(),
         Oriention = new(),
         Id = Guid.NewGuid().ToString("N")
@@ -720,37 +937,60 @@
             }
         }
 
-        _temple.DateStart = dateStart.SetDateTime();
-        _temple.DateEnd = dateEnd.SetDateTime();
-        _temple.YearAdaptation = yearAdaptation.SetDateTime();
-        _temple.YearDestruction = yearDestruction.SetDateTime();
-        // _temple.YearReferences = yearReferences.SetDateTime();
-        _temple.ParshYear = parshYear.SetDateTime();
-
-        _temple.Type = selectedType;
-        _temple.Province = selectedProvince;
-        _temple.Counties = selectedCounties;
-        _temple.District = selectedDistrict;
-        _temple.Ocrug = selectedOcrug;
-        _temple.AppointmentsAfterEnd.Appointmenrs = selectedAfterClosing;
-        _temple.OrientationDiocesse = selectedDiocese;
-        _temple.Lng = Lng;
-        _temple.Lat = Lat;
-
-        _temple.AppointmentsAfterEnd.Id = Guid.NewGuid().ToString("N");
-        _temple.Id = Guid.NewGuid().ToString("N");
-
-        _temple.FillEmptyFields();
-        _temple.AppointmentsAfterEnd.FillEmptyFields();
-
         if (IsEdit == true)
         {
-            Temple = _temple;
+            Temple.DateStart = dateStart.SetDateTime();
+            Temple.DateEnd = dateEnd.SetDateTime();
+            Temple.YearAdaptation = yearAdaptation.SetDateTime();
+            Temple.YearDestruction = yearDestruction.SetDateTime();
+            Temple.ParshYear = parshYear.SetDateTime();
 
+            Temple.Type = selectedType;
+            Temple.Province = selectedProvince;
+            Temple.Counties = selectedCounties;
+            Temple.District = selectedDistrict;
+            Temple.Ocrug = selectedOcrug;
+            Temple.AppointmentsAfterEnd.Appointmenrs = selectedAfterClosing;
+            Temple.OrientationDiocesse = selectedDiocese;
+            Temple.Lng = Lng;
+            Temple.Lat = Lat;
+
+            Temple.FillEmptyFields();
+            Temple.AppointmentsAfterEnd.FillEmptyFields();
+
+            var item = _context.Temples.FirstOrDefault(x => x.Id == Temple.Id);
+
+            item = Temple;
+
+            _context.Temples.Update(item);
+            _context.SaveChanges();
+            
             CloseDialog();
         }
         else
         {
+            _temple.DateStart = dateStart.SetDateTime();
+            _temple.DateEnd = dateEnd.SetDateTime();
+            _temple.YearAdaptation = yearAdaptation.SetDateTime();
+            _temple.YearDestruction = yearDestruction.SetDateTime();
+            // _temple.YearReferences = yearReferences.SetDateTime();
+            _temple.ParshYear = parshYear.SetDateTime();
+
+            _temple.Type = selectedType;
+            _temple.Province = selectedProvince;
+            _temple.Counties = selectedCounties;
+            _temple.District = selectedDistrict;
+            _temple.Ocrug = selectedOcrug;
+            _temple.AppointmentsAfterEnd.Appointmenrs = selectedAfterClosing;
+            _temple.OrientationDiocesse = selectedDiocese;
+            _temple.Lng = Lng;
+            _temple.Lat = Lat;
+
+            _temple.AppointmentsAfterEnd.Id = Guid.NewGuid().ToString("N");
+            _temple.Id = Guid.NewGuid().ToString("N");
+
+            _temple.FillEmptyFields();
+            _temple.AppointmentsAfterEnd.FillEmptyFields();
             _context.Temples.Add(_temple);
             _context.SaveChanges();
 
@@ -761,10 +1001,7 @@
     [Parameter]
     public EventCallback OnClose { get; set; }
 
-    private async Task CloseDialog()
-    {
-        await OnClose.InvokeAsync();
-    }
+    private async Task CloseDialog() => await OnClose.InvokeAsync();
 
     private DotNetObjectReference<AddTemple>? dotNetHelper;
 
@@ -783,6 +1020,27 @@
             dotNetHelper = DotNetObjectReference.Create(this);
             await JSRuntime.InvokeVoidAsync("initMap", dotNetHelper);
             await JSRuntime.InvokeVoidAsync("enableClickHandler");
+
+            if (IsEdit == true)
+            {
+                selectedCounties = Temple.Counties;
+                selectedProvince = Temple.Province;
+                selectedDistrict = Temple.District;
+                selectedOcrug = Temple.Ocrug;
+                selectedDiocese = Temple.OrientationDiocesse;
+                Lng = Temple.Lng;
+                Lat = Temple.Lat;
+                selectedType = Temple.Type;
+                parshYear = Temple.ParshYear.ToString();
+                yearAdaptation = Temple.YearAdaptation.ToString();
+                yearDestruction = Temple.YearDestruction.ToString();
+                yearReferences = Temple.YearReferences.ToString();
+                dateStart = Temple.DateStart.ToString();
+                dateEnd = Temple.DateEnd.ToString();
+                
+                await JSRuntime.InvokeVoidAsync("addMarker", Lat, Lng, Temple.Name);
+                await JSRuntime.InvokeVoidAsync("enableClickClear");
+            }
         }
     }
 

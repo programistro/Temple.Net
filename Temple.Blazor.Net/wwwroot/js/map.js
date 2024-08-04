@@ -1,6 +1,7 @@
 var map;
 var currentMarker = null;
 var enableClickToAddMarker = false;
+var enableClearAllMarker = false;
 var markers = [];
 
 window.initMap = function (dotNetHelper) {
@@ -26,6 +27,10 @@ window.initMap = function (dotNetHelper) {
             }
         }
         
+        if(enableClearAllMarker == true){
+            clearAllMarkers();
+        }
+        
         window.currentMarker = L.marker([coordinates.lat, coordinates.lng]).addTo(map);
         
         // Используем dotNetHelper для вызова нестатического метода ReceiveCoordinates
@@ -40,6 +45,15 @@ window.enableClickHandler = function() {
 // Функция для отключения обработчика клика
 window.disableClickHandler = function() {
     enableClickToAddMarker = false;
+};
+
+window.enableClickClear = function() {
+    enableClearAllMarker = true;
+};
+
+// Функция для отключения обработчика клика
+window.disableClickClear = function() {
+    enableClearAllMarker = false;
 };
 
 window.addMarker = function(lat, lng, title) {
