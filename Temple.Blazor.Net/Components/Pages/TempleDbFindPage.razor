@@ -845,10 +845,6 @@
                     visibleModal = false;
                 }
 
-                [Parameter] public EventCallback OnClose { get; set; }
-
-                private async Task CloseDialog() => await OnClose.InvokeAsync();
-
                 private DotNetObjectReference<AddTemple>? dotNetHelper;
 
                 private IEnumerable<string> CheckName()
@@ -880,7 +876,6 @@
                     }
                 }
                 
-
                 public void Dispose() => dotNetHelper?.Dispose();
 
                 [JSInvokable]
