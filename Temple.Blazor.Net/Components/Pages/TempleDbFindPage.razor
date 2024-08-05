@@ -5,6 +5,17 @@
 @inject AppDbContext context
 @inject ISnackbar Snackbar
 @inject IDialogService DialogService
+@inject IJSRuntime JSRuntime
+@using System.Globalization
+@using System.Security.Claims
+@using Microsoft.AspNetCore.Components.Authorization
+@using OpenStreetMapForBlazor
+@using Temple.Net.Models
+@using Newtonsoft.Json
+@using Temple.Blazor.Net.Components.Layout
+@using Temple.Net.Service
+@inject NavigationManager NavigationManager
+@inject ValidationService ValidationService
 
 <style>
     body {
@@ -118,10 +129,806 @@
     </EditButtonContent>
 </MudTable>
 
-<MudDialog @bind-Visible="visibleModal">
+<MudDialog @bind-Visible="visibleModal" @onchange="HandleDialogChange">
     <DialogContent>
         <div>
-            <AddTemple IsEdit="true" Temple="selectedItem" OnClose="HandleClose"/>
+            <MudDialogProvider @rendermode="InteractiveServer" MaxWidth="MaxWidth.ExtraExtraLarge"
+                               Position="DialogPosition.Center"/>
+            <MudContainer MaxWidth="MaxWidth.Large" Style="width: 45%; margin-bottom: 20px;">
+                <MudCard>
+                    <MudCardContent>
+                        <h5 class="card-title text-center mb-3 fw-light fs-5">Добавить храм</h5>
+                        <div>
+                            <MudTextField @bind-Value="findTemple.Name" Label="Название" Validation="CheckName"/>
+                        </div>
+
+                        <div>
+                            <MudAutocomplete T="string" Label="Тип храма" @bind-Value="selectedType" SearchFunc="@SearchType"
+                                             ResetValueOnEmptyText="@resetValueOnEmptyText"
+                                             CoerceText="@coerceText" CoerceValue="@coerceValue" AdornmentColor="Color.Primary" />
+                        </div>
+
+                        <div style="margin-top: 10px; margin-bottom: 10px; display: flex; align-items: center; text-align: center; 
+            justify-content: space-between; width: 100%;">
+                            <MudTooltip Text="Пишите дату в формате ДД. ММ.ГГГГ; ММ.ГГГГ, ГГГГ">
+                                <MudTextField Label="Год основания" @bind-Value="dateStart" Validation="ValidationService.Validation" Style="width: 100%"/>
+                            </MudTooltip>
+                        </div>
+
+                        <div>
+                            <div>
+                                <div style="margin-top: 10px; margin-bottom: 10px; display: flex; align-items: center; text-align: center; justify-content: space-between;">
+                                    <MudTooltip Text="Пишите дату в формате ДД. ММ.ГГГГ; ММ.ГГГГ, ГГГГ">
+                                        <MudTextField Label="Год закрытия" @bind-Value="dateEnd" Validation="ValidationService.Validation" Style="width: 100%"/>
+                                    </MudTooltip>
+                                </div>
+
+                                <div style="margin-top: 10px; margin-bottom: 10px; display: flex; align-items: center; text-align: center; justify-content: space-between;">
+                                    <MudTooltip Text="Пишите дату в формате ДД. ММ.ГГГГ; ММ.ГГГГ, ГГГГ">
+                                        <MudTextField Label="Год приспособления" @bind-Value="yearAdaptation" Validation="ValidationService.Validation" Style="width: 100%"/>
+                                    </MudTooltip>
+                                </div>
+
+                                <MudAutocomplete T="string" Label="Назначение после закрытия" @bind-Value="selectedAfterClosing" SearchFunc="@SearchAfterClosing"
+                                                 ResetValueOnEmptyText="@resetValueOnEmptyText"
+                                                 CoerceText="@coerceText" CoerceValue="@coerceValue" AdornmentColor="Color.Primary" />
+
+                            </div>
+                        </div>
+
+                        <div style="margin-top: 10px; margin-bottom: 10px; display: flex; align-items: center; text-align: center; justify-content: space-between;">
+                            <MudTooltip Text="Пишите дату в формате ГГГГ">
+                                <MudTextField Label="Год уничтожения" @bind-Value="yearDestruction" Validation="ValidationService.ValidationOnlyYear" Style="width: 100%"/>
+                            </MudTooltip>
+                        </div>
+
+                        <div>
+                            <div class="containerOriention" style="justify-content: center; margin-top: 5px;">
+                                <h6 class="text-center mb-3 fw-light fs-5">Год упоменания</h6>
+                                <MudIconButton Icon="@Icons.Material.Filled.Add" Size="Size.Small" Style="margin-bottom: 9px; margin-left: 7px;" OnClick="ShowReferencYearClick"/>
+                            </div>
+
+                            <MudList T="string" SelectionMode="SelectionMode.ToggleSelection">
+                                @foreach (var item in findTemple?.YearReferences)
+                                {
+                                <MudListItem Text="@item.ToString()"/>
+                                }
+                            </MudList>
+
+                            <MudDialog @bind-Visible="visibleReferencYear">
+                                <DialogContent>
+                                    <div>
+                                        <h3 class="card-title text-center mb-3 fw-light fs-5">Год упоменания</h3>
+
+                                        <div style="margin-top: 10px; margin-bottom: 10px; display: flex; align-items: center; text-align: center; justify-content: space-between;">
+                                            <MudTooltip Text="Пишите дату в формате ДД. ММ.ГГГГ; ММ.ГГГГ, ГГГГ">
+                                                <MudTextField Label="Год упоминания" @bind-Value="yearReferences" Validation="ValidationService.Validation" Style="width: 100%"/>
+                                            </MudTooltip>
+                                        </div>
+                                    </div>
+                                </DialogContent>
+                                <DialogActions>
+                                    <MudButton Color="Color.Primary" OnClick="OnHideModalReferencYearClick">Отмена</MudButton>
+                                    <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="OnChangeReferencYearClick">Изменить</MudButton>
+                                </DialogActions>
+                            </MudDialog>
+                        </div>
+
+                        <div>
+                            <MudTextField @bind-Value="findTemple.Benevolence" Label="Благоличие"/>
+                        </div>
+
+                        <style>
+                            .containerOriention {
+                                display: flex;
+                                align-items: center; /* Выравнивание по вертикали */
+                            }
+                        </style>
+
+                        <div>
+                            <div class="containerOriention" style="justify-content: center; margin-top: 5px;">
+                                <h6 class="text-center mb-3 fw-light fs-5">Церковная ориентация</h6>
+                                <MudIconButton Icon="@Icons.Material.Filled.Add" Size="Size.Small" Style="margin-bottom: 9px; margin-left: 7px;" OnClick="ShowOrientionDialog"/>
+                            </div>
+
+                            <MudList T="string" SelectionMode="SelectionMode.ToggleSelection">
+                                @foreach (var item in findTemple.Oriention)
+                                {
+                                    <MudListItem Text="@item.Oriention"/>
+                                }
+                            </MudList>
+
+                            <MudDialog @bind-Visible="visibleOriention">
+                                <DialogContent>
+                                    <div>
+                                        <h3 class="card-title text-center mb-3 fw-light fs-5">Церковная ориентация</h3>
+
+                                        <div>
+                                            <div style="margin-top: 10px; margin-bottom: 10px; display: flex; align-items: center; text-align: center; justify-content: space-between;">
+                                                <MudTooltip Text="Пишите дату в формате ДД. ММ.ГГГГ; ММ.ГГГГ, ГГГГ">
+                                                    <MudTextField Label="Год отпадения" @bind-Value="yearFall" Validation="ValidationService.Validation" Style="width: 100%"/>
+                                                </MudTooltip>
+                                            </div>
+
+                                            <MudAutocomplete T="string" Label="Церковная ориентация" @bind-Value="selectedOriention" SearchFunc="@SearchOriention"
+                                                             ResetValueOnEmptyText="@resetValueOnEmptyText"
+                                                             CoerceText="@coerceText" CoerceValue="@coerceValue" AdornmentColor="Color.Primary" />
+
+                                            <div style="margin-top: 10px; margin-bottom: 10px; display: flex; align-items: center; text-align: center; justify-content: space-between;">
+                                                <MudTooltip Text="Пишите дату в формате ДД. ММ.ГГГГ; ММ.ГГГГ, ГГГГ">
+                                                    <MudTextField Label="Год возрата" @bind-Value="yearRefuund" Validation="ValidationService.Validation" Style="width: 100%"/>
+                                                </MudTooltip>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </DialogContent>
+                                <DialogActions>
+                                    <MudButton Color="Color.Primary" OnClick="OnHideModalOrientionClick">Отмена</MudButton>
+                                    <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="OnChangeOrientionClick">Изменить</MudButton>
+                                </DialogActions>
+                            </MudDialog>
+                        </div>
+
+                        <div>
+                            <h3 class="card-title text-center mb-3 fw-light fs-5">Количество прихожан</h3>
+
+                            <div>
+                                <div style="margin-top: 10px; margin-bottom: 10px; display: flex; align-items: center; text-align: center; justify-content: space-between;">
+                                    <MudTooltip Text="Пишите дату в формате ДД. ММ.ГГГГ; ММ.ГГГГ, ГГГГ">
+                                        <MudTextField Label="Год" @bind-Value="parshYear" Validation="ValidationService.Validation" Style="width: 100%"/>
+                                    </MudTooltip>
+                                </div>
+
+                                <MudTextField T="int?" @bind-value="findTemple.Quantity" Label="Количество"/>
+                            </div>
+                        </div>
+
+                        <MudAutocomplete T="string" Label="Епархии" @bind-Value="selectedDiocese" SearchFunc="@SearcDiocese"
+                                         ResetValueOnEmptyText="@resetValueOnEmptyText"
+                                         CoerceText="@coerceText" CoerceValue="@coerceValue" AdornmentColor="Color.Primary" />
+
+
+                        <h3 class="card-title text-center mb-3 fw-light fs-5">Губернии и уезды</h3>
+
+                        <MudAutocomplete T="string" Label="Губернии" @bind-Value="selectedProvince" SearchFunc="@SearchProvince"
+                                         ResetValueOnEmptyText="@resetValueOnEmptyText"
+                                         CoerceText="@coerceText" CoerceValue="@coerceValue" />
+
+                        <MudAutocomplete T="string" Label="Уезды" @bind-Value="selectedCounties" SearchFunc="@SearchCounties"
+                                         ResetValueOnEmptyText="@resetValueOnEmptyText"
+                                         CoerceText="@coerceText" CoerceValue="@coerceValue" />
+
+                        <h3 class="card-title text-center mb-3 fw-light fs-5">Округа и районы округов (1924-1930)</h3>
+
+                        <div>
+                            <MudAutocomplete T="string" Label="Округа" @bind-Value="selectedOcrug" SearchFunc="@SearchOcrug"
+                                             ResetValueOnEmptyText="@resetValueOnEmptyText"
+                                             CoerceText="@coerceText" CoerceValue="@coerceValue" />
+                        </div>
+
+                        <div>
+                            <MudAutocomplete T="string" Label="Район" @bind-Value="selectedDistrict" SearchFunc="@SearchDistcirt"
+                                             ResetValueOnEmptyText="@resetValueOnEmptyText"
+                                             CoerceText="@coerceText" CoerceValue="@coerceValue" />
+                        </div>
+
+                        <div>
+                            <MudTextField @bind-Value="findTemple.TypeLocality" Label="Тип населеного пункта"/>
+                        </div>
+
+                        <div>
+                            <MudTextField @bind-Value="findTemple.Locality" Label="Населеный пункт"/>
+                        </div>
+
+                        <div>
+                            <MudTextField @bind-Value="findTemple.RayonRegion" Label="Район области"/>
+                        </div>
+
+                        <div>
+                            <MudTextField @bind-Value="findTemple.Region" Label="Область"/>
+                        </div>
+
+                        <div>
+                            <MudTextField @bind-Value="findTemple.RayonDistrict" Label="Район округа"/>
+                        </div>
+
+                        <div>
+                            <div id="map" style="height: 400px; width: 100%; margin-top: 10px;"></div>
+                        </div>
+
+                        <div class="d-grid mb-2">
+                            <MudButton Style="margin-top: 20px;" Color="Color.Primary" Variant="Variant.Filled" OnClick="Sumbit">Обновить</MudButton>
+                        </div>
+
+                        <div>
+                            <p>@message</p>
+                        </div>
+                    </MudCardContent>
+                </MudCard>
+            </MudContainer>
+
+
+            @code {
+                private string message = "";
+
+                private string selectedType;
+
+                private string selectedOriention;
+
+                private string selectedDiocese;
+
+                private string selectedDistrict;
+
+                private string selectedProvince;
+
+                private string selectedAfterClosing;
+
+                private string selectedOcrug;
+
+                private string selectedCounties;
+
+                private bool visibleOriention = false;
+
+                private bool visiblePersonal = false;
+
+                private List<TempleOriention> _orientions = new();
+
+                private List<Parsonalion> _parsonalions = new();
+
+                #region ValuesForAutoComplete
+
+                private string[] types =
+                {
+                    "Кафедральный", "Кладбищенский", "Приходской"
+                };
+
+                private string[] afterClosing =
+                {
+                    "Зернохранилище", "Клуб", "Склад"
+                };
+
+                private string[] oriention =
+                {
+                    "Автокафельная", "Обновличенская", "Тихоновская"
+                };
+
+                /// <summary>
+                /// Автокафельная
+                /// </summary>
+                private string[] dioceseAvto =
+                {
+                    "Автокафельная"
+                };
+
+                private string[] dioceseObnov =
+                {
+                    "Велижско-Высочанская", "Витебская", "Гомельская", "Минская", "Могилевская", "Мозырская", "Мстиславская",
+                    "Оршанская", "Полоцкая", "Слуцкая", "Чаусская"
+                };
+
+                private string[] dioceseTixo =
+                {
+                    "Гомельская", "Могилевская и Мстиславская", "Минская и Туровская", "Минская", "Минская и Белорусская",
+                    "Полоцкая и Витебская"
+                };
+
+                private string[] countiesVit =
+                {
+                    "Велижский", "Витебский", "Городоккский", "Дриссенский", "Лепельский", "Невельский", "Полоцкий", "Себежский",
+                    "Суражский"
+                };
+
+                private string[] countiesGom =
+                {
+                    "Гомельская", "Быховский",
+                    "Гомельский", "Могилевский", "Рогачевский", "Чаусский", "Чериковский", "Горецкий", "Климовический", "Оршанской"
+                };
+
+                private string[] countiesMin =
+                {
+                    "Бобруйский", "Борисовский", "Игуменский", "Минский",
+                    "Мозырский", "Речицкий", "Слуцкий"
+                };
+
+                private string[] countiesMog =
+                {
+                    "Быховский", "Гомельский", "Горецкий", "Климовичский", "Могилевский", "Мстиславский", "Оршанский", "Рогачевский", "Сенненский",
+                    "Чаусский", "Чериковский"
+                };
+
+                private string[] combinedCounties =
+                {
+                    // Элементы из countiesVit
+                    "Велижский", "Витебский", "Городоккский", "Дриссенский", "Лепельский", "Невельский", "Полоцкий", "Себежский", "Суражский",
+
+                    // Элементы из countiesGom
+                    "Гомельская", "Быховский", "Гомельский", "Могилевский", "Рогачевский", "Чаусский", "Чериковский", "Горецкий", "Климовический", "Оршанской",
+
+                    // Элементы из countiesMin
+                    "Бобруйский", "Борисовский", "Игуменский", "Минский", "Мозырский", "Речицкий", "Слуцкий",
+
+                    // Элементы из countiesMog
+                    "Быховский", "Гомельский", "Горецкий", "Климовичский", "Могилевский", "Мстиславский", "Оршанский", "Рогачевский", "Сенненский", "Чаусский", "Чериковский"
+                };
+
+
+                ///<summary>
+                /// Уезды
+                /// </summary>
+                private string[] counties =
+                {
+                    "Витебская", "Гомельская", "Минская", "Могилевская", "Смоленская"
+                };
+
+                public string[] ocrugs =
+                {
+                    "Бобруйский (1924-1930)", "Борисовский (1924-1927)", "Витебский (1924-1930)", "Калининский (1924-1927)",
+                    "Могилевский (1924-1930)", "Мозырский (1924-1930)", "Минский (1924-1930)", "Оршанский (1924-1930)", "Полоцкий (1924-1930)",
+                    "Слуцкий (1924-1927)", "Гомельский (1926-1930)", "Речицкий (1926-1927)"
+                };
+
+                private string[] ocrugBobrFirst =
+                {
+                    "Бобруйский", "Бобруйский 1-й", "Бобруйский 2-й", "Буда-Кошелевский", "Городецкий", "Глусский", "Жлобинский",
+                    "Кличевский", "Краснослободский", "Любанский", "Осиповичский", "Паричский", "Рогачевский", "Свислочский", "Слуцкий",
+                    "Старобинский", "Стародорожский", "Стрешинский"
+                };
+
+                private string[] ocrugBobrSecond =
+                {
+                    "Бегомльский", "Березинский", "Борисовский", "Зембинский", "Крупский",
+                    "Лепельский", "Плещеницкий", "Холопеничский", "Черейский"
+                };
+
+                private string[] ocrugVit =
+                {
+                    "Бешенковичский", "Витебский", "Высочанский", "Городокский",
+                    "Езерищенский", "Лиозненский", "Кузнецовский", "Межанский", "Сенненский", "Сиротинский", "Суражский", "Чашникский"
+                };
+
+                private string[] ocrugKalin =
+                {
+                    "Белынковичский", "Климовичский", "Кастюковичский", "Краснопольский", "Кричевский", "Милославичский", "Мстиславский",
+                    "Расненский", "Хотимский", "Чериковский"
+                };
+
+                private string[] ocrugMog =
+                {
+                    "Белыничский", "Березинский", "Борисовский", "Журовичский", "Кастюковичский",
+                    "Климовичский", "Кормянский", "Краснопольский", "Кричевский", "Луполовский", "Милославичский", "Могилевский", "Пропойский",
+                    "Хотимский", "Чаусский", "Чериковский", "Чечевичский", "Шкловский"
+                };
+
+                private string[] ocrugMoz =
+                {
+                    "Мозырский (1924-1930)", "Житковичский", "Калинковичский", "Каролинский",
+                    "Копаткевичский", "Лельчицкий", "Мозырский", "Наровлянский", "Озаричский", "Петриковский"
+                };
+
+                /// <summary>
+                /// Минский
+                /// </summary>
+                private string[] ocrugMin =
+                {
+                    "Бегомльский", "Березинский", "Борисовский", "Гресский",
+                    "Койдановский", "Зембинский", "Койдановский", "Копыльский", "Острошицко-Городокский", "Плещеницкий", "Пуховичский",
+                    "Самохваловичский", "Смиловичский", "Смолевичский", "Узденский", "Червенский", "Холопеничский", "Шацкий"
+                };
+
+                ///<summary>
+                /// Оршанский
+                /// </summary>
+                private string[] ocrugOrsh =
+                {
+                    "Богушевский",
+                    "Горецкий", "Дрибинский", "Дубровенский", "Копысский", "Кохановский", "Круглянский", "Лядненский", "Мстиславский",
+                    "Оршанский", "Расненский", "Толочинский"
+                };
+
+                ///<summary>>
+                /// Полоцкий
+                /// </summary>
+                private string[] ocrugPoloc =
+                {
+                    "Ветринский", "Волынецкий", "Борковичский", "Дретунский", "Краснопольский",
+                    "Дриссенский", "Освейский", "Полоцкий", "Россонский", "Улльский", "Ушачский"
+                };
+
+                ///<summary>>
+                /// Слуцкий
+                /// </summary>
+                private string[] ocrugSlyc =
+                {
+                    "Гресский", "Копыльский", "Краснослободский",
+                    "Любанский", "Слуцкий", "Стародорожский", "Старобинский"
+                };
+
+                ///<summary>>
+                /// Гомельский
+                /// </summary>
+                private string[] ocrugGom =
+                {
+                    "Брагинский", "Буда-Кошелевский", "Ветковский",
+                    "Гомельский", "Дятловичский", "Добрушский", "Комаринский", "Краснобудский",
+                    "Носовичский", "Светиловичский", "Уваровичский", "Чечерский",
+                    "Брагинский", "Комаринский", "Лоевский", "Речицкий", "Хойникский", "Тереховский", "Буда-Кошелевский"
+                };
+
+                ///<summary>
+                ///  Речинский
+                /// </summary>
+                private string[] ocrugRech =
+                {
+                    "Брагинский", "Василевичский", "Горвальский", "Комаринский", "Лоевский",
+                    "Речицкий", "Хойникский", "Холмечский", "Юровичский"
+                };
+
+                #endregion
+
+                private bool coerceText;
+
+                private bool coerceValue = true;
+
+                private bool resetValueOnEmptyText;
+
+                private double Lng;
+
+                private double Lat;
+
+                private async Task<IEnumerable<string>> SearchType(string value, CancellationToken token)
+                {
+                    await Task.Delay(5, token);
+
+                    if (string.IsNullOrEmpty(value))
+                        return types;
+                    return types.Where(x => x.Contains(value, StringComparison.InvariantCultureIgnoreCase));
+                }
+
+                private async Task<IEnumerable<string>> SearchAfterClosing(string value, CancellationToken token)
+                {
+                    await Task.Delay(5, token);
+
+                    if (string.IsNullOrEmpty(value))
+                        return afterClosing;
+                    return afterClosing.Where(x => x.Contains(value, StringComparison.InvariantCultureIgnoreCase));
+                }
+
+                private async Task<IEnumerable<string>> SearchOriention(string value, CancellationToken token)
+                {
+                    await Task.Delay(5, token);
+
+                    if (string.IsNullOrEmpty(value))
+                        return oriention;
+                    return oriention.Where(x => x.Contains(value, StringComparison.InvariantCultureIgnoreCase));
+                }
+
+                private async Task<IEnumerable<string>> SearcDiocese(string value, CancellationToken token)
+                {
+                    await Task.Delay(5, token);
+
+                    switch (selectedOriention)
+                    {
+                        case "Автокафельная":
+                            if (string.IsNullOrEmpty(value))
+                                return dioceseAvto;
+                            return dioceseAvto.Where(x => x.Contains(value, StringComparison.InvariantCultureIgnoreCase));
+                            break;
+                        case "Обновличенская":
+                            if (string.IsNullOrEmpty(value))
+                                return dioceseObnov;
+                            return dioceseObnov.Where(x => x.Contains(value, StringComparison.InvariantCultureIgnoreCase));
+                            break;
+                        case "Тихоновская":
+                            if (string.IsNullOrEmpty(value))
+                                return dioceseTixo;
+                            return dioceseTixo.Where(x => x.Contains(value, StringComparison.InvariantCultureIgnoreCase));
+                            break;
+                        default:
+                            if (string.IsNullOrEmpty(value))
+                                return dioceseAvto;
+                            return dioceseAvto.Where(x => x.Contains(value, StringComparison.InvariantCultureIgnoreCase));
+                            break;
+                    }
+                }
+
+                private async Task<IEnumerable<string>> SearchOcrug(string value, CancellationToken token)
+                {
+                    await Task.Delay(5, token);
+
+                    if (string.IsNullOrEmpty(value))
+                        return ocrugs;
+                    return ocrugs.Where(x => x.Contains(value, StringComparison.InvariantCultureIgnoreCase));
+                }
+
+                private async Task<IEnumerable<string>> SearchProvince(string value, CancellationToken token)
+                {
+                    await Task.Delay(5, token);
+
+                    if (string.IsNullOrEmpty(value))
+                        return counties;
+                    return counties.Where(x => x.Contains(value, StringComparison.InvariantCultureIgnoreCase));
+                }
+
+                private async Task<IEnumerable<string>> SearchCounties(string value, CancellationToken token)
+                {
+                    await Task.Delay(5, token);
+
+                    if (string.IsNullOrEmpty(value))
+                        return combinedCounties;
+
+                    switch (selectedProvince)
+                    {
+                        case "Витебская":
+                            if (string.IsNullOrEmpty(value))
+                                return countiesVit;
+                            return countiesVit.Where(x => x.Contains(value, StringComparison.InvariantCultureIgnoreCase));
+                            break;
+                        case "Гомельская":
+                            if (string.IsNullOrEmpty(value))
+                                return countiesGom;
+                            return countiesGom.Where(x => x.Contains(value, StringComparison.InvariantCultureIgnoreCase));
+                            break;
+                        case "Минская":
+                            if (string.IsNullOrEmpty(value))
+                                return countiesMin;
+                            return countiesMin.Where(x => x.Contains(value, StringComparison.InvariantCultureIgnoreCase));
+                            break;
+                        case "Могилевская":
+                            if (string.IsNullOrEmpty(value))
+                                return countiesMog;
+                            return countiesMog.Where(x => x.Contains(value, StringComparison.InvariantCultureIgnoreCase));
+                            break;
+                        case "Смоленская":
+                            if (string.IsNullOrEmpty(value))
+                                return ocrugGom.Where(x => x.Contains(value, StringComparison.InvariantCultureIgnoreCase));
+                            return ocrugGom.Where(x => x.Contains(value, StringComparison.InvariantCultureIgnoreCase));
+                            break;
+                        default:
+                            if (string.IsNullOrEmpty(value))
+                                return combinedCounties.Where(x => x.Contains(value, StringComparison.InvariantCultureIgnoreCase));
+                            return combinedCounties.Where(x => x.Contains(value, StringComparison.InvariantCultureIgnoreCase));
+                            break;
+                    }
+                }
+
+                private async Task<IEnumerable<string>> SearchDistcirt(string value, CancellationToken token)
+                {
+                    await Task.Delay(5, token);
+
+                    switch (selectedOcrug)
+                    {
+                        case "Бобруйский (1924-1930)":
+                            if (string.IsNullOrEmpty(value))
+                                return ocrugBobrFirst;
+                            return ocrugGom.Where(x => x.Contains(value, StringComparison.InvariantCultureIgnoreCase));
+                            break;
+                        case "Борисовский (1924-1927)":
+                            if (string.IsNullOrEmpty(value))
+                                return ocrugBobrSecond;
+                            return ocrugBobrSecond.Where(x => x.Contains(value, StringComparison.InvariantCultureIgnoreCase));
+                            break;
+                        case "Витебский (1924-1930)":
+                            if (string.IsNullOrEmpty(value))
+                                return ocrugVit;
+                            return ocrugVit.Where(x => x.Contains(value, StringComparison.InvariantCultureIgnoreCase));
+                            break;
+                        case "Калининский (1924-1927)":
+                            if (string.IsNullOrEmpty(value))
+                                return ocrugKalin;
+                            return ocrugKalin.Where(x => x.Contains(value, StringComparison.InvariantCultureIgnoreCase));
+                            break;
+                        case "Могилевский (1924-1930)":
+                            if (string.IsNullOrEmpty(value))
+                                return ocrugMog;
+                            return ocrugMog.Where(x => x.Contains(value, StringComparison.InvariantCultureIgnoreCase));
+                            break;
+                        case "Мозырский (1924-1930)":
+                            if (string.IsNullOrEmpty(value))
+                                return ocrugMoz;
+                            return ocrugMoz.Where(x => x.Contains(value, StringComparison.InvariantCultureIgnoreCase));
+                            break;
+                        case "Минский (1924-1930)":
+                            if (string.IsNullOrEmpty(value))
+                                return ocrugMin;
+                            return ocrugMin.Where(x => x.Contains(value, StringComparison.InvariantCultureIgnoreCase));
+                            break;
+                        case "Оршанский (1924-1930)":
+                            if (string.IsNullOrEmpty(value))
+                                return ocrugOrsh;
+                            return ocrugOrsh.Where(x => x.Contains(value, StringComparison.InvariantCultureIgnoreCase));
+                            break;
+                        case "Полоцкий (1924-1930)":
+                            if (string.IsNullOrEmpty(value))
+                                return ocrugPoloc;
+                            return ocrugPoloc.Where(x => x.Contains(value, StringComparison.InvariantCultureIgnoreCase));
+                            break;
+                        case "Слуцкий (1924-1927)":
+                            if (string.IsNullOrEmpty(value))
+                                return ocrugSlyc;
+                            return ocrugSlyc.Where(x => x.Contains(value, StringComparison.InvariantCultureIgnoreCase));
+                            break;
+                        case "Гомельский (1926-1930)":
+                            if (string.IsNullOrEmpty(value))
+                                return ocrugGom;
+                            return ocrugGom.Where(x => x.Contains(value, StringComparison.InvariantCultureIgnoreCase));
+                            break;
+                        case "Речицкий (1926-1927)":
+                            if (string.IsNullOrEmpty(value))
+                                return ocrugRech;
+                            return ocrugRech.Where(x => x.Contains(value, StringComparison.InvariantCultureIgnoreCase));
+                            break;
+                        default:
+                            if (string.IsNullOrEmpty(value))
+                                return ocrugGom;
+                            return ocrugGom.Where(x => x.Contains(value, StringComparison.InvariantCultureIgnoreCase));
+                            break;
+                    }
+                }
+
+                #region ValuesForDate
+
+                private string dateStart;
+
+                private string dateEnd;
+
+                private string yearAdaptation;
+
+                private string yearDestruction;
+
+                private string yearReferences;
+
+                private string parshYear;
+
+                private string yearRefuund;
+
+                private string yearFall;
+
+                #endregion
+
+                private async Task Sumbit()
+                {
+                    if (Lat == 0 || Lng == 0)
+                    {
+                        findTemple.TempleNameOnMap = "Пусто";
+                    }
+                    else
+                    {
+                        string url = $"https://catalog.api.2gis.com/3.0/items/geocode?lat={Lat.ToString().Replace(",", ".")}&lon={Lng.ToString().Replace(",", ".")}&fields=items.point&key=78f230fc-fa51-4e2b-9c1a-ea244bc2e949";
+
+                        using HttpClient client = new HttpClient();
+                        HttpResponseMessage response = await client.GetAsync(url.Replace(",", "."));
+
+                        if (response.IsSuccessStatusCode)
+                        {
+                            string content = await response.Content.ReadAsStringAsync();
+                            Console.WriteLine(content);
+
+                            var data = JsonConvert.DeserializeObject<dynamic>(content);
+
+                            // Получение списка элементов
+                            var items = data.result.items;
+
+                            // Цикл по всем элементам
+                            foreach (var item in items)
+                            {
+                                Console.WriteLine($"Full Name: {item.full_name}");
+                                Console.WriteLine($"Name: {item.name}");
+                                Console.WriteLine($"Subtype: {item.subtype}");
+                                Console.WriteLine();
+                                findTemple.TempleNameOnMap = item.full_name;
+
+                                break;
+                            }
+                        }
+                    }
+
+                    findTemple.DateStart = dateStart.SetDateTime();
+                    findTemple.DateEnd = dateEnd.SetDateTime();
+                    findTemple.YearAdaptation = yearAdaptation.SetDateTime();
+                    findTemple.YearDestruction = yearDestruction.SetDateTime();
+                    findTemple.ParshYear = parshYear.SetDateTime();
+                    findTemple.Type = selectedType;
+                    findTemple.Province = selectedProvince;
+                    findTemple.Counties = selectedCounties;
+                    findTemple.District = selectedDistrict;
+                    findTemple.Ocrug = selectedOcrug;
+                    findTemple.AppointmentsAfterEnd.Appointmenrs = selectedAfterClosing;
+                    findTemple.OrientationDiocesse = selectedDiocese;
+                    findTemple.Lng = Lng;
+                    findTemple.Lat = Lat;
+
+                    findTemple.FillEmptyFields();
+                    findTemple.AppointmentsAfterEnd.FillEmptyFields();
+                    context.Temples.Update(findTemple);
+                    context.SaveChanges();
+
+                    visibleModal = false;
+                }
+
+                [Parameter] public EventCallback OnClose { get; set; }
+
+                private async Task CloseDialog() => await OnClose.InvokeAsync();
+
+                private DotNetObjectReference<AddTemple>? dotNetHelper;
+
+                private IEnumerable<string> CheckName()
+                {
+                    if (context.Temples.Any(t => t.Name == findTemple.Name))
+                    {
+                        yield return "Храм с таким именем уже существует";
+                    }
+                }
+                private async Task HandleDialogChange(ChangeEventArgs e)
+                {
+                    if ((bool)e.Value && !visibleModal)
+                    {
+                        dotNetHelper = DotNetObjectReference.Create(new AddTemple());
+                        await JSRuntime.InvokeVoidAsync("initMap", dotNetHelper);
+                        await JSRuntime.InvokeVoidAsync("enableClickHandler");
+                        Lat = findTemple.Lat;
+                        Lng = findTemple.Lng;
+                        selectedProvince = findTemple.Province;
+                        selectedCounties = findTemple.Counties;
+                        selectedOcrug = findTemple.Ocrug;
+                        selectedDiocese = findTemple.OrientationDiocesse;
+                        selectedDistrict = findTemple.District;
+                        parshYear = findTemple.ParshYear.ToString();
+                        yearDestruction = findTemple.YearDestruction.ToString();
+                        yearAdaptation = findTemple.YearAdaptation.ToString();
+                        dateStart = findTemple.DateStart.ToString();
+                        dateEnd = findTemple.DateEnd.ToString();
+                    }
+                }
+                
+
+                public void Dispose() => dotNetHelper?.Dispose();
+
+                [JSInvokable]
+                public void ReceiveCoordinates(double[] coordinates)
+                {
+                    if (coordinates.Length >= 2)
+                    {
+                        double lat = coordinates[0];
+                        double lng = coordinates[1];
+
+                        Lat = lat;
+                        Lng = lng;
+                        Console.WriteLine($"Received marker coordinates: {lat}, {lng}");
+                    }
+                }
+
+                private void ShowOrientionDialog() => visibleOriention = true;
+
+                private void OnHideModalOrientionClick() => visibleOriention = false;
+
+                private void OnChangeOrientionClick()
+                {
+                    TempleOriention oriention = new();
+
+                    oriention.Oriention = selectedOriention;
+                    oriention.YearFall = yearFall.SetDateTime();
+                    oriention.YearRefund = yearRefuund.SetDateTime();
+
+                    oriention.FillEmptyFields();
+
+                    findTemple.Oriention.Add(oriention);
+
+                    visibleOriention = false;
+                }
+
+                private bool visibleReferencYear = false;
+
+                private void ShowReferencYearClick() => visibleReferencYear = true;
+
+                private void OnChangeReferencYearClick()
+                {
+                    findTemple.YearReferences.Add(yearReferences.SetDateTime());
+
+                    visibleReferencYear = false;
+                }
+
+                private void OnHideModalReferencYearClick() => visibleReferencYear = false;
+            }
         </div>
     </DialogContent>
 </MudDialog>
@@ -134,6 +941,7 @@
     private bool blockSwitch = false;
     private string searchString1 = "";
     private Temple selectedItem = null;
+    private Temple findTemple;
     private HashSet<Temple> selectedItems = new();
     private Temple elementBeforeEdit;
     private HashSet<Temple> selectedItems1 = new HashSet<Temple>();
@@ -153,15 +961,13 @@
 
             if (findItem != null)
             {
+                findTemple = findItem; 
                 visibleModal = true;
             }
         }   
     }
     
-    private void Callback(TableRowClickEventArgs<Temple> obj)
-    {
-        throw new NotImplementedException();
-    }
+    private void Callback(TableRowClickEventArgs<Temple> obj) => throw new NotImplementedException();
 
     private void SelectChange(Temple temple) => visibleModal = true;
 
@@ -194,14 +1000,7 @@
         return false;
     }
     
-    private void HandleClose()
-    {
-        visibleModal = false;
-    }
+    private void HandleClose() => visibleModal = false;
 
-    private string SelectedRowClassFunc(Temple arg1, int arg2)
-    {
-        throw new NotImplementedException();
-    }
-
+    private string SelectedRowClassFunc(Temple arg1, int arg2) => throw new NotImplementedException();
 }
