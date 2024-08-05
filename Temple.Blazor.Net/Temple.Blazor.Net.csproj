@@ -8,6 +8,10 @@
       <UserSecretsId>82a5fd23-8a11-4ca5-b89b-673b72ef1ceb</UserSecretsId>
   </PropertyGroup>
 
+   <PropertyGroup>
+    <PublishAot>true</PublishAot>
+</PropertyGroup>
+
    <ItemGroup>
       <PackageReference Include="MailKit" Version="4.7.1.1" />
       <PackageReference Include="Microsoft.AspNetCore.Components.QuickGrid" Version="8.0.6" />
