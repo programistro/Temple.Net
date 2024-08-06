@@ -1,0 +1,417 @@
+﻿@using Temple.Net.Models
+@using Microsoft.AspNetCore.Components.QuickGrid
+@using Microsoft.EntityFrameworkCore
+@inject AppDbContext context
+@inject ISnackbar Snackbar
+
+<style>
+    body {
+        overflow-x: scroll;
+    }
+</style>
+
+<MudTable T="Parishioners" Items="@Elements" Dense="@dense" Hover="@hover" Bordered="@bordered" Striped="@striped"
+          Filter="new Func<Parishioners,bool>(FilterFunc1)" @bind-SelectedItem="selectedItem"
+          CommitEditTooltip="Commit Edit"
+          OnRowClick="@RowClickEvent" @ref="mudTable" RowClass="cursor-pointer"
+          OnCommitEditClick="@(() => Snackbar.Add("Commit Edit Handler Invoked"))" 
+          EditButtonPosition="@editButtonPosition" EditTrigger="@editTrigger">
+    <ToolBarContent>
+        <MudText Typo="Typo.h6">Прихожане</MudText>
+        <MudSpacer />
+        <MudTextField @bind-Value="searchString1" Placeholder="Найти" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
+    </ToolBarContent>
+    <HeaderContent>
+        <MudTh><MudTableSortLabel SortBy="new Func<Parishioners, object>(x=>x.Name)">Имя</MudTableSortLabel></MudTh>
+        <MudTh><MudTableSortLabel SortBy="new Func<Parishioners, object>(x=>x.LastName)">Фамилия</MudTableSortLabel></MudTh>
+        <MudTh><MudTableSortLabel SortBy="new Func<Parishioners, object>(x=>x.Otch)">Отчество</MudTableSortLabel></MudTh>
+        <MudTh><MudTableSortLabel SortBy="new Func<Parishioners, object>(x=>x.Adress)">Адрес</MudTableSortLabel></MudTh>
+        <MudTh><MudTableSortLabel SortBy="new Func<Parishioners, object>(x=>x.Age)">Возраст</MudTableSortLabel></MudTh>
+        <MudTh><MudTableSortLabel SortBy="new Func<Parishioners, object>(x=>x.Gender)">Пол</MudTableSortLabel></MudTh>
+        <MudTh><MudTableSortLabel SortBy="new Func<Parishioners, object>(x=>x.Social)">Имущественное положение</MudTableSortLabel></MudTh>
+        <MudTh><MudTableSortLabel SortBy="new Func<Parishioners, object>(x=>x.SocialStatus)">Общественное и служебное положение</MudTableSortLabel></MudTh>
+        <MudTh><MudTableSortLabel SortBy="new Func<Parishioners, object>(x=>x.PropertyStatus)">Тип</MudTableSortLabel></MudTh>
+        <MudTh><MudTableSortLabel SortBy="new Func<Parishioners, object>(x=>x.TempleName)">Название храма</MudTableSortLabel></MudTh>
+        <MudTh><MudTableSortLabel SortBy="new Func<Parishioners, object>(x=>x.DateJoinRelligios)">Время присоединения к религиозному культу</MudTableSortLabel></MudTh>
+        <MudTh><MudTableSortLabel SortBy="new Func<Parishioners, object>(x=>x.Source)">Источник</MudTableSortLabel></MudTh>
+        <MudTh><MudTableSortLabel SortBy="new Func<Parishioners, object>(x=>x.YearMention)">Год упоменания</MudTableSortLabel></MudTh>
+        <MudTh><MudTableSortLabel SortBy="new Func<Parishioners, object>(x=>x.YearRestart)">Год возрата</MudTableSortLabel></MudTh>
+        <MudTh><MudTableSortLabel SortBy="new Func<Parishioners, object>(x=>x.EstateBeforeRevolution)">Принадлежность к сословию до революции</MudTableSortLabel></MudTh>
+        <MudTh><MudTableSortLabel SortBy="new Func<Parishioners, object>(x=>x.Note)">Примечания</MudTableSortLabel></MudTh>
+    </HeaderContent>
+    <ColGroup>
+        @if (applyButtonPosition.DisplayApplyButtonAtStart() || (editButtonPosition.DisplayEditButtonAtStart() && editTrigger == TableEditTrigger.EditButton))
+        {
+            <col style="width:50px;" />
+        }
+        <col style="width:50px;" />
+        <col style="width:80px;" />
+        <col style="width:50%;" />
+        <col />
+        <col />
+        @if (applyButtonPosition.DisplayApplyButtonAtEnd() || (editButtonPosition.DisplayEditButtonAtEnd() && editTrigger == TableEditTrigger.EditButton))
+        {
+            <col style="width:50px;" />
+        }
+    </ColGroup>
+    <RowTemplate>
+            <MudTd DataLabel="Name">@context.Name</MudTd>
+            <MudTd DataLabel="LastName">@context.LastName</MudTd>
+            <MudTd DataLabel="Otch">@context.Otch</MudTd>
+            <MudTd DataLabel="DateEnd">@context.Adress</MudTd>
+            <MudTd DataLabel="Age">@context.Age</MudTd>
+            <MudTd DataLabel="Gender">@context.Gender</MudTd>
+            <MudTd DataLabel="Social">@context.Social</MudTd>
+            <MudTd DataLabel="SocialStatus">@context.SocialStatus</MudTd>
+            <MudTd DataLabel="PropertyStatus">@context.PropertyStatus</MudTd>
+            <MudTd DataLabel="TempleName">@context.TempleName</MudTd>
+            <MudTd DataLabel="DateJoinRelligios">@context.DateJoinRelligios</MudTd>
+            <MudTd DataLabel="Source">@context.Source</MudTd>
+            <MudTd DataLabel="YearMention">@context.YearMention</MudTd>
+            <MudTd DataLabel="YearRestart">@context.YearRestart</MudTd>
+            <MudTd DataLabel="EstateBeforeRevolution">@context.EstateBeforeRevolution</MudTd>
+            <MudTd DataLabel="Note">@context.Note</MudTd>
+        </RowTemplate>
+    <PagerContent>
+        <MudTablePager />
+    </PagerContent>
+</MudTable>
+
+<MudDialog bind-Visible="visibleModal" @onchange="HandleDialogChange">
+    <DialogContent>
+        <div>
+            @using OpenStreetMapForBlazor
+            @using Temple.Net.Models
+            @using Temple.Blazor.Net.Components.Layout
+            @inject IConfiguration config
+            @inject AuthenticationStateProvider AuthenticationStateProvider
+            @inject IJSRuntime JSRuntime
+            @using System.Security.Claims
+            @inject AppDbContext _context
+            @using Microsoft.AspNetCore.Components.Authorization
+            @using Microsoft.VisualBasic
+            @using Newtonsoft.Json
+            @using Temple.Net.Data
+            @using Temple.Net.Service
+            @inject ValidationService ValidationService
+            @inject NavigationManager NavigationManager
+
+            <MudContainer MaxWidth="MaxWidth.Large" Style="width: 45%; margin-bottom: 20px;">
+                <MudCard>
+                    <MudCardContent>
+                        <h5 class="card-title text-center mb-3 fw-light fs-5">Добавить персоналии</h5>
+
+                        <MudAutocomplete T="string" Label="Название храма" @bind-Value="_parishioners.TempleName" SearchFunc="@SearchTemple"
+                                         ResetValueOnEmptyText="@resetValueOnEmptyText"
+                                         CoerceText="@coerceText" CoerceValue="@coerceValue" AdornmentColor="Color.Primary" />
+
+                        <MudTextField Label="Фамилия" @bind-Value="_parishioners.LastName"/>
+
+                        <MudTextField Label="Имя" @bind-Value="_parishioners.Name"/>
+
+                        <MudTextField Label="Отчество" @bind-Value="_parishioners.Otch"/>
+
+                        <MudTextField Label="Возраст" @bind-Value="_parishioners.Age" T="int?"/>
+
+                        <MudSelect Tvalue="int" @bind-Value="@selectedGender" class="form-control js-example-basic-single">
+                            <MudSelectItem Value="1">Мужской</MudSelectItem>
+                            <MudSelectItem Value="2">Женский</MudSelectItem>
+                            <MudSelectItem Value="3">Не указано</MudSelectItem>
+                        </MudSelect>
+
+                        <MudTextField Label="Адрес" @bind-Value="_parishioners.Adress"/>
+
+                        <div>
+                            <MudAutocomplete T="string" Label="Общественное и служебное положение c 1914" @bind-Value="selectedSocialStatus" SearchFunc="@SearchSocial"
+                                             ResetValueOnEmptyText="@resetValueOnEmptyText"
+                                             CoerceText="@coerceText" CoerceValue="@coerceValue" AdornmentColor="Color.Primary" />
+                        </div>
+
+                        <div>
+                            <MudSelect T="string" @bind-Value="@selectedEstate" Label="Принадлежность к сословию до революции">
+                                <MudSelectItem Value="@("Крестьянство")"/>
+                                <MudSelectItem Value="@("Дворянство")"/>
+                                <MudSelectItem Value="@("Духовное")"/>
+                                <MudSelectItem Value="@("Не указано")"/>
+                            </MudSelect>
+                        </div>
+
+                        <div>
+                            <MudSelect T="string" @bind-Value="@selectedSocial" Label="Имущественное положение">
+                                <MudSelectItem Value="@("Бедняк")"/>
+                                <MudSelectItem Value="@("Средняк")"/>
+                                <MudSelectItem Value="@("Домовладелец")"/>
+                                <MudSelectItem Value="@("Без имущества")"/>
+                                <MudSelectItem Value="@("Не указано")"/>
+                            </MudSelect>
+                        </div>
+
+                        <div style="margin-top: 10px; margin-bottom: 10px; display: flex; align-items: center; text-align: center; justify-content: space-between;">
+                            @* <MudDatePicker T="DateTime?" DateFormat="yyy" Label="Время присоединения к религиозному культу" @bind-Date="_parishioners.DateJoinRelligios"/> *@
+                            @* *@
+                            @* <MudTooltip Text="Можете не вписывать значение если не известно"> *@
+                            @*     <MudIconButton Icon="@Icons.Material.Filled.QuestionMark" aria-label="Вопрос" Size="Size.Small"/> *@
+                            @* </MudTooltip> *@
+
+                            <MudTooltip Text="Пишите дату в формате ДД. ММ.ГГГГ; ММ.ГГГГ, ГГГГ">
+                                <MudTextField Label="Время присоединения к религиозному культу" @bind-Value="dateJoinRelligios" Validation="ValidationService.Validation" Style="width: 100%"/>
+                            </MudTooltip>
+                        </div>
+
+                        <div style="margin-top: 10px; margin-bottom: 10px; display: flex; align-items: center; text-align: center; justify-content: space-between;">
+                            @* <MudDatePicker T="DateTime?" DateFormat="yyy" Label="Год упоменания" @bind-Date="_parishioners.YearMention"/> *@
+                            @* *@
+                            <MudTooltip Text="Пишите дату в формате ДД. ММ.ГГГГ; ММ.ГГГГ, ГГГГ">
+                                <MudTextField Label="Год упоменания" @bind-Value="yearMention" Validation="ValidationService.Validation" Style="width: 100%"/>
+                            </MudTooltip>
+                        </div>
+
+                        <div style="margin-top: 10px; margin-bottom: 10px; display: flex; align-items: center; text-align: center; justify-content: space-between;">
+                            @* <MudDatePicker T="DateTime?" DateFormat="yyy" Label="Год возрата" @bind-Date="_parishioners.YearRestart"/> *@
+                            @* *@
+                            @* <MudTooltip Text="Можете не вписывать значение если не известно"> *@
+                            @*     <MudIconButton Icon="@Icons.Material.Filled.QuestionMark" aria-label="Вопрос" Size="Size.Small"/> *@
+                            @* </MudTooltip> *@
+                            <MudTooltip Text="Пишите дату в формате ДД. ММ.ГГГГ; ММ.ГГГГ, ГГГГ">
+                                <MudTextField Label="Год возрата" @bind-Value="yearRestart" Validation="ValidationService.Validation" Style="width: 100%"/>
+                            </MudTooltip>
+                        </div>
+
+                        <MudTextField Label="Примичания" @bind-Value="_parishioners.Note"/>
+
+                        <MudTextField Label="Источники" @bind-Value="_parishioners.Source"/>
+
+                        <div style="margin-top: 10px;">
+                            <div class="input-file-row">
+                                <label class="input-file">
+                                    <InputFile OnChange="LoadPhoto" accept="image/*"/>
+                                    <span>Выберите фотографию</span>
+                                </label>
+                                <div class="input-file-list"></div>
+                            </div>
+
+                            <div class="input-file-row" style="margin-top: 10px;">
+                                <label class="input-file">
+                                    <InputFile OnChange="LoadFile"/>
+                                    <span>Выберите файл</span>
+                                </label>
+                                <div class="input-file-list"></div>
+                            </div>
+                        </div>
+
+                        <div class="d-grid mb-2">
+                            <MudButton Style="margin-top: 20px;" Color="Color.Primary" Variant="Variant.Filled" OnClick="Sumbit">Добавить</MudButton>
+                        </div>
+                    </MudCardContent>
+                </MudCard>
+            </MudContainer>
+
+
+            @code {
+                private string selectedSocialStatus;
+
+                private string selectedGender;
+
+                private string selectedEstate;
+
+
+                private Parishioners? _parishioners = new()
+                {
+                    Id = Guid.NewGuid().ToString("N"),
+                };
+
+                private IQueryable<string> _temples;
+
+                protected override void OnInitialized()
+                {
+                    _temples = _context.Temples
+                        .Where(x => x.Name != "Пусто")
+                        .Select(x => x.Name);
+                }
+
+                private long maxFileSize = 1024 * 500;
+
+                private string selectedSocial;
+
+                private async Task LoadFile(InputFileChangeEventArgs e)
+                {
+                    var path = $@"wwwroot/files/{e.File.Name}";
+
+                    await using FileStream fs = new(path, FileMode.Create);
+                    await e.File.OpenReadStream(maxFileSize).CopyToAsync(fs);
+
+                    _parishioners.File = path;
+                }
+
+                private async Task LoadPhoto(InputFileChangeEventArgs e)
+                {
+                    var path = $@"wwwroot/photos/{e.File.Name}";
+
+                    await using FileStream fs = new(path, FileMode.Create);
+                    await e.File.OpenReadStream(maxFileSize).CopyToAsync(fs);
+
+                    _parishioners.Photo = path;
+                }
+
+                private bool coerceText;
+
+                private bool coerceValue = true;
+
+                private bool resetValueOnEmptyText;
+
+                private string[] socialsStatus =
+                {
+                    "Землепащец", "Домохозяйство", "Священник", "Слесарь", "Плотник"
+                };
+
+                private async Task<IEnumerable<string>> SearchSocial(string value, CancellationToken token)
+                {
+                    await Task.Delay(5, token);
+
+                    if (string.IsNullOrEmpty(value))
+                        return socialsStatus;
+                    return socialsStatus.Where(x => x.Contains(value, StringComparison.InvariantCultureIgnoreCase));
+                }
+
+                private async Task<IEnumerable<string>> SearchTemple(string value, CancellationToken token)
+                {
+                    await Task.Delay(5, token);
+
+                    if (string.IsNullOrEmpty(value))
+                        return _temples;
+                    return _temples.Where(x => x.Contains(value, StringComparison.InvariantCultureIgnoreCase));
+                }
+
+                #region ValuesForDate
+
+                private string yearRestart;
+
+                private string yearMention;
+
+                private string dateJoinRelligios;
+
+                #endregion
+
+                private async Task Sumbit()
+                {
+                    _parishioners.YearRestart = yearRestart.SetDateTime();
+                    _parishioners.YearMention = yearMention.SetDateTime();
+                    _parishioners.DateJoinRelligios = dateJoinRelligios.SetDateTime();
+
+                    _parishioners.FillEmptyFields();
+
+                    _context.Parishioners.Add(_parishioners);
+                    _context.SaveChanges();
+                    
+                    visibleModal = false;
+                }
+            }
+        </div>
+    </DialogContent>
+</MudDialog>
+
+@code {
+    private Parishioners findParsh;
+
+    private bool visibleModal = false;
+    private bool dense = true;
+    private bool hover = true;
+    private bool striped = true;
+    private bool bordered = true;
+    private bool blockSwitch = false;
+    private string searchString1 = "";
+    private Parishioners selectedItem = null;
+    private HashSet<Parishioners> selectedItems = new();
+    private Parishioners elementBeforeEdit;
+    private HashSet<Parishioners> selectedItems1 = new HashSet<Parishioners>();
+    private TableApplyButtonPosition applyButtonPosition = TableApplyButtonPosition.End;
+    private TableEditButtonPosition editButtonPosition = TableEditButtonPosition.End;
+    private TableEditTrigger editTrigger = TableEditTrigger.RowClick;
+
+    private IEnumerable<Parishioners> Elements = new List<Parishioners>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        Elements = context.Parishioners;
+    }
+
+    private bool FilterFunc1(Parishioners element) => FilterFunc(element, searchString1);
+
+    private bool FilterFunc(Parishioners element, string searchString)
+    {
+        if (string.IsNullOrWhiteSpace(searchString))
+            return true;
+        if (element.Name.Contains(searchString, StringComparison.OrdinalIgnoreCase))
+            return true;
+        if ($"{element.Name} {element.LastName} {element.Otch}".Contains(searchString))
+            return true;
+        return false;
+    }
+
+    private void ItemHasBeenCommitted(object? parishioners)
+    {
+        var element = parishioners as Parishioners;
+
+        var item = context.Parishioners.FirstOrDefault(x => x.Id == element.Id);
+
+        if (item != null)
+        {
+            item.Name = element.Name;
+            item.LastName = element.LastName;
+            item.Otch = element.Otch;
+            item.Adress = element.Adress;
+            item.Age = element.Age;
+            item.Gender = element.Gender;
+            item.Social = element.Social;
+            item.SocialStatus = element.SocialStatus;
+            item.PropertyStatus = element.PropertyStatus;
+            item.TempleName = element.TempleName;
+            item.DateJoinRelligios = element.DateJoinRelligios;
+            item.Source = element.Source;
+            item.YearMention = element.YearMention;
+            item.YearRestart = element.YearRestart;
+            item.EstateBeforeRevolution = element.EstateBeforeRevolution;
+            item.Note = element.Note;
+
+            context.Parishioners.Update(item);
+            context.SaveChanges();
+        }
+    }
+
+    private void BackupItem(object element)
+    {
+        
+    }
+
+    private void ResetItemToOriginalValues(object element)
+    {
+        
+    }
+    
+    private async Task HandleDialogChange(ChangeEventArgs e)
+    {
+        if ((bool)e.Value && !visibleModal)
+        {
+            selectedEstate = findParsh.EstateBeforeRevolution;
+            selectedSocial = findParsh.Social;
+            selectedSocialStatus = findParsh.SocialStatus;
+            selectedGender = findParsh.Gender;
+        }
+    }
+    
+    private MudTable<Parishioners> mudTable;
+
+    private void RowClickEvent(TableRowClickEventArgs<Parishioners> obj)
+    {
+        if (selectedItem != null)
+        {
+            var findItem = context.Parishioners.FirstOrDefault(x => x.Id == selectedItem.Id);
+
+            if (findItem != null)
+            {
+                findParsh = findItem; 
+                visibleModal = true;
+            }
+        }  
+    }
+}

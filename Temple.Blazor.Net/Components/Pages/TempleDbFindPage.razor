@@ -129,7 +129,7 @@
     </EditButtonContent>
 </MudTable>
 
-<MudDialog @bind-Visible="visibleModal" @onchange="HandleDialogChange">
+<MudDialog @bind-Visible="VisibleModal" @onchange="HandleDialogChange">
     <DialogContent>
         <div>
             <MudDialogProvider @rendermode="InteractiveServer" MaxWidth="MaxWidth.ExtraExtraLarge"
@@ -462,10 +462,10 @@
 
                 public string[] ocrugs =
                 {
-                    "Бобруйский (1924-1930)", "Борисовский (1924-1927)", "Витебский (1924-1930)", "Калининский (1924-1927)",
-                    "Могилевский (1924-1930)", "Мозырский (1924-1930)", "Минский (1924-1930)", "Оршанский (1924-1930)", "Полоцкий (1924-1930)",
-                    "Слуцкий (1924-1927)", "Гомельский (1926-1930)", "Речицкий (1926-1927)"
-                };
+                "Бобруйский (1924-1930)", "Борисовский (1924-1927)", "Витебский (1924-1930)", "Калининский (1924-1927)",
+                "Могилевский (1924-1930)", "Мозырский (1924-1930)", "Минский (1924-1930)", "Оршанский (1924-1930)", "Полоцкий (1924-1930)",
+                "Слуцкий (1924-1927)", "Гомельский (1926-1930)", "Речицкий (1926-1927)"
+                 };
 
                 private string[] ocrugBobrFirst =
                 {
@@ -793,7 +793,7 @@
                     }
                     else
                     {
-                        string url = $"https://catalog.api.2gis.com/3.0/items/geocode?lat={Lat.ToString().Replace(",", ".")}&lon={Lng.ToString().Replace(",", ".")}&fields=items.point&key=78f230fc-fa51-4e2b-9c1a-ea244bc2e949";
+                        string url = $"https://catalog.api.2gis.com/3.0/items/geocode?lat={Lat.ToString().Replace(",", ".")}&lon={Lng.ToString().Replace(",", ".")}&fields=items.point&key=be532ae3-822f-4b49-a73b-4537b6c07b44";
 
                         using HttpClient client = new HttpClient();
                         HttpResponseMessage response = await client.GetAsync(url.Replace(",", "."));
@@ -834,18 +834,18 @@
                     findTemple.Ocrug = selectedOcrug;
                     findTemple.AppointmentsAfterEnd.Appointmenrs = selectedAfterClosing;
                     findTemple.OrientationDiocesse = selectedDiocese;
-                    findTemple.Lng = Lng;
                     findTemple.Lat = Lat;
+                    findTemple.Lng = Lng;
 
                     findTemple.FillEmptyFields();
                     findTemple.AppointmentsAfterEnd.FillEmptyFields();
                     context.Temples.Update(findTemple);
                     context.SaveChanges();
 
-                    visibleModal = false;
+                    VisibleModal = false;
                 }
 
-                private DotNetObjectReference<AddTemple>? dotNetHelper;
+                private DotNetObjectReference<TempleDbFindPage>? dotNetHelper;
 
                 private IEnumerable<string> CheckName()
                 {
@@ -854,26 +854,25 @@
                         yield return "Храм с таким именем уже существует";
                     }
                 }
-                private async Task HandleDialogChange(ChangeEventArgs e)
+                
+                private async Task HandleDialogChange()
                 {
-                    if ((bool)e.Value && !visibleModal)
-                    {
-                        dotNetHelper = DotNetObjectReference.Create(new AddTemple());
-                        await JSRuntime.InvokeVoidAsync("initMap", dotNetHelper);
-                        await JSRuntime.InvokeVoidAsync("enableClickHandler");
-                        Lat = findTemple.Lat;
-                        Lng = findTemple.Lng;
-                        selectedProvince = findTemple.Province;
-                        selectedCounties = findTemple.Counties;
-                        selectedOcrug = findTemple.Ocrug;
-                        selectedDiocese = findTemple.OrientationDiocesse;
-                        selectedDistrict = findTemple.District;
-                        parshYear = findTemple.ParshYear.ToString();
-                        yearDestruction = findTemple.YearDestruction.ToString();
-                        yearAdaptation = findTemple.YearAdaptation.ToString();
-                        dateStart = findTemple.DateStart.ToString();
-                        dateEnd = findTemple.DateEnd.ToString();
-                    }
+                    await Task.Delay(10);
+                    dotNetHelper = DotNetObjectReference.Create(this);
+                    await JSRuntime.InvokeVoidAsync("initMap", dotNetHelper);
+                    await JSRuntime.InvokeVoidAsync("enableClickHandler");
+                    Lat = findTemple.Lat;
+                    Lng = findTemple.Lng;
+                    selectedProvince = findTemple.Province;
+                    selectedCounties = findTemple.Counties;
+                    selectedOcrug = findTemple.Ocrug;
+                    selectedDiocese = findTemple.OrientationDiocesse;
+                    selectedDistrict = findTemple.District;
+                    parshYear = findTemple.ParshYear.ToString();
+                    yearDestruction = findTemple.YearDestruction.ToString();
+                    yearAdaptation = findTemple.YearAdaptation.ToString();
+                    dateStart = findTemple.DateStart.ToString();
+                    dateEnd = findTemple.DateEnd.ToString();
                 }
                 
                 public void Dispose() => dotNetHelper?.Dispose();
@@ -947,6 +946,22 @@
     private int selectedRowNumber = -1;
     private MudTable<Temple> mudTable;
     private bool visibleModal = false;
+
+    private bool VisibleModal
+    {
+        get
+        {
+            return visibleModal;
+        }
+        set
+        {
+            visibleModal = value;
+            if (value == true)
+            {
+                HandleDialogChange();
+            }
+        }
+    }
     
     private void RowClickEvent(TableRowClickEventArgs<Temple> tableRowClickEventArgs)
     {
@@ -957,16 +972,16 @@
             if (findItem != null)
             {
                 findTemple = findItem; 
-                visibleModal = true;
+                VisibleModal = true;
             }
         }   
     }
     
     private void Callback(TableRowClickEventArgs<Temple> obj) => throw new NotImplementedException();
 
-    private void SelectChange(Temple temple) => visibleModal = true;
+    private void SelectChange(Temple temple) => VisibleModal = true;
 
-    private void HideModal() => visibleModal = false;
+    private void HideModal() => VisibleModal = false;
 
     private void OnChange()
     {
@@ -995,7 +1010,7 @@
         return false;
     }
     
-    private void HandleClose() => visibleModal = false;
+    private void HandleClose() => VisibleModal = false;
 
     private string SelectedRowClassFunc(Temple arg1, int arg2) => throw new NotImplementedException();
 }

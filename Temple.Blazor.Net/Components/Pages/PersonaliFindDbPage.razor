@@ -308,7 +308,7 @@
                         </div>
 
                         <div class="d-grid mb-2">
-                            <MudButton Style="margin-top: 20px;" Color="Color.Primary" Variant="Variant.Filled" OnClick="Sumbit">Добавить</MudButton>
+                            <MudButton Style="margin-top: 20px;" Color="Color.Primary" Variant="Variant.Filled" OnClick="Sumbit">Обновить</MudButton>
                         </div>
                     </MudCardContent>
                 </MudCard>
@@ -532,7 +532,6 @@
                 {
                     if ((bool)e.Value && !visibleModal)
                     {
-                        dotNetHelper = DotNetObjectReference.Create(new AddPersonali());
                         selectedNation = findPers.Nation;
                         selectedSocial = findPers.SocialOrigin;
                         selectedVerdict = findPers.State.Verdict;
@@ -621,6 +620,8 @@
 
             context.Parsonalions.Update(item);
             context.SaveChanges();
+
+            visibleModal = false;
         }
     }
 
