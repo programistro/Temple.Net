@@ -158,6 +158,28 @@ namespace Temple.Blazor.Net.Migrations
                     b.ToTable("Parishioners");
                 });
 
+            modelBuilder.Entity("Temple.Core.ParishionersTemple", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateOnly?>("ParshYear")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("TempleId")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("TempleId");
+
+                    b.ToTable("ParishionersTemple");
+                });
+
             modelBuilder.Entity("Temple.Core.Parsonalion", b =>
                 {
                     b.Property<string>("Id")
@@ -302,14 +324,8 @@ namespace Temple.Blazor.Net.Migrations
                     b.Property<string>("OrientationDiocesse")
                         .HasColumnType("TEXT");
 
-                    b.Property<DateOnly?>("ParshYear")
-                        .HasColumnType("TEXT");
-
                     b.Property<string>("Province")
                         .HasColumnType("TEXT");
-
-                    b.Property<int?>("Quantity")
-                        .HasColumnType("INTEGER");
 
                     b.Property<string>("RayonDistrict")
                         .HasColumnType("TEXT");
@@ -372,6 +388,13 @@ namespace Temple.Blazor.Net.Migrations
                     b.ToTable("TempleOriention");
                 });
 
+            modelBuilder.Entity("Temple.Core.ParishionersTemple", b =>
+                {
+                    b.HasOne("Temple.Core.Temple", null)
+                        .WithMany("ParishionersTemple")
+                        .HasForeignKey("TempleId");
+                });
+
             modelBuilder.Entity("Temple.Core.Parsonalion", b =>
                 {
                     b.HasOne("Temple.Core.Award", "Award")
@@ -424,6 +447,8 @@ namespace Temple.Blazor.Net.Migrations
             modelBuilder.Entity("Temple.Core.Temple", b =>
                 {
                     b.Navigation("Oriention");
+
+                    b.Navigation("ParishionersTemple");
                 });
 #pragma warning restore 612, 618
         }

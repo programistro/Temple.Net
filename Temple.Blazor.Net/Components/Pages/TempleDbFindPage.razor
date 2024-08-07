@@ -56,7 +56,7 @@
     </ToolBarContent>
     <HeaderContent>
         <MudTh><MudTableSortLabel SortBy="new Func<Temple, object>(x=>x.Name)">Название</MudTableSortLabel></MudTh>
-        <MudTh><MudTableSortLabel SortBy="new Func<Temple, object>(x=>x.Quantity)">Количество прихожан</MudTableSortLabel></MudTh>
+        @* <MudTh><MudTableSortLabel SortBy="new Func<Temple, object>(x=>x.Quantity)">Количество прихожан</MudTableSortLabel></MudTh> *@
         <MudTh><MudTableSortLabel SortBy="new Func<Temple, object>(x=>x.DateStart)">Год основания</MudTableSortLabel></MudTh>
         <MudTh><MudTableSortLabel SortBy="new Func<Temple, object>(x=>x.DateEnd)">Год закрытия</MudTableSortLabel></MudTh>
         <MudTh><MudTableSortLabel SortBy="new Func<Temple, object>(x=>x.Province)">Губерния</MudTableSortLabel></MudTh>
@@ -97,7 +97,7 @@
     </ColGroup>
     <RowTemplate>
         <MudTd DataLabel="Name">@context.Name</MudTd>
-        <MudTd DataLabel="Locality">@context.Quantity</MudTd>
+        @* <MudTd DataLabel="Locality">@context.Quantity</MudTd> *@
         <MudTd DataLabel="DateStart">@context.DateStart</MudTd>
         <MudTd DataLabel="DateEnd">@context.DateEnd</MudTd>
         <MudTd DataLabel="Province">@context.Province</MudTd>
@@ -269,19 +269,25 @@
                             </MudDialog>
                         </div>
 
-                        <div>
-                            <h3 class="card-title text-center mb-3 fw-light fs-5">Количество прихожан</h3>
+                        <MudDialog @bind-Visible="visibleParshTempleModal">
+                            <DialogContent>
+                                <div>
+                                    <h3 class="card-title text-center mb-3 fw-light fs-5">Количество прихожан</h3>
 
-                            <div>
-                                <div style="margin-top: 10px; margin-bottom: 10px; display: flex; align-items: center; text-align: center; justify-content: space-between;">
-                                    <MudTooltip Text="Пишите дату в формате ДД. ММ.ГГГГ; ММ.ГГГГ, ГГГГ">
-                                        <MudTextField Label="Год" @bind-Value="parshYear" Validation="ValidationService.Validation" Style="width: 100%"/>
-                                    </MudTooltip>
+                                    <div style="margin-top: 10px; margin-bottom: 10px; display: flex; align-items: center; text-align: center; justify-content: space-between;">
+                                        <MudTooltip Text="Пишите дату в формате ДД. ММ.ГГГГ; ММ.ГГГГ, ГГГГ">
+                                            <MudTextField Label="Год" @bind-Value="parshYear" Validation="ValidationService.Validation" Style="width: 100%"/>
+                                        </MudTooltip>
+                                    </div>
+
+                                    <MudTextField T="int" @bind-value="quantity" Label="Количество"/>
                                 </div>
-
-                                <MudTextField T="int?" @bind-value="findTemple.Quantity" Label="Количество"/>
-                            </div>
-                        </div>
+                            </DialogContent>
+                            <DialogActions>
+                                <MudButton Color="Color.Primary" OnClick="OnHideModalParshModalClick">Отмена</MudButton>
+                                <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="OnChangeParshTempleClick">Изменить</MudButton>
+                            </DialogActions>
+                        </MudDialog>
 
                         <MudAutocomplete T="string" Label="Епархии" @bind-Value="selectedDiocese" SearchFunc="@SearcDiocese"
                                          ResetValueOnEmptyText="@resetValueOnEmptyText"
@@ -364,6 +370,10 @@
                 private string selectedAfterClosing;
 
                 private string selectedOcrug;
+                
+                private bool visibleParshTempleModal = false;
+
+                private int quantity = 0;
 
                 private string selectedCounties;
 
@@ -826,7 +836,6 @@
                     findTemple.DateEnd = dateEnd.SetDateTime();
                     findTemple.YearAdaptation = yearAdaptation.SetDateTime();
                     findTemple.YearDestruction = yearDestruction.SetDateTime();
-                    findTemple.ParshYear = parshYear.SetDateTime();
                     findTemple.Type = selectedType;
                     findTemple.Province = selectedProvince;
                     findTemple.Counties = selectedCounties;
@@ -868,7 +877,6 @@
                     selectedOcrug = findTemple.Ocrug;
                     selectedDiocese = findTemple.OrientationDiocesse;
                     selectedDistrict = findTemple.District;
-                    parshYear = findTemple.ParshYear.ToString();
                     yearDestruction = findTemple.YearDestruction.ToString();
                     yearAdaptation = findTemple.YearAdaptation.ToString();
                     dateStart = findTemple.DateStart.ToString();
@@ -922,6 +930,20 @@
                 }
 
                 private void OnHideModalReferencYearClick() => visibleReferencYear = false;
+                
+                private void OnHideModalParshModalClick() => visibleParshTempleModal = false;
+    
+                private void OnChangeParshTempleClick()
+                {
+                    ParishionersTemple parishionersTemple = new();
+
+                    parishionersTemple.ParshYear = parshYear.SetDateTime();
+                    parishionersTemple.Quantity = quantity;
+        
+                    findTemple.ParishionersTemple.Add(parishionersTemple);
+
+                    visibleParshTempleModal = false;
+                }
             }
         </div>
     </DialogContent>

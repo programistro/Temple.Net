@@ -24,7 +24,7 @@
     </ToolBarContent>
     <HeaderContent>
         <MudTh><MudTableSortLabel SortBy="new Func<Temple, object>(x=>x.Name)">Название</MudTableSortLabel></MudTh>
-        <MudTh><MudTableSortLabel SortBy="new Func<Temple, object>(x=>x.Quantity)">Количество прихожан</MudTableSortLabel></MudTh>
+        @* <MudTh><MudTableSortLabel SortBy="new Func<Temple, object>(x=>x.Quantity)">Количество прихожан</MudTableSortLabel></MudTh> *@
         <MudTh><MudTableSortLabel SortBy="new Func<Temple, object>(x=>x.DateStart)">Год основания</MudTableSortLabel></MudTh>
         <MudTh><MudTableSortLabel SortBy="new Func<Temple, object>(x=>x.DateEnd)">Год закрытия</MudTableSortLabel></MudTh>
         <MudTh><MudTableSortLabel SortBy="new Func<Temple, object>(x=>x.Province)">Губерния</MudTableSortLabel></MudTh>
@@ -65,7 +65,7 @@
     </ColGroup>
     <RowTemplate>
         <MudTd DataLabel="Name">@context.Name</MudTd>
-        <MudTd DataLabel="Locality">@context.Quantity</MudTd>
+        @* <MudTd DataLabel="Locality">@context.Quantity</MudTd> *@
         <MudTd DataLabel="DateStart">@context.DateStart</MudTd>
         <MudTd DataLabel="DateEnd">@context.DateEnd</MudTd>
         <MudTd DataLabel="Province">@context.Province</MudTd>
@@ -93,9 +93,9 @@
         <MudTd DataLabel="Name">
             <MudTextField @bind-Value="context.Name" Required />
         </MudTd>
-        <MudTd DataLabel="Quantity">
-            <MudNumericField @bind-Value="context.Quantity" Required />
-        </MudTd>
+        @* <MudTd DataLabel="Quantity"> *@
+        @*     <MudNumericField @bind-Value="context.Quantity" Required /> *@
+        @* </MudTd> *@
         <MudTd DataLabel="DateStart">
             <MudTextField @bind-Value="context.DateStart" Required />
         </MudTd>
@@ -229,16 +229,11 @@
             item.District = element.District;
             item.RayonRegion = element.RayonRegion;
             item.RayonDistrict = element.RayonDistrict;
-            item.Quantity = element.Quantity;
-            // item.Oriention.Oriention = element.Oriention.Oriention;
-            // item.Oriention.YearFall = element.Oriention.YearFall;
-            // item.Oriention.YearRefund = element.Oriention.YearRefund;
             item.AppointmentsAfterEnd.Appointmenrs = element.AppointmentsAfterEnd.Appointmenrs;
             item.AppointmentsAfterEnd.Year = element.AppointmentsAfterEnd.Year;
             item.OrientationDiocesse = element.OrientationDiocesse;
             item.YearAdaptation = element.YearAdaptation;
             item.YearDestruction = element.YearDestruction;
-            item.ParshYear = element.ParshYear;
             item.Province = element.Province;
             item.TempleNameOnMap = element.TempleNameOnMap;
 

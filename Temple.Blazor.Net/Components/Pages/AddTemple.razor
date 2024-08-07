@@ -149,20 +149,31 @@
                     </DialogActions>
                 </MudDialog>
             </div>
-            
-            <div>
-                <h3 class="card-title text-center mb-3 fw-light fs-5">Количество прихожан</h3>
 
+        <div class="containerOriention" style="justify-content: center; margin-top: 5px;">
+            <h6 class="text-center mb-3 fw-light fs-5">Количество прихожан</h6>
+            <MudIconButton Icon="@Icons.Material.Filled.Add" Size="Size.Small" Style="margin-bottom: 9px; margin-left: 7px;" OnClick="ShowParshTempleClick"/>
+        </div>
+        
+        <MudDialog @bind-Visible="visibleParshTempleModal">
+            <DialogContent>
                 <div>
+                    <h3 class="card-title text-center mb-3 fw-light fs-5">Количество прихожан</h3>
+
                     <div style="margin-top: 10px; margin-bottom: 10px; display: flex; align-items: center; text-align: center; justify-content: space-between;">
                         <MudTooltip Text="Пишите дату в формате ДД. ММ.ГГГГ; ММ.ГГГГ, ГГГГ">
                             <MudTextField Label="Год" @bind-Value="parshYear" Validation="ValidationService.Validation" Style="width: 100%"/>
                         </MudTooltip>
                     </div>
 
-                    <MudTextField T="int?" @bind-value="_temple.Quantity" Label="Количество"/>
+                    <MudTextField T="int" @bind-value="quantity" Label="Количество"/>
                 </div>
-            </div>
+            </DialogContent>
+            <DialogActions>
+                <MudButton Color="Color.Primary" OnClick="OnHideModalParshModalClick">Отмена</MudButton>
+                <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="OnChangeParshTempleClick">Изменить</MudButton>
+            </DialogActions>
+        </MudDialog>
 
             <MudAutocomplete T="string" Label="Епархии" @bind-Value="selectedDiocese" SearchFunc="@SearcDiocese"
                              ResetValueOnEmptyText="@resetValueOnEmptyText"
@@ -252,6 +263,10 @@
 
     private bool visiblePersonal = false;
 
+    private bool visibleParshTempleModal = false;
+
+    private int quantity = 0;
+
     private List<TempleOriention> _orientions = new();
 
     private List<Parsonalion> _parsonalions = new();
@@ -262,6 +277,7 @@
         {
             Id = Guid.NewGuid().ToString("N")
         },
+        ParishionersTemple = new(),
         YearReferences = new(),
         Oriention = new(),
         Id = Guid.NewGuid().ToString("N")
@@ -467,6 +483,8 @@
 
     private double Lat;
 
+    #region
+
     private async Task<IEnumerable<string>> SearchType(string value, CancellationToken token)
     {
         await Task.Delay(5, token);
@@ -657,6 +675,8 @@
         }
     }
 
+    #endregion
+
     #region ValuesForDate
 
     private string dateStart;
@@ -718,8 +738,6 @@
         _temple.DateEnd = dateEnd.SetDateTime();
         _temple.YearAdaptation = yearAdaptation.SetDateTime();
         _temple.YearDestruction = yearDestruction.SetDateTime();
-        // _temple.YearReferences = yearReferences.SetDateTime();
-        _temple.ParshYear = parshYear.SetDateTime();
 
         _temple.Type = selectedType;
         _temple.Province = selectedProvince;
@@ -808,6 +826,8 @@
     private bool visibleReferencYear = false;
 
     private void ShowReferencYearClick() => visibleReferencYear = true;
+    
+    private void ShowParshTempleClick() => visibleParshTempleModal = true;
 
     private void OnChangeReferencYearClick()
     {
@@ -817,4 +837,19 @@
     }
 
     private void OnHideModalReferencYearClick() => visibleReferencYear = false;
+    
+    private void OnHideModalParshModalClick() => visibleParshTempleModal = false;
+    
+    private void OnChangeParshTempleClick()
+    {
+        ParishionersTemple parishionersTemple = new();
+
+        parishionersTemple.Id = Guid.NewGuid();
+        parishionersTemple.ParshYear = parshYear.SetDateTime();
+        parishionersTemple.Quantity = quantity;
+        
+        _temple.ParishionersTemple.Add(parishionersTemple);
+
+        visibleParshTempleModal = false;
+    }
 }

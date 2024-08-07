@@ -24,13 +24,11 @@ public class Temple
     
     public List<TempleOriention?> Oriention { get; set; }
     
-    public DateOnly? ParshYear { get; set; }
-    
-    public int? Quantity { get; set; }
-    
     public string? OrientationDiocesse { get; set; }
     
     //public string Diocesse { get; set; }
+    
+    public List<ParishionersTemple?> ParishionersTemple { get; set; }
     
     /// <summary>
     /// Губернии
