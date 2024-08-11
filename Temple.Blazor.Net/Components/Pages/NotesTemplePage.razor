@@ -1,0 +1,337 @@
+﻿@using Temple.Net.Models
+@using Microsoft.AspNetCore.Components.QuickGrid
+@using Microsoft.EntityFrameworkCore
+@inject AppDbContext context
+@inject ISnackbar Snackbar
+
+<style>
+    body {
+        overflow-x: scroll;
+    }
+</style>
+
+<MudDialogProvider FullWidth="true"
+                   MaxWidth="MaxWidth.ExtraSmall"
+                   CloseButton="true"
+                   BackdropClick="false"
+                   NoHeader="false"
+                   Position="DialogPosition.Center"
+                   CloseOnEscapeKey="true"/>
+
+<MudTable Items="@Elements" Dense="@dense" Hover="@hover" Bordered="@bordered" Striped="@striped" 
+          Filter="new Func<Temple,bool>(FilterFunc1)" @bind-SelectedItem="selectedItem"
+          CommitEditTooltip="Commit Edit"
+          OnCommitEditClick="@(() => Snackbar.Add("Commit Edit Handler Invoked"))" RowEditPreview="BackupItem" 
+          RowEditCancel="ResetItemToOriginalValues"
+          RowEditCommit="ItemHasBeenCommitted" IsEditRowSwitchingBlocked="@blockSwitch" ApplyButtonPosition="@applyButtonPosition"
+          EditButtonPosition="@editButtonPosition" EditTrigger="@editTrigger">
+    <ToolBarContent>
+        <MudText Typo="Typo.h6">Храмы</MudText>
+        <MudSpacer />
+        <MudTextField @bind-Value="searchString1" Placeholder="Найти" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
+        <MudIconButton Icon="@Icons.Material.Filled.Add" Size="Size.Small" Style="margin-bottom: 9px; margin-left: 7px;" OnClick="AddNote"/>
+    </ToolBarContent>
+    <HeaderContent>
+        <MudTh><MudTableSortLabel SortBy="new Func<Temple, object>(x=>x.Name)">Название</MudTableSortLabel></MudTh>
+        @* <MudTh><MudTableSortLabel SortBy="new Func<Temple, object>(x=>x.Quantity)">Количество прихожан</MudTableSortLabel></MudTh> *@
+        <MudTh><MudTableSortLabel SortBy="new Func<Temple, object>(x=>x.DateStart)">Год основания</MudTableSortLabel></MudTh>
+        <MudTh><MudTableSortLabel SortBy="new Func<Temple, object>(x=>x.DateEnd)">Год закрытия</MudTableSortLabel></MudTh>
+        <MudTh><MudTableSortLabel SortBy="new Func<Temple, object>(x=>x.Province)">Губерния</MudTableSortLabel></MudTh>
+        <MudTh><MudTableSortLabel SortBy="new Func<Temple, object>(x=>x.District)">Район</MudTableSortLabel></MudTh>
+        <MudTh><MudTableSortLabel SortBy="new Func<Temple, object>(x=>x.RayonDistrict)">Район округа</MudTableSortLabel></MudTh>
+        <MudTh><MudTableSortLabel SortBy="new Func<Temple, object>(x=>x.Region)">Область</MudTableSortLabel></MudTh>
+        <MudTh><MudTableSortLabel SortBy="new Func<Temple, object>(x=>x.Type)">Тип</MudTableSortLabel></MudTh>
+        <MudTh><MudTableSortLabel SortBy="new Func<Temple, object>(x=>x.RayonRegion)">Район области</MudTableSortLabel></MudTh>
+        <MudTh><MudTableSortLabel SortBy="new Func<Temple, object>(x=>x.SeparateRegion)">Отдельный район</MudTableSortLabel></MudTh>
+        <MudTh><MudTableSortLabel SortBy="new Func<Temple, object>(x=>x.TypeLocality)">Тип населенного пункта</MudTableSortLabel></MudTh>
+        <MudTh><MudTableSortLabel SortBy="new Func<Temple, object>(x=>x.Locality)">Населеный пункт</MudTableSortLabel></MudTh>
+        @* <MudTh><MudTableSortLabel SortBy="new Func<Temple, object>(x=>x.Oriention.Oriention)">Церковная ориентаиця</MudTableSortLabel></MudTh> *@
+        @* <MudTh><MudTableSortLabel SortBy="new Func<Temple, object>(x=>x.Oriention.YearFall)">Год отпадения</MudTableSortLabel></MudTh> *@
+        @* <MudTh><MudTableSortLabel SortBy="new Func<Temple, object>(x=>x.Oriention.YearRefund)">Год возрата</MudTableSortLabel></MudTh> *@
+        <MudTh><MudTableSortLabel SortBy="new Func<Temple, object>(x=>x.AppointmentsAfterEnd.Appointmenrs)">Назначение после закрытия</MudTableSortLabel></MudTh>
+        <MudTh><MudTableSortLabel SortBy="new Func<Temple, object>(x=>x.AppointmentsAfterEnd.Year)">Год приспособления</MudTableSortLabel></MudTh>
+        <MudTh><MudTableSortLabel SortBy="new Func<Temple, object>(x=>x.YearAdaptation)">Год основания</MudTableSortLabel></MudTh>
+        <MudTh><MudTableSortLabel SortBy="new Func<Temple, object>(x=>x.YearDestruction)">Год уничтожения</MudTableSortLabel></MudTh>
+        <MudTh><MudTableSortLabel SortBy="new Func<Temple, object>(x=>x.Ocrug)">Округ</MudTableSortLabel></MudTh>
+        <MudTh><MudTableSortLabel SortBy="new Func<Temple, object>(x=>x.Counties)">Уезды</MudTableSortLabel></MudTh>
+        <MudTh><MudTableSortLabel SortBy="new Func<Temple, object>(x=>x.OrientationDiocesse)">Ориентация епапрхии</MudTableSortLabel></MudTh>
+        <MudTh><MudTableSortLabel SortBy="new Func<Temple, object>(x=>x.TempleNameOnMap)">Место на карте</MudTableSortLabel></MudTh>
+    </HeaderContent>
+    <ColGroup>
+        @if (applyButtonPosition.DisplayApplyButtonAtStart() || (editButtonPosition.DisplayEditButtonAtStart() && editTrigger == TableEditTrigger.EditButton))
+        {
+            <col style="width:50px;" />
+        }
+        <col style="width:50px;" />
+        <col style="width:80px;" />
+        <col style="width:50%;" />
+        <col />
+        <col />
+        @if (applyButtonPosition.DisplayApplyButtonAtEnd() || (editButtonPosition.DisplayEditButtonAtEnd() && editTrigger == TableEditTrigger.EditButton))
+        {
+            <col style="width:50px;" />
+        }
+    </ColGroup>
+    <RowTemplate>
+        <MudTd DataLabel="Name">@context.Name</MudTd>
+        @* <MudTd DataLabel="Locality">@context.Quantity</MudTd> *@
+        <MudTd DataLabel="DateStart">@context.DateStart</MudTd>
+        <MudTd DataLabel="DateEnd">@context.DateEnd</MudTd>
+        <MudTd DataLabel="Province">@context.Province</MudTd>
+        <MudTd DataLabel="District">@context.District</MudTd>
+        <MudTd DataLabel="RayonDistrict">@context.RayonDistrict</MudTd>
+        <MudTd DataLabel="Region">@context.Region</MudTd>
+        <MudTd DataLabel="Type">@context.Type</MudTd>
+        <MudTd DataLabel="RayonDistrict">@context.RayonDistrict</MudTd>
+        <MudTd DataLabel="SeparateRegion">@context.SeparateRegion</MudTd>
+        <MudTd DataLabel="TypeLocality">@context.TypeLocality</MudTd>
+        <MudTd DataLabel="Locality">@context.Locality</MudTd>
+        @* <MudTd DataLabel="Oriention">@context.Oriention.Oriention</MudTd> *@
+        @* <MudTd DataLabel="YearFall">@context.Oriention.YearFall</MudTd> *@
+        @* <MudTd DataLabel="YearRefund">@context.Oriention.YearRefund</MudTd> *@
+        <MudTd DataLabel="Appointmenrs">@context.AppointmentsAfterEnd.Appointmenrs</MudTd>
+        <MudTd DataLabel="Year">@context.AppointmentsAfterEnd.Year</MudTd>
+        <MudTd DataLabel="YearAdaptation">@context.YearAdaptation</MudTd>
+        <MudTd DataLabel="YearDestruction">@context.YearDestruction</MudTd>
+        <MudTd DataLabel="Ocrug">@context.Ocrug</MudTd>
+        <MudTd DataLabel="Counties">@context.Counties</MudTd>
+        <MudTd DataLabel="OrientationDiocesse">@context.OrientationDiocesse</MudTd>
+        <MudTd DataLabel="TempleNameOnMap">@context.TempleNameOnMap</MudTd>
+    </RowTemplate>
+    <RowEditingTemplate>
+        <MudTd DataLabel="Name">
+            <MudTextField @bind-Value="context.Name" Required />
+        </MudTd>
+        @* <MudTd DataLabel="Quantity"> *@
+        @*     <MudNumericField @bind-Value="context.Quantity" Required /> *@
+        @* </MudTd> *@
+        <MudTd DataLabel="DateStart">
+            <MudTextField @bind-Value="context.DateStart" Required />
+        </MudTd>
+        <MudTd DataLabel="DateEnd">
+            <MudTextField @bind-Value="context.DateEnd" Required/>
+        </MudTd>
+        <MudTd DataLabel="Province">
+            <MudTextField @bind-Value="context.Province" Required />
+        </MudTd>
+        <MudTd DataLabel="District">
+            <MudTextField @bind-Value="context.District" Required />
+        </MudTd>
+        <MudTd DataLabel="RayonDistrict">
+            <MudTextField @bind-Value="context.RayonDistrict" Required />
+        </MudTd>
+        <MudTd DataLabel="Region">
+            <MudTextField @bind-Value="context.Region" Required />
+        </MudTd>
+        <MudTd DataLabel="Type">
+            <MudTextField @bind-Value="context.Type" Required />
+        </MudTd>
+        <MudTd DataLabel="RayonRegion">
+            <MudTextField @bind-Value="context.RayonRegion" Required />
+        </MudTd>
+        <MudTd DataLabel="SeparateRegion">
+            <MudTextField @bind-Value="context.SeparateRegion" Required />
+        </MudTd>
+        <MudTd DataLabel="TypeLocality">
+            <MudTextField @bind-Value="context.TypeLocality" Required />
+        </MudTd>
+        <MudTd DataLabel="Locality">
+            <MudTextField @bind-Value="context.Locality" Required />
+        </MudTd>
+        @* <MudTd DataLabel="Oriention.Oriention"> *@
+        @*     <MudTextField @bind-Value="context.Oriention.Oriention" Required /> *@
+        @* </MudTd> *@
+        @* <MudTd DataLabel="Oriention.YearFall"> *@
+        @*     <MudTextField @bind-Value="context.Oriention.YearFall" Required /> *@
+        @* </MudTd> *@
+        @* <MudTd DataLabel="Oriention.YearRefund"> *@
+        @*     <MudTextField @bind-Value="context.Oriention.YearRefund" Required /> *@
+        @* </MudTd> *@
+        <MudTd DataLabel="AppointmentsAfterEnd.Appointmenrs">
+            <MudTextField @bind-Value="context.AppointmentsAfterEnd.Appointmenrs" Required />
+        </MudTd>
+        <MudTd DataLabel="AppointmentsAfterEnd.Year">
+            <MudTextField @bind-Value="context.AppointmentsAfterEnd.Year" Required />
+        </MudTd>
+        <MudTd DataLabel="YearAdaptation">
+            <MudTextField @bind-Value="context.YearAdaptation" Required />
+        </MudTd>
+        <MudTd DataLabel="YearDestruction">
+            <MudTextField @bind-Value="context.YearDestruction" Required />
+        </MudTd>
+        <MudTd DataLabel="Ocrug">
+            <MudTextField @bind-Value="context.Ocrug" Required />
+        </MudTd>
+        <MudTd DataLabel="Counties">
+            <MudTextField @bind-Value="context.Counties" Required />
+        </MudTd>
+        <MudTd DataLabel="OrientationDiocesse">
+            <MudTextField @bind-Value="context.OrientationDiocesse" Required />
+        </MudTd>
+        <MudTd DataLabel="TempleNameOnMap">
+            <MudTextField @bind-Value="context.TempleNameOnMap" Required />
+        </MudTd>
+    </RowEditingTemplate>
+    <PagerContent>
+        <MudTablePager />
+    </PagerContent>
+    <EditButtonContent Context="button">
+        <MudIconButton Size="@Size.Small" Icon="@Icons.Material.Outlined.Edit" Class="pa-0" OnClick="@button.ButtonAction" Disabled="@button.ButtonDisabled" />
+    </EditButtonContent>
+</MudTable>
+
+<MudDialog @bind-Visible="visibleModal">
+    <TitleContent>
+        Добавить значение в справочник
+    </TitleContent>
+    <DialogContent>
+        <div style="display: flex; align-items: center;">
+            <MudSelect T="string" Label="Добавить значение" Style="margin-right: 5px;" @bind-Value="selectedValue">
+                <MudSelectItem Value="@("Имя")"/>
+                <MudSelectItem Value="@("Губерния")"/>
+                <MudSelectItem Value="@("Район")"/>
+                <MudSelectItem Value="@("Район округа")"/>
+                <MudSelectItem Value="@("Область")"/>
+                <MudSelectItem Value="@("Тип")"/>
+                <MudSelectItem Value="@("Район области")"/>
+                <MudSelectItem Value="@("Отдельный район")"/>
+                <MudSelectItem Value="@("Тип населенного пункта")"/>
+                <MudSelectItem Value="@("Год приспособления")"/>
+                <MudSelectItem Value="@("Округ")"/>
+                <MudSelectItem Value="@("Уезды")"/>
+                <MudSelectItem Value="@("Ориентация епархии")"/>
+            </MudSelect>
+            <MudTextField Label="Новое значение" T="string" @bind-Value="newValue"/>
+        </div>
+    </DialogContent>
+    <DialogActions>
+        <MudButton Color="Color.Primary" OnClick="Submit">Добавить</MudButton>
+    </DialogActions>
+</MudDialog>
+
+@code {
+    private bool dense = true;
+    private bool hover = true;
+    private bool striped = true;
+    private bool bordered = true;
+    private bool blockSwitch = false;
+    private string searchString1 = "";
+    private Temple selectedItem = null;
+    private HashSet<Temple> selectedItems = new();
+    private Temple elementBeforeEdit;
+    private HashSet<Temple> selectedItems1 = new HashSet<Temple>();
+    private TableApplyButtonPosition applyButtonPosition = TableApplyButtonPosition.End;
+    private TableEditButtonPosition editButtonPosition = TableEditButtonPosition.End;
+    private TableEditTrigger editTrigger = TableEditTrigger.RowClick;
+
+    private bool visibleFornDialog = false;
+    
+    private IEnumerable<Temple> Elements = new List<Temple>();
+
+    private bool visibleModal = false;
+    private string selectedValue;
+    private string newValue;
+
+    protected override async Task OnInitializedAsync()
+    {
+        Elements = context.Temples
+            .Include(t => t.AppointmentsAfterEnd)
+            .Include(t => t.Oriention);
+    }
+
+    private bool FilterFunc1(Temple element) => FilterFunc(element, searchString1);
+
+    private bool FilterFunc(Temple element, string searchString)
+    {
+        if (string.IsNullOrWhiteSpace(searchString))
+            return true;
+        if (element.Name.Contains(searchString, StringComparison.OrdinalIgnoreCase))
+            return true;
+        if ($"{element.Name}".Contains(searchString))
+            return true;
+        return false;
+    }
+
+    private void ItemHasBeenCommitted(object? temple)
+    {
+        var element = temple as Temple;
+        
+        var item = context.Temples.FirstOrDefault(x => x.Id == element.Id);
+
+        if (item != null)
+        {
+            item.Name = element.Name;
+            item.Type = element.Type;
+            item.DateStart = element.DateStart;
+            item.DateEnd = element.DateEnd;
+            item.Counties = element.Counties;
+            item.Locality = element.Locality;
+            item.TypeLocality = element.TypeLocality;
+            item.Ocrug = element.Ocrug;
+            item.District = element.District;
+            item.RayonRegion = element.RayonRegion;
+            item.RayonDistrict = element.RayonDistrict;
+            item.AppointmentsAfterEnd.Appointmenrs = element.AppointmentsAfterEnd.Appointmenrs;
+            item.AppointmentsAfterEnd.Year = element.AppointmentsAfterEnd.Year;
+            item.OrientationDiocesse = element.OrientationDiocesse;
+            item.YearAdaptation = element.YearAdaptation;
+            item.YearDestruction = element.YearDestruction;
+            item.Province = element.Province;
+            item.TempleNameOnMap = element.TempleNameOnMap;
+
+            context.Temples.Update(item);
+            context.SaveChanges();
+        }
+    }
+    
+    private void BackupItem(object element) {  }
+
+    private void ResetItemToOriginalValues(object element) {  }
+
+    private void AddNote() => visibleModal = true;
+
+    private void Submit()
+    {
+        TempleNote note = new();
+        //todo доделать этц страницу и переделать таблицу под Note модели
+        switch (selectedValue)
+        {
+            case "Имя":
+                note.Name = newValue;
+                break;
+            case "Губерния":
+                note.Province = newValue;
+                break;
+            case "Район":
+                note.Region = newValue;
+                break;
+            case "Район округа":
+                note.RayonDistrict = newValue;
+                break;
+            case "Область":
+                note.Region = newValue;
+                break;
+            case "Тип":
+                note.Type = newValue;
+                break;
+            case "Район области":
+                note.RayonRegion = newValue;
+                break;
+            case "Отдельный район":
+                note.SeparateRegion = newValue;
+                break;
+            case "Тип населенного пункта":
+                note.TypeLocality = newValue;
+                break;
+            case "Округ":
+                note.Ocrug = newValue;
+                break;
+            case "Уезды":
+                note.Counties = newValue;
+                break;
+            case "Ориентация епархии":
+                note.OrientationDiocesse = newValue;
+                break;
+        }
+    }
+}

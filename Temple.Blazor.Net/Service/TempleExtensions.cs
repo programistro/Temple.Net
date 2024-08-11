@@ -17,11 +17,24 @@ public static class TempleExtensions
         foreach (var property in properties)
         {
             var value = property.GetValue(target);
+            var propertyType = property.PropertyType;
 
-            Type propertyType = Nullable.GetUnderlyingType(property.PropertyType);
+            // Проверяем, является ли свойство коллекцией
+            bool isCollection = propertyType.IsGenericType && 
+                                (propertyType.GetGenericTypeDefinition() == typeof(ICollection<>) || 
+                                 propertyType.GetGenericTypeDefinition() == typeof(IEnumerable<>));
 
-            if (value == null)
+            // Если значение null и свойство не является коллекцией
+            if (value == null && !isCollection)
             {
+                // Обработка nullable типов
+                var underlyingType = Nullable.GetUnderlyingType(propertyType);
+                if (underlyingType != null)
+                {
+                    propertyType = underlyingType;
+                }
+
+                // Установка значений по умолчанию
                 if (propertyType == typeof(DateOnly))
                 {
                     property.SetValue(target, DateOnly.MinValue);
@@ -30,14 +43,10 @@ public static class TempleExtensions
                 {
                     property.SetValue(target, 0);
                 }
-                else
+                else if (propertyType == typeof(string))
                 {
                     property.SetValue(target, "Пусто");
                 }
-            }
-            else if (property.PropertyType == typeof(DateOnly?) && !((DateOnly?)value).HasValue)
-            {
-                property.SetValue(target, null);
             }
         }
     }

@@ -8,27 +8,27 @@ public class Temple
     [Key]
     public string Id { get; set; }
     
-    public string Name { get; set; }
+    public string? Name { get; set; }
     
     public string? Type { get; set; }
     
     public DateOnly? DateStart { get; set; }
     
     public DateOnly? DateEnd { get; set; }
-    
-    public AppointmentsAfterEnd? AppointmentsAfterEnd { get; set; }
+
+    public AppointmentsAfterEnd? AppointmentsAfterEnd { get; set; } = new();
     
     public DateOnly? YearAdaptation { get; set; }
     
     public DateOnly? YearDestruction { get; set; }
-    
-    public List<TempleOriention?> Oriention { get; set; }
+
+    public List<TempleOriention?>? Oriention { get; set; } = new();
     
     public string? OrientationDiocesse { get; set; }
     
     //public string Diocesse { get; set; }
-    
-    public List<ParishionersTemple?> ParishionersTemple { get; set; }
+
+    public List<ParishionersTemple?>? ParishionersTemple { get; set; } = new();
     
     /// <summary>
     /// Губернии
@@ -84,7 +84,7 @@ public class Temple
     /// <summary>
     /// Год упоминания
     /// </summary>
-    public List<DateOnly>? YearReferences { get; set; }
+    public List<DateOnly>? YearReferences { get; set; } = new();
 
     public string? TempleNameOnMap { get;set; }
     

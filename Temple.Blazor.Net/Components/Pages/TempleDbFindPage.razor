@@ -182,37 +182,37 @@
                             </MudTooltip>
                         </div>
 
-                        <div>
-                            <div class="containerOriention" style="justify-content: center; margin-top: 5px;">
-                                <h6 class="text-center mb-3 fw-light fs-5">Год упоменания</h6>
-                                <MudIconButton Icon="@Icons.Material.Filled.Add" Size="Size.Small" Style="margin-bottom: 9px; margin-left: 7px;" OnClick="ShowReferencYearClick"/>
-                            </div>
-
-                            <MudList T="string" SelectionMode="SelectionMode.ToggleSelection">
-                                @foreach (var item in findTemple?.YearReferences)
-                                {
-                                <MudListItem Text="@item.ToString()"/>
-                                }
-                            </MudList>
-
-                            <MudDialog @bind-Visible="visibleReferencYear">
-                                <DialogContent>
-                                    <div>
-                                        <h3 class="card-title text-center mb-3 fw-light fs-5">Год упоменания</h3>
-
-                                        <div style="margin-top: 10px; margin-bottom: 10px; display: flex; align-items: center; text-align: center; justify-content: space-between;">
-                                            <MudTooltip Text="Пишите дату в формате ДД. ММ.ГГГГ; ММ.ГГГГ, ГГГГ">
-                                                <MudTextField Label="Год упоминания" @bind-Value="yearReferences" Validation="ValidationService.Validation" Style="width: 100%"/>
-                                            </MudTooltip>
-                                        </div>
-                                    </div>
-                                </DialogContent>
-                                <DialogActions>
-                                    <MudButton Color="Color.Primary" OnClick="OnHideModalReferencYearClick">Отмена</MudButton>
-                                    <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="OnChangeReferencYearClick">Изменить</MudButton>
-                                </DialogActions>
-                            </MudDialog>
-                        </div>
+                        @* <div> *@
+                        @*     <div class="containerOriention" style="justify-content: center; margin-top: 5px;"> *@
+                        @*         <h6 class="text-center mb-3 fw-light fs-5">Год упоменания</h6> *@
+                        @*         <MudIconButton Icon="@Icons.Material.Filled.Add" Size="Size.Small" Style="margin-bottom: 9px; margin-left: 7px;" OnClick="ShowReferencYearClick"/> *@
+                        @*     </div> *@
+                        @* *@
+                        @*     <MudList T="string" SelectionMode="SelectionMode.ToggleSelection"> *@
+                        @*         @foreach (var item in findTemple?.YearReferences) *@
+                        @*         { *@
+                        @*         <MudListItem Text="@item.ToString()"/> *@
+                        @*         } *@
+                        @*     </MudList> *@
+                        @* *@
+                        @*     <MudDialog @bind-Visible="visibleReferencYear" Options="@(new DialogOptions() { FullWidth = false, NoHeader = true })"> *@
+                        @*         <DialogContent> *@
+                        @*             <div> *@
+                        @*                 <h3 class="card-title text-center mb-3 fw-light fs-5">Год упоменания</h3> *@
+                        @* *@
+                        @*                 <div style="margin-top: 10px; margin-bottom: 10px; display: flex; align-items: center; text-align: center; justify-content: space-between;"> *@
+                        @*                     <MudTooltip Text="Пишите дату в формате ДД. ММ.ГГГГ; ММ.ГГГГ, ГГГГ"> *@
+                        @*                         <MudTextField Label="Год упоминания" @bind-Value="yearReferences" Validation="ValidationService.Validation" Style="width: 100%"/> *@
+                        @*                     </MudTooltip> *@
+                        @*                 </div> *@
+                        @*             </div> *@
+                        @*         </DialogContent> *@
+                        @*         <DialogActions> *@
+                        @*             <MudButton Color="Color.Primary" OnClick="OnHideModalReferencYearClick">Отмена</MudButton> *@
+                        @*             <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="OnChangeReferencYearClick">Изменить</MudButton> *@
+                        @*         </DialogActions> *@
+                        @*     </MudDialog> *@
+                        @* </div> *@
 
                         <div>
                             <MudTextField @bind-Value="findTemple.Benevolence" Label="Благоличие"/>
@@ -225,69 +225,69 @@
                             }
                         </style>
 
-                        <div>
-                            <div class="containerOriention" style="justify-content: center; margin-top: 5px;">
-                                <h6 class="text-center mb-3 fw-light fs-5">Церковная ориентация</h6>
-                                <MudIconButton Icon="@Icons.Material.Filled.Add" Size="Size.Small" Style="margin-bottom: 9px; margin-left: 7px;" OnClick="ShowOrientionDialog"/>
-                            </div>
-
-                            <MudList T="string" SelectionMode="SelectionMode.ToggleSelection">
-                                @foreach (var item in findTemple.Oriention)
-                                {
-                                    <MudListItem Text="@item.Oriention"/>
-                                }
-                            </MudList>
-
-                            <MudDialog @bind-Visible="visibleOriention">
-                                <DialogContent>
-                                    <div>
-                                        <h3 class="card-title text-center mb-3 fw-light fs-5">Церковная ориентация</h3>
-
-                                        <div>
-                                            <div style="margin-top: 10px; margin-bottom: 10px; display: flex; align-items: center; text-align: center; justify-content: space-between;">
-                                                <MudTooltip Text="Пишите дату в формате ДД. ММ.ГГГГ; ММ.ГГГГ, ГГГГ">
-                                                    <MudTextField Label="Год отпадения" @bind-Value="yearFall" Validation="ValidationService.Validation" Style="width: 100%"/>
-                                                </MudTooltip>
-                                            </div>
-
-                                            <MudAutocomplete T="string" Label="Церковная ориентация" @bind-Value="selectedOriention" SearchFunc="@SearchOriention"
-                                                             ResetValueOnEmptyText="@resetValueOnEmptyText"
-                                                             CoerceText="@coerceText" CoerceValue="@coerceValue" AdornmentColor="Color.Primary" />
-
-                                            <div style="margin-top: 10px; margin-bottom: 10px; display: flex; align-items: center; text-align: center; justify-content: space-between;">
-                                                <MudTooltip Text="Пишите дату в формате ДД. ММ.ГГГГ; ММ.ГГГГ, ГГГГ">
-                                                    <MudTextField Label="Год возрата" @bind-Value="yearRefuund" Validation="ValidationService.Validation" Style="width: 100%"/>
-                                                </MudTooltip>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </DialogContent>
-                                <DialogActions>
-                                    <MudButton Color="Color.Primary" OnClick="OnHideModalOrientionClick">Отмена</MudButton>
-                                    <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="OnChangeOrientionClick">Изменить</MudButton>
-                                </DialogActions>
-                            </MudDialog>
-                        </div>
-
-                        <MudDialog @bind-Visible="visibleParshTempleModal">
-                            <DialogContent>
-                                <div>
-                                    <h3 class="card-title text-center mb-3 fw-light fs-5">Количество прихожан</h3>
-
-                                    <div style="margin-top: 10px; margin-bottom: 10px; display: flex; align-items: center; text-align: center; justify-content: space-between;">
-                                        <MudTooltip Text="Пишите дату в формате ДД. ММ.ГГГГ; ММ.ГГГГ, ГГГГ">
-                                            <MudTextField Label="Год" @bind-Value="parshYear" Validation="ValidationService.Validation" Style="width: 100%"/>
-                                        </MudTooltip>
-                                    </div>
-
-                                    <MudTextField T="int" @bind-value="quantity" Label="Количество"/>
-                                </div>
-                            </DialogContent>
-                            <DialogActions>
-                                <MudButton Color="Color.Primary" OnClick="OnHideModalParshModalClick">Отмена</MudButton>
-                                <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="OnChangeParshTempleClick">Изменить</MudButton>
-                            </DialogActions>
-                        </MudDialog>
+                        @* <div> *@
+                        @*     <div class="containerOriention" style="justify-content: center; margin-top: 5px;"> *@
+                        @*         <h6 class="text-center mb-3 fw-light fs-5">Церковная ориентация</h6> *@
+                        @*         <MudIconButton Icon="@Icons.Material.Filled.Add" Size="Size.Small" Style="margin-bottom: 9px; margin-left: 7px;" OnClick="ShowOrientionDialog"/> *@
+                        @*     </div> *@
+                        @* *@
+                        @*     <MudList T="string" SelectionMode="SelectionMode.ToggleSelection"> *@
+                        @*         @foreach (var item in findTemple.Oriention) *@
+                        @*         { *@
+                        @*             <MudListItem Text="@item.Oriention"/> *@
+                        @*         } *@
+                        @*     </MudList> *@
+                        @* *@
+                        @*     <MudDialog @bind-Visible="visibleOriention"> *@
+                        @*         <DialogContent> *@
+                        @*             <div> *@
+                        @*                 <h3 class="card-title text-center mb-3 fw-light fs-5">Церковная ориентация</h3> *@
+                        @* *@
+                        @*                 <div> *@
+                        @*                     <div style="margin-top: 10px; margin-bottom: 10px; display: flex; align-items: center; text-align: center; justify-content: space-between;"> *@
+                        @*                         <MudTooltip Text="Пишите дату в формате ДД. ММ.ГГГГ; ММ.ГГГГ, ГГГГ"> *@
+                        @*                             <MudTextField Label="Год отпадения" @bind-Value="yearFall" Validation="ValidationService.Validation" Style="width: 100%"/> *@
+                        @*                         </MudTooltip> *@
+                        @*                     </div> *@
+                        @* *@
+                        @*                     <MudAutocomplete T="string" Label="Церковная ориентация" @bind-Value="selectedOriention" SearchFunc="@SearchOriention" *@
+                        @*                                      ResetValueOnEmptyText="@resetValueOnEmptyText" *@
+                        @*                                      CoerceText="@coerceText" CoerceValue="@coerceValue" AdornmentColor="Color.Primary" /> *@
+                        @* *@
+                        @*                     <div style="margin-top: 10px; margin-bottom: 10px; display: flex; align-items: center; text-align: center; justify-content: space-between;"> *@
+                        @*                         <MudTooltip Text="Пишите дату в формате ДД. ММ.ГГГГ; ММ.ГГГГ, ГГГГ"> *@
+                        @*                             <MudTextField Label="Год возрата" @bind-Value="yearRefuund" Validation="ValidationService.Validation" Style="width: 100%"/> *@
+                        @*                         </MudTooltip> *@
+                        @*                     </div> *@
+                        @*                 </div> *@
+                        @*             </div> *@
+                        @*         </DialogContent> *@
+                        @*         <DialogActions> *@
+                        @*             <MudButton Color="Color.Primary" OnClick="OnHideModalOrientionClick">Отмена</MudButton> *@
+                        @*             <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="OnChangeOrientionClick">Изменить</MudButton> *@
+                        @*         </DialogActions> *@
+                        @*     </MudDialog> *@
+                        @* </div> *@
+                        @* *@
+                        @* <MudDialog @bind-Visible="visibleParshTempleModal"> *@
+                        @*     <DialogContent> *@
+                        @*         <div> *@
+                        @*             <h3 class="card-title text-center mb-3 fw-light fs-5">Количество прихожан</h3> *@
+                        @* *@
+                        @*             <div style="margin-top: 10px; margin-bottom: 10px; display: flex; align-items: center; text-align: center; justify-content: space-between;"> *@
+                        @*                 <MudTooltip Text="Пишите дату в формате ДД. ММ.ГГГГ; ММ.ГГГГ, ГГГГ"> *@
+                        @*                     <MudTextField Label="Год" @bind-Value="parshYear" Validation="ValidationService.Validation" Style="width: 100%"/> *@
+                        @*                 </MudTooltip> *@
+                        @*             </div> *@
+                        @* *@
+                        @*             <MudTextField T="int" @bind-value="quantity" Label="Количество"/> *@
+                        @*         </div> *@
+                        @*     </DialogContent> *@
+                        @*     <DialogActions> *@
+                        @*         <MudButton Color="Color.Primary" OnClick="OnHideModalParshModalClick">Отмена</MudButton> *@
+                        @*         <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="OnChangeParshTempleClick">Изменить</MudButton> *@
+                        @*     </DialogActions> *@
+                        @* </MudDialog> *@
 
                         <MudAutocomplete T="string" Label="Епархии" @bind-Value="selectedDiocese" SearchFunc="@SearcDiocese"
                                          ResetValueOnEmptyText="@resetValueOnEmptyText"
@@ -803,32 +803,39 @@
                     }
                     else
                     {
-                        string url = $"https://catalog.api.2gis.com/3.0/items/geocode?lat={Lat.ToString().Replace(",", ".")}&lon={Lng.ToString().Replace(",", ".")}&fields=items.point&key=be532ae3-822f-4b49-a73b-4537b6c07b44";
-
-                        using HttpClient client = new HttpClient();
-                        HttpResponseMessage response = await client.GetAsync(url.Replace(",", "."));
-
-                        if (response.IsSuccessStatusCode)
+                        try
                         {
-                            string content = await response.Content.ReadAsStringAsync();
-                            Console.WriteLine(content);
+                            string url = $"https://catalog.api.2gis.com/3.0/items/geocode?lat={Lat.ToString().Replace(",", ".")}&lon={Lng.ToString().Replace(",", ".")}&fields=items.point&key=be532ae3-822f-4b49-a73b-4537b6c07b44";
 
-                            var data = JsonConvert.DeserializeObject<dynamic>(content);
+                            using HttpClient client = new HttpClient();
+                            HttpResponseMessage response = await client.GetAsync(url.Replace(",", "."));
 
-                            // Получение списка элементов
-                            var items = data.result.items;
-
-                            // Цикл по всем элементам
-                            foreach (var item in items)
+                            if (response.IsSuccessStatusCode)
                             {
-                                Console.WriteLine($"Full Name: {item.full_name}");
-                                Console.WriteLine($"Name: {item.name}");
-                                Console.WriteLine($"Subtype: {item.subtype}");
-                                Console.WriteLine();
-                                findTemple.TempleNameOnMap = item.full_name;
+                                string content = await response.Content.ReadAsStringAsync();
+                                Console.WriteLine(content);
 
-                                break;
+                                var data = JsonConvert.DeserializeObject<dynamic>(content);
+
+                                // Получение списка элементов
+                                var items = data.result.items;
+
+                                // Цикл по всем элементам
+                                foreach (var item in items)
+                                {
+                                    Console.WriteLine($"Full Name: {item.full_name}");
+                                    Console.WriteLine($"Name: {item.name}");
+                                    Console.WriteLine($"Subtype: {item.subtype}");
+                                    Console.WriteLine();
+                                    findTemple.TempleNameOnMap = item.full_name;
+
+                                    break;
+                                }
                             }
+                        }
+                        catch (Exception ex)
+                        {
+                            Console.WriteLine(ex.Source);
                         }
                     }
 
@@ -989,7 +996,11 @@
     {
         if (selectedItem != null)
         {
-            var findItem = context.Temples.FirstOrDefault(x => x.Id == selectedItem.Id);
+            var findItem = context.Temples
+                .Include(x => x.Oriention) 
+                .Include(x => x.ParishionersTemple) 
+                .Include(x => x.AppointmentsAfterEnd) 
+                .FirstOrDefault(x => x.Id == selectedItem.Id);
 
             if (findItem != null)
             {
@@ -1035,4 +1046,5 @@
     private void HandleClose() => VisibleModal = false;
 
     private string SelectedRowClassFunc(Temple arg1, int arg2) => throw new NotImplementedException();
+    //todo Может не работют диалоги из за того что есть Header с Close button и он ломает логику visibleModal
 }

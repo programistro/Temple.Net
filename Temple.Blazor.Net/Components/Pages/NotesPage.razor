@@ -10,66 +10,26 @@
     }
 </style>
 
-<div style="display:flex;">
-    <MudLink>А</MudLink>
-    <MudLink>Б</MudLink>
-    <MudLink>В</MudLink>
-    <MudLink>Г</MudLink>
-    <MudLink>Д</MudLink>
-    <MudLink>Е</MudLink>
-    <MudLink>Ё</MudLink>
-    <MudLink>Ж</MudLink>
-    <MudLink>З</MudLink>
-    <MudLink>И</MudLink>
-    <MudLink>Й</MudLink>
-    <MudLink>К</MudLink>
-    <MudLink>Л</MudLink>
-    <MudLink>М</MudLink>
-    <MudLink>Н</MudLink>
-    <MudLink>О</MudLink>
-    <MudLink>П</MudLink>
-    <MudLink>Р</MudLink>
-    <MudLink>С</MudLink>
-    <MudLink>Т</MudLink>
-    <MudLink>У</MudLink>
-    <MudLink>Ф</MudLink>
-    <MudLink>Х</MudLink>
-    <MudLink>Ц</MudLink>
-    <MudLink>Ч</MudLink>
-    <MudLink>Ш</MudLink>
-    <MudLink>Щ</MudLink>
-    <MudLink>Ъ</MudLink>
-    <MudLink>Ы</MudLink>
-    <MudLink>Ы</MudLink>
-    <MudLink>Э</MudLink>
-    <MudLink>Ю</MudLink>
-    <MudLink>Я</MudLink>
-</div>
-
-@{
-    var uniqueTemples = _context.Temples
-        .Where(t => t.District != "Пусто") // Фильтруем элементы, которые не равны "Пусто"
-        .GroupBy(t => t.District) // Группируем по District
-        .Select(g => g.First()) // Выбираем первый элемент из каждой группы
-        .ToList(); // Преобразуем результат в список
-}
-
-@foreach (var item in uniqueTemples)
-{
-    <MudText>@item.District</MudText>
-    <MudText>@item.Benevolence</MudText>
-    <MudText>@item.Counties</MudText>
-    <MudText>@item.Locality</MudText>
-    <MudText>@item.Province</MudText>
-    <MudText>@item.Region</MudText>
-    <MudText>@item.Type</MudText>
-    <MudText>@item.TypeLocality</MudText>
-    <MudText>@item.OrientationDiocesse</MudText>
-    <MudText>@item.SeparateRegion</MudText>
-}
+<MudTabs Elevation="2" Rounded="true" ApplyEffectsToContainer="true" PanelClass="pa-6">
+    <MudTabPanel Text="Храмы">
+        <NotesTemplePage/>
+    </MudTabPanel>
+    <MudTabPanel Text="Персоналии">
+        <PersonaliDbPage/>
+    </MudTabPanel>
+    <MudTabPanel Text="Прихожане">
+        <ParshilionDbPage/>
+    </MudTabPanel>
+</MudTabs>
 
 <style>
     .mud-link.mud-link-underline-hover {
         margin-right: 5px;
     }
 </style>
+
+@code{
+
+    //todo Сделать страницу справочники через MudTable, закоменитровать сломаный функционал TempleFindEditPage
+
+}
