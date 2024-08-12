@@ -1,0 +1,339 @@
+﻿@using Temple.Net.Models
+@using Microsoft.AspNetCore.Components.QuickGrid
+@using Microsoft.EntityFrameworkCore
+@inject AppDbContext context
+@inject ISnackbar Snackbar
+
+<style>
+    body {
+        overflow-x: scroll;
+    }
+</style>
+
+<MudDialogProvider FullWidth="true"
+                   MaxWidth="MaxWidth.ExtraSmall"
+                   CloseButton="true"
+                   BackdropClick="false"
+                   NoHeader="false"
+                   Position="DialogPosition.Center"
+                   CloseOnEscapeKey="true"/>
+
+<MudTable Items="@Elements" Dense="@dense" Hover="@hover" Bordered="@bordered" Striped="@striped"
+          Filter="new Func<Parsonalion,bool>(FilterFunc1)" @bind-SelectedItem="selectedItem"
+          CommitEditTooltip="Commit Edit"
+          OnCommitEditClick="@(() => Snackbar.Add("Commit Edit Handler Invoked"))" RowEditPreview="BackupItem"
+          RowEditCancel="ResetItemToOriginalValues"
+          RowEditCommit="ItemHasBeenCommitted" IsEditRowSwitchingBlocked="@blockSwitch" ApplyButtonPosition="@applyButtonPosition"
+          EditButtonPosition="@editButtonPosition" EditTrigger="@editTrigger">
+    <ToolBarContent>
+        <MudText Typo="Typo.h6">Прихожане</MudText>
+        <MudSpacer />
+        <MudTextField @bind-Value="searchString1" Placeholder="Найти" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
+    </ToolBarContent>
+    <HeaderContent>
+        <MudTh><MudTableSortLabel SortBy="new Func<Parsonalion, object>(x=>x.Name)">Имя</MudTableSortLabel></MudTh>
+        <MudTh><MudTableSortLabel SortBy="new Func<Parsonalion, object>(x=>x.LastName)">Фамилия</MudTableSortLabel></MudTh>
+        <MudTh><MudTableSortLabel SortBy="new Func<Parsonalion, object>(x=>x.Otch)">Отчество</MudTableSortLabel></MudTh>
+        <MudTh><MudTableSortLabel SortBy="new Func<Parsonalion, object>(x=>x.MonaxName)">Монашеское имя</MudTableSortLabel></MudTh>
+        <MudTh><MudTableSortLabel SortBy="new Func<Parsonalion, object>(x=>x.Born)">Год рождения</MudTableSortLabel></MudTh>
+        <MudTh><MudTableSortLabel SortBy="new Func<Parsonalion, object>(x=>x.Death)">Год смерти</MudTableSortLabel></MudTh>
+        <MudTh><MudTableSortLabel SortBy="new Func<Parsonalion, object>(x=>x.Nation)">Национость</MudTableSortLabel></MudTh>
+        <MudTh><MudTableSortLabel SortBy="new Func<Parsonalion, object>(x=>x.Education.YearAdmission)">Год приступление</MudTableSortLabel></MudTh>
+        <MudTh><MudTableSortLabel SortBy="new Func<Parsonalion, object>(x=>x.Education.YearOfRease)">Год выпуска</MudTableSortLabel></MudTh>
+        <MudTh><MudTableSortLabel SortBy="new Func<Parsonalion, object>(x=>x.LVLEducation)">Уровень образования</MudTableSortLabel></MudTh>
+        <MudTh><MudTableSortLabel SortBy="new Func<Parsonalion, object>(x=>x.Award.Name)">Название награды</MudTableSortLabel></MudTh>
+        <MudTh><MudTableSortLabel SortBy="new Func<Parsonalion, object>(x=>x.Award.YearAward)">Год получения награды</MudTableSortLabel></MudTh>
+        <MudTh><MudTableSortLabel SortBy="new Func<Parsonalion, object>(x=>x.Source)">Источник</MudTableSortLabel></MudTh>
+        <MudTh><MudTableSortLabel SortBy="new Func<Parsonalion, object>(x=>x.State.Verdict)">Приговор</MudTableSortLabel></MudTh>
+        <MudTh><MudTableSortLabel SortBy="new Func<Parsonalion, object>(x=>x.State.YearArrest)">Год ареста</MudTableSortLabel></MudTh>
+        <MudTh><MudTableSortLabel SortBy="new Func<Parsonalion, object>(x=>x.State.YearRehabilitation)">Год реабилитации</MudTableSortLabel></MudTh>
+        <MudTh><MudTableSortLabel SortBy="new Func<Parsonalion, object>(x=>x.State.YearSentence)">Год приговора</MudTableSortLabel></MudTh>
+        <MudTh><MudTableSortLabel SortBy="new Func<Parsonalion, object>(x=>x.Sun.SunName)">Имя сана</MudTableSortLabel></MudTh>
+        <MudTh><MudTableSortLabel SortBy="new Func<Parsonalion, object>(x=>x.Sun.YearDefrock)">Год снятия сана</MudTableSortLabel></MudTh>
+        <MudTh><MudTableSortLabel SortBy="new Func<Parsonalion, object>(x=>x.Sun.YearOrdinations)">Год рукоположения</MudTableSortLabel></MudTh>
+        <MudTh><MudTableSortLabel SortBy="new Func<Parsonalion, object>(x=>x.SocialOrigin)">Социальное положение</MudTableSortLabel></MudTh>
+        <MudTh><MudTableSortLabel SortBy="new Func<Parsonalion, object>(x=>x.PlaceBirths)">Место рождения</MudTableSortLabel></MudTh>
+        <MudTh><MudTableSortLabel SortBy="new Func<Parsonalion, object>(x=>x.PlaceOfDeath)">Место смерти</MudTableSortLabel></MudTh>
+        <MudTh><MudTableSortLabel SortBy="new Func<Parsonalion, object>(x=>x.Note)">Примечания</MudTableSortLabel></MudTh>
+    </HeaderContent>
+    <ColGroup>
+        @if (applyButtonPosition.DisplayApplyButtonAtStart() || (editButtonPosition.DisplayEditButtonAtStart() && editTrigger == TableEditTrigger.EditButton))
+        {
+        <col style="width:50px;" />
+        }
+        <col style="width:50px;" />
+        <col style="width:80px;" />
+        <col style="width:50%;" />
+        <col />
+        <col />
+        @if (applyButtonPosition.DisplayApplyButtonAtEnd() || (editButtonPosition.DisplayEditButtonAtEnd() && editTrigger == TableEditTrigger.EditButton))
+        {
+        <col style="width:50px;" />
+        }
+    </ColGroup>
+    <RowTemplate>
+        <MudTd DataLabel="Name">@context.Name</MudTd>
+        <MudTd DataLabel="LastName">@context.LastName</MudTd>
+        <MudTd DataLabel="Otch">@context.Otch</MudTd>
+        <MudTd DataLabel="MonaxName">@context.MonaxName</MudTd>
+        <MudTd DataLabel="Born">@context.Born</MudTd>
+        <MudTd DataLabel="Death">@context.Death</MudTd>
+        <MudTd DataLabel="Nation">@context.Nation</MudTd>
+        <MudTd DataLabel="Education.YearAdmission">@context.Education.YearAdmission</MudTd>
+        <MudTd DataLabel="Education.YearOfRease">@context.Education.YearOfRease</MudTd>
+        <MudTd DataLabel="LVLEducation">@context.LVLEducation</MudTd>
+        <MudTd DataLabel="Award.Name">@context.Award.Name</MudTd>
+        <MudTd DataLabel="Award.YearAward">@context.Award.YearAward</MudTd>
+        <MudTd DataLabel="Source">@context.Source</MudTd>
+        <MudTd DataLabel="State.Verdict">@context.State.Verdict</MudTd>
+        <MudTd DataLabel="State.YearArrest">@context.State.YearArrest</MudTd>
+        <MudTd DataLabel="State.YearRehabilitation">@context.State.YearRehabilitation</MudTd>
+        <MudTd DataLabel="State.YearSentence">@context.State.YearSentence</MudTd>
+        <MudTd DataLabel="Sun.SunName">@context.Sun.SunName</MudTd>
+        <MudTd DataLabel="Sun.YearDefrock">@context.Sun.YearDefrock</MudTd>
+        <MudTd DataLabel="Sun.YearOrdinations">@context.Sun.YearOrdinations</MudTd>
+        <MudTd DataLabel="SocialOrigin">@context.SocialOrigin</MudTd>
+        <MudTd DataLabel="PlaceBirths">@context.PlaceBirths</MudTd>
+        <MudTd DataLabel="PlaceOfDeath">@context.PlaceOfDeath</MudTd>
+        <MudTd DataLabel="Note">@context.Note</MudTd>
+    </RowTemplate>
+    <RowEditingTemplate>
+        <MudTd DataLabel="Name">
+            <MudTextField @bind-Value="context.Name" />
+        </MudTd>
+        <MudTd DataLabel="LastName">
+            <MudTextField @bind-Value="context.LastName" />
+        </MudTd>
+        <MudTd DataLabel="Otch">
+            <MudTextField @bind-Value="context.Otch" />
+        </MudTd>
+        <MudTd DataLabel="MonaxName">
+            <MudTextField @bind-Value="context.MonaxName"/>
+        </MudTd>
+        <MudTd DataLabel="Born">
+            <MudTextField @bind-Value="context.Born" />
+        </MudTd>
+        <MudTd DataLabel="Death">
+            <MudTextField @bind-Value="context.Death" />
+        </MudTd>
+        <MudTd DataLabel="Nation">
+            <MudTextField @bind-Value="context.Nation" />
+        </MudTd>
+        <MudTd DataLabel="Education.YearAdmission">
+            <MudTextField @bind-Value="context.Education.YearAdmission" />
+        </MudTd>
+        <MudTd DataLabel="Education.YearOfRease">
+            <MudTextField @bind-Value="context.Education.YearOfRease" />
+        </MudTd>
+        <MudTd DataLabel="LVLEducation">
+            <MudTextField @bind-Value="context.LVLEducation" />
+        </MudTd>
+        <MudTd DataLabel="Award.Name">
+            <MudTextField @bind-Value="context.Award.Name" />
+        </MudTd>
+        <MudTd DataLabel="Award.YearAward">
+            <MudTextField @bind-Value="context.Award.YearAward" />
+        </MudTd>
+        <MudTd DataLabel="Source">
+            <MudTextField @bind-Value="context.Source" />
+        </MudTd>
+        <MudTd DataLabel="State.Verdict">
+            <MudTextField @bind-Value="context.State.Verdict" />
+        </MudTd>
+        <MudTd DataLabel="State.YearArrest">
+            <MudTextField @bind-Value="context.State.YearArrest" />
+        </MudTd>
+        <MudTd DataLabel="State.YearRehabilitation">
+            <MudTextField @bind-Value="context.State.YearRehabilitation" />
+        </MudTd>
+        <MudTd DataLabel="State.YearSentence">
+            <MudTextField @bind-Value="context.State.YearSentence" />
+        </MudTd>
+        <MudTd DataLabel="Sun.SunName">
+            <MudTextField @bind-Value="context.Sun.SunName" />
+        </MudTd>
+        <MudTd DataLabel="Sun.YearDefrock">
+            <MudTextField @bind-Value="context.Sun.YearDefrock" />
+        </MudTd>
+        <MudTd DataLabel="Sun.YearOrdinations">
+            <MudTextField @bind-Value="context.Sun.YearOrdinations" />
+        </MudTd>
+        <MudTd DataLabel="SocialOrigin">
+            <MudTextField @bind-Value="context.SocialOrigin" />
+        </MudTd>
+        <MudTd DataLabel="PlaceBirths">
+            <MudTextField @bind-Value="context.PlaceBirths" />
+        </MudTd>
+        <MudTd DataLabel="PlaceOfDeath">
+            <MudTextField @bind-Value="context.PlaceOfDeath"  />
+        </MudTd>
+        <MudTd DataLabel="Note">
+            <MudTextField @bind-Value="context.Note" />
+        </MudTd>
+    </RowEditingTemplate>
+    <PagerContent>
+        <MudTablePager />
+    </PagerContent>
+    <EditButtonContent Context="button">
+        <MudIconButton Size="@Size.Small" Icon="@Icons.Material.Outlined.Edit" Class="pa-0" OnClick="@button.ButtonAction" Disabled="@button.ButtonDisabled" />
+    </EditButtonContent>
+</MudTable>
+
+<MudDialog @bind-Visible="visibleModal">
+    <TitleContent>
+        Добавить значение в справочник
+    </TitleContent>
+    <DialogContent>
+        <div style="display: flex; align-items: center;">
+            <MudSelect T="string" Label="Добавить значение" Style="margin-right: 5px;" @bind-Value="selectedValue">
+                <MudSelectItem Value="@("Имя")"/>
+                <MudSelectItem Value="@("Фамилия")"/>
+                <MudSelectItem Value="@("Отчество")"/>
+                <MudSelectItem Value="@("Монашеское имя")"/>
+                <MudSelectItem Value="@("Национальность")"/>
+                <MudSelectItem Value="@("Уровень образования")"/>
+                <MudSelectItem Value="@("Название награды")"/>
+                <MudSelectItem Value="@("Источник")"/>
+                <MudSelectItem Value="@("Приговор")"/>
+            </MudSelect>
+            <MudTextField Label="Новое значение" T="string" @bind-Value="newValue"/>
+        </div>
+    </DialogContent>
+    <DialogActions>
+        <MudButton Color="Color.Primary" OnClick="Submit">Добавить</MudButton>
+    </DialogActions>
+</MudDialog>
+
+@code {
+   private bool dense = true;
+    private bool hover = true;
+    private bool striped = true;
+    private bool bordered = true;
+    private bool blockSwitch = false;
+    private string searchString1 = "";
+    private Parsonalion selectedItem = null;
+    private HashSet<Parsonalion> selectedItems = new();
+    private Parsonalion elementBeforeEdit;
+    private HashSet<Parsonalion> selectedItems1 = new HashSet<Parsonalion>();
+    private TableApplyButtonPosition applyButtonPosition = TableApplyButtonPosition.End;
+    private TableEditButtonPosition editButtonPosition = TableEditButtonPosition.End;
+    private TableEditTrigger editTrigger = TableEditTrigger.RowClick;
+
+    private IEnumerable<Parsonalion> Elements = new List<Parsonalion>();
+
+    private bool visibleModal = false;
+
+    private string newValue;
+    private string selectedValue;
+
+    protected override async Task OnInitializedAsync()
+    {
+        Elements = context.Parsonalions
+            .Include(t => t.State)
+            .Include(t => t.Oriention)
+            .Include(t => t.Award)
+            .Include(t => t.Education)
+            .Include(t => t.Sun);
+    }
+
+    private bool FilterFunc1(Parsonalion element) => FilterFunc(element, searchString1);
+
+    private bool FilterFunc(Parsonalion element, string searchString)
+    {
+        if (string.IsNullOrWhiteSpace(searchString))
+            return true;
+        if (element.Name.Contains(searchString, StringComparison.OrdinalIgnoreCase))
+            return true;
+        if ($"{element.Name} {element.LastName} {element.Otch}".Contains(searchString))
+            return true;
+        return false;
+    }
+
+    private void ItemHasBeenCommitted(object? parishioners)
+    {
+        var element = parishioners as Parsonalion;
+
+        var item = context.Parsonalions.FirstOrDefault(x => x.Id == element.Id);
+
+        if (item != null)
+        {
+            item.Name = element.Name;
+            item.LastName = element.LastName;
+            item.Otch = element.Otch;
+            item.MonaxName = element.MonaxName;
+            item.Born = element.Born;
+            item.Death = element.Death;
+            item.Nation = element.Nation;
+            item.Education.YearAdmission = element.Education.YearAdmission;
+            item.Education.YearOfRease = element.Education.YearOfRease;
+            item.LVLEducation = element.LVLEducation;
+            item.Award.Name = element.Award.Name;
+            item.Award.YearAward = element.Award.YearAward;
+            item.Source = element.Source;
+            item.State.Verdict = element.State.Verdict;
+            item.State.YearArrest = element.State.YearArrest;
+            item.State.YearRehabilitation = element.State.YearRehabilitation;
+            item.State.YearSentence = element.State.YearSentence;
+            item.Sun.SunName = element.Sun.SunName;
+            item.Sun.YearDefrock = element.Sun.YearDefrock;
+            item.Sun.YearOrdinations = element.Sun.YearOrdinations;
+            item.SocialOrigin = element.SocialOrigin;
+            item.PlaceBirths = element.PlaceBirths;
+            item.PlaceOfDeath = element.PlaceOfDeath;
+            item.Note = element.Note;
+
+            context.Parsonalions.Update(item);
+            context.SaveChanges();
+        }
+    }
+
+    private void BackupItem(object element)
+    {
+
+    }
+
+    private void ResetItemToOriginalValues(object element)
+    {
+
+    }
+
+    private void Submit()
+    {
+        PersNote note = new()
+        {
+            Id = Guid.NewGuid().ToString(),
+        };
+
+        switch (selectedValue)
+        {
+            case "Имя":
+                note.Name = newValue;
+                break;
+            case "Фамилия":
+                note.LastName = newValue;
+                break;
+            case "Отчество":
+                note.LastName = newValue;
+                break;
+            case "Монашеское имя":
+                note.LastName = newValue;
+                break;
+            case "Национальность":
+                note.LastName = newValue;
+                break;
+            case "Уровень образования":
+                note.LastName = newValue;
+                break;
+            case "Название награды":
+                note.LastName = newValue;
+                break;
+            case "Источник":
+                note.LastName = newValue;
+                break;
+        }
+
+        context.PersNotes.Add(note);
+        context.SaveChanges();
+        visibleModal = false;
+    }
+}

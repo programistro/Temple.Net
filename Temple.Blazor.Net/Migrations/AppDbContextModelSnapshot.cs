@@ -173,9 +173,14 @@ namespace Temple.Blazor.Net.Migrations
                     b.Property<string>("TempleId")
                         .HasColumnType("TEXT");
 
+                    b.Property<Guid?>("TempleNoteId")
+                        .HasColumnType("TEXT");
+
                     b.HasKey("Id");
 
                     b.HasIndex("TempleId");
+
+                    b.HasIndex("TempleNoteId");
 
                     b.ToTable("ParishionersTemple");
                 });
@@ -405,7 +410,6 @@ namespace Temple.Blazor.Net.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Name")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Ocrug")
@@ -460,65 +464,78 @@ namespace Temple.Blazor.Net.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("TEXT");
 
+                    b.Property<string>("AppointmentsAfterEndId")
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("Benevolence")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Counties")
-                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateOnly?>("DateEnd")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateOnly?>("DateStart")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("District")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
+                    b.Property<double>("Lat")
+                        .HasColumnType("REAL");
+
+                    b.Property<double>("Lng")
+                        .HasColumnType("REAL");
+
                     b.Property<string>("Locality")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Name")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Ocrug")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("OrientationDiocesse")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Province")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("RayonDistrict")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("RayonRegion")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Region")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("SeparateRegion")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("TempleNameOnMap")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Type")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("TypeLocality")
-                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateOnly?>("YearAdaptation")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateOnly?>("YearDestruction")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("YearReferences")
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("AppointmentsAfterEndId");
 
                     b.ToTable("TempleNotes");
                 });
@@ -534,6 +551,9 @@ namespace Temple.Blazor.Net.Migrations
                     b.Property<string>("TempleId")
                         .HasColumnType("TEXT");
 
+                    b.Property<Guid?>("TempleNoteId")
+                        .HasColumnType("TEXT");
+
                     b.Property<DateOnly?>("YearFall")
                         .HasColumnType("TEXT");
 
@@ -544,6 +564,8 @@ namespace Temple.Blazor.Net.Migrations
 
                     b.HasIndex("TempleId");
 
+                    b.HasIndex("TempleNoteId");
+
                     b.ToTable("TempleOriention");
                 });
 
@@ -552,6 +574,10 @@ namespace Temple.Blazor.Net.Migrations
                     b.HasOne("Temple.Core.Temple", null)
                         .WithMany("ParishionersTemple")
                         .HasForeignKey("TempleId");
+
+                    b.HasOne("Temple.Core.TempleNote", null)
+                        .WithMany("ParishionersTemple")
+                        .HasForeignKey("TempleNoteId");
                 });
 
             modelBuilder.Entity("Temple.Core.Parsonalion", b =>
@@ -596,14 +622,34 @@ namespace Temple.Blazor.Net.Migrations
                     b.Navigation("AppointmentsAfterEnd");
                 });
 
+            modelBuilder.Entity("Temple.Core.TempleNote", b =>
+                {
+                    b.HasOne("Temple.Core.AppointmentsAfterEnd", "AppointmentsAfterEnd")
+                        .WithMany()
+                        .HasForeignKey("AppointmentsAfterEndId");
+
+                    b.Navigation("AppointmentsAfterEnd");
+                });
+
             modelBuilder.Entity("Temple.Core.TempleOriention", b =>
                 {
                     b.HasOne("Temple.Core.Temple", null)
                         .WithMany("Oriention")
                         .HasForeignKey("TempleId");
+
+                    b.HasOne("Temple.Core.TempleNote", null)
+                        .WithMany("Oriention")
+                        .HasForeignKey("TempleNoteId");
                 });
 
             modelBuilder.Entity("Temple.Core.Temple", b =>
+                {
+                    b.Navigation("Oriention");
+
+                    b.Navigation("ParishionersTemple");
+                });
+
+            modelBuilder.Entity("Temple.Core.TempleNote", b =>
                 {
                     b.Navigation("Oriention");
 
