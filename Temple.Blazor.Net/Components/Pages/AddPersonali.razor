@@ -9,6 +9,10 @@
 @inject ValidationService ValidationService 
 @inject NavigationManager NavigationManager
 
+
+<MudDialogProvider @rendermode="InteractiveServer" MaxWidth="MaxWidth.ExtraExtraLarge"
+                   Position="DialogPosition.Center"/>
+
 <MudContainer MaxWidth="MaxWidth.Large" Style="width: 45%; margin-bottom: 20px;">
 <MudCard>
 <MudCardContent>
@@ -23,12 +27,6 @@
 <MudTextField T="string?" @bind-Value="_parsonalion.MonaxName" Label="Монашеское имя"/>
 
 <div style="margin-top: 10px; margin-bottom: 10px; display: flex; align-items: center; text-align: center; justify-content: space-between;">
-    @* <MudDatePicker T="DateTime?" DateFormat="yyyy" @bind-Date="_parsonalion.Born" Label="Год рождения"/> *@
-    @* *@
-    @* <MudTooltip Text="Можете не вписывать значение если не известно"> *@
-    @*     <MudIconButton Icon="@Icons.Material.Filled.QuestionMark" aria-label="Вопрос" Size="Size.Small"/> *@
-    @* </MudTooltip> *@
-
     <MudTooltip Text="Пишите дату в формате ДД. ММ.ГГГГ; ММ.ГГГГ, ГГГГ">
         <MudTextField Label="Год рождения" @bind-Value="born" Validation="ValidationService.Validation" Style="width: 100%"/>
     </MudTooltip>
@@ -39,11 +37,6 @@
 </div>
 
 <div style="margin-top: 10px; margin-bottom: 10px; display: flex; align-items: center; text-align: center; justify-content: space-between;">
-    @* <MudDatePicker T="DateTime?" DateFormat="yyyy" Label="Год смерти"  @bind-Date="_parsonalion.Death"/> *@
-    @* *@
-    @* <MudTooltip Text="Можете не вписывать значение если не известно"> *@
-    @*     <MudIconButton Icon="@Icons.Material.Filled.QuestionMark" aria-label="Вопрос" Size="Size.Small"/> *@
-    @* </MudTooltip> *@
     <MudTooltip Text="Пишите дату в формате ДД. ММ.ГГГГ; ММ.ГГГГ, ГГГГ">
         <MudTextField Label="Год смерти" @bind-Value="death" Validation="ValidationService.Validation" Style="width: 100%"/>
     </MudTooltip>
@@ -63,189 +56,234 @@
 <br/>
 
 <div>
-    <h3 class="card-title text-center mb-3 fw-light fs-5">Образование</h3>
+    <div class="containerOriention" style="justify-content: center; margin-top: 5px;">
+        <h6 class="text-center mb-3 fw-light fs-5">Образование</h6>
+        <MudIconButton Icon="@Icons.Material.Filled.Add" Size="Size.Small" Style="margin-bottom: 9px; margin-left: 7px;" OnClick="OnShowModalEducationModalClick"/>
+    </div>
 
-    <div>
-        <div style="margin-top: 10px; margin-bottom: 10px; display: flex; align-items: center; text-align: center; justify-content: space-between;">
-            @* <MudDatePicker T="DateTime?" DateFormat="yyyy" Label="Год поступление" @bind-Date="_parsonalion.Education.YearAdmission"/> *@
-            @* *@
-            @* <MudTooltip Text="Можете не вписывать значение если не известно"> *@
-            @*     <MudIconButton Icon="@Icons.Material.Filled.QuestionMark" aria-label="Вопрос" Size="Size.Small"/> *@
-            @* </MudTooltip> *@
-            <MudTooltip Text="Пишите дату в формате ДД. ММ.ГГГГ; ММ.ГГГГ, ГГГГ">
-                <MudTextField Label="Год поступления" @bind-Value="born" Validation="ValidationService.Validation" Style="width: 100%"/>
-            </MudTooltip>
-        </div>
+    <MudList T="string" SelectionMode="SelectionMode.ToggleSelection">
+        @foreach (var item in _parsonalion?.Education)
+        {
+            <MudListItem Text="@item.Institution.ToString()"/>
+        }
+    </MudList>
+</div>
 
-        <MudTextField @bind-Value="_parsonalion.Education.Institution" Label="Учреждение образования"/>
-
-        <h4 class="card-title text-center mb-3 fw-light fs-5">Уровень образования</h4>
-
+<MudDialog @bind-visible="visibleModalEductation">
+    <DialogContent>
         <div>
-            <MudSelect T="int" @bind-Value="@selectedLVLEductaion">
-                <MudSelectItem Value="1">Высшее</MudSelectItem>
-                <MudSelectItem Value="2">Среднее</MudSelectItem>
-                <MudSelectItem Value="3">Неполное-среднее</MudSelectItem>
-                <MudSelectItem Value="4">Начальное</MudSelectItem>
-                <MudSelectItem Value="5">Не известно</MudSelectItem>
-            </MudSelect>
-        </div>
+            <h6 class="text-center mb-3 fw-light fs-5">Образование</h6>
+            <div>
+                <div style="margin-top: 10px; margin-bottom: 10px; display: flex; align-items: center; text-align: center; justify-content: space-between;">
+                    <MudTooltip Text="Пишите дату в формате ДД. ММ.ГГГГ; ММ.ГГГГ, ГГГГ">
+                        <MudTextField Label="Год поступления" @bind-Value="born" Validation="ValidationService.Validation" Style="width: 100%"/>
+                    </MudTooltip>
+                </div>
 
-        <div style="margin-top: 10px; margin-bottom: 10px; display: flex; align-items: center; text-align: center; justify-content: space-between;">
-            @* <MudDatePicker T="DateTime?" DateFormat="yyyy" DisplayFormat="yyyy" Label="Год выпуска" @bind-Date="_parsonalion.Education.YearOfRease"/> *@
-            @* *@
-            @* <MudTooltip Text="Можете не вписывать значение если не известно"> *@
-            @*     <MudIconButton Icon="@Icons.Material.Filled.QuestionMark" aria-label="Вопрос" Size="Size.Small"/> *@
-            @* </MudTooltip> *@
-            <MudTooltip Text="Пишите дату в формате ГГГГ">
-                <MudTextField Label="Год выпуска" @bind-Value="yearOfRease" Validation="ValidationService.ValidationOnlyYear" Style="width: 100%"/>
-            </MudTooltip>
+                <MudTextField @bind-Value="insition" Label="Учреждение образования"/>
+
+                <div>
+                    <MudSelect T="string" @bind-Value="@selectedLVLEductaion" Label="Уровень образования">
+                        <MudSelectItem Value="@("Высшее")"/>
+                        <MudSelectItem Value="@("Среднее")"/>
+                        <MudSelectItem Value="@("Неполное-среднее")"/>
+                        <MudSelectItem Value="@("Начальное")"/>
+                        <MudSelectItem Value="@("Не известно")"/>
+                    </MudSelect>
+                </div>
+
+                <div style="margin-top: 10px; margin-bottom: 10px; display: flex; align-items: center; text-align: center; justify-content: space-between;">
+                    <MudTooltip Text="Пишите дату в формате ГГГГ">
+                        <MudTextField Label="Год выпуска" @bind-Value="yearOfRease" Validation="ValidationService.ValidationOnlyYear" Style="width: 100%"/>
+                    </MudTooltip>
+                </div>
+            </div>
         </div>
+    </DialogContent>
+    <DialogActions>
+        <MudButton Color="Color.Primary" OnClick="OnHideModalEducationModalClick">Отмена</MudButton>
+        <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="OnChangeEducationTempleClick">Добавить</MudButton>
+    </DialogActions>
+</MudDialog>
+
+<div>
+    <div class="containerOriention" style="justify-content: center; margin-top: 5px;">
+        <h6 class="text-center mb-3 fw-light fs-5">Меры государственного воздействия</h6>
+        <MudIconButton Icon="@Icons.Material.Filled.Add" Size="Size.Small" Style="margin-bottom: 9px; margin-left: 7px;" OnClick="@(() => visibleModalState = true)"/>
     </div>
+
+    <MudList T="string" SelectionMode="SelectionMode.ToggleSelection">
+        @foreach (var item in _parsonalion?.State)
+        {
+            <MudListItem Text="@item.Verdict.ToString()"/>
+        }
+    </MudList>
 </div>
 
 <div>
-    <h3 class="card-title text-center mb-3 fw-light fs-5">Меры государственного воздействия</h3>
+    <MudDialog @bind-visible="visibleModalState">
+        <DialogContent>
+            @* <h3 class="card-title text-center mb-3 fw-light fs-5">Меры государственного воздействия</h3> *@
+            <div>
+                <h4 class="card-title text-center mb-3 fw-light fs-5">Приговор</h4>
 
-    <div>
-        <div style="margin-top: 10px; margin-bottom: 10px; display: flex; align-items: center; text-align: center; justify-content: space-between;">
-            @* <MudDatePicker T="DateTime?" DateFormat="dd.MM.yyyy"  Label="Год ареста" @bind-Date="_parsonalion.State.YearArrest"/> *@
-            @* *@
-            @* <MudTooltip Text="Можете не вписывать значение если не известно"> *@
-            @*     <MudIconButton Icon="@Icons.Material.Filled.QuestionMark" aria-label="Вопрос" Size="Size.Small"/> *@
-            @* </MudTooltip> *@
-            <MudTooltip Text="Пишите дату в формате ДД. ММ.ГГГГ; ММ.ГГГГ, ГГГГ">
-                <MudTextField Label="Год ареста" @bind-Value="yearArrest" Validation="ValidationService.Validation" Style="width: 100%"/>
-            </MudTooltip>
-        </div>
+                <div>
+                    <MudAutocomplete T="string" Label="Приговор" @bind-Value="selectedVerdict" SearchFunc="@SearchVerdicts"
+                                     ResetValueOnEmptyText="@resetValueOnEmptyText"
+                                     CoerceText="@coerceText" CoerceValue="@coerceValue" AdornmentColor="Color.Primary" />
+                </div>
 
-        <h4 class="card-title text-center mb-3 fw-light fs-5">Приговор</h4>
+                <div style="margin-top: 10px; margin-bottom: 10px; display: flex; align-items: center; text-align: center; justify-content: space-between;">
+                    <MudTooltip Text="Пишите дату в формате ДД. ММ.ГГГГ; ММ.ГГГГ, ГГГГ">
+                        <MudTextField Label="Год ареста" @bind-Value="yearArrest" Validation="ValidationService.Validation" Style="width: 100%"/>
+                    </MudTooltip>
+                </div>
 
+                <div style="margin-top: 10px; margin-bottom: 10px; display: flex; align-items: center; text-align: center; justify-content: space-between;">
+                    <MudTooltip Text="Пишите дату в формате ДД. ММ.ГГГГ; ММ.ГГГГ, ГГГГ">
+                        <MudTextField Label="Год приговора" @bind-Value="yearSentence" Validation="ValidationService.Validation" Style="width: 100%"/>
+                    </MudTooltip>
+                </div>
+
+                <div style="margin-top: 10px; margin-bottom: 10px; display: flex; align-items: center; text-align: center; justify-content: space-between;">
+                    <MudTooltip Text="Пишите дату в формате ДД. ММ.ГГГГ; ММ.ГГГГ, ГГГГ">
+                        <MudTextField Label="Год реабелитации" @bind-Value="yearRehabilitation" Validation="ValidationService.Validation" Style="width: 100%"/>
+                    </MudTooltip>
+                </div>
+
+                <MudTextField @bind-Value="rehab" Label="Реабилитирующий орган"/>
+            </div>
+        </DialogContent>
+        <DialogActions>
+            <MudButton Color="Color.Primary" OnClick="@(() => visibleModalState = false)">Отмена</MudButton>
+            <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="OnChangeStateTempleClick">Добавить</MudButton>
+        </DialogActions>
+    </MudDialog>
+</div>
+
+<div>
+    <div class="containerOriention" style="justify-content: center; margin-top: 5px;">
+        <h6 class="text-center mb-3 fw-light fs-5">Церковная ориентация</h6>
+        <MudIconButton Icon="@Icons.Material.Filled.Add" Size="Size.Small" Style="margin-bottom: 9px; margin-left: 7px;" OnClick="@(() => visibleModalOriention = true)"/>
+    </div>
+
+    <MudList T="string" SelectionMode="SelectionMode.ToggleSelection">
+        @foreach (var item in _parsonalion?.Oriention)
+        {
+            <MudListItem Text="@item.Oriention.ToString()"/>
+        }
+    </MudList>
+</div>
+
+<MudDialog @bind-visible="visibleModalOriention">
+    <DialogContent>
         <div>
-            <MudAutocomplete T="string" Label="Приговор" @bind-Value="selectedVerdict" SearchFunc="@SearchVerdicts"
-                             ResetValueOnEmptyText="@resetValueOnEmptyText"
-                             CoerceText="@coerceText" CoerceValue="@coerceValue" AdornmentColor="Color.Primary" />
-        </div>
+            <h3 class="card-title text-center mb-3 fw-light fs-5">Церковная ориентация</h3>
 
-        <div style="margin-top: 10px; margin-bottom: 10px; display: flex; align-items: center; text-align: center; justify-content: space-between;">
-            @* <MudDatePicker T="DateTime?" DateFormat="dd.MM.yyyy" Label="Год приговора" @bind-Date="_parsonalion.State.YearSentence"/> *@
-            @* *@
-            @* <MudTooltip Text="Можете не вписывать значение если не известно"> *@
-            @*     <MudIconButton Icon="@Icons.Material.Filled.QuestionMark" aria-label="Вопрос" Size="Size.Small"/> *@
-            @* </MudTooltip> *@
-            <MudTooltip Text="Пишите дату в формате ДД. ММ.ГГГГ; ММ.ГГГГ, ГГГГ">
-                <MudTextField Label="Год приговора" @bind-Value="yearSentence" Validation="ValidationService.Validation" Style="width: 100%"/>
-            </MudTooltip>
-        </div>
+            <div>
+                <div style="margin-top: 10px; margin-bottom: 10px; display: flex; align-items: center; text-align: center; justify-content: space-between;">
+                    <MudTooltip Text="Пишите дату в формате ДД. ММ.ГГГГ; ММ.ГГГГ, ГГГГ">
+                        <MudTextField Label="Год отпадения" @bind-Value="yearFall" Validation="ValidationService.Validation" Style="width: 100%"/>
+                    </MudTooltip>
+                </div>
 
-        <div style="margin-top: 10px; margin-bottom: 10px; display: flex; align-items: center; text-align: center; justify-content: space-between;">
-            @* <MudDatePicker T="DateTime?" DateFormat="dd.MM.yyyy" Label="Год реабелитации" @bind-Date="_parsonalion.State.YearRehabilitation"/> *@
-            @* *@
-            @* <MudTooltip Text="Можете не вписывать значение если не известно"> *@
-            @*     <MudIconButton Icon="@Icons.Material.Filled.QuestionMark" aria-label="Вопрос" Size="Size.Small"/> *@
-            @* </MudTooltip> *@
-            <MudTooltip Text="Пишите дату в формате ДД. ММ.ГГГГ; ММ.ГГГГ, ГГГГ">
-                <MudTextField Label="Год реабелитации" @bind-Value="yearRehabilitation" Validation="ValidationService.Validation" Style="width: 100%"/>
-            </MudTooltip>
-        </div>
+                <MudTextField @bind-Value="oriention" Label="Церковная ориентация"/>
 
-        <MudTextField @bind-Value="_parsonalion.State.Rehabilitaion" Label="Реабилитирующий орган"/>
+                <div style="margin-top: 10px; margin-bottom: 10px; display: flex; align-items: center; text-align: center; justify-content: space-between;">
+                    <MudTooltip Text="Пишите дату в формате ДД. ММ.ГГГГ; ММ.ГГГГ, ГГГГ">
+                        <MudTextField Label="Год возрата" @bind-Value="yearRefund" Validation="ValidationService.Validation" Style="width: 100%"/>
+                    </MudTooltip>
+                </div>
+            </div>
+        </div>
+    </DialogContent>
+    <DialogActions>
+        <MudButton Color="Color.Primary" OnClick="@(() => visibleModalOriention = false)">Отмена</MudButton>
+        <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="OnChangeEducationTempleClick">Добавить</MudButton>
+    </DialogActions>
+</MudDialog>
+
+<div>
+    <div class="containerOriention" style="justify-content: center; margin-top: 5px;">
+        <h6 class="text-center mb-3 fw-light fs-5">Сан</h6>
+        <MudIconButton Icon="@Icons.Material.Filled.Add" Size="Size.Small" Style="margin-bottom: 9px; margin-left: 7px;" OnClick="@(() => visibleModalSun = true)"/>
     </div>
+
+    <MudList T="string" SelectionMode="SelectionMode.ToggleSelection">
+        @foreach (var item in _parsonalion?.Sun)
+        {
+            <MudListItem Text="@item.SunName.ToString()"/>
+        }
+    </MudList>
+
+    <MudDialog @bind-visible="visibleModalSun">
+        <DialogContent>
+            <div>
+                <h3 class="card-title text-center mb-3 fw-light fs-5">Сан</h3>
+
+                <div>
+                    <div style="margin-top: 10px; margin-bottom: 10px; display: flex; align-items: center; text-align: center; justify-content: space-between;">
+                        <MudTooltip Text="Пишите дату в формате ДД. ММ.ГГГГ; ММ.ГГГГ, ГГГГ">
+                            <MudTextField Label="Год рукоположения" @bind-Value="yearOrdinations" Validation="ValidationService.Validation" Style="width: 100%"/>
+                        </MudTooltip>
+                    </div>
+
+                    <MudAutocomplete T="string" Label="Награда" @bind-Value="selectedSunName" SearchFunc="@SearchAward"
+                                     ResetValueOnEmptyText="@resetValueOnEmptyText"
+                                     CoerceText="@coerceText" CoerceValue="@coerceValue" AdornmentColor="Color.Primary" />
+
+                    <div style="margin-top: 10px; margin-bottom: 10px; display: flex; align-items: center; text-align: center; justify-content: space-between;">
+                        <MudTooltip Text="Пишите дату в формате ДД. ММ.ГГГГ; ММ.ГГГГ, ГГГГ">
+                            <MudTextField Label="Год снятия сана" @bind-Value=yearDefrock Validation="ValidationService.Validation" Style="width: 100%"/>
+                        </MudTooltip>
+                    </div>
+                </div>
+            </div>
+        </DialogContent>
+        <DialogActions>
+            <MudButton Color="Color.Primary" OnClick="@(() => visibleModalSun = false)">Отмена</MudButton>
+            <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="OnChangeSunClick">Добавить</MudButton>
+        </DialogActions>
+    </MudDialog>
 </div>
 
 <div>
-    <h3 class="card-title text-center mb-3 fw-light fs-5">Церковная ориентация</h3>
-
-    <div>
-        <div style="margin-top: 10px; margin-bottom: 10px; display: flex; align-items: center; text-align: center; justify-content: space-between;">
-            @* <MudDatePicker T="DateTime?" DateFormat="dd.MM.yyyy" Label="Год отпадения" @bind-Date="_parsonalion.Oriention.YearFall"/> *@
-            @* *@
-            @* <MudTooltip Text="Можете не вписывать значение если не известно"> *@
-            @*     <MudIconButton Icon="@Icons.Material.Filled.QuestionMark" aria-label="Вопрос" Size="Size.Small"/> *@
-            @* </MudTooltip> *@
-            <MudTooltip Text="Пишите дату в формате ДД. ММ.ГГГГ; ММ.ГГГГ, ГГГГ">
-                <MudTextField Label="Год отпадения" @bind-Value="yearFall" Validation="ValidationService.Validation" Style="width: 100%"/>
-            </MudTooltip>
-        </div>
-
-        <MudTextField @bind-Value="_parsonalion.Oriention.Oriention" Label="Церковная ориентация"/>
-
-        <div style="margin-top: 10px; margin-bottom: 10px; display: flex; align-items: center; text-align: center; justify-content: space-between;">
-            @* <MudDatePicker T="DateTime?" DateFormat="dd.MM.yyyy" Label="Год возрата" @bind-Date="_parsonalion.Oriention.YearRefund"/> *@
-            @* *@
-            @* <MudTooltip Text="Можете не вписывать значение если не известно"> *@
-            @*     <MudIconButton Icon="@Icons.Material.Filled.QuestionMark" aria-label="Вопрос" Size="Size.Small"/> *@
-            @* </MudTooltip> *@
-            <MudTooltip Text="Пишите дату в формате ДД. ММ.ГГГГ; ММ.ГГГГ, ГГГГ">
-                <MudTextField Label="Год возрата" @bind-Value="yearRefund" Validation="ValidationService.Validation" Style="width: 100%"/>
-            </MudTooltip>
-        </div>
+    <div class="containerOriention" style="justify-content: center; margin-top: 5px;">
+        <h6 class="text-center mb-3 fw-light fs-5">Награды</h6>
+        <MudIconButton Icon="@Icons.Material.Filled.Add" Size="Size.Small" Style="margin-bottom: 9px; margin-left: 7px;" OnClick="@(() => visibleModalAward = true)"/>
     </div>
+
+    <MudList T="string" SelectionMode="SelectionMode.ToggleSelection">
+        @foreach (var item in _parsonalion?.Award)
+        {
+            <MudListItem Text="@item.Name.ToString()"/>
+        }
+    </MudList>
 </div>
 
-<div>
-    <h3 class="card-title text-center mb-3 fw-light fs-5">Сан</h3>
+<MudDialog @bind-visible="visibleModalAward">
+    <DialogContent>
+        <div>
+            <h3 class="card-title text-center mb-3 fw-light fs-5">Награды</h3>
 
-    <div>
-        <div style="margin-top: 10px; margin-bottom: 10px; display: flex; align-items: center; text-align: center; justify-content: space-between;">
-            @* <MudDatePicker T="DateTime?" DateFormat="dd.MM.yyyy"  Label="Год рукоположения" @bind-Date="_parsonalion.Sun.YearOrdinations"/> *@
-            @* *@
-            @* <MudTooltip Text="Можете не вписывать значение если не известно"> *@
-            @*     <MudIconButton Icon="@Icons.Material.Filled.QuestionMark" aria-label="Вопрос" Size="Size.Small"/> *@
-            @* </MudTooltip> *@
-            <MudTooltip Text="Пишите дату в формате ДД. ММ.ГГГГ; ММ.ГГГГ, ГГГГ">
-                <MudTextField Label="Год рукоположения" @bind-Value="yearOrdinations" Validation="ValidationService.Validation" Style="width: 100%"/>
-            </MudTooltip>
+            <div>
+                <div style="margin-top: 10px; margin-bottom: 10px; display: flex; align-items: center; text-align: center; justify-content: space-between;">
+                    <MudTooltip Text="Пишите дату в формате ДД. ММ.ГГГГ; ММ.ГГГГ, ГГГГ">
+                        <MudTextField Label="Год награждения" @bind-Value="yearAward" Validation="ValidationService.Validation" Style="width: 100%"/>
+                    </MudTooltip>
+                </div>
+
+                <MudAutocomplete T="string" Label="Награда" @bind-Value="selectedAward" SearchFunc="@SearchAward"
+                                 ResetValueOnEmptyText="@resetValueOnEmptyText"
+                                 CoerceText="@coerceText" CoerceValue="@coerceValue" AdornmentColor="Color.Primary" />
+            </div>
         </div>
-
-        <MudAutocomplete T="string" Label="Награда" @bind-Value="selectedSunName" SearchFunc="@SearchAward"
-                         ResetValueOnEmptyText="@resetValueOnEmptyText"
-                         CoerceText="@coerceText" CoerceValue="@coerceValue" AdornmentColor="Color.Primary" />
-
-        <div style="margin-top: 10px; margin-bottom: 10px; display: flex; align-items: center; text-align: center; justify-content: space-between;">
-            @* <MudDatePicker T="DateTime?" DateFormat="dd.MM.yyyy"  Label="Год снятия сана" @bind-Date="_parsonalion.Sun.YearDefrock"/> *@
-
-            @* <MudTooltip Text="Можете не вписывать значение если не известно"> *@
-            @*     <MudIconButton Icon="@Icons.Material.Filled.QuestionMark" aria-label="Вопрос" Size="Size.Small"/> *@
-            @* </MudTooltip> *@
-            <MudTooltip Text="Пишите дату в формате ДД. ММ.ГГГГ; ММ.ГГГГ, ГГГГ">
-                <MudTextField Label="Год снятия сана" @bind-Value=yearDefrock Validation="ValidationService.Validation" Style="width: 100%"/>
-            </MudTooltip>
-        </div>
-    </div>
-</div>
-
-<div>
-    <h3 class="card-title text-center mb-3 fw-light fs-5">Награды</h3>
-
-    <div>
-        <div style="margin-top: 10px; margin-bottom: 10px; display: flex; align-items: center; text-align: center; justify-content: space-between;">
-            @* <MudDatePicker T="DateTime?" DateFormat="dd.MM.yyyy"  Label="Год награждения" @bind-Date="_parsonalion.Award.YearAward"/> *@
-            @* *@
-            @* <MudTooltip Text="Можете не вписывать значение если не известно"> *@
-            @*     <MudIconButton Icon="@Icons.Material.Filled.QuestionMark" aria-label="Вопрос" Size="Size.Small"/> *@
-            @* </MudTooltip> *@
-            <MudTooltip Text="Пишите дату в формате ДД. ММ.ГГГГ; ММ.ГГГГ, ГГГГ">
-                <MudTextField Label="Год награждения" @bind-Value="yearAward" Validation="ValidationService.Validation" Style="width: 100%"/>
-            </MudTooltip>
-        </div>
-
-        <MudAutocomplete T="string" Label="Награда" @bind-Value="selectedAward" SearchFunc="@SearchAward"
-                         ResetValueOnEmptyText="@resetValueOnEmptyText"
-                         CoerceText="@coerceText" CoerceValue="@coerceValue" AdornmentColor="Color.Primary" />
-    </div>
-</div>
-
-<div style="margin-top: 10px; margin-bottom: 10px; display: flex; align-items: center; text-align: center; justify-content: space-between;">
-    @* <MudDatePicker T="DateTime?" DateFormat="dd.MM.yyyy"  Label="Год упоминания" @bind-Date="_parsonalion.YearMention"/> *@
-    @* *@
-    @* <MudTooltip Text="Можете не вписывать значение если не известно"> *@
-    @*     <MudIconButton Icon="@Icons.Material.Filled.QuestionMark" aria-label="Вопрос" Size="Size.Small"/> *@
-    @* </MudTooltip> *@
-    <MudTooltip Text="Пишите дату в формате ГГГГ">
-        <MudTextField Label="Год упоменания" @bind-Value="yearMention" Validation="ValidationService.ValidationOnlyYear" Style="width: 100%"/>
-    </MudTooltip>
-</div>
+    </DialogContent>
+    <DialogActions>
+        <MudButton Color="Color.Primary" OnClick="@(() => visibleModalAward = false)">Отмена</MudButton>
+        <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="OnChangeAward">Добавить</MudButton>
+    </DialogActions>
+</MudDialog>
 
 <MudTextField @bind-Value="_parsonalion.Note" Label="Примечания"/>
 
@@ -273,6 +311,14 @@
 </MudCardContent>
 </MudCard>
 </MudContainer>
+
+<style>
+    .containerOriention {
+        display: flex;
+        align-items: center; /* Выравнивание по вертикали */
+    }
+</style>
+
 @code {
     public MapPosition position;
     public bool btnActive;
@@ -285,38 +331,37 @@
 
     private string selectedSocial;
 
-    private int selectedLVLEductaion = 1;
+    private string selectedLVLEductaion;
 
     private string selectedVerdict;
 
-    MapPosition? defPosition;
+    private string insition;
+
+    private string rehab;
+
+    private bool visibleModalState = false;
+    
+    private bool visibleModalEductation = false;
+
+    private bool visibleModalOriention = false;
+
+    private bool visibleModalSun = false;
+
+    private bool visibleModalAward = false;
+
+    private string oriention;
 
     private Parsonalion? _parsonalion = new()
     {
         Id = Guid.NewGuid().ToString("N"),
-        Sun = new()
-        {
-            Id = Guid.NewGuid().ToString("N")
-        },
-        Award = new()
-        {
-            Id = Guid.NewGuid().ToString("N")
-        },
-        Education = new()
-        {
-            Id = Guid.NewGuid().ToString("N")
-        },
-        State = new()
-        {
-            Id = Guid.NewGuid().ToString("N")
-        },
+        Sun = new(),
+        Award = new(),
+        Education = new(),
+        State = new(),
         Oriention = new()
-        {
-            Id = Guid.NewGuid().ToString("N")
-        }
     };
 
-    private long maxFileSize = 1024 * 500;
+    private const long maxFileSize = 1024 * 500;
 
     private async Task LoadPhoto(InputFileChangeEventArgs e)
     {
@@ -340,22 +385,7 @@
         _parsonalion.File = path;
     }
 
-    protected override void OnInitialized()
-    {
-        defPosition = new MapPosition() { Lat = config.GetValue<double>("Main:DefLat"), Lng = config.GetValue<double>("Main:DefLng") };
-    }
-
-    public void MapClickEvent(MapClickEventArgs args)
-    {
-        //events.Add(DateTime.Now, $"Map clicked at Lat: {args.Position.Lat}, Lng: {args.Position.Lng}");
-
-        if (args != null) position = args.Position;
-
-        //btnActive = !(position.Lng == defPosition.Lng && position.Lat == defPosition.Lat);
-        //actualJson = JsonConvert.SerializeObject(args);
-
-        //StateHasChanged();
-    }
+    #region
 
     private string[] awards =
     {
@@ -396,6 +426,8 @@
     {
         "Из крестьян", "Из мещан", "Из духовенства", "Из служащих", "Из дворян"
     };
+
+    #endregion
 
     private bool coerceText;
     
@@ -480,49 +512,108 @@
     
     private async Task Sumbit()
     {
-        switch (selectedLVLEductaion)
-        {
-            case 1:
-                _parsonalion.LVLEducation = "Высшее образование";
-                break;
-            case 2:
-                _parsonalion.LVLEducation = "Среднее образование";
-                break;
-            case 3:
-                _parsonalion.LVLEducation = "Неполное среднее образование.";
-                break;
-            case 4:
-                _parsonalion.LVLEducation = "Начальное";
-                break;
-            case 5:
-                _parsonalion.LVLEducation = "Не известно";
-                break;
-        }
-
         _parsonalion.Born = born.SetDateTime();
         _parsonalion.Death = death.SetDateTime();
-        _parsonalion.Education.YearAdmission = yearAdmission.SetDateTime();
-        _parsonalion.State.YearArrest = yearArrest.SetDateTime();
-        _parsonalion.Education.YearOfRease = yearAdmission.SetDateTime();
-        _parsonalion.State.YearSentence = yearSentence.SetDateTime();
-        _parsonalion.State.YearRehabilitation = yearRehabilitation.SetDateTime();
-        _parsonalion.Oriention.YearFall = yearFall.SetDateTime();
-        _parsonalion.Oriention.YearRefund = yearRefund.SetDateTime();
-        _parsonalion.Sun.YearOrdinations = yearOrdinations.SetDateTime();
-        _parsonalion.Sun.YearDefrock = yearDefrock.SetDateTime();
-        _parsonalion.Award.YearAward = yearAward.SetDateTime();
         _parsonalion.YearMention = yearMention.SetDateTime();
-        
         _parsonalion.FillEmptyFields();
-        _parsonalion.Education.FillEmptyFields();
-        _parsonalion.Oriention.FillEmptyFields();
-        _parsonalion.Award.FillEmptyFields();
-        _parsonalion.Sun.FillEmptyFields();
-        _parsonalion.State.FillEmptyFields();
-        
+        // _parsonalion.Education.FillEmptyFields();
+        // _parsonalion.Oriention.FillEmptyFields();
+        // _parsonalion.Award.FillEmptyFields();
+        // _parsonalion.Sun.FillEmptyFields();
+        // _parsonalion.State.FillEmptyFields();
         _context.Parsonalions.Add(_parsonalion);
         _context.SaveChanges();
         
         NavigationManager.NavigateTo("/home?show=true&obj=персоналии", true);
+    }
+
+    private void OnHideModalStateModalClick() => visibleModalState = false;
+    
+    private void OnShowModalStateModalClick() => visibleModalState = true;
+
+    private void OnChangeStateTempleClick()
+    {
+        MeasuresState state = new()
+        {
+            Id = Guid.NewGuid().ToString()
+        };
+
+        state.Verdict = selectedVerdict;
+        state.YearArrest = yearArrest.SetDateTime();
+        state.YearSentence = yearSentence.SetDateTime();
+        state.Rehabilitaion = rehab;
+        state.YearRehabilitation = yearRehabilitation.SetDateTime();
+
+        state.FillEmptyFields();
+        _parsonalion.State.Add(state);
+
+        visibleModalState = false;
+    }
+    
+    private void OnChangeEducationTempleClick()
+    {
+        Education education = new()
+        {
+            Id = Guid.NewGuid().ToString()
+        };
+
+        education.YearAdmission = yearAdmission.SetDateTime();
+        education.YearOfRease = yearOfRease.SetDateTime();
+        education.Institution = insition;
+
+        education.FillEmptyFields();
+        _parsonalion.Education.Add(education);
+        
+        visibleModalEductation = false;
+    }
+
+    private void OnHideModalEducationModalClick() => visibleModalEductation = false;
+    private void OnShowModalEducationModalClick() => visibleModalEductation = true;
+
+    private void OnChangeOriention()
+    {
+        TempleOriention orientation = new()
+        {
+            Id = Guid.NewGuid().ToString()
+        };
+
+        orientation.Oriention = this.oriention;
+        orientation.YearFall = yearFall.SetDateTime();
+        orientation.YearRefund = yearRefund.SetDateTime();
+        
+        orientation.FillEmptyFields();
+        _parsonalion.Oriention.Add(orientation);
+        visibleModalOriention = false;
+    }
+
+    private void OnChangeSunClick()
+    {
+        Sun sun = new()
+        {
+            Id = Guid.NewGuid().ToString()
+        };
+
+        sun.SunName = selectedSunName;
+        sun.YearDefrock = yearDefrock.SetDateTime();
+        sun.YearOrdinations = yearOrdinations.SetDateTime();
+        
+        sun.FillEmptyFields();
+        _parsonalion.Sun.Add(sun);
+        visibleModalSun = false;
+    }
+    
+    private void OnChangeAward()
+    {
+        Award award = new()
+        {
+            Id = Guid.NewGuid().ToString()
+        };
+
+        award.Name = selectedAward;
+        award.YearAward = yearAward.SetDateTime();
+
+        award.FillEmptyFields();
+        _parsonalion.Award.Add(award);
+        visibleModalAward = false;
     }
 }

@@ -78,7 +78,7 @@
                     <li class="nav-item ml-auto" style="margin-right: 5px;">
                         @if (IsAuth)
                         {
-                            <a class="nav-link text-dark" href="/profile">@AuthenticationStateProvider.GetAuthenticationStateAsync().Result.User.Identity.Name</a>
+                            <a class="nav-link text-dark">@AuthenticationStateProvider.GetAuthenticationStateAsync().Result.User.Identity.Name</a>
                         }
                         else
                         {

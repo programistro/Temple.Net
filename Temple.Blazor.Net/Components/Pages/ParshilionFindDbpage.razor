@@ -33,8 +33,7 @@
 <MudTable T="Parishioners" Items="@Elements" Dense="@dense" Hover="@hover" Bordered="@bordered" Striped="@striped"
           Filter="new Func<Parishioners,bool>(FilterFunc1)" @bind-SelectedItem="selectedItem"
           CommitEditTooltip="Commit Edit"
-          OnRowClick="@RowClickEvent" @ref="mudTable" RowClass="cursor-pointer"
-          OnCommitEditClick="@(() => Snackbar.Add("Commit Edit Handler Invoked"))" 
+          OnRowClick="@RowClickEvent" @ref="mudTable" RowClass="cursor-pointer" 
           EditButtonPosition="@editButtonPosition" EditTrigger="@editTrigger">
     <ToolBarContent>
         <MudText Typo="Typo.h6">Прихожане</MudText>
@@ -167,31 +166,18 @@
                         </div>
 
                         <div style="margin-top: 10px; margin-bottom: 10px; display: flex; align-items: center; text-align: center; justify-content: space-between;">
-                            @* <MudDatePicker T="DateTime?" DateFormat="yyy" Label="Время присоединения к религиозному культу" @bind-Date="_parishioners.DateJoinRelligios"/> *@
-                            @* *@
-                            @* <MudTooltip Text="Можете не вписывать значение если не известно"> *@
-                            @*     <MudIconButton Icon="@Icons.Material.Filled.QuestionMark" aria-label="Вопрос" Size="Size.Small"/> *@
-                            @* </MudTooltip> *@
-
                             <MudTooltip Text="Пишите дату в формате ДД. ММ.ГГГГ; ММ.ГГГГ, ГГГГ">
                                 <MudTextField Label="Время присоединения к религиозному культу" @bind-Value="dateJoinRelligios" Validation="ValidationService.Validation" Style="width: 100%"/>
                             </MudTooltip>
                         </div>
 
                         <div style="margin-top: 10px; margin-bottom: 10px; display: flex; align-items: center; text-align: center; justify-content: space-between;">
-                            @* <MudDatePicker T="DateTime?" DateFormat="yyy" Label="Год упоменания" @bind-Date="_parishioners.YearMention"/> *@
-                            @* *@
                             <MudTooltip Text="Пишите дату в формате ДД. ММ.ГГГГ; ММ.ГГГГ, ГГГГ">
                                 <MudTextField Label="Год упоменания" @bind-Value="yearMention" Validation="ValidationService.Validation" Style="width: 100%"/>
                             </MudTooltip>
                         </div>
 
                         <div style="margin-top: 10px; margin-bottom: 10px; display: flex; align-items: center; text-align: center; justify-content: space-between;">
-                            @* <MudDatePicker T="DateTime?" DateFormat="yyy" Label="Год возрата" @bind-Date="_parishioners.YearRestart"/> *@
-                            @* *@
-                            @* <MudTooltip Text="Можете не вписывать значение если не известно"> *@
-                            @*     <MudIconButton Icon="@Icons.Material.Filled.QuestionMark" aria-label="Вопрос" Size="Size.Small"/> *@
-                            @* </MudTooltip> *@
                             <MudTooltip Text="Пишите дату в формате ДД. ММ.ГГГГ; ММ.ГГГГ, ГГГГ">
                                 <MudTextField Label="Год возрата" @bind-Value="yearRestart" Validation="ValidationService.Validation" Style="width: 100%"/>
                             </MudTooltip>
@@ -308,6 +294,9 @@
 
                 private async Task Sumbit()
                 {
+                    findParsh.EstateBeforeRevolution = selectedEstate;
+                    findParsh.Gender = selectedGender;
+                    findParsh.SocialStatus = selectedSocialStatus;
                     findParsh.YearRestart = yearRestart.SetDateTime();
                     findParsh.YearMention = yearMention.SetDateTime();
                     findParsh.DateJoinRelligios = dateJoinRelligios.SetDateTime();

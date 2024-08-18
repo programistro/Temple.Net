@@ -10,10 +10,12 @@
     }
 </style>
 
+<MudDialogProvider @rendermode="InteractiveServer" MaxWidth="MaxWidth.ExtraExtraLarge"
+                   Position="DialogPosition.Center"/>
+
 <MudTable Items="@Elements" Dense="@dense" Hover="@hover" Bordered="@bordered" Striped="@striped"
           Filter="new Func<Parsonalion,bool>(FilterFunc1)" @bind-SelectedItem="selectedItem"
-          CommitEditTooltip="Commit Edit"
-          OnCommitEditClick="@(() => Snackbar.Add("Commit Edit Handler Invoked"))" RowEditPreview="BackupItem"
+          CommitEditTooltip="Commit Edit" RowEditPreview="BackupItem"
           RowEditCancel="ResetItemToOriginalValues"
           RowEditCommit="ItemHasBeenCommitted" IsEditRowSwitchingBlocked="@blockSwitch" ApplyButtonPosition="@applyButtonPosition"
           EditButtonPosition="@editButtonPosition" EditTrigger="@editTrigger">
@@ -30,19 +32,19 @@
         <MudTh><MudTableSortLabel SortBy="new Func<Parsonalion, object>(x=>x.Born)">Год рождения</MudTableSortLabel></MudTh>
         <MudTh><MudTableSortLabel SortBy="new Func<Parsonalion, object>(x=>x.Death)">Год смерти</MudTableSortLabel></MudTh>
         <MudTh><MudTableSortLabel SortBy="new Func<Parsonalion, object>(x=>x.Nation)">Национость</MudTableSortLabel></MudTh>
-        <MudTh><MudTableSortLabel SortBy="new Func<Parsonalion, object>(x=>x.Education.YearAdmission)">Год приступление</MudTableSortLabel></MudTh>
-        <MudTh><MudTableSortLabel SortBy="new Func<Parsonalion, object>(x=>x.Education.YearOfRease)">Год выпуска</MudTableSortLabel></MudTh>
+        @* <MudTh><MudTableSortLabel SortBy="new Func<Parsonalion, object>(x=>x.Education.YearAdmission)">Год приступление</MudTableSortLabel></MudTh> *@
+        @* <MudTh><MudTableSortLabel SortBy="new Func<Parsonalion, object>(x=>x.Education.YearOfRease)">Год выпуска</MudTableSortLabel></MudTh> *@
         <MudTh><MudTableSortLabel SortBy="new Func<Parsonalion, object>(x=>x.LVLEducation)">Уровень образования</MudTableSortLabel></MudTh>
-        <MudTh><MudTableSortLabel SortBy="new Func<Parsonalion, object>(x=>x.Award.Name)">Название награды</MudTableSortLabel></MudTh>
-        <MudTh><MudTableSortLabel SortBy="new Func<Parsonalion, object>(x=>x.Award.YearAward)">Год получения награды</MudTableSortLabel></MudTh>
+        @* <MudTh><MudTableSortLabel SortBy="new Func<Parsonalion, object>(x=>x.Award.Name)">Название награды</MudTableSortLabel></MudTh> *@
+        @* <MudTh><MudTableSortLabel SortBy="new Func<Parsonalion, object>(x=>x.Award.YearAward)">Год получения награды</MudTableSortLabel></MudTh> *@
         <MudTh><MudTableSortLabel SortBy="new Func<Parsonalion, object>(x=>x.Source)">Источник</MudTableSortLabel></MudTh>
-        <MudTh><MudTableSortLabel SortBy="new Func<Parsonalion, object>(x=>x.State.Verdict)">Приговор</MudTableSortLabel></MudTh>
-        <MudTh><MudTableSortLabel SortBy="new Func<Parsonalion, object>(x=>x.State.YearArrest)">Год ареста</MudTableSortLabel></MudTh>
-        <MudTh><MudTableSortLabel SortBy="new Func<Parsonalion, object>(x=>x.State.YearRehabilitation)">Год реабилитации</MudTableSortLabel></MudTh>
-        <MudTh><MudTableSortLabel SortBy="new Func<Parsonalion, object>(x=>x.State.YearSentence)">Год приговора</MudTableSortLabel></MudTh>
-        <MudTh><MudTableSortLabel SortBy="new Func<Parsonalion, object>(x=>x.Sun.SunName)">Имя сана</MudTableSortLabel></MudTh>
-        <MudTh><MudTableSortLabel SortBy="new Func<Parsonalion, object>(x=>x.Sun.YearDefrock)">Год снятия сана</MudTableSortLabel></MudTh>
-        <MudTh><MudTableSortLabel SortBy="new Func<Parsonalion, object>(x=>x.Sun.YearOrdinations)">Год рукоположения</MudTableSortLabel></MudTh>
+        @* <MudTh><MudTableSortLabel SortBy="new Func<Parsonalion, object>(x=>x.State.Verdict)">Приговор</MudTableSortLabel></MudTh> *@
+        @* <MudTh><MudTableSortLabel SortBy="new Func<Parsonalion, object>(x=>x.State.YearArrest)">Год ареста</MudTableSortLabel></MudTh> *@
+        @* <MudTh><MudTableSortLabel SortBy="new Func<Parsonalion, object>(x=>x.State.YearRehabilitation)">Год реабилитации</MudTableSortLabel></MudTh> *@
+        @* <MudTh><MudTableSortLabel SortBy="new Func<Parsonalion, object>(x=>x.State.YearSentence)">Год приговора</MudTableSortLabel></MudTh> *@
+        @* <MudTh><MudTableSortLabel SortBy="new Func<Parsonalion, object>(x=>x.Sun.SunName)">Имя сана</MudTableSortLabel></MudTh> *@
+        @* <MudTh><MudTableSortLabel SortBy="new Func<Parsonalion, object>(x=>x.Sun.YearDefrock)">Год снятия сана</MudTableSortLabel></MudTh> *@
+        @* <MudTh><MudTableSortLabel SortBy="new Func<Parsonalion, object>(x=>x.Sun.YearOrdinations)">Год рукоположения</MudTableSortLabel></MudTh> *@
         <MudTh><MudTableSortLabel SortBy="new Func<Parsonalion, object>(x=>x.SocialOrigin)">Социальное положение</MudTableSortLabel></MudTh>
         <MudTh><MudTableSortLabel SortBy="new Func<Parsonalion, object>(x=>x.PlaceBirths)">Место рождения</MudTableSortLabel></MudTh>
         <MudTh><MudTableSortLabel SortBy="new Func<Parsonalion, object>(x=>x.PlaceOfDeath)">Место смерти</MudTableSortLabel></MudTh>
@@ -71,19 +73,19 @@
         <MudTd DataLabel="Born">@context.Born</MudTd>
         <MudTd DataLabel="Death">@context.Death</MudTd>
         <MudTd DataLabel="Nation">@context.Nation</MudTd>
-        <MudTd DataLabel="Education.YearAdmission">@context.Education.YearAdmission</MudTd>
-        <MudTd DataLabel="Education.YearOfRease">@context.Education.YearOfRease</MudTd>
+        @* <MudTd DataLabel="Education.YearAdmission">@context.Education.YearAdmission</MudTd> *@
+        @* <MudTd DataLabel="Education.YearOfRease">@context.Education.YearOfRease</MudTd> *@
         <MudTd DataLabel="LVLEducation">@context.LVLEducation</MudTd>
-        <MudTd DataLabel="Award.Name">@context.Award.Name</MudTd>
-        <MudTd DataLabel="Award.YearAward">@context.Award.YearAward</MudTd>
+        @* <MudTd DataLabel="Award.Name">@context.Award.Name</MudTd> *@
+        @* <MudTd DataLabel="Award.YearAward">@context.Award.YearAward</MudTd> *@
         <MudTd DataLabel="Source">@context.Source</MudTd>
-        <MudTd DataLabel="State.Verdict">@context.State.Verdict</MudTd>
-        <MudTd DataLabel="State.YearArrest">@context.State.YearArrest</MudTd>
-        <MudTd DataLabel="State.YearRehabilitation">@context.State.YearRehabilitation</MudTd>
-        <MudTd DataLabel="State.YearSentence">@context.State.YearSentence</MudTd>
-        <MudTd DataLabel="Sun.SunName">@context.Sun.SunName</MudTd>
-        <MudTd DataLabel="Sun.YearDefrock">@context.Sun.YearDefrock</MudTd>
-        <MudTd DataLabel="Sun.YearOrdinations">@context.Sun.YearOrdinations</MudTd>
+        @* <MudTd DataLabel="State.Verdict">@context.State.Verdict</MudTd> *@
+        @* <MudTd DataLabel="State.YearArrest">@context.State.YearArrest</MudTd> *@
+        @* <MudTd DataLabel="State.YearRehabilitation">@context.State.YearRehabilitation</MudTd> *@
+        @* <MudTd DataLabel="State.YearSentence">@context.State.YearSentence</MudTd> *@
+        @* <MudTd DataLabel="Sun.SunName">@context.Sun.SunName</MudTd> *@
+        @* <MudTd DataLabel="Sun.YearDefrock">@context.Sun.YearDefrock</MudTd> *@
+        @* <MudTd DataLabel="Sun.YearOrdinations">@context.Sun.YearOrdinations</MudTd> *@
         <MudTd DataLabel="SocialOrigin">@context.SocialOrigin</MudTd>
         <MudTd DataLabel="PlaceBirths">@context.PlaceBirths</MudTd>
         <MudTd DataLabel="PlaceOfDeath">@context.PlaceOfDeath</MudTd>
@@ -111,45 +113,45 @@
         <MudTd DataLabel="Nation">
             <MudTextField @bind-Value="context.Nation" Required />
         </MudTd>
-        <MudTd DataLabel="Education.YearAdmission">
-            <MudTextField @bind-Value="context.Education.YearAdmission" Required />
-        </MudTd>
-        <MudTd DataLabel="Education.YearOfRease">
-            <MudTextField @bind-Value="context.Education.YearOfRease" Required />
-        </MudTd>
-        <MudTd DataLabel="LVLEducation">
-            <MudTextField @bind-Value="context.LVLEducation" Required />
-        </MudTd>
-        <MudTd DataLabel="Award.Name">
-            <MudTextField @bind-Value="context.Award.Name" Required />
-        </MudTd>
-        <MudTd DataLabel="Award.YearAward">
-            <MudTextField @bind-Value="context.Award.YearAward" Required />
-        </MudTd>
+        @* <MudTd DataLabel="Education.YearAdmission"> *@
+        @*     <MudTextField @bind-Value="context.Education.YearAdmission" Required /> *@
+        @* </MudTd> *@
+        @* <MudTd DataLabel="Education.YearOfRease"> *@
+        @*     <MudTextField @bind-Value="context.Education.YearOfRease" Required /> *@
+        @* </MudTd> *@
+        @* <MudTd DataLabel="LVLEducation"> *@
+        @*     <MudTextField @bind-Value="context.LVLEducation" Required /> *@
+        @* </MudTd> *@
+        @* <MudTd DataLabel="Award.Name"> *@
+        @*     <MudTextField @bind-Value="context.Award.Name" Required /> *@
+        @* </MudTd> *@
+        @* <MudTd DataLabel="Award.YearAward"> *@
+        @*     <MudTextField @bind-Value="context.Award.YearAward" Required /> *@
+        @* </MudTd> *@
         <MudTd DataLabel="Source">
             <MudTextField @bind-Value="context.Source" Required />
         </MudTd>
-        <MudTd DataLabel="State.Verdict">
-            <MudTextField @bind-Value="context.State.Verdict" Required />
-        </MudTd>
-        <MudTd DataLabel="State.YearArrest">
-            <MudTextField @bind-Value="context.State.YearArrest" Required />
-        </MudTd>
-        <MudTd DataLabel="State.YearRehabilitation">
-            <MudTextField @bind-Value="context.State.YearRehabilitation" Required />
-        </MudTd>
-        <MudTd DataLabel="State.YearSentence">
-            <MudTextField @bind-Value="context.State.YearSentence" Required />
-        </MudTd>
-        <MudTd DataLabel="Sun.SunName">
-            <MudTextField @bind-Value="context.Sun.SunName" Required />
-        </MudTd>
-        <MudTd DataLabel="Sun.YearDefrock">
-            <MudTextField @bind-Value="context.Sun.YearDefrock" Required />
-        </MudTd>
-        <MudTd DataLabel="Sun.YearOrdinations">
-            <MudTextField @bind-Value="context.Sun.YearOrdinations" Required />
-        </MudTd>
+        @* <MudTd DataLabel="State.Verdict"> *@
+        @*     <MudTextField @bind-Value="context.State.Verdict" Required /> *@
+        @* </MudTd> *@
+        @* <MudTd DataLabel="State.YearArrest"> *@
+        @*     <MudTextField @bind-Value="context.State.YearArrest" Required /> *@
+        @* </MudTd> *@
+        @* <MudTd DataLabel="State.YearRehabilitation"> *@
+        @*     <MudTextField @bind-Value="context.State.YearRehabilitation" Required /> *@
+        @* </MudTd> *@
+        @* <MudTd DataLabel="State.YearSentence"> *@
+        @*     <MudTextField @bind-Value="context.State.YearSentence" Required /> *@
+        @* </MudTd> *@
+        @* <MudTd DataLabel="Sun.SunName"> *@
+        @*     <MudTextField @bind-Value="context.Sun.SunName" Required /> *@
+        @* </MudTd> *@
+        @* <MudTd DataLabel="Sun.YearDefrock"> *@
+        @*     <MudTextField @bind-Value="context.Sun.YearDefrock" Required /> *@
+        @* </MudTd> *@
+        @* <MudTd DataLabel="Sun.YearOrdinations"> *@
+        @*     <MudTextField @bind-Value="context.Sun.YearOrdinations" Required /> *@
+        @* </MudTd> *@
         <MudTd DataLabel="SocialOrigin">
             <MudTextField @bind-Value="context.SocialOrigin" Required />
         </MudTd>
@@ -226,19 +228,19 @@
             item.Born = element.Born;
             item.Death = element.Death;
             item.Nation = element.Nation;
-            item.Education.YearAdmission = element.Education.YearAdmission;
-            item.Education.YearOfRease = element.Education.YearOfRease;
+            // item.Education.YearAdmission = element.Education.YearAdmission;
+            // item.Education.YearOfRease = element.Education.YearOfRease;
             item.LVLEducation = element.LVLEducation;
-            item.Award.Name = element.Award.Name;
-            item.Award.YearAward = element.Award.YearAward;
+            // item.Award.Name = element.Award.Name;
+            // item.Award.YearAward = element.Award.YearAward;
             item.Source = element.Source;
-            item.State.Verdict = element.State.Verdict;
-            item.State.YearArrest = element.State.YearArrest;
-            item.State.YearRehabilitation = element.State.YearRehabilitation;
-            item.State.YearSentence = element.State.YearSentence;
-            item.Sun.SunName = element.Sun.SunName;
-            item.Sun.YearDefrock = element.Sun.YearDefrock;
-            item.Sun.YearOrdinations = element.Sun.YearOrdinations;
+            // item.State.Verdict = element.State.Verdict;
+            // item.State.YearArrest = element.State.YearArrest;
+            // item.State.YearRehabilitation = element.State.YearRehabilitation;
+            // item.State.YearSentence = element.State.YearSentence;
+            // item.Sun.SunName = element.Sun.SunName;
+            // item.Sun.YearDefrock = element.Sun.YearDefrock;
+            // item.Sun.YearOrdinations = element.Sun.YearOrdinations;
             item.SocialOrigin = element.SocialOrigin;
             item.PlaceBirths = element.PlaceBirths;
             item.PlaceOfDeath = element.PlaceOfDeath;

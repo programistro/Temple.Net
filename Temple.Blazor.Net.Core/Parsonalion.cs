@@ -26,15 +26,15 @@ public class Parsonalion
     
     public string? SocialOrigin { get; set; }
     
-    public Education? Education { get; set; }
+    public List<Education>? Education { get; set; }
     
-    public Sun? Sun { get; set; }
+    public List<Sun>? Sun { get; set; }
     
-    public Award? Award { get; set; }
+    public List<Award>? Award { get; set; }
     
-    public TempleOriention? Oriention { get; set; }
+    public List<TempleOriention>? Oriention { get; set; }
     
-    public MeasuresState? State { get; set; }
+    public List<MeasuresState>? State { get; set; }
     
     public DateOnly? YearMention { get; set; }
     
@@ -47,7 +47,7 @@ public class Parsonalion
     /// </summary>
     public string? PlaceBirths { get; set; }
     
-    public string? LVLEducation { get; set; }
+    public List<string>? LVLEducation { get; set; }
     
     public string? Photo { get; set; }
     

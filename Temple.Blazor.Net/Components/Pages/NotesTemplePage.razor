@@ -20,8 +20,7 @@
 
 <MudTable Items="@Elements" Dense="@dense" Hover="@hover" Bordered="@bordered" Striped="@striped" 
           Filter="new Func<TempleNote,bool>(FilterFunc1)" @bind-SelectedItem="selectedItem"
-          CommitEditTooltip="Commit Edit"
-          OnCommitEditClick="@(() => Snackbar.Add("Commit Edit Handler Invoked"))" RowEditPreview="BackupItem" 
+          CommitEditTooltip="Commit Edit" RowEditPreview="BackupItem" 
           RowEditCancel="ResetItemToOriginalValues"
           RowEditCommit="ItemHasBeenCommitted" IsEditRowSwitchingBlocked="@blockSwitch" ApplyButtonPosition="@applyButtonPosition"
           EditButtonPosition="@editButtonPosition" EditTrigger="@editTrigger">
